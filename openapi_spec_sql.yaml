@@ -9,7 +9,7 @@ components:
   schemas:
     Products:
       properties:
-        ProductId:
+        id:
           nullable: false
           type: number
         ProductName:
@@ -20,7 +20,7 @@ components:
           type: boolean
     Items:
       properties:
-        ItemId:
+        id:
           nullable: false
           type: number
         Type:
@@ -40,7 +40,7 @@ components:
           type: boolean
     ItemCategories:
       properties:
-        CategoryId:
+        id:
           nullable: false
           type: string
         ItemId:
@@ -56,7 +56,7 @@ components:
           type: string
     ItemInstances:
       properties:
-        InstanceId:
+        id:
           nullable: false
           type: integer
         ItemId:
@@ -70,7 +70,7 @@ components:
           type: boolean
     OrderItems:
       properties:
-        OrderItemId:
+        id:
           nullable: false
           type: number
         OrderId:
@@ -84,7 +84,7 @@ components:
           type: integer
     ItemTaxes:
       properties:
-        ItemTaxId:
+        id:
           nullable: false
           type: integer
         ItemId:
@@ -95,7 +95,7 @@ components:
           $ref: '#/components/schemas/Taxes'
     Taxes:
       properties:
-        TaxId:
+        id:
           nullable: false
           type: integer
         TaxName:
