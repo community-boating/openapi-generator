@@ -156,7 +156,7 @@ components:
         PaymentStatus:
           nullable: false
           type: string
-    BalancesTransaction:
+    BalanceTransaction:
       properties:
         id:
           nullable: false
@@ -184,6 +184,8 @@ components:
         BalanceSource:
           nullable: false
           type: string
+        BalancePerson:
+          $ref: '#/components/schemas/Person'
     OrderNumber:
       properties: 
         id:
