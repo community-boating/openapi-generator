@@ -7,7 +7,7 @@ paths: {}
 components:
   securitySchemes: {}
   schemas:
-    Products:
+    Product:
       properties:
         id:
           nullable: false
@@ -18,7 +18,7 @@ components:
         Active:
           nullable: false
           type: boolean
-    Items:
+    Item:
       properties:
         id:
           nullable: false
@@ -28,17 +28,17 @@ components:
           type: string
         MembershipTypeId:
           nullable: false
-          $ref: '#/components/schemas/MembershipTypes'
+          $ref: '#/components/schemas/MembershipType'
         ProductId:
           nullable: false
-          $ref: '#/components/schemas/Products'
+          $ref: '#/components/schemas/Product'
         IsGuestPriv:
           nullable: false
           type: boolean
         IsDamageWaiver:
           nullable: false
           type: boolean
-    ItemCategories:
+    ItemCategory:
       properties:
         id:
           nullable: false
@@ -46,54 +46,54 @@ components:
         ItemId:
           nullable: false
           type: string
-    Categories:
+    Category:
       properties:
-        CategoryId:
+        id:
           nullable: false
           type: number
         CategoryName:
           nullable: false
           type: string
-    ItemInstances:
+    ItemInstance:
       properties:
         id:
           nullable: false
           type: integer
         ItemId:
           nullable: false
-          $ref: '#/components/schemas/Items'
+          $ref: '#/components/schemas/Item'
         PriceCents:
           nullable: true
-          type: number
+          type: integer
         IsActive:
           nullable: false
           type: boolean
-    OrderItems:
+    OrderItem:
       properties:
         id:
           nullable: false
           type: number
         OrderId:
           nullable: false
-          $ref: '#/components/schemas/OrderNumbers'
+          $ref: '#/components/schemas/OrderNumber'
         ItemInstanceId:
           nullable: false
-          $ref: '#/components/schemas/ItemInstances'
+          $ref: '#/components/schemas/ItemInstance'
         ItemPriceCents:
           nullable: false
           type: integer
-    ItemTaxes:
+    ItemTax:
       properties:
         id:
           nullable: false
           type: integer
         ItemId:
           nullable: false
-          $ref: '#/components/schemas/Items'
+          $ref: '#/components/schemas/Item'
         TaxId:
           nullable: false
-          $ref: '#/components/schemas/Taxes'
-    Taxes:
+          $ref: '#/components/schemas/Tax'
+    Tax:
       properties:
         id:
           nullable: false
@@ -107,41 +107,46 @@ components:
         TaxMinValueCents:
           nullable: false
           type: integer
-    OrderTaxes:
-      properties: {}
-    OrderDiscounts:
+    OrderTax:
       properties:
-        OrderDiscountId:
+        id:
+            nullable: false
+            type: integer
+        tax:
+            $ref: '#/components/schemas/Tax'
+    OrderDiscount:
+      properties:
+        id:
           nullable: false
           type: string
         OrderItemId:
           nullable: false
-          $ref: '#/components/schemas/OrderItems'
+          $ref: '#/components/schemas/OrderItem'
         DiscountInstanceId:
           nullable: false
-          $ref: '#/components/schemas/DiscountInstances'
+          $ref: '#/components/schemas/DiscountInstance'
         DiscountAmountCents:
           nullable: false
           type: integer
-    ItemDiscounts:
+    ItemDiscount:
       properties:
-        ItemDiscountId:
+        id:
           nullable: false
           type: integer
         ItemId:
           nullable: false
-          $ref: '#/components/schemas/Items'
+          $ref: '#/components/schemas/Item'
         DiscountInstanceId:
           nullable: false
           type: string
-    OrderPayments:
+    OrderPayment:
       properties:
-        OrderPaymentId:
+        id:
           nullable: false
           type: integer
         OrderId:
           nullable: false
-          $ref: '#/components/schemas/OrderNumbers'
+          $ref: '#/components/schemas/OrderNumber'
         PaymentType:
           nullable: false
           type: string
@@ -151,20 +156,20 @@ components:
         PaymentStatus:
           nullable: false
           type: string
-    BalancesTransactions:
+    BalancesTransaction:
       properties:
-        BalanceTransactionId:
+        id:
           nullable: false
           type: integer
         BalanceId:
           nullable: false
-          $ref: '#/components/schemas/Balances'
+          $ref: '#/components/schemas/Balance'
         TransactionAmountCents:
           nullable: false
           type: integer
-    Balances:
+    Balance:
       properties:
-        BalanceId:
+        id:
           nullable: false
           type: integer
         BalanceAccountNumber:
@@ -179,15 +184,24 @@ components:
         BalanceSource:
           nullable: false
           type: string
-    OrderNumbers:
-      properties: {}
-    MembershipTypes:
-      properties: {}
-    DiscountInstances:
-      properties: {}
-    StripeTransactions:
+    OrderNumber:
+      properties: 
+        id:
+          nullable: false
+          type: integer
+    MembershipType:
+      properties: 
+        id:
+          nullable: false
+          type: integer
+    DiscountInstance:
+      properties: 
+        id:
+          nullable: false
+          type: integer
+    StripeTransaction:
       properties:
-        StripeTransactionId:
+        id:
           nullable: false
           type: integer
         StripePaymentIntent:
@@ -196,9 +210,9 @@ components:
         TransactionAmount:
           nullable: false
           type: string
-    CashTransactions:
+    CashTransaction:
       properties:
-        CashTransactionId:
+        id:
           nullable: false
           type: integer
         CashDrawerId:
@@ -207,9 +221,9 @@ components:
         TransactionAmountCents:
           nullable: false
           type: string
-    CashDrawersChanges:
+    CashDrawersChange:
       properties:
-        CashDrawerChangeId:
+        id:
           nullable: false
           type: integer
         ChangeType:
