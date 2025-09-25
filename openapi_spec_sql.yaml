@@ -7,217 +7,217 @@ paths: {}
 components:
   securitySchemes: {}
   schemas:
-    PRODUCTS:
+    Products:
       properties:
-        PRODUCT_ID:
+        ProductId:
           nullable: false
           type: number
-        PRODUCT_NAME:
+        ProductName:
           nullable: false
           type: string
-        ACTIVE:
+        Active:
           nullable: false
           type: boolean
-    ITEMS:
+    Items:
       properties:
-        ITEM_ID:
+        ItemId:
           nullable: false
           type: number
-        TYPE:
+        Type:
           nullable: false
           type: string
-        MEMBERSHIP_TYPE_ID:
+        MembershipTypeId:
           nullable: false
-          $ref: '#/components/schemas/MEMBERSHIP_TYPES'
-        PRODUCT_ID:
+          $ref: '#/components/schemas/MembershipTypes'
+        ProductId:
           nullable: false
-          $ref: '#/components/schemas/PRODUCTS'
-        IS_GUEST_PRIV:
+          $ref: '#/components/schemas/Products'
+        IsGuestPriv:
           nullable: false
           type: boolean
-        IS_DAMAGE_WAIVER:
+        IsDamageWaiver:
           nullable: false
           type: boolean
-    ITEM_CATEGORIES:
+    ItemCategories:
       properties:
-        CATEGORY_ID:
+        CategoryId:
           nullable: false
           type: string
-        ITEM_ID:
+        ItemId:
           nullable: false
           type: string
-    CATEGORIES:
+    Categories:
       properties:
-        CATEGORY_ID:
+        CategoryId:
           nullable: false
           type: number
-        CATEGORY_NAME:
+        CategoryName:
           nullable: false
           type: string
-    ITEM_INSTANCES:
+    ItemInstances:
       properties:
-        INSTANCE_ID:
+        InstanceId:
           nullable: false
           type: integer
-        ITEM_ID:
+        ItemId:
           nullable: false
-          $ref: '#/components/schemas/ITEMS'
-        PRICE_CENTS:
+          $ref: '#/components/schemas/Items'
+        PriceCents:
           nullable: true
           type: number
-        IS_ACTIVE:
+        IsActive:
           nullable: false
           type: boolean
-    ORDER_ITEMS:
+    OrderItems:
       properties:
-        ORDER_ITEM_ID:
+        OrderItemId:
           nullable: false
           type: number
-        ORDER_ID:
+        OrderId:
           nullable: false
-          $ref: '#/components/schemas/ORDER_NUMBERS'
-        ITEM_INSTANCE_ID:
+          $ref: '#/components/schemas/OrderNumbers'
+        ItemInstanceId:
           nullable: false
-          $ref: '#/components/schemas/ITEM_INSTANCES'
-        ITEM_PRICE_CENTS:
+          $ref: '#/components/schemas/ItemInstances'
+        ItemPriceCents:
           nullable: false
           type: integer
-    ITEM_TAXES:
+    ItemTaxes:
       properties:
-        ITEM_TAX_ID:
+        ItemTaxId:
           nullable: false
           type: integer
-        ITEM_ID:
+        ItemId:
           nullable: false
-          $ref: '#/components/schemas/ITEMS'
-        TAX_ID:
+          $ref: '#/components/schemas/Items'
+        TaxId:
           nullable: false
-          $ref: '#/components/schemas/TAXES'
-    TAXES:
+          $ref: '#/components/schemas/Taxes'
+    Taxes:
       properties:
-        TAX_ID:
+        TaxId:
           nullable: false
           type: integer
-        TAX_NAME:
+        TaxName:
           nullable: false
           type: string
-        TAX_RATE:
+        TaxRate:
           nullable: false
           type: number
-        TAX_MIN_VALUE_CENTS:
+        TaxMinValueCents:
           nullable: false
           type: integer
-    ORDER_TAXES:
+    OrderTaxes:
       properties: {}
-    ORDER_DISCOUNTS:
+    OrderDiscounts:
       properties:
-        ORDER_DISCOUNT_ID:
+        OrderDiscountId:
           nullable: false
           type: string
-        ORDER_ITEM_ID:
+        OrderItemId:
           nullable: false
-          $ref: '#/components/schemas/ORDER_ITEMS'
-        DISCOUNT_INSTANCE_ID:
+          $ref: '#/components/schemas/OrderItems'
+        DiscountInstanceId:
           nullable: false
-          $ref: '#/components/schemas/DISCOUNT_INSTANCES'
-        DISCOUNT_AMOUNT_CENTS:
+          $ref: '#/components/schemas/DiscountInstances'
+        DiscountAmountCents:
           nullable: false
           type: integer
-    ITEM_DISCOUNTS:
+    ItemDiscounts:
       properties:
-        ITEM_DISCOUNT_ID:
+        ItemDiscountId:
           nullable: false
           type: integer
-        ITEM_ID:
+        ItemId:
           nullable: false
-          $ref: '#/components/schemas/ITEMS'
-        DISCOUNT_INSTANCE_ID:
+          $ref: '#/components/schemas/Items'
+        DiscountInstanceId:
           nullable: false
           type: string
-    ORDER_PAYMENTS:
+    OrderPayments:
       properties:
-        ORDER_PAYMENT_ID:
+        OrderPaymentId:
           nullable: false
           type: integer
-        ORDER_ID:
+        OrderId:
           nullable: false
-          $ref: '#/components/schemas/ORDER_NUMBERS'
-        PAYMENT_TYPE:
-          nullable: false
-          type: string
-        PAYMENT_AMOUNT:
+          $ref: '#/components/schemas/OrderNumbers'
+        PaymentType:
           nullable: false
           type: string
-        PAYMENT_STATUS:
+        PaymentAmount:
           nullable: false
           type: string
-    BALANCES_TRANSACTIONS:
+        PaymentStatus:
+          nullable: false
+          type: string
+    BalancesTransactions:
       properties:
-        BALANCE_TRANSACTION_ID:
+        BalanceTransactionId:
           nullable: false
           type: integer
-        BALANCE_ID:
+        BalanceId:
           nullable: false
-          $ref: '#/components/schemas/BALANCES'
-        TRANSACTION_AMOUNT_CENTS:
+          $ref: '#/components/schemas/Balances'
+        TransactionAmountCents:
           nullable: false
           type: integer
-    BALANCES:
+    Balances:
       properties:
-        BALANCE_ID:
+        BalanceId:
           nullable: false
           type: integer
-        BALANCE_ACCOUNT_NUMBER:
+        BalanceAccountNumber:
           nullable: false
           type: string
-        BALANCE_CENTS:
+        BalanceCents:
           nullable: false
           type: integer
-        OWNER_PERSON_ID:
+        OwnerPersonId:
           nullable: false
           type: string
-        BALANCE_SOURCE:
+        BalanceSource:
           nullable: false
           type: string
-    ORDER_NUMBERS:
+    OrderNumbers:
       properties: {}
-    MEMBERSHIP_TYPES:
+    MembershipTypes:
       properties: {}
-    DISCOUNT_INSTANCES:
+    DiscountInstances:
       properties: {}
-    STRIPE_TRANSACTIONS:
+    StripeTransactions:
       properties:
-        STRIPE_TRANSACTION_ID:
+        StripeTransactionId:
           nullable: false
           type: integer
-        STRIPE_PAYMENT_INTENT:
+        StripePaymentIntent:
           nullable: false
           type: string
-        TRANSACTION_AMOUNT:
+        TransactionAmount:
           nullable: false
           type: string
-    CASH_TRANSACTIONS:
+    CashTransactions:
       properties:
-        CASH_TRANSACTION_ID:
+        CashTransactionId:
           nullable: false
           type: integer
-        CASH_DRAWER_ID:
+        CashDrawerId:
           nullable: false
           type: string
-        TRANSACTION_AMOUNT_CENTS:
+        TransactionAmountCents:
           nullable: false
           type: string
-    CASH_DRAWERS_CHANGES:
+    CashDrawersChanges:
       properties:
-        CASH_DRAWER_CHANGE_ID:
+        CashDrawerChangeId:
           nullable: false
           type: integer
-        CHANGE_TYPE:
+        ChangeType:
           nullable: false
           type: string
-        CHANGE_AMOUNT_CENTS:
+        ChangeAmountCents:
           nullable: false
           type: string
-        CASH_TRANSACTION_ID:
+        CashTransactionId:
           nullable: false
           type: string
