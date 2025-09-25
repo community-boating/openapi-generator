@@ -1,0 +1,144 @@
+openapi: 3.0.3
+info:
+  title: Simple API with JWT Auth
+  version: 1.0.0
+  description: A minimal OpenAPI spec with JWT authentication and simple models.
+
+servers:
+  - url: https://api.example.com
+
+paths:
+  /login:
+    post:
+      summary: User login
+      description: Returns a JWT token on successful login.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/LoginRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/LoginResponse'
+        '401':
+          description: Invalid credentials
+
+  /users/me:
+    get:
+      summary: Get current user
+      description: Returns the details of the currently authenticated user.
+      security:
+        - staff: []
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserTest'
+        '401':
+          description: Unauthorized
+  /member/test:
+    post:
+      summary: Test
+      description: Tests Post.
+      security:
+        - member: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TestRequest'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResponse'
+        '401':
+          description: Invalid credentials
+
+components:
+  securitySchemes:
+    staff:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    member:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas:
+    LoginRequest:
+      type: object
+      required:
+        - username
+        - password
+      properties:
+        username:
+          type: string
+          example: user@example.com
+        password:
+          type: string
+          format: password
+          example: mysecurepassword
+          maxLength: 69
+        test:
+          type: string
+          format: password
+          example: mysecurepassword
+
+    LoginResponse:
+      type: object
+      properties:
+        token:
+          type: string
+          description: JWT token
+          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+    UserTest:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 1
+        username:
+          type: string
+          example: user@example.com
+        fullName:
+          type: string
+          example: John Doe
+    TestRequest:
+      type: object
+      properties:
+        derply:
+          type: integer
+          example: 1
+        capacity:
+          type: string
+        dateTestReq:
+          type: string
+          format: date
+        dateTimeTestReq:
+          type: string
+          format: date-time
+    TestResponse:
+      type: object
+      properties:
+        internalDiameter:
+          type: integer
+          example: 1
+        dateTest:
+          type: string
+          format: date
+        dateTimeTest:
+          type: string
+          format: date-time
