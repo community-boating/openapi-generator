@@ -196,6 +196,11 @@ components:
         id:
           nullable: false
           type: integer
+    Person:
+      properties:
+        id:
+          nullable: false
+          type: integer
     DiscountInstance:
       properties: 
         id:
