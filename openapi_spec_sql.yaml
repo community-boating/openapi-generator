@@ -11,31 +11,31 @@ components:
       properties:
         id:
           nullable: false
-          type: integer
-        ProductName:
+          type: number
+        productName:
           nullable: false
           type: string
-        Active:
+        active:
           nullable: false
           type: boolean
     Item:
       properties:
         id:
           nullable: false
-          type: integer
-        Type:
+          type: number
+        type:
           nullable: false
           type: string
-        MembershipTypeId:
+        membershipTypeId:
           nullable: false
           $ref: '#/components/schemas/MembershipType'
-        ProductId:
+        productId:
           nullable: false
           $ref: '#/components/schemas/Product'
-        IsGuestPriv:
+        isGuestPriv:
           nullable: false
           type: boolean
-        IsDamageWaiver:
+        isDamageWaiver:
           nullable: false
           type: boolean
     ItemCategory:
@@ -43,15 +43,15 @@ components:
         id:
           nullable: false
           type: string
-        ItemId:
+        itemId:
           nullable: false
           type: string
     Category:
       properties:
         id:
           nullable: false
-          type: integer
-        CategoryName:
+          type: number
+        categoryName:
           nullable: false
           type: string
     ItemInstance:
@@ -59,27 +59,27 @@ components:
         id:
           nullable: false
           type: integer
-        ItemId:
+        itemId:
           nullable: false
           $ref: '#/components/schemas/Item'
-        PriceCents:
+        priceCents:
           nullable: true
           type: integer
-        IsActive:
+        isActive:
           nullable: false
           type: boolean
     OrderItem:
       properties:
         id:
           nullable: false
-          type: integer
-        OrderId:
+          type: number
+        orderId:
           nullable: false
           $ref: '#/components/schemas/OrderNumber'
-        ItemInstanceId:
+        itemInstanceId:
           nullable: false
           $ref: '#/components/schemas/ItemInstance'
-        ItemPriceCents:
+        itemPriceCents:
           nullable: false
           type: integer
     ItemTax:
@@ -87,10 +87,10 @@ components:
         id:
           nullable: false
           type: integer
-        ItemId:
+        itemId:
           nullable: false
           $ref: '#/components/schemas/Item'
-        TaxId:
+        taxId:
           nullable: false
           $ref: '#/components/schemas/Tax'
     Tax:
@@ -98,35 +98,35 @@ components:
         id:
           nullable: false
           type: integer
-        TaxName:
+        taxName:
           nullable: false
           type: string
-        TaxRate:
+        taxRate:
           nullable: false
           type: number
           format: double
-        TaxMinValueCents:
+        taxMinValueCents:
           nullable: false
           type: integer
     OrderTax:
       properties:
         id:
-            nullable: false
-            type: integer
+          nullable: false
+          type: integer
         tax:
-            $ref: '#/components/schemas/Tax'
+          $ref: '#/components/schemas/Tax'
     OrderDiscount:
       properties:
         id:
           nullable: false
           type: string
-        OrderItemId:
+        orderItemId:
           nullable: false
           $ref: '#/components/schemas/OrderItem'
-        DiscountInstanceId:
+        discountInstanceId:
           nullable: false
           $ref: '#/components/schemas/DiscountInstance'
-        DiscountAmountCents:
+        discountAmountCents:
           nullable: false
           type: integer
     ItemDiscount:
@@ -134,10 +134,10 @@ components:
         id:
           nullable: false
           type: integer
-        ItemId:
+        itemId:
           nullable: false
           $ref: '#/components/schemas/Item'
-        DiscountInstanceId:
+        discountInstanceId:
           nullable: false
           type: string
     OrderPayment:
@@ -145,16 +145,16 @@ components:
         id:
           nullable: false
           type: integer
-        OrderId:
+        orderId:
           nullable: false
           $ref: '#/components/schemas/OrderNumber'
-        PaymentType:
+        paymentType:
           nullable: false
           type: string
-        PaymentAmount:
+        paymentAmount:
           nullable: false
           type: string
-        PaymentStatus:
+        paymentStatus:
           nullable: false
           type: string
     BalanceTransaction:
@@ -162,10 +162,10 @@ components:
         id:
           nullable: false
           type: integer
-        BalanceId:
+        balanceId:
           nullable: false
           $ref: '#/components/schemas/Balance'
-        TransactionAmountCents:
+        transactionAmountCents:
           nullable: false
           type: integer
     Balance:
@@ -173,19 +173,19 @@ components:
         id:
           nullable: false
           type: integer
-        BalanceAccountNumber:
+        balanceAccountNumber:
           nullable: false
           type: string
-        BalanceCents:
+        balanceCents:
           nullable: false
           type: integer
-        OwnerPersonId:
+        ownerPersonId:
           nullable: false
           type: string
-        BalanceSource:
+        balanceSource:
           nullable: false
           type: string
-        BalancePerson:
+        balancePerson:
           $ref: '#/components/schemas/Person'
     OrderNumber:
       properties: 
@@ -212,10 +212,10 @@ components:
         id:
           nullable: false
           type: integer
-        StripePaymentIntent:
+        stripePaymentIntent:
           nullable: false
           type: string
-        TransactionAmount:
+        transactionAmount:
           nullable: false
           type: string
     CashTransaction:
@@ -223,10 +223,10 @@ components:
         id:
           nullable: false
           type: integer
-        CashDrawerId:
+        cashDrawerId:
           nullable: false
           type: string
-        TransactionAmountCents:
+        transactionAmountCents:
           nullable: false
           type: string
     CashDrawersChange:
@@ -234,12 +234,12 @@ components:
         id:
           nullable: false
           type: integer
-        ChangeType:
+        changeType:
           nullable: false
           type: string
-        ChangeAmountCents:
+        changeAmountCents:
           nullable: false
           type: string
-        CashTransactionId:
+        cashTransactionId:
           nullable: false
           type: string
