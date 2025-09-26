@@ -33,10 +33,13 @@ components:
           type: string
           maxLength: 50
         classTypeId:
+          nullable: true
           $ref: '#/components/schemas/Balance'
         membershipTypeId:
+          nullable: true
           $ref: '#/components/schemas/MembershipType'
         productId:
+          nullable: true
           $ref: '#/components/schemas/Product'
         isGuestPriv:
           nullable: false
@@ -45,15 +48,19 @@ components:
           nullable: false
           type: boolean
         itemName:
+          nullable: true
           type: string
           maxLength: 200
         itemDescription:
+          nullable: true
           type: string
           maxLength: 500
         imageURL:
+          nullable: true
           type: string
           maxLength: 200
         itemPriceCents:
+          nullable: true
           type: integer
     ItemCategory:
       properties:
@@ -104,6 +111,9 @@ components:
         itemInstanceId:
           nullable: false
           $ref: '#/components/schemas/ItemInstance'
+        subscriptionId:
+          nullable: true
+          $ref: '#/components/schemas/PersonSubscription'
         itemPriceCents:
           nullable: false
           type: integer
@@ -128,6 +138,7 @@ components:
           type: string
           maxLength: 200
         taxCode:
+          nullable: true
           type: string
           maxLength: 500
         taxRate:
@@ -193,6 +204,7 @@ components:
           type: string
           maxLength: 50
         paymentDueDate:
+          nullable: true
           type: string
           format: date-time
     BalanceTransaction:
@@ -204,6 +216,7 @@ components:
           nullable: false
           $ref: '#/components/schemas/Balance'
         paymentId:
+          nullable: true
           $ref: '#/components/schemas/OrderPayment'
         transactionAmountCents:
           nullable: false
@@ -214,6 +227,7 @@ components:
           nullable: false
           type: integer
         balanceAccountNumber:
+          nullable: true
           type: string
         balanceCents:
           nullable: false
@@ -227,6 +241,7 @@ components:
           type: string
           maxLength: 20
         balanceOwner:
+          nullable: true
           $ref: '#/components/schemas/Person'
     StripeTransaction:
       properties:
@@ -241,6 +256,7 @@ components:
           nullable: false
           type: integer
         paymentId:
+          nullable: true
           $ref: '#/components/schemas/OrderPayment'
     CashTransaction:
       properties:
@@ -254,8 +270,10 @@ components:
           nullable: false
           type: string
         paymentId:
+          nullable: true
           $ref: '#/components/schemas/OrderPayment'
         cashDrawerChangeId:
+          nullable: true
           $ref: '#/components/schemas/CashDrawersChange'
     CashDrawersChange:
       properties:
@@ -286,6 +304,7 @@ components:
           nullable: false
           $ref: '#/components/schemas/Subscription'
         billingDate: 
+          nullable: true
           type: string
           format: date
         billingCycle:
@@ -317,6 +336,7 @@ components:
           nullable: false
           $ref: '#/components/schemas/Item'
         cyclePriceOverrideCents:
+          nullable: true
           type: integer
 
     #Existing tables
@@ -336,6 +356,11 @@ components:
           nullable: false
           type: integer
     DiscountInstance:
+      properties: 
+        id:
+          nullable: false
+          type: integer
+    Discount:
       properties: 
         id:
           nullable: false
