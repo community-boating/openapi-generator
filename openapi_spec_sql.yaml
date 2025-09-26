@@ -120,7 +120,7 @@ components:
         discounts:
           type: array
           items:
-            $ref: '#/components/schemas/OrderDiscount'
+            $ref: '#/components/schemas/DiscountInstance'
     ItemTax:
       properties:
         id:
@@ -163,7 +163,7 @@ components:
         order:
           nullable: false
           $ref: '#/components/schemas/OrderNumber'
-    OrderDiscount:
+    OrderItemDiscountInstance:
       properties:
         id:
           nullable: false
