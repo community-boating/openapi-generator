@@ -11,7 +11,7 @@ components:
       properties:
         id:
           nullable: false
-          type: number
+          type: integer
         productName:
           nullable: false
           type: string
@@ -22,7 +22,7 @@ components:
       properties:
         id:
           nullable: false
-          type: number
+          type: integer
         type:
           nullable: false
           type: string
@@ -42,15 +42,15 @@ components:
       properties:
         id:
           nullable: false
-          type: string
-        itemId:
+          type: integer
+        item:
           nullable: false
-          type: string
+          $ref: '#/components/schemas/Item'
     Category:
       properties:
         id:
           nullable: false
-          type: number
+          type: integer
         categoryName:
           nullable: false
           type: string
@@ -72,7 +72,7 @@ components:
       properties:
         id:
           nullable: false
-          type: number
+          type: integer
         orderId:
           nullable: false
           $ref: '#/components/schemas/OrderNumber'
