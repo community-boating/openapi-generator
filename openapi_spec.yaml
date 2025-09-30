@@ -43,6 +43,7 @@ paths:
                 $ref: '#/components/schemas/UserTest'
         '401':
           description: Unauthorized
+
   /member/test:
     post:
       summary: Test
@@ -64,6 +65,25 @@ paths:
                 $ref: '#/components/schemas/TestResponse'
         '401':
           description: Invalid credentials
+
+  /ap-class/enroll: #EVAN TEST CODE; AUDIT THOROUGHLY
+    post:
+      summary: Enroll person into class
+      description: Posts person_id and class_instance_id
+      security:
+        - member: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/APClassEnroll'
+      responses:
+        '202':
+          description: TEST OK
+
+
+
 
 components:
   securitySchemes:
@@ -142,3 +162,13 @@ components:
         dateTimeTest:
           type: string
           format: date-time
+
+    APClassEnroll:
+      type: object
+      properties:
+        personId:
+          type: integer
+          example: 192535
+        instanceId:
+          type: integer
+          example: 117
