@@ -122,14 +122,6 @@ paths:
       x-serve-example: true
       summary: Get eligible classes
       description: Gets eligible class information for the supplied person_id
-      parameters:
-        - in: path
-          name: id # Note the name is the same as in the path
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-          description: The class id
       requestBody:
         required: true
         content:
@@ -152,6 +144,14 @@ paths:
 
   /ap-class/enroll/{id}: #EVAN TEST CODE; AUDIT THOROUGHLY
     post:
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The class id
       x-serve-example: true
       summary: Enroll person into class
       description: Posts person_id and class_instance_id
