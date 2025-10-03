@@ -218,7 +218,7 @@ components:
         dateTimeTest:
           type: string
           format: date-time
-    APEligibleClasses:
+    APEligibleClass:
       type: object
       properties:
         instanceId:
@@ -248,7 +248,7 @@ components:
         location:
           type: string
           example: Dockhouse 
-    APFutureClasses:
+    APFutureClass:
       type: object
       properties:
         instanceId:
