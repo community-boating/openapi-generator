@@ -96,8 +96,6 @@ paths:
     get:
       summary: Get eligible classes
       description: Gets eligible class information for the supplied person_id
-      security:
-        - member: []
       requestBody:
         required: true
         content:
