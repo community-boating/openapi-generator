@@ -28,12 +28,18 @@ paths:
         '401':
           description: Invalid credentials
 
-  /users/me:
+  /users/me/{id}:
     get:
       summary: Get current user
       description: Returns the details of the currently authenticated user.
-      security:
-        - staff: []
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The user ID
       responses:
         '200':
           description: User details
