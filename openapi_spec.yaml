@@ -84,7 +84,33 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APClassEligible'
+                $ref: '#/components/schemas/APEligibleClasses'
+        '204' :
+          description: No classes to show
+        '401' :
+          description: Invalid credentials
+        '403' :
+          description: Invalid permissions
+
+  /ap-class/get-future:
+    get:
+      summary: Get eligible classes
+      description: Gets eligible class information for the supplied person_id
+      security:
+        - member: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonId'
+      responses:
+        '200':
+          description: Successfully fetched classes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APFutureClasses'
         '204' :
           description: No classes to show
         '401' :
@@ -194,7 +220,7 @@ components:
         dateTimeTest:
           type: string
           format: date-time
-    APClassEligible:
+    APEligibleClasses:
       type: object
       properties:
         instanceId:
@@ -223,8 +249,37 @@ components:
           example: Joe L.
         location:
           type: string
-          example: Dockhouse
-             
+          example: Dockhouse 
+    APFutureClasses:
+      type: object
+      properties:
+        instanceId:
+          type: integer
+          example: 117
+        typeName:
+          type: string
+          example: Intermediate 2
+        sessionCount:
+          type: integer
+          example: 2
+        sessionDates:
+          type: array
+          example: 01-APR-2010, 02-APR-2010
+        signupsAvailable:
+          type: boolean
+          example: T
+        nextSignupsOpen:
+          type: string
+          format: date-time
+        nextSignupsCount:
+          type: integer
+          example: 10
+        instructor:
+          type: string
+          example: Joe L.
+        location:
+          type: string
+          example: Dockhouse 
     APClassEnroll:
       type: object
       properties:
