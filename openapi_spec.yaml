@@ -251,9 +251,15 @@ components:
         location:
           type: string
           example: Dockhouse 
+        booleanEnumTest:
+          $ref: '#/components/schemas/Boolean'
+          example: 'T'
     APFutureClass:
       type: object
       properties:
+        enumTest:
+          $ref: "#/components/schemas/EnumTest"
+          example: 'A'
         instanceId:
           type: integer
           example: 117
@@ -293,3 +299,15 @@ components:
         instanceId:
           type: integer
           example: 117
+    EnumTest:
+      type: string
+      enum:
+        - A
+        - B
+        - C
+        - D
+    Boolean:
+      type: string
+      enum:
+        - T
+        - F
