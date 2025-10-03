@@ -84,7 +84,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APEligibleClasses'
+                $ref: '#/components/schemas/APEligibleClass'
         '204' :
           description: No classes to show
         '401' :
@@ -108,7 +108,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/APFutureClasses'
+                $ref: '#/components/schemas/APFutureClass'
         '204' :
           description: No classes to show
         '401' :
