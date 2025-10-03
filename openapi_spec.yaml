@@ -32,6 +32,8 @@ paths:
     get:
       summary: Get current user
       description: Returns the details of the currently authenticated user.
+      security:
+        - staff: []
       parameters:
         - in: path
           name: id # Note the name is the same as in the path
