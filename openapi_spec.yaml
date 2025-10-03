@@ -232,7 +232,10 @@ components:
           example: 2
         sessionDates:
           type: array
-          example: 01-APR-2010, 02-APR-2010
+          example: [01-APR-2010, 02-APR-2010]
+          items:
+            type: string
+            format: date
         signupsAvailable:
           type: boolean
           example: T
@@ -262,7 +265,10 @@ components:
           example: 2
         sessionDates:
           type: array
-          example: 01-APR-2010, 02-APR-2010
+          example: [01-APR-2010, 02-APR-2010]
+          items:
+            type: string
+            format: date
         signupsAvailable:
           type: boolean
           example: T
