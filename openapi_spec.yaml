@@ -152,7 +152,7 @@ paths:
             type: integer
             minimum: 1
           description: The class id
-      x-serve-example: false
+      #x-serve-example: true
       summary: Enroll person into class
       description: Posts person_id and class_instance_id
       security:
