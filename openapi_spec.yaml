@@ -143,6 +143,7 @@ paths:
 
   /ap-class/enroll: #EVAN TEST CODE; AUDIT THOROUGHLY
     post:
+      x-serve-tests: true
       summary: Enroll person into class
       description: Posts person_id and class_instance_id
       security:
