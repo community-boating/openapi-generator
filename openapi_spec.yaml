@@ -119,6 +119,7 @@ paths:
 
   /ap-class/get-future:
     get:
+      x-serve-example: true
       summary: Get eligible classes
       description: Gets eligible class information for the supplied person_id
       requestBody:
