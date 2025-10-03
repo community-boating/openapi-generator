@@ -66,6 +66,32 @@ paths:
         '401':
           description: Invalid credentials
 
+  /ap-class/get-eligible:
+    get:
+      summary: Get eligible classes
+      description: Gets eligible class information for the supplied person_id
+      security:
+        - member: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonId'
+      responses:
+        '200':
+          description: Successfully fetched classes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APClassEligible'
+        '204' :
+          description: No classes to show
+        '401' :
+          description: Invalid credentials
+        '403' :
+          description: Invalid permissions
+
   /ap-class/enroll: #EVAN TEST CODE; AUDIT THOROUGHLY
     post:
       summary: Enroll person into class
@@ -124,6 +150,12 @@ components:
           description: JWT token
           example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
 
+    PersonId:
+      type: object
+      properties:
+        personId:
+          type: integer
+          example: 192535
     UserTest:
       type: object
       properties:
@@ -162,7 +194,37 @@ components:
         dateTimeTest:
           type: string
           format: date-time
-
+    APClassEligible:
+      type: object
+      properties:
+        instanceId:
+          type: integer
+          example: 117
+        typeName:
+          type: string
+          example: Intermediate 2
+        sessionCount:
+          type: integer
+          example: 2
+        sessionDates:
+          type: array
+          example: 01-APR-2010, 02-APR-2010
+        signupsAvailable:
+          type: boolean
+          example: T
+        nextSignupsOpen:
+          type: string
+          format: date-time
+        nextSignupsCount:
+          type: integer
+          example: 10
+        instructor:
+          type: string
+          example: Joe L.
+        location:
+          type: string
+          example: Dockhouse
+             
     APClassEnroll:
       type: object
       properties:
