@@ -205,7 +205,6 @@ paths:
       responses:
         '200':
           description: Successfully cancelled the order
-
   /catalog:
     get:
       description: 'Gets the current catalog'
