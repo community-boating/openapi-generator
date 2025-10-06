@@ -50,6 +50,17 @@ components:
           maxLength: 200
         itemPriceCents:
           type: integer
+    OrderTest:
+      required: [id, type, isGuestPriv, isDamageWaiver]
+      properties:
+        id:
+          type: integer
+        enumTest:
+          type: string
+          enum:
+          - 'PROCESSED'
+          - 'PROCESSING'
+          - 'CANCELLED'
 
     ItemCategory:
       required: [id, item, category]

@@ -355,12 +355,14 @@ components:
             $ref: '#/components/schemas/LineItemDTO'
         appliedTaxes:
           type: array
-          $ref: '#/components/schemas/OrderTaxDTO'
           readOnly: true
+          items:
+            $ref: '#/components/schemas/OrderTaxDTO'
         orderPayments:
           type: array
-          $ref: '#/components/schemas/OrderPaymentDTO'
           readOnly: true
+          items:
+            $ref: '#/components/schemas/OrderPaymentDTO'
     OrderPaymentDTO:
       type: object
       properties:
