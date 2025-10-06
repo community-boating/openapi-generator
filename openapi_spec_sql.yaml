@@ -22,7 +22,7 @@ components:
           type: boolean
 
     Item:
-      required: [id, type, isGuestPriv, isDamageWaiver]
+      required: [id, type]
       properties:
         id:
           type: integer
@@ -53,7 +53,7 @@ components:
         itemPriceCents:
           type: integer
     OrderTest:
-      required: [id, type, isGuestPriv, isDamageWaiver]
+      required: [id, type]
       properties:
         id:
           type: integer
