@@ -10,18 +10,14 @@ components:
     Product:
       properties:
         id:
-          nullable: false
           type: integer
         productName:
-          nullable: false
           type: string
           maxLength: 200
         productDescription:
-          nullable: false
           type: string
           maxLength: 500
         active:
-          nullable: false
           type: boolean
     Item:
       properties:
