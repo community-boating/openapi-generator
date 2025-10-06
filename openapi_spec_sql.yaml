@@ -22,10 +22,8 @@ components:
     Item:
       properties:
         id:
-          nullable: false
           type: integer
         type:
-          nullable: false
           type: string
           maxLength: 50
         classTypeId:
@@ -38,10 +36,8 @@ components:
           nullable: true
           $ref: '#/components/schemas/Product'
         isGuestPriv:
-          nullable: false
           type: boolean
         isDamageWaiver:
-          nullable: false
           type: boolean
         itemName:
           nullable: true
@@ -61,34 +57,26 @@ components:
     ItemCategory:
       properties:
         id:
-          nullable: false
           type: integer
         item:
-          nullable: false
           $ref: '#/components/schemas/Item'
         category:
-          nullable: false
           $ref: '#/components/schemas/Category'
     Category:
       properties:
         id:
-          nullable: false
           type: integer
         categoryName:
-          nullable: false
           type: string
           maxLength: 200
         description:
-          nullable: false
           type: string
           maxLength: 500
     ItemInstance:
       properties:
         id:
-          nullable: false
           type: integer
         itemId:
-          nullable: false
           $ref: '#/components/schemas/Item'
         priceCents:
           nullable: true
@@ -99,19 +87,15 @@ components:
     OrderItem:
       properties:
         id:
-          nullable: false
           type: integer
         orderId:
-          nullable: false
           $ref: '#/components/schemas/OrderNumber'
         itemInstanceId:
-          nullable: false
           $ref: '#/components/schemas/ItemInstance'
         subscriptionId:
           nullable: true
           $ref: '#/components/schemas/PersonSubscription'
         itemPriceCents:
-          nullable: false
           type: integer
     ItemTax:
       properties:
