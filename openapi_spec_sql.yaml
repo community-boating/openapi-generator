@@ -8,365 +8,321 @@ components:
   securitySchemes: {}
   schemas:
     Product:
+      required: [id, productName, productDescription, active]
       properties:
         id:
-          nullable: false
           type: integer
         productName:
-          nullable: false
           type: string
           maxLength: 200
         productDescription:
-          nullable: false
           type: string
           maxLength: 500
         active:
-          nullable: false
           type: boolean
+
     Item:
+      required: [id, type, isGuestPriv, isDamageWaiver]
       properties:
         id:
-          nullable: false
           type: integer
         type:
-          nullable: false
           type: string
           maxLength: 50
         classTypeId:
-          nullable: true
           $ref: '#/components/schemas/Balance'
         membershipTypeId:
-          nullable: true
           $ref: '#/components/schemas/MembershipType'
         productId:
-          nullable: true
           $ref: '#/components/schemas/Product'
         isGuestPriv:
-          nullable: false
           type: boolean
         isDamageWaiver:
-          nullable: false
           type: boolean
         itemName:
-          nullable: true
           type: string
           maxLength: 200
         itemDescription:
-          nullable: true
           type: string
           maxLength: 500
         imageURL:
-          nullable: true
           type: string
           maxLength: 200
         itemPriceCents:
-          nullable: true
           type: integer
+
     ItemCategory:
+      required: [id, item, category]
       properties:
         id:
-          nullable: false
           type: integer
         item:
-          nullable: false
           $ref: '#/components/schemas/Item'
         category:
-          nullable: false
           $ref: '#/components/schemas/Category'
+
     Category:
+      required: [id, categoryName, description]
       properties:
         id:
-          nullable: false
           type: integer
         categoryName:
-          nullable: false
           type: string
           maxLength: 200
         description:
-          nullable: false
           type: string
           maxLength: 500
+
     ItemInstance:
+      required: [id, itemId, isActive]
       properties:
         id:
-          nullable: false
           type: integer
         itemId:
-          nullable: false
           $ref: '#/components/schemas/Item'
         priceCents:
-          nullable: true
           type: integer
         isActive:
-          nullable: false
           type: boolean
+
     OrderItem:
+      required: [id, orderId, itemInstanceId, itemPriceCents]
       properties:
         id:
-          nullable: false
           type: integer
         orderId:
-          nullable: false
           $ref: '#/components/schemas/OrderNumber'
         itemInstanceId:
-          nullable: false
           $ref: '#/components/schemas/ItemInstance'
         subscriptionId:
-          nullable: true
           $ref: '#/components/schemas/PersonSubscription'
         itemPriceCents:
-          nullable: false
           type: integer
+
     ItemTax:
+      required: [id, itemId, taxId]
       properties:
         id:
-          nullable: false
           type: integer
         itemId:
-          nullable: false
           $ref: '#/components/schemas/Item'
         taxId:
-          nullable: false
           $ref: '#/components/schemas/Tax'
+
     Tax:
+      required: [id, taxName, taxRate, taxMinValueCents]
       properties:
         id:
-          nullable: false
           type: integer
         taxName:
-          nullable: false
           type: string
           maxLength: 200
         taxCode:
-          nullable: true
           type: string
           maxLength: 500
         taxRate:
-          nullable: false
           type: string
           maxLength: 200
         taxMinValueCents:
-          nullable: false
           type: integer
+
     OrderTax:
+      required: [id, tax, order]
       properties:
         id:
-          nullable: false
           type: integer
         tax:
-          nullable: false
           $ref: '#/components/schemas/Tax'
         order:
-          nullable: false
           $ref: '#/components/schemas/OrderNumber'
+
     OrderItemDiscountInstance:
+      required: [id, orderItemId, discountInstanceId, discountAmountCents]
       properties:
         id:
-          nullable: false
           type: string
         orderItemId:
-          nullable: false
           $ref: '#/components/schemas/OrderItem'
         discountInstanceId:
-          nullable: false
           $ref: '#/components/schemas/DiscountInstance'
         discountAmountCents:
-          nullable: false
           type: integer
+
     ItemDiscount:
+      required: [id, itemId, discountInstanceId]
       properties:
         id:
-          nullable: false
           type: integer
         itemId:
-          nullable: false
           $ref: '#/components/schemas/Item'
         discountInstanceId:
-          nullable: false
           $ref: '#/components/schemas/DiscountInstance'
+
     OrderPayment:
+      required: [id, orderId, paymentType, paymentAmountCents, paymentStatus]
       properties:
         id:
-          nullable: false
           type: integer
         orderId:
-          nullable: false
           $ref: '#/components/schemas/OrderNumber'
         paymentType:
-          nullable: false
           type: string
           maxLength: 50
         paymentAmountCents:
-          nullable: false
           type: integer
         paymentStatus:
-          nullable: false
           type: string
           maxLength: 50
         paymentDueDate:
-          nullable: true
           type: string
           format: date-time
+
     BalanceTransaction:
+      required: [id, balanceId, transactionAmountCents]
       properties:
         id:
-          nullable: false
           type: integer
         balanceId:
-          nullable: false
           $ref: '#/components/schemas/Balance'
         paymentId:
-          nullable: true
           $ref: '#/components/schemas/OrderPayment'
         transactionAmountCents:
-          nullable: false
           type: integer
+
     Balance:
+      required: [id, balanceCents, balanceSource, balanceType]
       properties:
         id:
-          nullable: false
           type: integer
         balanceAccountNumber:
-          nullable: true
           type: string
         balanceCents:
-          nullable: false
           type: integer
         balanceSource:
-          nullable: false
           type: string
           maxLength: 20
         balanceType:
-          nullable: false
           type: string
           maxLength: 20
         balanceOwner:
-          nullable: true
           $ref: '#/components/schemas/Person'
+
     StripeTransaction:
+      required: [id, stripePaymentIntent, transactionAmountCents]
       properties:
         id:
-          nullable: false
           type: integer
         stripePaymentIntent:
-          nullable: false
           type: string
           maxLength: 500
         transactionAmountCents:
-          nullable: false
           type: integer
         paymentId:
-          nullable: true
           $ref: '#/components/schemas/OrderPayment'
+
     CashTransaction:
+      required: [id, cashDrawerId, transactionAmountCents]
       properties:
         id:
-          nullable: false
           type: integer
         cashDrawerId:
-          nullable: false
           $ref: '#/components/schemas/CashDrawer'
         transactionAmountCents:
-          nullable: false
           type: string
         paymentId:
-          nullable: true
           $ref: '#/components/schemas/OrderPayment'
         cashDrawerChangeId:
-          nullable: true
           $ref: '#/components/schemas/CashDrawersChange'
+
     CashDrawersChange:
+      required: [id, changeType, changeAmountCents]
       properties:
         id:
-          nullable: false
           type: integer
         changeType:
-          nullable: false
           type: string
           maxLength: 50
         changeAmountCents:
-          nullable: false
           type: integer
+
     ClassType:
-      properties: 
-        id:
-          nullable: false
-          type: integer
-    PersonSubscription:
+      required: [id]
       properties:
         id:
-          nullable: false
+          type: integer
+
+    PersonSubscription:
+      required: [id, personId, subscriptionId, billingCycle]
+      properties:
+        id:
           type: integer
         personId:
-          nullable: false
           $ref: '#/components/schemas/Person'
         subscriptionId:
-          nullable: false
           $ref: '#/components/schemas/Subscription'
-        billingDate: 
-          nullable: true
+        billingDate:
           type: string
           format: date
         billingCycle:
-          nullable: false
           type: string
           maxLength: 50
+
     Subscription:
+      required: [id, name, billingCycle]
       properties:
         id:
-          nullable: false
           type: integer
         name:
-          nullable: false
           type: string
           maxLength: 200
         billingCycle:
-          nullable: false
           type: string
           maxLength: 50
+
     SubscriptionItem:
+      required: [id, subscriptionId, itemId]
       properties:
         id:
-          nullable: false
           type: integer
         subscriptionId:
-          nullable: false
           $ref: '#/components/schemas/Subscription'
         itemId:
-          nullable: false
           $ref: '#/components/schemas/Item'
         cyclePriceOverrideCents:
-          nullable: true
           type: integer
 
-    #Existing tables
     OrderNumber:
-      properties: 
+      required: [id]
+      properties:
         id:
-          nullable: false
           type: integer
+
     MembershipType:
-      properties: 
+      required: [id]
+      properties:
         id:
-          nullable: false
           type: integer
+
     Person:
+      required: [id]
       properties:
         id:
-          nullable: false
           type: integer
+
     DiscountInstance:
-      properties: 
-        id:
-          nullable: false
-          type: integer
-    Discount:
-      properties: 
-        id:
-          nullable: false
-          type: integer
-    CashDrawer:
+      required: [id]
       properties:
         id:
-          nullable: false
+          type: integer
+
+    Discount:
+      required: [id]
+      properties:
+        id:
+          type: integer
+
+    CashDrawer:
+      required: [id]
+      properties:
+        id:
           type: integer
