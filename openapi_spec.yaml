@@ -243,7 +243,7 @@ components:
     CatalogItemInstanceDTO:
       type: object
       properties:
-        id:
+        assignId:
           type: integer
           example: 12
         priceCents:
@@ -253,7 +253,7 @@ components:
           $ref: '#/components/schemas/CatalogItemDTO'
     CatalogItemDTO:
       properties:
-        id:
+        assignId:
           nullable: false
           type: integer
         type:
@@ -292,7 +292,7 @@ components:
           type: integer
     ProductDTO:
       properties:
-        id:
+        assignId:
           nullable: false
           type: integer
         productName:
@@ -367,7 +367,7 @@ components:
     OrderPaymentDTO:
       type: object
       properties:
-        id:
+        assignId:
           nullable: false
           type: integer
         paymentType:
@@ -388,7 +388,7 @@ components:
     OrderTaxDTO:
       type: object
       properties:
-        id:
+        assignId:
           type: integer
           example: 12
         taxAmountCents:
@@ -404,7 +404,7 @@ components:
     LineItemDTO:
       type: object
       properties:
-        id:
+        assignId:
           nullable: false
           type: integer
         itemInstanceId:
@@ -432,7 +432,7 @@ components:
 
     LineItemDiscountDTO:
       properties:
-        id:
+        assignId:
           nullable: false
           type: string
         discountInstanceId:
