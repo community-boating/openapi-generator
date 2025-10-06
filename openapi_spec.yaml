@@ -218,7 +218,106 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CatalogDTO'
-
+  /catalog/items:
+    post:
+      description: 'Updates catalog items'
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDTO'
+      responses:
+        '200':
+          description: Returns the updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
+  /catalog/taxes:
+    post:
+      description: 'Updates catalog taxes'
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogTaxDTO'
+      responses:
+        '200':
+          description: Returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
+  /catalog/categories:
+    post:
+      description: 'Updates catalog categories'
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogCategoryDTO'
+      responses:
+        '200':
+          description: Returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
+  /catalog/discounts:
+    post:
+      description: 'Updates catalog discounts'
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountDTO'
+      responses:
+        '200':
+          description: Returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
+  /catalog/products:
+    post:
+      description: 'Updates catalog products'
+      tags:
+        - Catalog
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogProductDTO'
+      responses:
+        '200':
+          description: Returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
 
 
 components:
@@ -242,7 +341,20 @@ components:
             $ref: '#/components/schemas/CatalogItemDTO'
         taxes:
           type: array
-          $ref: '#/components/schemas/CatalogTaxDTO'
+          items:
+            $ref: '#/components/schemas/CatalogTaxDTO'
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogCategoryDTO'
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogDiscountDTO'
+        products:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogProductDTO'
     CatalogTaxDTO:
       required: [taxName, taxRate, taxMinValueCents]
       properties:
@@ -258,6 +370,30 @@ components:
           type: string
           maxLength: 200
         taxMinValueCents:
+          type: integer
+    CatalogCategoryDTO:
+      properties:
+        assignId:
+          type: integer
+        categoryName:
+          type: string
+          maxLength: 200
+    
+    CatalogDiscountDTO:
+      properties:
+        assignId:
+          type: integer
+        discountAmountCents:
+          type: integer
+        instances:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogDiscountIntanceDTO'
+    CatalogDiscountIntanceDTO:
+      properties:
+        assignId:
+          type: integer
+        discountAmountCents:
           type: integer
     CatalogItemInstanceDTO:
       type: object
@@ -280,9 +416,9 @@ components:
         membershipTypeId:
           nullable: true
           type: integer
-        product:
+        productId:
           nullable: true
-          $ref: '#/components/schemas/ProductDTO'
+          type: integer
         itemName:
           nullable: true
           type: string
@@ -306,6 +442,15 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CatalogItemDiscountDTO'
+        itemTaxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogItemTaxDTO'
+        itemCategories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogItemCategoryDTO'
+        
     ItemType:
       type: string
       enum:
@@ -319,7 +464,15 @@ components:
       properties:
         discountId:
           type: number
-    ProductDTO:
+    CatalogItemTaxDTO:
+      properties:
+        taxId:
+          type: number
+    CatalogItemCategoryDTO:
+      properties:
+        categoryId:
+          type: number
+    CatalogProductDTO:
       required: [assignId, productName, productDescription, active]
       properties:
         assignId:
