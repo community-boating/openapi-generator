@@ -171,6 +171,9 @@ paths:
     post:
       description: 'Updates or inserts order and subobjects into the database for further use in the order system'
       parameters: []
+      security:
+        - member: []
+        - staff: []
       tags:
         - Order
       requestBody:
@@ -188,7 +191,7 @@ paths:
                 $ref: '#/components/schemas/OrderDTO'
   /orders/cancel/{id}:
     post:
-      description: 'Cancels an order, deleting `if possible'
+      description: 'Cancels an order, deleting if possible'
       parameters:
         - in: path
           name: id # Note the name is the same as in the path
@@ -202,6 +205,19 @@ paths:
       responses:
         '200':
           description: Successfully cancelled the order
+
+  /catalog:
+    get:
+      description: 'Gets the current catalog'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
 
 
 
@@ -325,6 +341,7 @@ components:
           items:
             $ref: '#/components/schemas/LineItemDTO'
     LineItemDTO:
+      type: object
       properties:
         id:
           nullable: false
@@ -339,14 +356,24 @@ components:
           nullable: false
           type: integer
         itemMeta:
-          oneOf:
-            - $ref: '#/components/schemas/ClassSignupDTO'
-            - $ref: '#/components/schemas/MembershipDTO'
-            - $ref: '#/components/schemas/DonationDTO'
+          $ref: '#/components/schemas/LineItemMeta'
         discounts:
           type: array
           items:
             $ref: '#/components/schemas/LineItemDiscountDTO'
+    
+    LineItemMeta:
+      type: object
+      properties:
+        classSignup:
+          nullable: true
+          $ref: '#/components/schemas/ClassSignupDTO'
+        membership:
+          nullable: true
+          $ref: '#/components/schemas/MembershipDTO'
+        donation:
+          nullable: true
+          $ref: '#/components/schemas/DonationDTO'
 
     LineItemDiscountDTO:
       properties:
@@ -381,6 +408,10 @@ components:
         personId:
           nullable: false
           type: integer
+        startDate:
+          nullable: true
+          type: string
+          format: date
     DonationDTO:
       properties:
         id:
