@@ -117,10 +117,6 @@ components:
         itemPriceCents:
           nullable: false
           type: integer
-        discounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/DiscountInstance'
     ItemTax:
       properties:
         id:

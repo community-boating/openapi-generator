@@ -167,6 +167,41 @@ paths:
         '202':
           description: TEST OK
 
+  /orders/upsert:
+    post:
+      description: 'Updates or inserts order and subobjects into the database for further use in the order system'
+      parameters: []
+      tags:
+        - Order
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+  /orders/cancel/{id}:
+    post:
+      description: 'Cancels an order, deleting `if possible'
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The order ID
+      tags:
+        - Order
+      responses:
+        '200':
+          description: Successfully cancelled the order
 
 
 
@@ -182,6 +217,182 @@ components:
       bearerFormat: JWT
 
   schemas:
+    CatalogDTO:
+      type: object
+      properties:
+        itemInstances:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogItemInstanceDTO'
+    CatalogItemInstanceDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        priceCents:
+          type: integer
+          example: 12
+        item:
+          $ref: '#/components/schemas/CatalogItemDTO'
+    CatalogItemDTO:
+      properties:
+        id:
+          nullable: false
+          type: integer
+        type:
+          nullable: false
+          type: string
+          maxLength: 50
+        classTypeId:
+          nullable: true
+          type: integer
+        membershipTypeId:
+          nullable: true
+          type: integer
+        product:
+          nullable: true
+          $ref: '#/components/schemas/ProductDTO'
+        isGuestPriv:
+          nullable: false
+          type: boolean
+        isDamageWaiver:
+          nullable: false
+          type: boolean
+        itemName:
+          nullable: true
+          type: string
+          maxLength: 200
+        itemDescription:
+          nullable: true
+          type: string
+          maxLength: 500
+        imageURL:
+          nullable: true
+          type: string
+          maxLength: 200
+        itemPriceCents:
+          nullable: true
+          type: integer
+    ProductDTO:
+      properties:
+        id:
+          nullable: false
+          type: integer
+        productName:
+          nullable: false
+          type: string
+          maxLength: 200
+        productDescription:
+          nullable: false
+          type: string
+          maxLength: 500
+        active:
+          nullable: false
+          type: boolean
+    OrderDTOWithDiscounts:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/OrderDTO'
+        availableDiscounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/DiscountInstance'
+    DiscountInstance:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        discountAmountCents:
+          type: integer
+          example: 12
+        discountId:
+          type: integer
+          example: 12
+    OrderDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        orderComputedCents:
+          type: integer
+          example: 1222
+        lineItems:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemDTO'
+    LineItemDTO:
+      properties:
+        id:
+          nullable: false
+          type: integer
+        itemInstanceId:
+          type: integer
+          nullable: false
+        subscriptionId:
+          nullable: true
+          type: integer
+        itemPriceCents:
+          nullable: false
+          type: integer
+        itemMeta:
+          oneOf:
+            - $ref: '#/components/schemas/ClassSignupDTO'
+            - $ref: '#/components/schemas/MembershipDTO'
+            - $ref: '#/components/schemas/DonationDTO'
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemDiscountDTO'
+
+    LineItemDiscountDTO:
+      properties:
+        id:
+          nullable: false
+          type: string
+        discountInstanceId:
+          nullable: false
+          type: integer
+        discountAmountCents:
+          nullable: false
+          type: integer
+    ClassSignupDTO:
+      properties:
+        id:
+          nullable: false
+          type: string
+        classInstanceId:
+          nullable: false
+          type: integer
+        personId:
+          nullable: false
+          type: integer
+    MembershipDTO:
+      properties:
+        id:
+          nullable: false
+          type: string
+        membershipTypeId:
+          nullable: false
+          type: integer
+        personId:
+          nullable: false
+          type: integer
+    DonationDTO:
+      properties:
+        id:
+          nullable: false
+          type: string
+        inNameOf:
+          nullable: true
+          type: string
+        personId:
+          nullable: false
+          type: integer
+    
     LoginRequest:
       type: object
       required:
