@@ -521,9 +521,12 @@ components:
           items:
             type: string
             format: date
+        sessionLengthMinutes:
+          type: integer
+          example: 120
         signupsAvailable:
           type: boolean
-          example: T
+          example: Y
         nextSignupsOpen:
           type: string
           format: date-time
