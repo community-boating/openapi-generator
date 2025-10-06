@@ -329,8 +329,9 @@ components:
           example: 12
     OrderDTO:
       type: object
+      required: [status, lineItems]
       properties:
-        id:
+        orderId:
           nullable: true
           type: integer
           example: 12
