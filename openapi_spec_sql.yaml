@@ -28,17 +28,19 @@ components:
           type: integer
         type:
           type: string
-          maxLength: 50
+          enum:
+            - 'MEMBERSHIP'
+            - 'PAID_CLASS'
+            - 'DONATION'
+            - 'DAMAGE_WAIVER'
+            - 'GUEST_PRIVS'
+            - 'PRODUCT'
         classTypeId:
           $ref: '#/components/schemas/Balance'
         membershipTypeId:
           $ref: '#/components/schemas/MembershipType'
         productId:
           $ref: '#/components/schemas/Product'
-        isGuestPriv:
-          type: boolean
-        isDamageWaiver:
-          type: boolean
         itemName:
           type: string
           maxLength: 200

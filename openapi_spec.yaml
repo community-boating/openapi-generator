@@ -236,30 +236,44 @@ components:
     CatalogDTO:
       type: object
       properties:
-        itemInstances:
+        items:
           type: array
           items:
-            $ref: '#/components/schemas/CatalogItemInstanceDTO'
+            $ref: '#/components/schemas/CatalogItemDTO'
+        taxes:
+          type: array
+          $ref: '#/components/schemas/CatalogTaxDTO'
+    CatalogTaxDTO:
+      required: [taxName, taxRate, taxMinValueCents]
+      properties:
+        assignId:
+          type: integer
+        taxName:
+          type: string
+          maxLength: 200
+        taxCode:
+          type: string
+          maxLength: 500
+        taxRate:
+          type: string
+          maxLength: 200
+        taxMinValueCents:
+          type: integer
     CatalogItemInstanceDTO:
       type: object
       properties:
         assignId:
           type: integer
           example: 12
-        priceCents:
+        itemPriceCents:
           type: integer
           example: 12
-        item:
-          $ref: '#/components/schemas/CatalogItemDTO'
     CatalogItemDTO:
+      required: [type]
       properties:
-        assignId:
-          nullable: false
-          type: integer
         type:
           nullable: false
-          type: string
-          maxLength: 50
+          $ref: '#/components/schemas/ItemType'
         classTypeId:
           nullable: true
           type: integer
@@ -269,12 +283,6 @@ components:
         product:
           nullable: true
           $ref: '#/components/schemas/ProductDTO'
-        isGuestPriv:
-          nullable: false
-          type: boolean
-        isDamageWaiver:
-          nullable: false
-          type: boolean
         itemName:
           nullable: true
           type: string
@@ -290,21 +298,39 @@ components:
         itemPriceCents:
           nullable: true
           type: integer
+        itemInstances:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogItemInstanceDTO'
+        itemDiscounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogItemDiscountDTO'
+    ItemType:
+      type: string
+      enum:
+        - 'MEMBERSHIP'
+        - 'PAID_CLASS'
+        - 'DONATION'
+        - 'DAMAGE_WAIVER'
+        - 'GUEST_PRIVS'
+        - 'PRODUCT'
+    CatalogItemDiscountDTO:
+      properties:
+        discountId:
+          type: number
     ProductDTO:
+      required: [assignId, productName, productDescription, active]
       properties:
         assignId:
-          nullable: false
           type: integer
         productName:
-          nullable: false
           type: string
           maxLength: 200
         productDescription:
-          nullable: false
           type: string
           maxLength: 500
         active:
-          nullable: false
           type: boolean
     OrderDTOWithDiscounts:
       type: object
