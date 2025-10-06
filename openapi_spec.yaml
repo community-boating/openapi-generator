@@ -355,16 +355,6 @@ components:
         itemPriceCents:
           nullable: false
           type: integer
-        itemMeta:
-          $ref: '#/components/schemas/LineItemMeta'
-        discounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/LineItemDiscountDTO'
-    
-    LineItemMeta:
-      type: object
-      properties:
         classSignup:
           nullable: true
           $ref: '#/components/schemas/ClassSignupDTO'
@@ -374,7 +364,11 @@ components:
         donation:
           nullable: true
           $ref: '#/components/schemas/DonationDTO'
-
+        discounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemDiscountDTO'
+            
     LineItemDiscountDTO:
       properties:
         id:
