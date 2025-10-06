@@ -314,8 +314,8 @@ components:
         availableDiscounts:
           type: array
           items:
-            $ref: '#/components/schemas/DiscountInstance'
-    DiscountInstance:
+            $ref: '#/components/schemas/DiscountInstanceDTO'
+    DiscountInstanceDTO:
       type: object
       properties:
         id:
@@ -331,15 +331,73 @@ components:
       type: object
       properties:
         id:
+          nullable: true
           type: integer
           example: 12
+          readOnly: true
         orderComputedCents:
           type: integer
           example: 1222
+          readOnly: true
+        orderAmountPaid:
+          type: integer
+          example: 122
+          readOnly: true
+        status:
+          $ref: '#/components/schemas/OrderStatus'
+          readOnly: true
+        personId:
+          type: integer
+          example: 12
         lineItems:
           type: array
           items:
             $ref: '#/components/schemas/LineItemDTO'
+        appliedTaxes:
+          type: array
+          $ref: '#/components/schemas/OrderTaxDTO'
+          readOnly: true
+        orderPayments:
+          type: array
+          $ref: '#/components/schemas/OrderPaymentDTO'
+          readOnly: true
+    OrderPaymentDTO:
+      type: object
+      properties:
+        id:
+          nullable: false
+          type: integer
+        paymentType:
+          nullable: false
+          type: string
+          maxLength: 50
+        paymentAmountCents:
+          nullable: false
+          type: integer
+        paymentStatus:
+          nullable: false
+          type: string
+          maxLength: 50
+        paymentDueDate:
+          nullable: true
+          type: string
+          format: date-time
+    OrderTaxDTO:
+      type: object
+      properties:
+        id:
+          type: integer
+          example: 12
+        taxAmountCents:
+          type: integer
+          example: 12
+        
+    OrderStatus:
+      type: string
+      enum:
+        - 'PROCESSED'
+        - 'PROCESSING'
+        - 'CANCELLED'
     LineItemDTO:
       type: object
       properties:
@@ -368,7 +426,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LineItemDiscountDTO'
-            
+
     LineItemDiscountDTO:
       properties:
         id:
@@ -388,9 +446,17 @@ components:
         classInstanceId:
           nullable: false
           type: integer
+        classType:
+          nullable: false
+          $ref: '#/components/schemas/ClassTypes'
         personId:
           nullable: false
           type: integer
+    ClassTypes:
+      type: string
+      enum:
+        - 'JP'
+        - 'AP'
     MembershipDTO:
       properties:
         id:
