@@ -329,13 +329,16 @@ components:
           example: 12
     OrderDTO:
       type: object
-      required: [status, lineItems]
+      required: [status, lineItems, orderNum]
       properties:
         orderId:
           nullable: true
           type: integer
           example: 12
           readOnly: true
+        orderNum:
+          type: string
+          example: '#69420'
         orderComputedCents:
           type: integer
           example: 1222
