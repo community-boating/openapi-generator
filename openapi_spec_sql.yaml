@@ -8,8 +8,9 @@ components:
   securitySchemes: {}
   schemas:
     Catalog:
+      required: [id]
       properties:
-        assignId:
+        id:
           type: integer
         isActive:
           type: boolean
