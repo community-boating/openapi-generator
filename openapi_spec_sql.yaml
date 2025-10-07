@@ -169,14 +169,14 @@ components:
           type: integer
 
     ItemDiscount:
-      required: [id, itemId, discountInstanceId]
+      required: [id, itemId, discountId]
       properties:
         id:
           type: integer
         itemId:
           $ref: '#/components/schemas/Item'
-        discountInstanceId:
-          $ref: '#/components/schemas/DiscountInstance'
+        discountId:
+          $ref: '#/components/schemas/Discount"
 
     OrderPayment:
       required: [id, orderId, paymentType, paymentAmountCents, paymentStatus]

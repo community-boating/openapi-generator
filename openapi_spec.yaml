@@ -433,13 +433,10 @@ components:
     DiscountInstanceDTO:
       type: object
       properties:
-        id:
+        assignId:
           type: integer
           example: 12
         discountAmountCents:
-          type: integer
-          example: 12
-        discountId:
           type: integer
           example: 12
     OrderDTO:
