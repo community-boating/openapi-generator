@@ -217,102 +217,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CatalogDTO'
-  /catalog/items:
     post:
-      description: 'Updates catalog items'
+      description: 'Updates the current catalog'
       tags:
         - Catalog
+      security:
+        - staff: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CatalogItemDTO'
+              $ref: '#/components/schemas/CatalogDTO'
       responses:
         '200':
-          description: Returns the updated
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CatalogDTO'
-  /catalog/taxes:
-    post:
-      description: 'Updates catalog taxes'
-      tags:
-        - Catalog
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CatalogTaxDTO'
-      responses:
-        '200':
-          description: Returns the updated catalog
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CatalogDTO'
-  /catalog/categories:
-    post:
-      description: 'Updates catalog categories'
-      tags:
-        - Catalog
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CatalogCategoryDTO'
-      responses:
-        '200':
-          description: Returns the updated catalog
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CatalogDTO'
-  /catalog/discounts:
-    post:
-      description: 'Updates catalog discounts'
-      tags:
-        - Catalog
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CatalogDiscountDTO'
-      responses:
-        '200':
-          description: Returns the updated catalog
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/CatalogDTO'
-  /catalog/products:
-    post:
-      description: 'Updates catalog products'
-      tags:
-        - Catalog
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CatalogProductDTO'
-      responses:
-        '200':
-          description: Returns the updated catalog
+          description: Successfully returns the updated catalog
           content:
             application/json:
               schema:
