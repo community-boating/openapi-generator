@@ -390,15 +390,15 @@ components:
     CatalogItemDiscountDTO:
       properties:
         discountId:
-          type: number
+          type: integer
     CatalogItemTaxDTO:
       properties:
         taxId:
-          type: number
+          type: integer
     CatalogItemCategoryDTO:
       properties:
         categoryId:
-          type: number
+          type: integer
     CatalogProductDTO:
       required: [assignId, productName, productDescription, active]
       properties:
