@@ -389,14 +389,21 @@ components:
         - 'PRODUCT'
     CatalogItemDiscountDTO:
       properties:
+        assignId:
+          type: integer
         discountId:
           type: integer
     CatalogItemTaxDTO:
       properties:
+        assignId:
+          type: integer
         taxId:
           type: integer
     CatalogItemCategoryDTO:
+      required: [assignId]
       properties:
+        assignId:
+          type: integer
         categoryId:
           type: integer
     CatalogProductDTO:
