@@ -334,7 +334,7 @@ components:
     CatalogItemDTO:
       required: [type]
       properties:
-        type:
+        itemType:
           nullable: false
           $ref: '#/components/schemas/ItemType'
         classTypeId:
