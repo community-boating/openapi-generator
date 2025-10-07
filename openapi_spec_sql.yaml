@@ -176,7 +176,7 @@ components:
         itemId:
           $ref: '#/components/schemas/Item'
         discountId:
-          $ref: '#/components/schemas/Discount"
+          $ref: '#/components/schemas/Discount'
 
     OrderPayment:
       required: [id, orderId, paymentType, paymentAmountCents, paymentStatus]
