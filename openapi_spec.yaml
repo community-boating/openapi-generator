@@ -306,17 +306,17 @@ components:
     
     CatalogDiscountDTO:
       properties:
-        assignId:
+        discountId:
           type: integer
         discountAmountCents:
           type: integer
         instances:
           type: array
           items:
-            $ref: '#/components/schemas/CatalogDiscountIntanceDTO'
-    CatalogDiscountIntanceDTO:
+            $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
+    CatalogDiscountInstanceDTO:
       properties:
-        assignId:
+        instanceId:
           type: integer
         discountAmountCents:
           type: integer
@@ -429,16 +429,7 @@ components:
         availableDiscounts:
           type: array
           items:
-            $ref: '#/components/schemas/DiscountInstanceDTO'
-    DiscountInstanceDTO:
-      type: object
-      properties:
-        assignId:
-          type: integer
-          example: 12
-        discountAmountCents:
-          type: integer
-          example: 12
+            $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
     OrderDTO:
       type: object
       required: [status, lineItems, orderNum]
