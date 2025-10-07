@@ -38,7 +38,7 @@ components:
       properties:
         id:
           type: integer
-        type:
+        itemType:
           type: string
           enum:
             - 'MEMBERSHIP'
