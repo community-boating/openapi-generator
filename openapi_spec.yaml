@@ -334,6 +334,8 @@ components:
     CatalogItemDTO:
       required: [type]
       properties:
+        assignId:
+          type: integer
         itemType:
           nullable: false
           $ref: '#/components/schemas/ItemType'
