@@ -334,6 +334,13 @@ components:
     CatalogDTO:
       type: object
       properties:
+        assignId:
+          type: integer
+        isActive:
+          type: boolean
+        catalogName:
+          type: string
+          maxLength: 200
         items:
           type: array
           items:
@@ -403,6 +410,8 @@ components:
         itemPriceCents:
           type: integer
           example: 12
+        isActive:
+          type: boolean
     CatalogItemDTO:
       required: [type]
       properties:

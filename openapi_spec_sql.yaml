@@ -7,8 +7,17 @@ paths: {}
 components:
   securitySchemes: {}
   schemas:
+    Catalog:
+      properties:
+        assignId:
+          type: integer
+        isActive:
+          type: boolean
+        catalogName:
+          type: string
+          maxLength: 200
     Product:
-      required: [id, productName, productDescription, active]
+      required: [id, productName, productDescription, active, catalogId]
       properties:
         id:
           type: integer
@@ -20,6 +29,8 @@ components:
           maxLength: 500
         active:
           type: boolean
+        catalogId:
+          $ref: '#/components/schemas/Catalog'
 
     Item:
       required: [id, type]
@@ -52,17 +63,8 @@ components:
           maxLength: 200
         itemPriceCents:
           type: integer
-    OrderTest:
-      required: [id, type]
-      properties:
-        id:
-          type: integer
-        enumTest:
-          type: string
-          enum:
-          - 'PROCESSED'
-          - 'PROCESSING'
-          - 'CANCELLED'
+        catalogId:
+          $ref: '#/components/schemas/Catalog'
 
     ItemCategory:
       required: [id, item, category]
@@ -75,7 +77,7 @@ components:
           $ref: '#/components/schemas/Category'
 
     Category:
-      required: [id, categoryName, description]
+      required: [id, categoryName, description, catalogId]
       properties:
         id:
           type: integer
@@ -85,6 +87,8 @@ components:
         description:
           type: string
           maxLength: 500
+        catalogId:
+          $ref: '#/components/schemas/Catalog'
 
     ItemInstance:
       required: [id, itemId, isActive]
@@ -123,7 +127,7 @@ components:
           $ref: '#/components/schemas/Tax'
 
     Tax:
-      required: [id, taxName, taxRate, taxMinValueCents]
+      required: [id, taxName, taxRate, taxMinValueCents, catalogId]
       properties:
         id:
           type: integer
@@ -138,6 +142,8 @@ components:
           maxLength: 200
         taxMinValueCents:
           type: integer
+        catalogId:
+          $ref: '#/components/schemas/Catalog'
 
     OrderTax:
       required: [id, tax, order]
