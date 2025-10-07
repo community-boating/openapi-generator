@@ -310,6 +310,9 @@ components:
           type: integer
         discountAmountCents:
           type: integer
+        discountName:
+          type: string
+          maxLength: 100
         instances:
           type: array
           items:
