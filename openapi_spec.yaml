@@ -332,7 +332,7 @@ components:
         assignId:
           type: integer
           example: 12
-        itemPriceCents:
+        priceCents:
           type: integer
           example: 12
         isActive:
