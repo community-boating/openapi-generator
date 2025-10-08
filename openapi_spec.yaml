@@ -303,6 +303,9 @@ components:
         categoryName:
           type: string
           maxLength: 200
+        description:
+          type: string
+          maxLength: 500
     
     CatalogDiscountDTO:
       properties:
