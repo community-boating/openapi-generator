@@ -68,13 +68,13 @@ components:
           $ref: '#/components/schemas/Catalog'
 
     ItemCategory:
-      required: [id, item, category]
+      required: [id, item, categoryId]
       properties:
         id:
           type: integer
         item:
           $ref: '#/components/schemas/Item'
-        category:
+        categoryId:
           $ref: '#/components/schemas/Category'
 
     Category:
