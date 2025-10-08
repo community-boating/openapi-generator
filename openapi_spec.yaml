@@ -219,6 +219,10 @@ paths:
                 $ref: '#/components/schemas/CatalogDTO'
     post:
       description: 'Updates the current catalog'
+      x-one-of-permissions:
+        - 
+          scope: admin
+          type: ADMIN
       tags:
         - Catalog
       security:
