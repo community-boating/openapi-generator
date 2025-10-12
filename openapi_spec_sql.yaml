@@ -72,7 +72,7 @@ components:
         assignId:
           type: integer
         ruleType:
-          $ref: './schema/RuleType.yaml'
+          $ref: 'https://raw.githubusercontent.com/community-boating/openapi-generator/refs/heads/main/schema/RuleType.yaml'
         parentDiscountId:
           type: integer
 
