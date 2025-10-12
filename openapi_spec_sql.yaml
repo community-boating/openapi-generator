@@ -65,7 +65,25 @@ components:
         itemPriceCents:
           type: integer
         catalogId:
-          $ref: '#/components/schemas/Catalog'
+          type: integer
+          
+    DiscountRule:
+      properties:
+        assignId:
+          type: integer
+        ruleType:
+          type: string
+          enum:
+            - 'PARENT_DISCOUNT'
+            - 'YOUTH'
+            - 'SENIOR'
+            - 'VETERAN'
+            - 'RENEWAL'
+            - '30FULLUPGRADE'
+            - '30FULLCOMBO'
+            - 'FIXED_PERCENT'
+        parentDiscountId:
+          type: integer
 
     ItemCategory:
       required: [id, item, categoryId]
