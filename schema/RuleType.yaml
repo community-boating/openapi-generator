@@ -1,0 +1,13 @@
+type: object
+properties: 
+  type: string
+  enum:
+    - 'PARENT_DISCOUNT'
+    - 'YOUTH'
+    - 'SENIOR'
+    - 'VETERAN'
+    - 'RENEWAL'
+    - '30FULLUPGRADE'
+    - '30FULLCOMBO'
+    - 'FIXED_PERCENT'
+  

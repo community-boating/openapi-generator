@@ -1,0 +1,55 @@
+openapi: 3.0.3
+info:
+  title: Simple API with JWT Auth
+  version: 1.0.0
+  description: A minimal OpenAPI spec with JWT authentication and simple models.
+paths: {}
+components:
+  schemas:
+    SharedTest:
+      type: string
+      enum:
+        - 'VARIABLE_AMOUNT'
+        - 'VARIABLE_PERCENT'
+        - 'FIXED_AMOUNT'
+        - 'FIXED_PERCENT'
+    RuleType:
+      type: string
+      enum:
+        - 'PARENT_DISCOUNT'
+        - 'YOUTH'
+        - 'SENIOR'
+        - 'VETERAN'
+        - 'RENEWAL'
+        - '30FULLUPGRADE'
+        - '30FULLCOMBO'
+        - 'FIXED_PERCENT'
+    ItemType:
+      type: string
+      enum:
+        - 'MEMBERSHIP'
+        - 'PAID_CLASS'
+        - 'DONATION'
+        - 'DAMAGE_WAIVER'
+        - 'GUEST_PRIVS'
+        - 'PRODUCT'
+    
+    OrderStatus:
+      type: string
+      enum:
+        - 'PROCESSED'
+        - 'PROCESSING'
+        - 'CANCELLED'
+
+    EnumTest:
+      type: string
+      enum:
+        - A
+        - B
+        - C
+        - D
+    Boolean:
+      type: string
+      enum:
+        - T
+        - F
