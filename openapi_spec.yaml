@@ -175,7 +175,7 @@ paths:
         - member: []
         - staff: []
       tags:
-        - Order
+        -  Order
       requestBody:
         required: true
         content:
@@ -310,7 +310,6 @@ components:
         description:
           type: string
           maxLength: 500
-    
     CatalogDiscountDTO:
       properties:
         discountId:
@@ -326,10 +325,16 @@ components:
             $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
     CatalogDiscountInstanceDTO:
       properties:
+        discountType:
+          $ref: '#/components/schemas/DiscountType'
         instanceId:
           type: integer
-        discountAmountCents:
+        amountCents:
           type: integer
+        percent:
+          type: string
+        autoGrant:
+          type: boolean
     CatalogItemInstanceDTO:
       type: object
       properties:
@@ -389,7 +394,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CatalogItemCategoryDTO'
-        
+    DiscountType:
+      type: string
+      enum:
+        - 'VARIABLE_AMOUNT'
+        - 'VARIABLE_PERCENT'
+        - 'FIXED_AMOUNT'
+        - 'FIXED_PERCENT'
     ItemType:
       type: string
       enum:
@@ -522,6 +533,8 @@ components:
       properties:
         assignId:
           nullable: false
+          type: integer
+        parentItemId:
           type: integer
         itemInstanceId:
           type: integer

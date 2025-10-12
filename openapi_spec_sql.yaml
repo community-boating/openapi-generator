@@ -108,6 +108,8 @@ components:
       properties:
         id:
           type: integer
+        parentItemId:
+          $ref: '#/components/schemas/OrderItem'
         orderId:
           $ref: '#/components/schemas/OrderNumber'
         itemInstanceId:
