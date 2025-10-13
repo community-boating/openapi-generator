@@ -346,7 +346,7 @@ components:
         assignId:
           type: integer
         ruleType:
-          $ref: '#/components/schemas/RuleType'
+          $ref: './shared.yaml#/components/schemas/RuleType'
         parentDiscountId:
           type: integer
         
