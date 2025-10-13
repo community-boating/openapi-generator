@@ -175,7 +175,7 @@ paths:
         - member: []
         - staff: []
       tags:
-        -  Order
+        -  CompassOrder
       requestBody:
         required: true
         content:
@@ -201,7 +201,7 @@ paths:
             minimum: 1
           description: The order ID
       tags:
-        - Order
+        - CompassOrder
       responses:
         '200':
           description: Successfully cancelled the order
