@@ -452,7 +452,7 @@ components:
             $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
     OrderDTO:
       type: object
-      required: [status, lineItems, orderNum]
+      required: [lineItems, orderNum]
       properties:
         orderId:
           nullable: true
