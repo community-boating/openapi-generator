@@ -58,3 +58,9 @@ components:
       enum:
         - 'JP'
         - 'AP'
+    PurchasableState: 
+      type: string
+      enum:
+        - 'PROTO'
+        - 'REFUNDED'
+        - 'PROCESSED'

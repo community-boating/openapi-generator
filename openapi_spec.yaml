@@ -592,11 +592,14 @@ components:
           type: string
           format: date
     DonationDTO:
+      required: [fundId, initiativeId, state]
       properties:
         donationId:
           nullable: false
           type: integer
         fundId:
+          type: integer
+        initiativeId:
           type: integer
         inMemoryOf:
           nullable: true
@@ -607,6 +610,8 @@ components:
         personId:
           nullable: false
           type: integer
+        state:
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
     
     LoginRequest:
       type: object
