@@ -593,12 +593,17 @@ components:
           format: date
     DonationDTO:
       properties:
-        id:
+        donationId:
           nullable: false
-          type: string
-        inNameOf:
+          type: integer
+        fundId:
+          type: integer
+        inMemoryOf:
           nullable: true
           type: string
+        isMatch:
+          nullable: true
+          type: boolean
         personId:
           nullable: false
           type: integer
