@@ -31,3 +31,30 @@ components:
         - '30FULLUPGRADE'
         - '30FULLCOMBO'
         - 'FIXED_PERCENT'
+    ItemType:
+      type: string
+      enum:
+        - 'MEMBERSHIP'
+        - 'PAID_CLASS'
+        - 'DONATION'
+        - 'DAMAGE_WAIVER'
+        - 'GUEST_PRIVS'
+        - 'PRODUCT'
+    DiscountType:
+      type: string
+      enum:
+        - 'VARIABLE_AMOUNT'
+        - 'VARIABLE_PERCENT'
+        - 'FIXED_AMOUNT'
+        - 'FIXED_PERCENT'
+    OrderStatus:
+      type: string
+      enum:
+        - 'PROCESSED'
+        - 'PROCESSING'
+        - 'CANCELLED'
+    ClassType:
+      type: string
+      enum:
+        - 'JP'
+        - 'AP'

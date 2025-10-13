@@ -68,7 +68,7 @@ paths:
           content: 
             application/json:
               schema:
-                $ref: '#/components/schemas/Boolean'
+                $ref: './shared.yaml#/components/schemas/Boolean'
   /member/test:
     post:
       summary: Test
@@ -330,7 +330,7 @@ components:
     CatalogDiscountInstanceDTO:
       properties:
         discountType:
-          $ref: '#/components/schemas/DiscountType'
+          $ref: './shared.yaml#/components/schemas/DiscountType'
         instanceId:
           type: integer
         amountCents:
@@ -349,7 +349,6 @@ components:
           $ref: './shared.yaml#/components/schemas/RuleType'
         parentDiscountId:
           type: integer
-        
     CatalogItemInstanceDTO:
       type: object
       properties:
@@ -368,7 +367,7 @@ components:
           type: integer
         itemType:
           nullable: false
-          $ref: '#/components/schemas/ItemType'
+          $ref: './shared.yaml#/components/schemas/ItemType'
         classTypeId:
           nullable: true
           type: integer
@@ -409,33 +408,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CatalogItemCategoryDTO'
-    DiscountType:
-      type: string
-      enum:
-        - 'VARIABLE_AMOUNT'
-        - 'VARIABLE_PERCENT'
-        - 'FIXED_AMOUNT'
-        - 'FIXED_PERCENT'
-    RuleType:
-      type: string
-      enum:
-        - 'PARENT_DISCOUNT'
-        - 'YOUTH'
-        - 'SENIOR'
-        - 'VETERAN'
-        - 'RENEWAL'
-        - '30FULLUPGRADE'
-        - '30FULLCOMBO'
-        - 'FIXED_PERCENT'
-    ItemType:
-      type: string
-      enum:
-        - 'MEMBERSHIP'
-        - 'PAID_CLASS'
-        - 'DONATION'
-        - 'DAMAGE_WAIVER'
-        - 'GUEST_PRIVS'
-        - 'PRODUCT'
     CatalogItemDiscountDTO:
       properties:
         assignId:
@@ -498,7 +470,7 @@ components:
           example: 122
           readOnly: true
         status:
-          $ref: '#/components/schemas/OrderStatus'
+          $ref: './shared.yaml#/components/schemas/OrderStatus'
           readOnly: true
         personId:
           type: integer
@@ -547,13 +519,6 @@ components:
         taxAmountCents:
           type: integer
           example: 12
-        
-    OrderStatus:
-      type: string
-      enum:
-        - 'PROCESSED'
-        - 'PROCESSING'
-        - 'CANCELLED'
     LineItemDTO:
       type: object
       properties:
@@ -606,15 +571,10 @@ components:
           type: integer
         classType:
           nullable: false
-          $ref: '#/components/schemas/ClassTypes'
+          $ref: './shared.yaml#/components/schemas/ClassType'
         personId:
           nullable: false
           type: integer
-    ClassTypes:
-      type: string
-      enum:
-        - 'JP'
-        - 'AP'
     MembershipDTO:
       properties:
         id:
@@ -747,13 +707,13 @@ components:
           type: string
           example: Dockhouse 
         booleanEnumTest:
-          $ref: '#/components/schemas/Boolean'
+          $ref: './shared.yaml#/components/schemas/Boolean'
           example: 'T'
     APFutureClass:
       type: object
       properties:
         enumTest:
-          $ref: "#/components/schemas/EnumTest"
+          $ref: "./shared.yaml#/components/schemas/EnumTest"
           example: 'A'
         instanceId:
           type: integer
@@ -797,15 +757,3 @@ components:
         instanceId:
           type: integer
           example: 117
-    EnumTest:
-      type: string
-      enum:
-        - A
-        - B
-        - C
-        - D
-    Boolean:
-      type: string
-      enum:
-        - T
-        - F

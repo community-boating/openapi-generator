@@ -39,14 +39,7 @@ components:
         id:
           type: integer
         itemType:
-          type: string
-          enum:
-            - 'MEMBERSHIP'
-            - 'PAID_CLASS'
-            - 'DONATION'
-            - 'DAMAGE_WAIVER'
-            - 'GUEST_PRIVS'
-            - 'PRODUCT'
+          $ref: './shared.yaml#/components/schemas/ItemType'
         classTypeId:
           $ref: '#/components/schemas/Balance'
         membershipTypeId:
