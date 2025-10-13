@@ -1,0 +1,33 @@
+openapi: 3.0.3
+info:
+  title: Shared Types
+  version: 1.0.0
+  description: Shared
+
+paths: {}
+
+components:
+  schemas:
+    EnumTest:
+      type: string
+      enum:
+        - A
+        - B
+        - C
+        - D
+    Boolean:
+      type: string
+      enum:
+        - T
+        - F
+    RuleType:
+      type: string
+      enum:
+        - 'PARENT_DISCOUNT'
+        - 'YOUTH'
+        - 'SENIOR'
+        - 'VETERAN'
+        - 'RENEWAL'
+        - '30FULLUPGRADE'
+        - '30FULLCOMBO'
+        - 'FIXED_PERCENT'

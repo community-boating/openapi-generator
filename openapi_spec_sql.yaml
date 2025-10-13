@@ -68,13 +68,14 @@ components:
           type: integer
 
     DiscountRule:
+      required: [id, ruleType]
       properties:
-        assignId:
+        id:
           type: integer
         ruleType:
-          $ref: 'https://raw.githubusercontent.com/community-boating/openapi-generator/refs/heads/main/schema/RuleType.yaml'
-        parentDiscountId:
-          type: integer
+          $ref: './shared.yaml#/components/schemas/RuleType'
+        relatedDiscount:
+          $ref: '#/components/schemas/Discount'
 
     ItemCategory:
       required: [id, item, categoryId]
