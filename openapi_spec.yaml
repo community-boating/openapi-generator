@@ -364,7 +364,8 @@ components:
       required: [type]
       properties:
         assignId:
-          type: integer
+          type: string
+          format: uuid
         itemType:
           nullable: false
           $ref: './shared.yaml#/components/schemas/ItemType'
