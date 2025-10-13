@@ -37,7 +37,8 @@ components:
       required: [id, type]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         itemType:
           $ref: './shared.yaml#/components/schemas/ItemType'
         classTypeId:
