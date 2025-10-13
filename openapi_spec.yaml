@@ -363,7 +363,7 @@ components:
     CatalogItemDTO:
       required: [type]
       properties:
-        assignId:
+        id:
           type: string
           format: uuid
         itemType:
