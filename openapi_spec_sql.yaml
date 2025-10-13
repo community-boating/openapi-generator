@@ -59,7 +59,7 @@ components:
         itemPriceCents:
           type: integer
         catalogId:
-          type: integer
+          $ref: '#/components/schemas/Catalog'
 
     DiscountRule:
       required: [id, ruleType]
