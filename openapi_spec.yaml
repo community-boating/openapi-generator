@@ -639,7 +639,7 @@ components:
           type: integer
         donationDate:
           type: string
-          format: datetime
+          format: date-time
         initiativeId:
           type: integer
         inMemoryOf:
