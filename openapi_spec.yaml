@@ -539,13 +539,16 @@ components:
           type: integer
         classSignup:
           nullable: true
-          $ref: '#/components/schemas/ClassSignupDTO'
+          $ref: '#/components/schemas/PurchaseClassSignupDTO'
         membership:
           nullable: true
-          $ref: '#/components/schemas/MembershipDTO'
+          $ref: '#/components/schemas/PurchaseMembershipDTO'
         donation:
           nullable: true
-          $ref: '#/components/schemas/DonationDTO'
+          $ref: '#/components/schemas/PurchaseDonationDTO'
+        card:
+          nullable: true
+          $ref: '#/components/schemas/PurchaseDonationDTO'
         discounts:
           type: array
           items:
@@ -562,7 +565,7 @@ components:
         discountAmountCents:
           nullable: false
           type: integer
-    PuchaseClassSignupDTO:
+    PurchaseClassSignupDTO:
       required: [instanceId]
       properties:
         signupId:
@@ -581,7 +584,7 @@ components:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
 
-    PuchaseMembershipDTO:
+    PurchaseMembershipDTO:
       properties:
         id:
           nullable: false
@@ -596,7 +599,7 @@ components:
           nullable: true
           type: string
           format: date
-    PuchaseDonationDTO:
+    PurchaseDonationDTO:
       required: [fundId, initiativeId, state]
       properties:
         donationId:
@@ -617,8 +620,12 @@ components:
           type: integer
         state:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
-    PuchaseCardDTO:
+    PurchaseCardDTO:
       properties:
+        assignId:
+          type: integer
+        cardNum:
+          type: string
         state:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     
