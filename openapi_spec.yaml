@@ -471,7 +471,7 @@ components:
       type: object
       required: [lineItems, orderNum]
       properties:
-        orderId:
+        id:
           nullable: true
           type: string
           format: uuid
