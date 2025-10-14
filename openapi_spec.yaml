@@ -577,6 +577,10 @@ components:
         personId:
           nullable: false
           type: integer
+        state:
+          readOnly: true
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
+
     MembershipDTO:
       properties:
         id:
