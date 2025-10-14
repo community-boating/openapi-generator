@@ -11,7 +11,8 @@ components:
       required: [id]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         isActive:
           type: boolean
         catalogName:
@@ -21,7 +22,8 @@ components:
       required: [id, productName, productDescription, active, catalogId]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         productName:
           type: string
           maxLength: 200
@@ -65,7 +67,8 @@ components:
       required: [id, ruleType]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         ruleType:
           $ref: './shared.yaml#/components/schemas/RuleType'
         relatedDiscount:
@@ -75,7 +78,8 @@ components:
       required: [id, item, categoryId]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         item:
           $ref: '#/components/schemas/Item'
         categoryId:
@@ -85,7 +89,8 @@ components:
       required: [id, categoryName, description, catalogId]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         categoryName:
           type: string
           maxLength: 200
@@ -99,7 +104,8 @@ components:
       required: [id, itemId, isActive]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         itemId:
           $ref: '#/components/schemas/Item'
         priceCents:
@@ -111,11 +117,12 @@ components:
       required: [id, orderId, itemInstanceId, itemPriceCents]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         parentItemId:
           $ref: '#/components/schemas/OrderItem'
         orderId:
-          $ref: '#/components/schemas/OrderNumber'
+          $ref: '#/components/schemas/OrderNew'
         itemInstanceId:
           $ref: '#/components/schemas/ItemInstance'
         subscriptionId:
@@ -127,7 +134,8 @@ components:
       required: [id, itemId, taxId]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         itemId:
           $ref: '#/components/schemas/Item'
         taxId:
@@ -137,7 +145,8 @@ components:
       required: [id, taxName, taxRate, taxMinValueCents, catalogId]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         taxName:
           type: string
           maxLength: 200
@@ -156,23 +165,39 @@ components:
       required: [id, tax, order]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         tax:
           $ref: '#/components/schemas/Tax'
         order:
-          $ref: '#/components/schemas/OrderNumber'
+          $ref: '#/components/schemas/OrderNew'
 
     OrderItemDiscountInstance:
       required: [id, orderItemId, discountInstanceId, discountAmountCents]
       properties:
         id:
           type: string
+          format: uuid
         orderItemId:
           $ref: '#/components/schemas/OrderItem'
         discountInstanceId:
           $ref: '#/components/schemas/DiscountInstance'
         discountAmountCents:
           type: integer
+
+    OrderNew:
+      type: object
+      required: [orderId, status]
+      properties:
+        orderId:
+          type: string
+          format: uuid
+        orderAmountPaid:
+          type: integer
+        status:
+          $ref: './shared.yaml#/components/schemas/OrderStatus'
+        personId:
+          $ref: '#/components/schemas/Person'
 
     ItemDiscount:
       required: [id, itemId, discountId]
@@ -188,9 +213,10 @@ components:
       required: [id, orderId, paymentType, paymentAmountCents, paymentStatus]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         orderId:
-          $ref: '#/components/schemas/OrderNumber'
+          $ref: '#/components/schemas/OrderNew'
         paymentType:
           type: string
           maxLength: 50
@@ -207,7 +233,8 @@ components:
       required: [id, balanceId, transactionAmountCents]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         balanceId:
           $ref: '#/components/schemas/Balance'
         paymentId:
@@ -219,7 +246,8 @@ components:
       required: [id, balanceCents, balanceSource, balanceType]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         balanceAccountNumber:
           type: string
         balanceCents:
@@ -237,7 +265,8 @@ components:
       required: [id, stripePaymentIntent, transactionAmountCents]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         stripePaymentIntent:
           type: string
           maxLength: 500
@@ -250,7 +279,8 @@ components:
       required: [id, cashDrawerId, transactionAmountCents]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         cashDrawerId:
           $ref: '#/components/schemas/CashDrawer'
         transactionAmountCents:
@@ -264,7 +294,8 @@ components:
       required: [id, changeType, changeAmountCents]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         changeType:
           type: string
           maxLength: 50
@@ -281,7 +312,8 @@ components:
       required: [id, personId, subscriptionId, billingCycle]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         personId:
           $ref: '#/components/schemas/Person'
         subscriptionId:
@@ -297,7 +329,8 @@ components:
       required: [id, name, billingCycle]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         name:
           type: string
           maxLength: 200
@@ -309,18 +342,13 @@ components:
       required: [id, subscriptionId, itemId]
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         subscriptionId:
           $ref: '#/components/schemas/Subscription'
         itemId:
           $ref: '#/components/schemas/Item'
         cyclePriceOverrideCents:
-          type: integer
-
-    OrderNumber:
-      required: [id]
-      properties:
-        id:
           type: integer
 
     MembershipType:
@@ -348,7 +376,7 @@ components:
           type: integer
 
     CashDrawer:
-      required: [id]
+      required: [cashDrawerId]
       properties:
-        id:
+        cashDrawerId:
           type: integer

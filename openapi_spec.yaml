@@ -257,8 +257,9 @@ components:
     CatalogDTO:
       type: object
       properties:
-        assignId:
-          type: integer
+        id:
+          type: string
+          format: uuid
         isActive:
           type: boolean
         catalogName:
@@ -287,8 +288,9 @@ components:
     CatalogTaxDTO:
       required: [taxName, taxRate, taxMinValueCents]
       properties:
-        assignId:
-          type: integer
+        id:
+          type: string
+          format: uuid
         taxName:
           type: string
           maxLength: 200
@@ -302,8 +304,9 @@ components:
           type: integer
     CatalogCategoryDTO:
       properties:
-        assignId:
-          type: integer
+        id:
+          type: string
+          format: uuid
         categoryName:
           type: string
           maxLength: 200
@@ -312,6 +315,9 @@ components:
           maxLength: 500
     CatalogDiscountDTO:
       properties:
+        id:
+          type: string
+          format: uuid
         discountId:
           type: integer
         discountAmountCents:
@@ -329,6 +335,9 @@ components:
             $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
     CatalogDiscountInstanceDTO:
       properties:
+        id:
+          type: string
+          format: uuid
         discountType:
           $ref: './shared.yaml#/components/schemas/DiscountType'
         instanceId:
@@ -343,8 +352,9 @@ components:
           type: boolean
     CatalogDiscountRuleDTO:
       properties:
-        assignId:
-          type: integer
+        id:
+          type: string
+          format: uuid
         ruleType:
           $ref: './shared.yaml#/components/schemas/RuleType'
         parentDiscountId:
@@ -352,9 +362,9 @@ components:
     CatalogItemInstanceDTO:
       type: object
       properties:
-        assignId:
-          type: integer
-          example: 12
+        id:
+          type: string
+          format: uuid
         priceCents:
           type: integer
           example: 12
@@ -411,28 +421,33 @@ components:
             $ref: '#/components/schemas/CatalogItemCategoryDTO'
     CatalogItemDiscountDTO:
       properties:
-        assignId:
-          type: integer
+        id:
+          type: string
+          format: uuid
         discountId:
           type: integer
     CatalogItemTaxDTO:
       properties:
-        assignId:
-          type: integer
+        id:
+          type: string
+          format: uuid
         taxId:
           type: integer
     CatalogItemCategoryDTO:
       required: [assignId]
       properties:
-        assignId:
-          type: integer
+        id:
+          type: string
+          format: uuid
         categoryId:
-          type: integer
+          type: string
+          format: uuid
     CatalogProductDTO:
       required: [assignId, productName, productDescription, active]
       properties:
-        assignId:
-          type: integer
+        id:
+          type: string
+          format: uuid
         productName:
           type: string
           maxLength: 200
@@ -450,18 +465,16 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
+    
     OrderDTO:
       type: object
       required: [lineItems, orderNum]
       properties:
         orderId:
           nullable: true
-          type: integer
-          example: 12
-          readOnly: true
-        orderNum:
           type: string
-          example: '#69420'
+          format: uuid
+          example: 12
         orderComputedCents:
           type: integer
           example: 1222
@@ -493,9 +506,9 @@ components:
     OrderPaymentDTO:
       type: object
       properties:
-        assignId:
-          nullable: false
-          type: integer
+        id:
+          type: string
+          format: uuid
         paymentType:
           nullable: false
           type: string
@@ -514,8 +527,9 @@ components:
     OrderTaxDTO:
       type: object
       properties:
-        assignId:
-          type: integer
+        id:
+          type: string
+          format: uuid
           example: 12
         taxAmountCents:
           type: integer
@@ -523,9 +537,10 @@ components:
     LineItemDTO:
       type: object
       properties:
-        assignId:
+        id:
           nullable: false
-          type: integer
+          type: string
+          format: uuid
         parentItemId:
           type: integer
         itemInstanceId:
