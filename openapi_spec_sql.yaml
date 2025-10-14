@@ -189,7 +189,7 @@ components:
       type: object
       required: [orderId, status]
       properties:
-        orderId:
+        id:
           type: string
           format: uuid
         orderAmountPaid:
