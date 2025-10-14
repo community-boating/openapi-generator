@@ -241,7 +241,7 @@ components:
           $ref: '#/components/schemas/OrderPayment'
         transactionAmountCents:
           type: integer
-        state:
+        purchasableState:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
         orderItemId:
           $ref: '#/components/schemas/OrderItem'
