@@ -563,11 +563,12 @@ components:
           nullable: false
           type: integer
     ClassSignupDTO:
+      required: [instanceId]
       properties:
-        id:
+        signupId:
           nullable: false
-          type: string
-        classInstanceId:
+          type: integer
+        instanceId:
           nullable: false
           type: integer
         classType:
