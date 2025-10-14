@@ -54,7 +54,7 @@ components:
       enum:
         - 'PROCESSED'
         - 'PROCESSING'
-        - 'CANCELLED'
+        - 'REFUNDED'
     ClassType:
       type: string
       enum:
