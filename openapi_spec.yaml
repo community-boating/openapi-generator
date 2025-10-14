@@ -646,6 +646,7 @@ components:
         purchasableState:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseCardDTO:
+      required: [cardNum]
       properties:
         assignId:
           type: integer
