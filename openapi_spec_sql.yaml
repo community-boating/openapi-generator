@@ -194,7 +194,7 @@ components:
           format: uuid
         orderAmountPaid:
           type: integer
-        status:
+        orderStatus:
           $ref: './shared.yaml#/components/schemas/OrderStatus'
         personId:
           $ref: '#/components/schemas/Person'
