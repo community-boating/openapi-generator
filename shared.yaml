@@ -40,6 +40,8 @@ components:
         - 'DAMAGE_WAIVER'
         - 'GUEST_PRIVS'
         - 'PRODUCT'
+        - 'CARD'
+        - 'GIFT_CARD'
     DiscountType:
       type: string
       enum:

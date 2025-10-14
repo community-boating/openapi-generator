@@ -548,7 +548,10 @@ components:
           $ref: '#/components/schemas/PurchaseDonationDTO'
         card:
           nullable: true
-          $ref: '#/components/schemas/PurchaseDonationDTO'
+          $ref: '#/components/schemas/PurchaseCardDTO'
+        giftCard:
+          nullable: true
+          $ref: '#/components/schemas/PurchaseGiftCardDTO'
         discounts:
           type: array
           items:
@@ -585,6 +588,7 @@ components:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
 
     PurchaseMembershipDTO:
+      required: [membershipTypeId]
       properties:
         id:
           nullable: false
@@ -599,6 +603,8 @@ components:
           nullable: true
           type: string
           format: date
+        state:
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseDonationDTO:
       required: [fundId, initiativeId, state]
       properties:
@@ -623,6 +629,16 @@ components:
     PurchaseCardDTO:
       properties:
         assignId:
+          type: integer
+        cardNum:
+          type: string
+        state:
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
+    PurchaseGiftCardDTO:
+      properties:
+        id:
+          type: integer
+        personId:
           type: integer
         cardNum:
           type: string
