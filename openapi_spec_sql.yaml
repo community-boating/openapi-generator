@@ -241,6 +241,10 @@ components:
           $ref: '#/components/schemas/OrderPayment'
         transactionAmountCents:
           type: integer
+        state:
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
+        orderItemId:
+          $ref: '#/components/schemas/OrderItem'
 
     Balance:
       required: [id, balanceCents, balanceSource, balanceType]

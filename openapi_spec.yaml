@@ -542,13 +542,16 @@ components:
           type: string
           format: uuid
         parentItemId:
-          type: integer
+          type: string
+          format: uuid
         itemInstanceId:
-          type: integer
+          type: string
+          format: uuid
           nullable: false
         subscriptionId:
           nullable: true
-          type: integer
+          type: string
+          format: uuid
         itemPriceCents:
           nullable: false
           type: integer
@@ -652,7 +655,8 @@ components:
     PurchaseGiftCardDTO:
       properties:
         id:
-          type: integer
+          type: string
+          format: uuid
         personId:
           type: integer
         cardNum:
