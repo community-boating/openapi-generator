@@ -571,6 +571,12 @@ components:
         giftCard:
           nullable: true
           $ref: '#/components/schemas/PurchaseGiftCardDTO'
+        guestPrivs:
+          nullable: true
+          $ref: '#/components/schemas/PurchaseGuestPrivilegesDTO'
+        damageWaiver:
+          nullable: true
+          $ref: '#/components/schemas/PurchaseDamageWaiverDTO'
         discounts:
           type: array
           items:
@@ -587,6 +593,30 @@ components:
         discountAmountCents:
           nullable: false
           type: integer
+    PurchaseDamageWaiverDTO:
+      required: [personId]
+      properties:
+        waiverId:
+          type: integer
+        personId:
+          type: integer
+        startDate:
+          type: string
+          format: date-time
+        purchasableState:
+          $ref: './shared.yaml/#/components/schemas/PurchasableState'
+    PurchaseGuestPrivilegesDTO:
+      required: [membershipId]
+      properties:
+        membershipId:
+          type: integer
+        startDate:
+          type: string
+          format: date-time
+        purchasableState:
+          $ref: './shared.yaml/#/components/schemas/PurchasableState'
+        
+
     PurchaseClassSignupDTO:
       required: [instanceId]
       properties:
