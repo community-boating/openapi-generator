@@ -432,7 +432,8 @@ components:
           type: string
           format: uuid
         taxId:
-          type: integer
+          type: string
+          format: uuid
     CatalogItemCategoryDTO:
       required: [assignId]
       properties:
