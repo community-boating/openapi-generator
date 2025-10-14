@@ -602,7 +602,7 @@ components:
           type: integer
         startDate:
           type: string
-          format: date-time
+          format: date
         purchasableState:
           $ref: './shared.yaml/#/components/schemas/PurchasableState'
     PurchaseGuestPrivilegesDTO:
@@ -612,7 +612,7 @@ components:
           type: integer
         startDate:
           type: string
-          format: date-time
+          format: date
         purchasableState:
           $ref: './shared.yaml/#/components/schemas/PurchasableState'
         
