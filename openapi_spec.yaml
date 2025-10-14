@@ -605,9 +605,9 @@ components:
     PurchaseMembershipDTO:
       required: [membershipTypeId]
       properties:
-        id:
+        assignId:
           nullable: false
-          type: string
+          type: integer
         membershipTypeId:
           nullable: false
           type: integer
