@@ -44,7 +44,7 @@ components:
         itemType:
           $ref: './shared.yaml#/components/schemas/ItemType'
         classTypeId:
-          $ref: '#/components/schemas/Balance'
+          $ref: '#/components/schemas/ClassType'
         membershipTypeId:
           $ref: '#/components/schemas/MembershipType'
         productId:
