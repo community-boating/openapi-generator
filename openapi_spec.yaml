@@ -637,6 +637,9 @@ components:
           type: integer
         fundId:
           type: integer
+        donationDate:
+          type: string
+          format: datetime
         initiativeId:
           type: integer
         inMemoryOf:
