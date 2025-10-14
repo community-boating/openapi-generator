@@ -648,6 +648,9 @@ components:
         isMatch:
           nullable: true
           type: boolean
+        inKind:
+          nullable: true
+          type: boolean
         personId:
           nullable: false
           type: integer
