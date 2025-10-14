@@ -648,6 +648,8 @@ components:
     PurchaseCardDTO:
       required: [cardNum]
       properties:
+        personId:
+          type: integer
         assignId:
           type: integer
         cardNum:
