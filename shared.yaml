@@ -55,6 +55,24 @@ components:
         - 'PROCESSED'
         - 'PROCESSING'
         - 'REFUNDED'
+    StockChangeType:
+      type: string
+      enum:
+        - 'PURCHASE'
+        - 'RESTOCK'
+        - 'OTHER'
+    BalanceType:
+      type: string
+      enum:
+        - 'GIFT_CARD'
+        - 'HOUSE_ACCOUNT'
+    BalanceTransactionType:
+      type: string
+      enum:
+        - 'GIFT_CARD_PURCHASE'
+        - 'GIFT_CARD_LOAD'
+        - 'ADD_MANUAL'
+        - 'REMOVE_MANUAL'
     ClassType:
       type: string
       enum:
@@ -66,3 +84,26 @@ components:
         - 'PROTO'
         - 'REFUNDED'
         - 'PROCESSED'
+    PaymentStatus:
+      type: string
+      enum:
+        - 'PENDING'
+        - 'SUCCESSFUL'
+        - 'FAILED'
+        - 'REFUNDED'
+        - 'PARTIALLY_REFUNDED'
+    PaymentType:
+      type: string
+      enum:
+        - 'CHECK'
+        - 'OTHER'
+        - 'CASH'
+        - 'BALANCE'
+        - 'STRIPE'
+    StripeTransactionType:
+      type: string
+      enum: 
+        - 'CARD_STORED'
+        - 'CARD_KEYED'
+        - 'CARD_READER'
+        - 'WALLET'

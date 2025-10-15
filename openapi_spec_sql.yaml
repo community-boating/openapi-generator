@@ -112,6 +112,21 @@ components:
           type: integer
         isActive:
           type: boolean
+    
+    ItemInstanceStockChange:
+      required: [itemInstanceId, changeAmount]
+      properties:
+        id:
+          type: string
+          format: uuid
+        itemInstanceId:
+          $ref: '#/components/schemas/ItemInstance'
+        orderItem:
+          $ref: '#/components/schemas/OrderItem'
+        changeAmount:
+          type: integer
+        changeType:
+          $ref: './shared.yaml#/components/schemas/StockChangeType'
 
     OrderItem:
       required: [id, orderId, itemInstanceId, itemPriceCents]
@@ -210,7 +225,7 @@ components:
           $ref: '#/components/schemas/Discount'
 
     OrderPayment:
-      required: [id, orderId, paymentType, paymentAmountCents, paymentStatus]
+      required: [id, orderId, paymentType, paymentSource, paymentAmountCents, paymentStatus]
       properties:
         id:
           type: string
@@ -218,13 +233,14 @@ components:
         orderId:
           $ref: '#/components/schemas/OrderNew'
         paymentType:
+          $ref: './shared.yaml#/components/schemas/PaymentType'
+        paymentSource:
           type: string
-          maxLength: 50
+          maxLength: 100
         paymentAmountCents:
           type: integer
         paymentStatus:
-          type: string
-          maxLength: 50
+          $ref: './shared.yaml#/components/schemas/PaymentStatus'
         paymentDueDate:
           type: string
           format: date-time
@@ -237,6 +253,8 @@ components:
           format: uuid
         balanceId:
           $ref: '#/components/schemas/Balance'
+        balanceTransactionType:
+          $ref: './shared.yaml#/components/schemas/BalanceTransactionType'
         paymentId:
           $ref: '#/components/schemas/OrderPayment'
         transactionAmountCents:
@@ -247,7 +265,7 @@ components:
           $ref: '#/components/schemas/OrderItem'
 
     Balance:
-      required: [id, balanceCents, balanceSource, balanceType]
+      required: [id, balanceCents, balanceType]
       properties:
         id:
           type: string
@@ -256,12 +274,8 @@ components:
           type: string
         balanceCents:
           type: integer
-        balanceSource:
-          type: string
-          maxLength: 20
         balanceType:
-          type: string
-          maxLength: 20
+          $ref: './shared.yaml/#/components/schemas/BalanceType'
         balanceOwner:
           $ref: '#/components/schemas/Person'
 
@@ -271,6 +285,8 @@ components:
         id:
           type: string
           format: uuid
+        transactionType:
+          $ref: './shared.yaml#/components/schemas/StripeTransactionType'
         stripePaymentIntent:
           type: string
           maxLength: 500
