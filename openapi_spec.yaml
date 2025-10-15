@@ -348,9 +348,11 @@ components:
           type: integer
         percent:
           type: string
-        autoGrant:
+        autoApply:
           type: boolean
         isGlobal:
+          type: boolean
+        isSpecial:
           type: boolean
     CatalogDiscountRuleDTO:
       properties:
