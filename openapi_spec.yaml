@@ -260,8 +260,12 @@ components:
         id:
           type: string
           format: uuid
-        isActive:
-          type: boolean
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
         catalogName:
           type: string
           maxLength: 200
@@ -366,8 +370,12 @@ components:
         priceCents:
           type: integer
           example: 12
-        isActive:
-          type: boolean
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
     CatalogItemDTO:
       required: [type]
       properties:
