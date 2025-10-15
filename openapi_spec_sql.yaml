@@ -190,7 +190,7 @@ components:
           $ref: '#/components/schemas/OrderNew'
 
     OrderItemDiscountInstance:
-      required: [id, orderItemId, discountInstanceId, discountAmountCents]
+      required: [id, orderItemId, discountInstanceId, discountType]
       properties:
         id:
           type: string
@@ -199,7 +199,13 @@ components:
           $ref: '#/components/schemas/OrderItem'
         discountInstanceId:
           $ref: '#/components/schemas/DiscountInstance'
-        discountAmountCents:
+        discountType:
+          $ref: './shared.yaml#/components/schemas/DiscountType'
+        specifiedCents:
+          type: integer
+        specifiedPercent:
+          type: integer
+        calculatedCents:
           type: integer
 
     OrderNew:

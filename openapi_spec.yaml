@@ -597,8 +597,13 @@ components:
         discountInstanceId:
           nullable: false
           type: integer
-        discountAmountCents:
-          nullable: false
+        discountType:
+          $ref: './shared.yaml#/components/schemas/DiscountType'
+        specifiedCents:
+          type: integer
+        specifiedPercent:
+          type: integer
+        calculatedCents:
           type: integer
 
     PurchaseStockedItemDTO:
