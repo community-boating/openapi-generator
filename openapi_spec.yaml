@@ -354,6 +354,12 @@ components:
           type: boolean
         isSpecial:
           type: boolean
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
     CatalogDiscountRuleDTO:
       properties:
         id:
@@ -372,12 +378,6 @@ components:
         priceCents:
           type: integer
           example: 12
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
     CatalogItemDTO:
       required: [type]
       properties:
