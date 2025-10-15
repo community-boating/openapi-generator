@@ -127,6 +127,8 @@ components:
           type: integer
         changeType:
           $ref: './shared.yaml#/components/schemas/StockChangeType'
+        purchasableState:
+          $ref: './shared.yaml/#/components/schemas/PurchasableState'
 
     OrderItem:
       required: [id, orderId, itemInstanceId, itemPriceCents]
@@ -221,6 +223,12 @@ components:
           type: integer
         itemId:
           $ref: '#/components/schemas/Item'
+        discountType:
+          $ref: './shared.yaml#/components/schemas/DiscountType'
+        amountCents:
+          type: integer
+        percent:
+          type: string
         discountId:
           $ref: '#/components/schemas/Discount'
 

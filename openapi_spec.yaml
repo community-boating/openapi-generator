@@ -320,8 +320,6 @@ components:
           format: uuid
         discountId:
           type: integer
-        discountAmountCents:
-          type: integer
         discountName:
           type: string
           maxLength: 100
@@ -424,6 +422,12 @@ components:
         id:
           type: string
           format: uuid
+        discountType:
+          $ref: './shared.yaml#/components/schemas/DiscountType'
+        amountCents:
+          type: integer
+        percent:
+          type: integer
         discountId:
           type: integer
     CatalogItemTaxDTO:
@@ -577,6 +581,9 @@ components:
         damageWaiver:
           nullable: true
           $ref: '#/components/schemas/PurchaseDamageWaiverDTO'
+        stockChange:
+          nullable: true
+          $ref: '#/components/schemas/PurchaseStockedItemDTO'
         discounts:
           type: array
           items:
@@ -593,6 +600,17 @@ components:
         discountAmountCents:
           nullable: false
           type: integer
+
+    PurchaseStockedItemDTO:
+      properties:
+        id:
+          type: string
+          format: uuid
+        quantity:
+          type: integer
+        purchasableState:
+          $ref: './shared.yaml/#/components/schemas/PurchasableState'
+        
     PurchaseDamageWaiverDTO:
       required: [personId]
       properties:
