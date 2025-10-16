@@ -915,9 +915,8 @@ components:
           type: integer
         cardNum:
           type: string
-        balanceId:
-          type: string
-          format: uuid
+        balance:
+          $ref: '#/components/schemas/BalanceDTO'
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
