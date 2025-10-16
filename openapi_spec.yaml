@@ -90,6 +90,28 @@ paths:
                 $ref: '#/components/schemas/TestResponse'
         '401':
           description: Invalid credentials
+  
+  /persons/{id}/balances:
+    get:
+      summary: Gets a list of balances for a specified person
+      security:
+        - staff: []
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The person id
+      responses:
+        '200':
+          description: Successful fetch of balances
+          content:
+            application/json:
+              schema:
+                items:
+                  $ref: '#/components/schemas/BalanceDTO'
 
   /ap-class/get-eligible:
     get:
@@ -271,6 +293,20 @@ components:
       bearerFormat: JWT
 
   schemas:
+    BalanceDTO:
+      required: [id, balanceCents, balanceType]
+      properties:
+        id:
+          type: string
+          format: uuid
+        balanceAccountNumber:
+          type: string
+        balanceCents:
+          type: integer
+        balanceType:
+          $ref: './shared.yaml/#/components/schemas/BalanceType'
+        balanceOwner:
+          type: integer
     ClassSignupResponseDTO:
       type: object
       properties:
