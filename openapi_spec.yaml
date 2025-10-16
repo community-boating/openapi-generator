@@ -924,6 +924,8 @@ components:
           type: string
         balance:
           $ref: '#/components/schemas/BalanceDTO'
+        transactionAmountCents:
+          type: integer
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
