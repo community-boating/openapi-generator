@@ -581,8 +581,17 @@ components:
           nullable: true
           type: string
           format: uuid
-        itemPriceCents:
-          nullable: false
+        amountPaidCents:
+          readOnly: true
+          type: integer
+        amountBaseCents:
+          readOnly: true
+          type: integer
+        amountDiscountCents:
+          readOnly: true
+          type: integer
+        amountTaxCents:
+          readOnly: true
           type: integer
         classSignup:
           nullable: true
@@ -638,6 +647,7 @@ components:
         quantity:
           type: integer
         purchasableState:
+          readOnly: true
           $ref: './shared.yaml/#/components/schemas/PurchasableState'
         
     PurchaseDamageWaiverDTO:
@@ -651,6 +661,7 @@ components:
           type: string
           format: date
         purchasableState:
+          readOnly: true
           $ref: './shared.yaml/#/components/schemas/PurchasableState'
     PurchaseGuestPrivilegesDTO:
       required: [membershipId]
@@ -661,6 +672,7 @@ components:
           type: string
           format: date
         purchasableState:
+          readOnly: true
           $ref: './shared.yaml/#/components/schemas/PurchasableState'
         
 
@@ -709,8 +721,10 @@ components:
           readOnly: true
           format: date
         price:
+          readOnly: true
           type: integer
         purchasableState:
+          readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseDonationDTO:
       required: [fundId, initiativeId, state]
@@ -738,6 +752,7 @@ components:
           nullable: false
           type: integer
         purchasableState:
+          readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseCardDTO:
       required: [cardNum]
@@ -749,6 +764,7 @@ components:
         cardNum:
           type: string
         purchasableState:
+          readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseGiftCardDTO:
       properties:
@@ -760,6 +776,7 @@ components:
         cardNum:
           type: string
         purchasableState:
+          readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     
     LoginRequest:

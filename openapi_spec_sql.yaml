@@ -152,8 +152,15 @@ components:
           $ref: '#/components/schemas/ItemInstance'
         subscriptionId:
           $ref: '#/components/schemas/PersonSubscription'
-        itemPriceCents:
+        amountPaidCents:
           type: integer
+        amountBaseCents:
+          type: integer
+        amountDiscountCents:
+          type: integer
+        amountTaxCents:
+          type: integer
+        
 
     ItemTax:
       required: [id, itemId, taxId]
