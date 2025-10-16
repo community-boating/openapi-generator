@@ -240,8 +240,25 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CatalogDTO'
-
-
+  /classes/signup:
+    post:
+      description: 'Signs up for a class'
+      security:
+          - staff: []
+          - member: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassSignupRequestDTO'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassSignupResponseDTO'
 components:
   securitySchemes:
     staff:
@@ -254,6 +271,33 @@ components:
       bearerFormat: JWT
 
   schemas:
+    ClassSignupResponseDTO:
+      type: object
+      properties:
+        classSignup:
+          $ref: '#/components/schemas/PurchaseClassSignupDTO'
+        errors:
+          type: string
+    ClassSignupRequestDTO:
+      type: object
+      properties:
+        classSignup:
+          $ref: '#/components/schemas/PurchaseClassSignupDTO'
+        overrides:
+          $ref: '#/components/schemas/ClassSignupOverrides'
+    ClassSignupOverrides:
+      type: object
+      properties:
+        overrideCanEnroll:
+          type: boolean
+        overrideClassStarted:
+          type: boolean
+        overrideClassCancelled:
+          type: boolean
+        typeOverride:
+          type: string
+          maxLength: 1
+          minLength: 1
     CatalogDTO:
       type: object
       properties:
