@@ -704,6 +704,12 @@ components:
           nullable: true
           type: string
           format: date
+        purchaseDate:
+          nullable: true
+          readOnly: true
+          format: date
+        price:
+          type: integer
         purchasableState:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseDonationDTO:
