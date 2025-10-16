@@ -84,7 +84,8 @@ components:
       enum:
         - 'PROTO'
         - 'REFUNDED'
-        - 'PROCESSED'
+        - 'PURCHASED'
+        - 'FREE'
     PaymentStatus:
       type: string
       enum:
