@@ -181,7 +181,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrderDTO'
+              $ref: '#/components/schemas/OrderWithDiscountsDTO'
       responses:
         '200':
           description: Successfully updated/inserted order
@@ -477,7 +477,7 @@ components:
           maxLength: 500
         active:
           type: boolean
-    OrderDTOWithDiscounts:
+    OrderWithDiscountsDTO:
       type: object
       properties:
         order:
@@ -485,7 +485,15 @@ components:
         availableDiscounts:
           type: array
           items:
-            $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
+            $ref: '#/components/schemas/LineItemAvailableDiscount'
+    LineItemAvailableDiscount:
+      type: object
+      properties:
+        lineItemId:
+          type: string
+          format: uuid
+        discountId:
+          type: integer
     
     OrderDTO:
       type: object
