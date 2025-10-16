@@ -630,7 +630,7 @@ components:
           nullable: true
           type: string
           format: uuid
-        amountPaidCents:
+        amountSpecifiedCents:
           readOnly: true
           type: integer
         amountBaseCents:

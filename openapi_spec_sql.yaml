@@ -154,7 +154,7 @@ components:
           $ref: '#/components/schemas/ItemInstance'
         subscriptionId:
           $ref: '#/components/schemas/PersonSubscription'
-        amountPaidCents:
+        amountSpecifiedCents:
           type: integer
         amountBaseCents:
           type: integer
