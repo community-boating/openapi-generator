@@ -318,6 +318,7 @@ components:
           type: string
           maxLength: 500
     CatalogDiscountDTO:
+      required: [discountId]
       properties:
         id:
           type: string
