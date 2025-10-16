@@ -646,10 +646,11 @@ components:
         id:
           type: string
           format: uuid
-          example: 12
+        taxId:
+          type: string
+          format: uuid
         taxAmountCents:
           type: integer
-          example: 12
     LineItemDTO:
       type: object
       properties:

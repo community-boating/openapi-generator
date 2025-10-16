@@ -203,7 +203,7 @@ components:
         id:
           type: string
           format: uuid
-        tax:
+        taxId:
           $ref: '#/components/schemas/Tax'
         order:
           $ref: '#/components/schemas/OrderNew'
