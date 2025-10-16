@@ -334,7 +334,7 @@ components:
           format: uuid
         balanceAccountNumber:
           type: string
-        balanceAccountHMAC:
+        balanceAccountToken:
           writeOnly: true
           type: string
           maxLength: 64
