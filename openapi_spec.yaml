@@ -103,6 +103,14 @@ paths:
             type: integer
             minimum: 1
           description: The person id
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonId'
       responses:
         '200':
           description: Successful fetch of balances
