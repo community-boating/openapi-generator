@@ -755,6 +755,10 @@ components:
         personId:
           nullable: false
           type: integer
+        amount:
+          readOnly: true
+          type: number
+          format: double
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
