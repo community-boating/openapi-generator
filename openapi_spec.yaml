@@ -720,6 +720,10 @@ components:
           nullable: true
           readOnly: true
           format: date
+        expirationDate:
+          nullable: true
+          readOnly: true
+          format: date
         price:
           readOnly: true
           type: integer
