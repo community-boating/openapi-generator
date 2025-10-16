@@ -771,6 +771,9 @@ components:
           type: integer
         cardNum:
           type: string
+        active:
+          readOnly: true
+          type: boolean
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
