@@ -791,7 +791,7 @@ components:
           readOnly: true
           $ref: './shared.yaml/#/components/schemas/PurchasableState'
     PurchaseGuestPrivilegesDTO:
-      required: [membershipId]
+      required:
       properties:
         membershipId:
           type: integer
