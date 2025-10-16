@@ -327,7 +327,7 @@ components:
           type: string
           format: uuid
     BalanceDTO:
-      required: [id, balanceCents, balanceType]
+      required: [balanceCents, balanceType]
       properties:
         id:
           type: string
@@ -828,6 +828,8 @@ components:
         personId:
           nullable: false
           type: integer
+        emailSent:
+          type: boolean
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
