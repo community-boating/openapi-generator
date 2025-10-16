@@ -501,6 +501,8 @@ components:
           type: integer
         minQuantity:
           type: integer
+        allowPriceOverride:
+          type: boolean
         itemInstances:
           type: array
           items:
