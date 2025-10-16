@@ -205,6 +205,8 @@ components:
           $ref: '#/components/schemas/Tax'
         order:
           $ref: '#/components/schemas/OrderNew'
+        calculatedCents:
+          type: integer
 
     OrderItemDiscountInstance:
       required: [id, orderItemId, discountInstanceId, discountType]
