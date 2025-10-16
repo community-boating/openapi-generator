@@ -307,11 +307,11 @@ components:
           format: uuid
         balanceAccountNumber:
           type: string
-        balanceAccountNumberLast6:
+        balanceAccountHMAC:
           readOnly: true
           type: string
-          maxLength: 6
-          minLength: 6
+          maxLength: 64
+          minLength: 64
         balanceCents:
           type: integer
         balanceType:
