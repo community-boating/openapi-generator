@@ -192,6 +192,8 @@ components:
           maxLength: 200
         taxMinValueCents:
           type: integer
+        taxBeforeDiscount:
+          type: boolean
         catalogId:
           $ref: '#/components/schemas/Catalog'
 

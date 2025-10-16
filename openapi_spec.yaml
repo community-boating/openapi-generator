@@ -348,6 +348,8 @@ components:
         taxRate:
           type: string
           maxLength: 200
+        taxBeforeDiscount:
+          type: boolean
         taxMinValueCents:
           type: integer
     CatalogCategoryDTO:
@@ -500,6 +502,7 @@ components:
         taxId:
           type: string
           format: uuid
+
     CatalogItemCategoryDTO:
       required: [assignId]
       properties:
