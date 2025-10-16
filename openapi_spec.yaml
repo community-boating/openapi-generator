@@ -376,6 +376,13 @@ components:
           type: string
           maxLength: 1
           minLength: 1
+    ValidateLineItemOverrides:
+      type: object
+      properties:
+        overrideValidPeople:
+          type: boolean
+        overrideTypeCheck:
+          type: boolean
     CatalogDTO:
       type: object
       properties:
@@ -776,7 +783,7 @@ components:
         purchasableState:
           readOnly: true
           $ref: './shared.yaml/#/components/schemas/PurchasableState'
-        
+    
     PurchaseDamageWaiverDTO:
       required: [personId]
       properties:
