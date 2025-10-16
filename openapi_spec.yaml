@@ -915,6 +915,9 @@ components:
           type: integer
         cardNum:
           type: string
+        balanceId:
+          type: string
+          format: uuid
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
