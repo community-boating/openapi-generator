@@ -212,7 +212,7 @@ components:
         specifiedCents:
           type: integer
         specifiedPercent:
-          type: integer
+          type: string
         calculatedCents:
           type: integer
 
