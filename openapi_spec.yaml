@@ -444,7 +444,7 @@ components:
         amountCents:
           type: integer
         percent:
-          type: integer
+          type: string
         discountId:
           type: integer
     CatalogItemTaxDTO:
@@ -627,7 +627,7 @@ components:
         specifiedCents:
           type: integer
         specifiedPercent:
-          type: integer
+          type: string
         calculatedCents:
           type: integer
 
