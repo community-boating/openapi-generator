@@ -62,7 +62,7 @@ components:
         imageURL:
           type: string
           maxLength: 200
-        itemPriceCents:
+        maxQuantity:
           type: integer
         catalogId:
           $ref: '#/components/schemas/Catalog'
