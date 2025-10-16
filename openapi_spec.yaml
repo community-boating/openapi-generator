@@ -90,15 +90,14 @@ paths:
                 $ref: '#/components/schemas/TestResponse'
         '401':
           description: Invalid credentials
-  
-  /persons/{id}/balances:
+  /balances/{personId}:
     get:
       summary: Gets a list of balances for a specified person
       security:
         - staff: []
       parameters:
         - in: path
-          name: id # Note the name is the same as in the path
+          name: personId # Note the name is the same as in the path
           required: true
           schema:
             type: integer
@@ -110,6 +109,7 @@ paths:
           content:
             application/json:
               schema:
+                type: array
                 items:
                   $ref: '#/components/schemas/BalanceDTO'
 
