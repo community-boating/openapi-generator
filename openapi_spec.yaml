@@ -636,10 +636,7 @@ components:
         amountBaseCents:
           readOnly: true
           type: integer
-        amountDiscountCents:
-          readOnly: true
-          type: integer
-        amountTaxCents:
+        amountAfterDiscountCents:
           readOnly: true
           type: integer
         classSignup:
