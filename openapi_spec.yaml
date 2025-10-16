@@ -335,7 +335,7 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
-    CatalogDiscountInstanceDTO:
+    CatalogDiscountInstanceDTO: 
       properties:
         id:
           type: string
@@ -378,6 +378,12 @@ components:
         priceCents:
           type: integer
           example: 12
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
     CatalogItemDTO:
       required: [type]
       properties:
