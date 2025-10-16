@@ -52,6 +52,7 @@ components:
     OrderStatus:
       type: string
       enum:
+        - 'OPENED'
         - 'OPEN'
         - 'PROCESSED'
         - 'PROCESSING'
