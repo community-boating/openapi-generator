@@ -133,8 +133,8 @@ components:
           format: uuid
         itemInstanceId:
           $ref: '#/components/schemas/ItemInstance'
-        orderItem:
-          $ref: '#/components/schemas/OrderItem'
+        lineItem:
+          $ref: '#/components/schemas/LineItem'
         changeAmount:
           type: integer
         changeType:
@@ -142,14 +142,14 @@ components:
         purchasableState:
           $ref: './shared.yaml/#/components/schemas/PurchasableState'
 
-    OrderItem:
+    LineItem:
       required: [id, orderId, itemInstanceId, itemPriceCents]
       properties:
         id:
           type: string
           format: uuid
         parentItemId:
-          $ref: '#/components/schemas/OrderItem'
+          $ref: '#/components/schemas/LineItem'
         orderId:
           $ref: '#/components/schemas/OrderNew'
         itemInstanceId:
@@ -210,14 +210,14 @@ components:
         calculatedCents:
           type: integer
 
-    OrderItemDiscountInstance:
-      required: [id, orderItemId, discountInstanceId, discountType]
+    LineItemDiscountInstance:
+      required: [id, lineItemId, discountInstanceId, discountType]
       properties:
         id:
           type: string
           format: uuid
-        orderItemId:
-          $ref: '#/components/schemas/OrderItem'
+        lineItemId:
+          $ref: '#/components/schemas/LineItem'
         discountInstanceId:
           $ref: '#/components/schemas/DiscountInstance'
         discountType:
@@ -296,8 +296,8 @@ components:
           type: integer
         purchasableState:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
-        orderItemId:
-          $ref: '#/components/schemas/OrderItem'
+        lineItemId:
+          $ref: '#/components/schemas/LineItem'
 
     Balance:
       required: [id, balanceCents, balanceType]

@@ -90,27 +90,30 @@ paths:
                 $ref: '#/components/schemas/TestResponse'
         '401':
           description: Invalid credentials
-  /balances/{personId}:
+  /balances:
     get:
       summary: Gets a list of balances for a specified person
       security:
         - staff: []
-      parameters:
-        - in: path
-          name: personId # Note the name is the same as in the path
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-          description: The person id
+      responses:
+        '200':
+          description: Successful fetch of balances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BalanceDTO'
+    post:
+      summary: Gets a list of balances for a specified person
+      security:
+        - staff: []
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonId'
+              $ref: '#/components/schemas/BalanceDTO'
       responses:
         '200':
           description: Successful fetch of balances
@@ -301,6 +304,24 @@ components:
       bearerFormat: JWT
 
   schemas:
+    BalanceTransactionDTO:
+      required: [id, balanceId, transactionAmountCents]
+      properties:
+        id:
+          type: string
+          format: uuid
+        balanceTransactionType:
+          $ref: './shared.yaml#/components/schemas/BalanceTransactionType'
+        paymentId:
+          type: string
+          format: uuid
+        transactionAmountCents:
+          type: integer
+        purchasableState:
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
+        lineItemId:
+          type: string
+          format: uuid
     BalanceDTO:
       required: [id, balanceCents, balanceType]
       properties:
@@ -315,6 +336,10 @@ components:
           $ref: './shared.yaml/#/components/schemas/BalanceType'
         balanceOwner:
           type: integer
+        balanceTransactions:
+          type: array
+          items:
+            $ref: '#/components/schemas/BalanceTransactionDTO'
     ClassSignupResponseDTO:
       type: object
       properties:
