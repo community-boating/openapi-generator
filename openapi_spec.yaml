@@ -181,14 +181,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrderWithDiscountsDTO'
+              $ref: '#/components/schemas/OrderDTO'
       responses:
         '200':
           description: Successfully updated/inserted order
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderDTO'
+                $ref: '#/components/schemas/OrderWithDiscountsDTO'
   /orders/cancel/{id}:
     post:
       description: 'Cancels an order, deleting if possible'
