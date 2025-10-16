@@ -49,10 +49,9 @@ components:
         - 'VARIABLE_PERCENT'
         - 'FIXED_AMOUNT'
         - 'FIXED_PERCENT'
-    OrderStatus:
+    OrderStatusNew:
       type: string
       enum:
-        - 'OPENED'
         - 'OPEN'
         - 'PROCESSED'
         - 'PROCESSING'

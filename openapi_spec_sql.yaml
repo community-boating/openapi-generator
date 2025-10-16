@@ -226,7 +226,7 @@ components:
         orderAmountPaid:
           type: integer
         orderStatus:
-          $ref: './shared.yaml#/components/schemas/OrderStatus'
+          $ref: './shared.yaml#/components/schemas/OrderStatusNew'
         personId:
           $ref: '#/components/schemas/Person'
 

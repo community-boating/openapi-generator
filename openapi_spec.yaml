@@ -514,7 +514,7 @@ components:
           example: 122
           readOnly: true
         status:
-          $ref: './shared.yaml#/components/schemas/OrderStatus'
+          $ref: './shared.yaml#/components/schemas/OrderStatusNew'
           readOnly: true
         personId:
           type: integer
