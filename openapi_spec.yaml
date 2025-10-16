@@ -334,6 +334,11 @@ components:
           format: uuid
         balanceAccountNumber:
           type: string
+        balanceAccountNumberLast6:
+          readOnly: true
+          type: string
+          maxLength: 6
+          minLength: 6
         balanceCents:
           type: integer
         balanceType:
