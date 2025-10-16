@@ -719,10 +719,12 @@ components:
         purchaseDate:
           nullable: true
           readOnly: true
+          type: string
           format: date
         expirationDate:
           nullable: true
           readOnly: true
+          type: string
           format: date
         price:
           readOnly: true
