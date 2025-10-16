@@ -683,12 +683,17 @@ components:
           nullable: false
           type: integer
         signupType:
+          readOnly: true
           nullable: false
           type: string
           minLength: 1
           maxLength: 1
         instanceId:
+          readOnly: true
           nullable: false
+          type: integer
+        price:
+          readOnly: true
           type: integer
         classType:
           nullable: false
