@@ -417,6 +417,8 @@ components:
           maxLength: 200
         maxQuantity:
           type: integer
+        minQuantity:
+          type: integer
         itemInstances:
           type: array
           items:

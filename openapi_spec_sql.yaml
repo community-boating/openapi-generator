@@ -62,6 +62,8 @@ components:
         imageURL:
           type: string
           maxLength: 200
+        minQuantity:
+          type: integer
         maxQuantity:
           type: integer
         catalogId:
