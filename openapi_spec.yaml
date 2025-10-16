@@ -677,7 +677,7 @@ components:
         
 
     PurchaseClassSignupDTO:
-      required: [instanceId]
+      required: [instanceId, personId]
       properties:
         signupId:
           nullable: false
@@ -701,7 +701,7 @@ components:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
 
     PurchaseMembershipDTO:
-      required: [membershipTypeId]
+      required: [membershipTypeId, personId]
       properties:
         assignId:
           nullable: false
