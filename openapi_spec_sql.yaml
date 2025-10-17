@@ -140,7 +140,7 @@ components:
         changeType:
           $ref: './shared.yaml#/components/schemas/StockChangeType'
         purchasableState:
-          $ref: './shared.yaml/#/components/schemas/PurchasableState'
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
 
     LineItem:
       required: [id, orderId, itemInstanceId, itemPriceCents]
@@ -315,7 +315,7 @@ components:
         balanceCents:
           type: integer
         balanceType:
-          $ref: './shared.yaml/#/components/schemas/BalanceType'
+          $ref: './shared.yaml#/components/schemas/BalanceType'
         balanceOwner:
           $ref: '#/components/schemas/Person'
 

@@ -342,7 +342,7 @@ components:
         balanceCents:
           type: integer
         balanceType:
-          $ref: './shared.yaml/#/components/schemas/BalanceType'
+          $ref: './shared.yaml#/components/schemas/BalanceType'
         balanceOwner:
           type: integer
         balanceTransactions:
@@ -780,9 +780,12 @@ components:
           format: uuid
         quantity:
           type: integer
+        changeType:
+          readOnly: true
+          $ref: './shared.yaml#/components/schemas/BalanceTransactionType'
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml/#/components/schemas/PurchasableState'
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
     
     PurchaseDamageWaiverDTO:
       required: [personId]
@@ -796,7 +799,7 @@ components:
           format: date
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml/#/components/schemas/PurchasableState'
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseGuestPrivilegesDTO:
       properties:
         membershipId:
@@ -806,7 +809,7 @@ components:
           format: date
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml/#/components/schemas/PurchasableState'
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
         
 
     PurchaseClassSignupDTO:
