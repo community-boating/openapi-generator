@@ -687,6 +687,20 @@ components:
           nullable: true
           type: string
           format: date-time
+
+    StripeTransactionDTO:
+      required: [id, stripePaymentIntent, transactionAmountCents]
+      properties:
+        id:
+          type: string
+          format: uuid
+        transactionType:
+          $ref: './shared.yaml#/components/schemas/StripeTransactionType'
+        stripePaymentIntent:
+          type: string
+          maxLength: 500
+        transactionAmountCents:
+          type: integer
     OrderTaxDTO:
       type: object
       properties:
