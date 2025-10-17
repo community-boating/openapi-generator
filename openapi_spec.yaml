@@ -676,15 +676,13 @@ components:
           format: uuid
         paymentType:
           nullable: false
-          type: string
-          maxLength: 50
+          $ref: './shared.yaml#/components/schemas/PaymentType'
         paymentAmountCents:
           nullable: false
           type: integer
         paymentStatus:
           nullable: false
-          type: string
-          maxLength: 50
+          $ref: './shared.yaml#/components/schemas/PaymentStatus'
         paymentDueDate:
           nullable: true
           type: string
