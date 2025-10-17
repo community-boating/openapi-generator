@@ -782,7 +782,7 @@ components:
           type: integer
         changeType:
           readOnly: true
-          $ref: './shared.yaml#/components/schemas/BalanceTransactionType'
+          $ref: './shared.yaml#/components/schemas/StockChangeType'
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
