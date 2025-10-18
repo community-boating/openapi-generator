@@ -359,7 +359,7 @@ components:
       required: [id, name, billingCycle]
       properties:
         id:
-          type: integer
+          type: number
           format: long
         name:
           type: string
@@ -372,7 +372,7 @@ components:
       required: [id, subscriptionId, itemId]
       properties:
         id:
-          type: integer
+          type: number
           format: long
         subscriptionId:
           $ref: '#/components/schemas/Subscription'
