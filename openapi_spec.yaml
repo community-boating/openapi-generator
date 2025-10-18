@@ -822,7 +822,7 @@ components:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseGuestPrivilegesDTO:
       properties:
-        id:
+        assignId:
           type: string
           format: uuid
         membershipId:
