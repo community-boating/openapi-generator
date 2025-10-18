@@ -370,8 +370,9 @@ components:
     CatalogDTO:
       type: object
       properties:
-        assignId::
+        assignId:
           type: integer
+          format: int64
         startActive:
           type: string
           format: date-time
@@ -422,8 +423,9 @@ components:
           type: integer
     CatalogCategoryDTO:
       properties:
-        assignId::
+        assignId:
           type: integer
+          format: int64
         categoryName:
           type: string
           maxLength: 200
@@ -435,7 +437,6 @@ components:
       properties:
         discountId:
           type: integer
-          format: int64
         discountName:
           type: string
           maxLength: 100
@@ -449,7 +450,6 @@ components:
           $ref: './shared.yaml#/components/schemas/DiscountType'
         instanceId:
           type: integer
-          format: int64
         amountCents:
           type: integer
         percent:
@@ -469,8 +469,9 @@ components:
     CatalogItemInstanceDTO:
       type: object
       properties:
-        assignId::
+        assignId:
           type: integer
+          format: int64
         priceCents:
           type: integer
           example: 12
@@ -483,8 +484,9 @@ components:
     CatalogItemDTO:
       required: [type]
       properties:
-        assignId::
+        assignId:
           type: integer
+          format: int64
         itemType:
           nullable: false
           $ref: './shared.yaml#/components/schemas/ItemType'
@@ -533,8 +535,9 @@ components:
             $ref: '#/components/schemas/CatalogItemCategoryDTO'
     CatalogItemDiscountDTO:
       properties:
-        assignId::
+        assignId:
           type: integer
+          format: int64
         discountType:
           $ref: './shared.yaml#/components/schemas/DiscountType'
         amountCents:
@@ -921,8 +924,9 @@ components:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseGiftCardDTO:
       properties:
-        assignId::
+        assignId:
           type: integer
+          format: int64
         personId:
           type: integer
           format: int64
@@ -939,8 +943,9 @@ components:
     PersonSubscriptionDTO:
       required: [id, personId, subscriptionId, billingCycle]
       properties:
-        assignId::
+        assignId:
           type: integer
+          format: int64
         personId:
           type: integer
         subscriptionId:
