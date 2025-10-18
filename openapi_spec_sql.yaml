@@ -71,17 +71,6 @@ components:
         catalogId:
           $ref: '#/components/schemas/Catalog'
 
-    DiscountRule:
-      required: [id, ruleType]
-      properties:
-        id:
-          type: string
-          format: uuid
-        ruleType:
-          $ref: './shared.yaml#/components/schemas/RuleType'
-        relatedDiscount:
-          $ref: '#/components/schemas/Discount'
-
     ItemCategory:
       required: [id, item, categoryId]
       properties:

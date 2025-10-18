@@ -435,18 +435,11 @@ components:
     CatalogDiscountDTO:
       required: [discountId]
       properties:
-        id:
-          type: string
-          format: uuid
         discountId:
           type: integer
         discountName:
           type: string
           maxLength: 100
-        rules:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogDiscountRuleDTO'
         instances:
           type: array
           items:
@@ -476,15 +469,6 @@ components:
         endActive:
           type: string
           format: date-time
-    CatalogDiscountRuleDTO:
-      properties:
-        id:
-          type: string
-          format: uuid
-        ruleType:
-          $ref: './shared.yaml#/components/schemas/RuleType'
-        parentDiscountId:
-          type: integer
     CatalogItemInstanceDTO:
       type: object
       properties:
