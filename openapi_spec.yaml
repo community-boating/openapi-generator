@@ -781,6 +781,9 @@ components:
         assignId:
           type: integer
           format: int64
+        itemInstanceId:
+          type: integer
+          format: int64
         quantity:
           type: integer
         changeType:
