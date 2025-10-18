@@ -352,6 +352,7 @@ components:
           type: integer
 
     ClassType:
+      x-already-exists: true
       required: [id]
       properties:
         id:
@@ -401,30 +402,35 @@ components:
           type: integer
 
     MembershipType:
+      x-already-exists: true
       required: [id]
       properties:
         id:
           type: integer
 
     Person:
+      x-already-exists: true
       required: [id]
       properties:
         id:
           type: integer
 
     DiscountInstance:
+      x-already-exists: true
       required: [id]
       properties:
         id:
           type: integer
 
     Discount:
+      x-already-exists: true
       required: [id]
       properties:
         id:
           type: integer
 
     CashDrawer:
+      x-already-exists: true
       required: [cashDrawerId]
       properties:
         cashDrawerId:
