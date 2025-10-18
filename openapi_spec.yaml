@@ -366,7 +366,7 @@ components:
     CatalogDTO:
       type: object
       properties:
-        id:
+        assignId::
           type: integer
         startActive:
           type: string
@@ -400,7 +400,7 @@ components:
     CatalogTaxDTO:
       required: [taxName, taxRate, taxMinValueCents]
       properties:
-        id:
+        assignId::
           type: integer
         taxName:
           type: string
@@ -417,7 +417,7 @@ components:
           type: integer
     CatalogCategoryDTO:
       properties:
-        id:
+        assignId::
           type: integer
         categoryName:
           type: string
@@ -462,7 +462,7 @@ components:
     CatalogItemInstanceDTO:
       type: object
       properties:
-        id:
+        assignId::
           type: integer
         priceCents:
           type: integer
@@ -476,7 +476,7 @@ components:
     CatalogItemDTO:
       required: [type]
       properties:
-        id:
+        assignId::
           type: integer
         itemType:
           nullable: false
@@ -526,7 +526,7 @@ components:
             $ref: '#/components/schemas/CatalogItemCategoryDTO'
     CatalogItemDiscountDTO:
       properties:
-        id:
+        assignId::
           type: integer
         discountType:
           $ref: './shared.yaml#/components/schemas/DiscountType'
@@ -538,7 +538,7 @@ components:
           type: integer
     CatalogItemTaxDTO:
       properties:
-        id:
+        assignId:
           type: integer
         taxId:
           type: integer
@@ -546,14 +546,14 @@ components:
     CatalogItemCategoryDTO:
       required: [assignId]
       properties:
-        id:
+        assignId:
           type: integer
         categoryId:
           type: integer
     CatalogProductDTO:
       required: [assignId, productName, productDescription, active]
       properties:
-        id:
+        assignId:
           type: integer
         productName:
           type: string
@@ -566,7 +566,7 @@ components:
     CatalogSubscriptionDTO:
       required: [name, billingCycle]
       properties:
-        id:
+        assignId:
           type: integer
         name:
           type: string
@@ -581,7 +581,7 @@ components:
     CatalogSubscriptionItemDTO:
       required: [itemId]
       properties:
-        id:
+        assignId:
           type: integer
         itemId:
           type: integer
@@ -608,7 +608,7 @@ components:
       type: object
       required: [lineItems, orderNum]
       properties:
-        id:
+        assignId:
           nullable: true
           type: integer
           example: 12
@@ -643,7 +643,7 @@ components:
     OrderPaymentDTO:
       type: object
       properties:
-        id:
+        assignId:
           type: integer
         paymentType:
           nullable: false
@@ -662,7 +662,7 @@ components:
     StripeTransactionDTO:
       required: [id, stripePaymentIntent, transactionAmountCents]
       properties:
-        id:
+        assignId:
           type: integer
         transactionType:
           $ref: './shared.yaml#/components/schemas/StripeTransactionType'
@@ -674,7 +674,7 @@ components:
     OrderTaxDTO:
       type: object
       properties:
-        id:
+        assignId:
           type: integer
         taxId:
           type: integer
@@ -683,7 +683,7 @@ components:
     LineItemDTO:
       type: object
       properties:
-        id:
+        assignId:
           nullable: false
           type: integer
         parentItemId:
@@ -749,7 +749,7 @@ components:
           type: integer
     PurchaseStockedItemDTO:
       properties:
-        id:
+        assignId:
           type: integer
         quantity:
           type: integer
@@ -895,7 +895,7 @@ components:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseGiftCardDTO:
       properties:
-        id:
+        assignId::
           type: integer
         personId:
           type: integer
@@ -912,7 +912,7 @@ components:
     PersonSubscriptionDTO:
       required: [id, personId, subscriptionId, billingCycle]
       properties:
-        id:
+        assignId::
           type: integer
         personId:
           type: integer
