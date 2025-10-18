@@ -929,7 +929,6 @@ components:
           format: int64
         personId:
           type: integer
-          format: int64
         cardNum:
           type: string
         balance:
