@@ -295,23 +295,27 @@ components:
     BalanceTransactionDTO:
       required: [id, balanceId, transactionAmountCents]
       properties:
-        id:
+        assignId:
           type: integer
+          format: int64
         balanceTransactionType:
           $ref: './shared.yaml#/components/schemas/BalanceTransactionType'
         paymentId:
           type: integer
+          format: int64
         transactionAmountCents:
           type: integer
         purchasableState:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
         lineItemId:
           type: integer
+          format: int64
     BalanceDTO:
       required: [balanceCents, balanceType]
       properties:
-        id:
+        assignId:
           type: integer
+          format: int64
         balanceAccountNumber:
           type: string
         balanceAccountToken:
@@ -400,8 +404,9 @@ components:
     CatalogTaxDTO:
       required: [taxName, taxRate, taxMinValueCents]
       properties:
-        assignId::
+        assignId:
           type: integer
+          format: int64
         taxName:
           type: string
           maxLength: 200
@@ -430,6 +435,7 @@ components:
       properties:
         discountId:
           type: integer
+          format: int64
         discountName:
           type: string
           maxLength: 100
@@ -443,6 +449,7 @@ components:
           $ref: './shared.yaml#/components/schemas/DiscountType'
         instanceId:
           type: integer
+          format: int64
         amountCents:
           type: integer
         percent:
@@ -540,6 +547,7 @@ components:
       properties:
         assignId:
           type: integer
+          format: int64
         taxId:
           type: integer
 
@@ -548,13 +556,16 @@ components:
       properties:
         assignId:
           type: integer
+          format: int64
         categoryId:
           type: integer
+          format: int64
     CatalogProductDTO:
       required: [productName, productDescription, active]
       properties:
         assignId:
           type: integer
+          format: int64
         productName:
           type: string
           maxLength: 200
@@ -568,6 +579,7 @@ components:
       properties:
         assignId:
           type: integer
+          format: int64
         name:
           type: string
           maxLength: 200
@@ -583,8 +595,10 @@ components:
       properties:
         assignId:
           type: integer
+          format: int64
         itemId:
           type: integer
+          format: int64
         cyclePriceOverrideCents:
           type: integer
     OrderWithDiscountsDTO:
@@ -601,6 +615,7 @@ components:
       properties:
         lineItemId:
           type: integer
+          format: int64
         discountId:
           type: integer
     
@@ -645,6 +660,7 @@ components:
       properties:
         assignId:
           type: integer
+          format: int64
         paymentType:
           nullable: false
           $ref: './shared.yaml#/components/schemas/PaymentType'
@@ -664,6 +680,7 @@ components:
       properties:
         assignId:
           type: integer
+          format: int64
         transactionType:
           $ref: './shared.yaml#/components/schemas/StripeTransactionType'
         stripePaymentIntent:
@@ -676,8 +693,10 @@ components:
       properties:
         assignId:
           type: integer
+          format: int64
         taxId:
           type: integer
+          format: int64
         taxAmountCents:
           type: integer
     LineItemDTO:
@@ -688,8 +707,10 @@ components:
           type: integer
         parentItemId:
           type: integer
+          format: int64
         itemInstanceId:
           type: integer
+          format: int64
           nullable: false
         subscriptionId:
           nullable: true
@@ -751,6 +772,7 @@ components:
       properties:
         assignId:
           type: integer
+          format: int64
         quantity:
           type: integer
         changeType:
@@ -776,6 +798,7 @@ components:
       properties:
         assignId:
           type: integer
+          format: int64
         membershipId:
           type: integer
         startDate:
@@ -899,6 +922,7 @@ components:
           type: integer
         personId:
           type: integer
+          format: int64
         cardNum:
           type: string
         balance:
@@ -918,6 +942,7 @@ components:
           type: integer
         subscriptionId:
           type: integer
+          format: int64
         billingDate:
           type: string
           format: date
