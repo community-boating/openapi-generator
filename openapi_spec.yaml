@@ -630,6 +630,7 @@ components:
         assignId:
           nullable: true
           type: integer
+          format: int64
           example: 12
         orderComputedCents:
           type: integer
