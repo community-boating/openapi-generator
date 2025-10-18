@@ -359,8 +359,8 @@ components:
       required: [id, name, billingCycle]
       properties:
         id:
-          type: number
-          format: long
+          type: integer
+          format: int64
         name:
           type: string
           maxLength: 200
@@ -372,8 +372,8 @@ components:
       required: [id, subscriptionId, itemId]
       properties:
         id:
-          type: number
-          format: long
+          type: integer
+          format: int64
         subscriptionId:
           $ref: '#/components/schemas/Subscription'
         itemId:
