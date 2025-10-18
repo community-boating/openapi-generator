@@ -544,14 +544,14 @@ components:
           type: integer
 
     CatalogItemCategoryDTO:
-      required: [assignId]
+      required: [categoryId]
       properties:
         assignId:
           type: integer
         categoryId:
           type: integer
     CatalogProductDTO:
-      required: [assignId, productName, productDescription, active]
+      required: [productName, productDescription, active]
       properties:
         assignId:
           type: integer
