@@ -8,26 +8,6 @@ servers:
   - url: https://api.example.com
 
 paths:
-  /login:
-    post:
-      summary: User login
-      description: Returns a JWT token on successful login.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/LoginRequest'
-      responses:
-        '200':
-          description: Successful login
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/LoginResponse'
-        '401':
-          description: Invalid credentials
-
   /users/me/{id}/{test}:
     get:
       summary: Get current user
@@ -128,18 +108,20 @@ paths:
                 items:
                   $ref: '#/components/schemas/BalanceDTO'
 
-  /ap-class/get-eligible:
+  /ap-class/get-eligible/{personId}:
     get:
       summary: Get eligible classes
       description: Gets eligible class information for the supplied person_id
       security:
         - member: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PersonId'
+      parameters:
+        - in: path
+          name: personId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The person id
       responses:
         '200':
           description: Successfully fetched classes
@@ -154,17 +136,19 @@ paths:
         '403' :
           description: Invalid permissions
 
-  /ap-class/get-future:
+  /ap-class/get-future/{personId}:
     get:
       x-serve-example: true
       summary: Get eligible classes
       description: Gets eligible class information for the supplied person_id
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/PersonId'
+      parameters:
+        - in: path
+          name: personId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The person id
       responses:
         '200':
           description: Successfully fetched classes
@@ -613,6 +597,33 @@ components:
           maxLength: 500
         active:
           type: boolean
+    CatalogSubscriptionDTO:
+      required: [name, billingCycle]
+      properties:
+        id:
+          type: string
+          format: uuid
+        name:
+          type: string
+          maxLength: 200
+        billingCycle:
+          type: string
+          maxLength: 50
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogSubscriptionItemDTO'
+    CatalogSubscriptionItemDTO:
+      required: [itemId]
+      properties:
+        id:
+          type: string
+          format: uuid
+        itemId:
+          type: string
+          format: uuid
+        cyclePriceOverrideCents:
+          type: integer
     OrderWithDiscountsDTO:
       type: object
       properties:
@@ -767,7 +778,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LineItemDiscountDTO'
-
     LineItemDiscountDTO:
       properties:
         assignId:
@@ -784,7 +794,6 @@ components:
           type: string
         calculatedCents:
           type: integer
-
     PurchaseStockedItemDTO:
       properties:
         id:
@@ -798,7 +807,6 @@ components:
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
-    
     PurchaseDamageWaiverDTO:
       required: [personId]
       properties:
@@ -822,8 +830,6 @@ components:
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
-        
-
     PurchaseClassSignupDTO:
       required: [instanceId, personId]
       properties:
@@ -854,7 +860,6 @@ components:
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
-
     PurchaseMembershipDTO:
       required: [membershipTypeId, personId]
       properties:
@@ -951,39 +956,24 @@ components:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
     
-    LoginRequest:
-      type: object
-      required:
-        - username
-        - password
+    PersonSubscriptionDTO:
+      required: [id, personId, subscriptionId, billingCycle]
       properties:
-        username:
+        id:
           type: string
-          example: user@example.com
-        password:
-          type: string
-          format: password
-          example: mysecurepassword
-          maxLength: 69
-        test:
-          type: string
-          format: password
-          example: mysecurepassword
-
-    LoginResponse:
-      type: object
-      properties:
-        token:
-          type: string
-          description: JWT token
-          example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
-
-    PersonId:
-      type: object
-      properties:
+          format: uuid
         personId:
           type: integer
-          example: 192535
+        subscriptionId:
+          type: string
+          format: uuid
+        billingDate:
+          type: string
+          format: date
+        billingCycle:
+          type: string
+          maxLength: 50
+
     UserTest:
       type: object
       properties:
