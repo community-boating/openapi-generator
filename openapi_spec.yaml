@@ -446,9 +446,6 @@ components:
             $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
     CatalogDiscountInstanceDTO: 
       properties:
-        id:
-          type: string
-          format: uuid
         discountType:
           $ref: './shared.yaml#/components/schemas/DiscountType'
         instanceId:
