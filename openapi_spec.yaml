@@ -705,6 +705,7 @@ components:
         assignId:
           nullable: false
           type: integer
+          format: int64
         parentItemId:
           type: integer
           format: int64
@@ -715,6 +716,7 @@ components:
         subscriptionId:
           nullable: true
           type: integer
+          format: int64
         amountSpecifiedCents:
           readOnly: true
           type: integer
@@ -756,7 +758,8 @@ components:
       properties:
         assignId:
           nullable: false
-          type: string
+          type: integer
+          format: int64
         discountInstanceId:
           nullable: false
           type: integer
