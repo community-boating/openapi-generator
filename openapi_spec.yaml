@@ -843,8 +843,6 @@ components:
         personId:
           nullable: false
           type: integer
-        emailSent:
-          type: boolean
         purchasableState:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/PurchasableState'
