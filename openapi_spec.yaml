@@ -914,6 +914,9 @@ components:
           readOnly: true
           type: number
           format: double
+        sendEmail:
+          readOnly: true
+          type: boolean
         purchasableState:
           readOnly: true
           allOf:
