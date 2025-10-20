@@ -306,7 +306,9 @@ components:
         transactionAmountCents:
           type: integer
         purchasableState:
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
+          readOnly: true
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PurchasableState'
         lineItemId:
           type: integer
           format: int64
@@ -791,7 +793,8 @@ components:
           $ref: './shared.yaml#/components/schemas/StockChangeType'
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseDamageWaiverDTO:
       required: [personId]
       properties:
@@ -804,7 +807,8 @@ components:
           format: date
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseGuestPrivilegesDTO:
       properties:
         assignId:
@@ -817,7 +821,8 @@ components:
           format: date
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseClassSignupDTO:
       required: [instanceId, personId]
       properties:
@@ -845,7 +850,8 @@ components:
           type: integer
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseMembershipDTO:
       required: [membershipTypeId, personId]
       properties:
@@ -910,7 +916,8 @@ components:
           format: double
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseCardDTO:
       required: [cardNum]
       properties:
@@ -925,7 +932,8 @@ components:
           type: boolean
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseGiftCardDTO:
       properties:
         assignId:
@@ -941,7 +949,8 @@ components:
           type: integer
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PurchasableState'
     
     PersonSubscriptionDTO:
       required: [id, personId, subscriptionId, billingCycle]

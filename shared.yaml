@@ -83,7 +83,6 @@ components:
         - 'AP'
     PurchasableState: 
       type: string
-      readOnly: true
       enum:
         - 'PROTO'
         - 'REFUNDED'
