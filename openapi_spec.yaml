@@ -1,4 +1,4 @@
-openapi: 3.1.1
+openapi: 3.0.3
 info:
   title: Simple API with JWT Auth
   version: 1.0.0
@@ -877,7 +877,8 @@ components:
           type: integer
         purchasableState:
           readOnly: true
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseDonationDTO:
       required: [fundId, initiativeId, state]
       properties:
