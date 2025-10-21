@@ -280,18 +280,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClassSignupResponseDTO'
-  /stripe/constants:
-    get:
-      description: 'Signs up for a class'
-      tags:
-        - Stripe
-      responses:
-        '200':
-          description: Successfully returns the stripe constants
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/StripeConstantsDTO'
 components:
   securitySchemes:
     staff:
@@ -304,18 +292,6 @@ components:
       bearerFormat: JWT
 
   schemas:
-    StripeConstantsDTO:
-      required: [publicKey, account, apiVersion, locale]
-      properties:
-        publicKey:
-          type: string
-        account:
-          type: string
-        apiVersion:
-          type: string
-        locale:
-          type: string
-        
     BalanceTransactionDTO:
       required: [id, balanceId, transactionAmountCents]
       properties:
