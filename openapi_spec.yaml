@@ -284,7 +284,7 @@ paths:
     get:
       description: 'Signs up for a class'
       tags:
-        - StripeAG
+        - Stripe
       responses:
         '200':
           description: Successfully returns the stripe constants
