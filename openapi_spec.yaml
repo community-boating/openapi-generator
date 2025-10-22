@@ -280,8 +280,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClassSignupResponseDTO'
-  /stripe/paymentTest:
+  /stripe/constants:
     get:
+      description: 'Returns stripe constants'
+      tags:
+        - Stripe
+      responses:
+        '200':
+          description: Successfully returns the stripe constants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripeConstantsDTO'
+  /stripe/paymentTest:
+    post:
       description: 'Creates test payment intent'
       tags:
         - Stripe
@@ -290,14 +302,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/ClassSignupRequestDTO'
+              $ref: '#/components/schemas/CreatePaymentIntentDTO'
       responses:
         '200':
-          description: Successfully returns the stripe constants
+          description: Returns payment intent
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StripeConstantsDTO'
+                $ref: '#/components/schemas/PaymentIntentDTO'
 components:
   securitySchemes:
     staff:
