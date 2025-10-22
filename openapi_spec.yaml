@@ -323,7 +323,7 @@ components:
 
   schemas:
     CreatePaymentIntentDTO:
-      required: [amount]
+      required: [amountCents]
       properties:
         amountCents:
           type: integer
