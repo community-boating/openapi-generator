@@ -313,8 +313,8 @@ components:
     CreatePaymentIntentDTO:
       required: [amount]
       properties:
-        amount:
-          type: number
+        amountCents:
+          type: integer
     PaymentIntentDTO:
       required: [clientSecret]
       properties:
