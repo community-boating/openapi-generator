@@ -280,11 +280,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClassSignupResponseDTO'
-  /stripe/constants:
+  /stripe/paymentTest:
     get:
-      description: 'Returns stripe constants'
+      description: 'Creates test payment intent'
       tags:
         - Stripe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassSignupRequestDTO'
       responses:
         '200':
           description: Successfully returns the stripe constants
@@ -304,6 +310,16 @@ components:
       bearerFormat: JWT
 
   schemas:
+    CreatePaymentIntentDTO:
+      required: [amount]
+      properties:
+        amount:
+          type: number
+    PaymentIntentDTO:
+      required: [clientSecret]
+      properties:
+        clientSecret:
+          type: string
     StripeConstantsDTO:
       required: [publicKey, account, apiVersion, locale]
       properties:
