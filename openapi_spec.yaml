@@ -778,6 +778,9 @@ components:
         stripeTransaction:
           nullable: true
           $ref: '#/components/schemas/StripeTransactionDTO'
+        BalanceTransaction:
+          nullable: true
+          $ref: '#/components/schemas/BalanceTransactionDTO'
 
     StripeTransactionDTO:
       required: [id, stripePaymentIntent, transactionAmountCents]
