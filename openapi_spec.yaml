@@ -329,6 +329,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderPaymentDTO'
+  /paymentTest:
+    post:
+      description: 'Creates test payment intent'
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                type: string
 components:
   securitySchemes:
     staff:
