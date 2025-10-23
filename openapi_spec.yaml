@@ -747,6 +747,9 @@ components:
           readOnly: true
           type: integer
           format: int64
+        amountPendingCents:
+          readOnly: true
+          format: int64
         amountPaidCents:
           readOnly: true
           type: integer
