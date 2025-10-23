@@ -333,7 +333,7 @@ paths:
     post:
       description: 'Creates test payment intent'
       tags:
-        - Payment
+        - Stripe
       responses:
         '200':
           description: Returns payment intent
