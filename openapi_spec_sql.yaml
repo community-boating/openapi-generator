@@ -198,7 +198,7 @@ components:
           type: boolean
         catalogId:
           $ref: '#/components/schemas/Catalog'
-
+    
     OrderTax:
       required: [id, tax, order]
       properties:

@@ -331,6 +331,8 @@ paths:
                 $ref: '#/components/schemas/OrderPaymentDTO'
   /stripe/paymentTest:
     post:
+      security:
+        - member: []
       description: 'Creates test payment intent'
       tags:
         - Stripe
