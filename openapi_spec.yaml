@@ -342,7 +342,7 @@ paths:
           content:
             application/json:
               schema:
-                type: string
+                $ref: '#/components/schemas/PaymentTestDTO'
 components:
   securitySchemes:
     staff:
@@ -355,6 +355,12 @@ components:
       bearerFormat: JWT
 
   schemas:
+    PaymentTestDTO:
+      properties:
+        clientSecret:
+          type: string
+        sessionClientSecret:
+          type: string
     StripeConstantsDTO:
       required: [publicKey, account, apiVersion, locale]
       properties:
@@ -801,6 +807,8 @@ components:
           format: int64
         payment:
           $ref: '#/components/schemas/OrderPaymentDTO'
+        saveCard:
+          type: boolean
     OrderPaymentDTO:
       type: object
       properties:
