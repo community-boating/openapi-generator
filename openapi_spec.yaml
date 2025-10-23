@@ -591,10 +591,10 @@ components:
           type: boolean
         startActive:
           type: string
-          format: date-time
+          format: date
         endActive:
           type: string
-          format: date-time
+          format: date
     CatalogItemInstanceDTO:
       type: object
       properties:
