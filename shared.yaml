@@ -111,3 +111,9 @@ components:
         - 'CARD_KEYED'
         - 'CARD_READER'
         - 'WALLET'
+    CategoryType:
+      type: string
+      enum:
+        - 'ITEM'
+        - 'DISCOUNT'
+        - 'SHARED'

@@ -77,6 +77,18 @@ components:
         catalogId:
           $ref: '#/components/schemas/Catalog'
 
+    DiscountCategory:
+      required: [id, discountId]
+      properties:
+        id:
+          type: integer
+          format: int64
+        discountId:
+          $ref: '#/components/schemas/Discount'
+        categoryId:
+          $ref: '#/components/schemas/Category'
+
+
     ItemCategory:
       required: [id, item, categoryId]
       properties:
@@ -100,6 +112,8 @@ components:
         description:
           type: string
           maxLength: 500
+        categoryType:
+          $ref: './shared.yaml#/components/schemas/CategoryType'
         catalogId:
           $ref: '#/components/schemas/Catalog'
 
@@ -272,16 +286,32 @@ components:
           $ref: '#/components/schemas/Item'
         discountType:
           $ref: './shared.yaml#/components/schemas/DiscountType'
-        instanceId:
-          type: integer
         amountCents:
           type: integer
           format: int64
+        
         percent:
           type: string
         discountId:
           $ref: '#/components/schemas/Discount'
+    PaymentSource:
+      properties:
+        id:
+          type: integer
+          format: int64
+        personId:
+          $ref: '#/components/schemas/Person'
+        paymentType:
+          $ref: './shared.yaml#/components/schemas/PaymentType'
+        stripePaymentSource:
+          type: string
+          maxLength: 500
+        balanceSource:
+          $ref: '#/components/schemas/Balance'
+        active:
+          type: boolean
 
+        
     OrderPayment:
       required: [id, orderId, paymentType, paymentSource, paymentAmountCents, paymentStatus]
       properties:
@@ -439,7 +469,7 @@ components:
         cyclePriceOverrideCents:
           type: integer
           format: int64
-
+    
     MembershipType:
       x-already-exists: true
       required: [id]

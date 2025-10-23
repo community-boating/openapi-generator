@@ -533,6 +533,17 @@ components:
         taxMinValueCents:
           type: integer
           format: int64
+    CatalogDiscountCategoryDTO:
+      required: [discountId]
+      properties:
+        assignId:
+          type: integer
+          format: int64
+        categoryId:
+          type: integer
+          format: int64
+        categoryType:
+          $ref: './shared.yaml#/components/schemas/CategoryType'
     CatalogCategoryDTO:
       properties:
         assignId:
@@ -549,9 +560,16 @@ components:
       properties:
         discountId:
           type: integer
+        categoryId:
+          type: integer
+          format: int64
         discountName:
           type: string
           maxLength: 100
+        categories:
+          type: array
+          items:
+            $ref: '#/components/schemas/CatalogDiscountCategoryDTO'
         instances:
           type: array
           items:
