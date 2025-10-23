@@ -11,12 +11,18 @@ paths:
   /paths/test:
     get:
       parameters:
-        - in: path
+        - in: query
           name: id # Note the name is the same as in the path
           required: true
           schema:
             type: integer
             minimum: 1
+        - in: header
+          name: iderd # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1 
       responses:
         '200':
           description: User details
