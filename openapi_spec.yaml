@@ -310,6 +310,9 @@ paths:
                 $ref: '#/components/schemas/StripeConstantsDTO'
   /payment:
     post:
+      security:
+        - staff: []
+        - member: []
       description: 'Creates test payment intent'
       tags:
         - Payment
@@ -318,7 +321,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrderPaymentDTO'
+              $ref: '#/components/schemas/CreateOrderPaymentDTO'
       responses:
         '200':
           description: Returns payment intent
@@ -774,6 +777,15 @@ components:
           readOnly: true
           items:
             $ref: '#/components/schemas/OrderPaymentDTO'
+    CreateOrderPaymentDTO:
+      type: object
+      required: [orderId, payment]
+      properties:
+        orderId:
+          type: integer
+          format: int64
+        payment:
+          $ref: '#/components/schemas/OrderPaymentDTO'
     OrderPaymentDTO:
       type: object
       properties:
