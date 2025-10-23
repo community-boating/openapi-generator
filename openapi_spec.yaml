@@ -329,7 +329,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderPaymentDTO'
-  /paymentTest:
+  /stripe/paymentTest:
     post:
       description: 'Creates test payment intent'
       tags:
