@@ -556,13 +556,10 @@ components:
           type: string
           maxLength: 500
     CatalogDiscountDTO:
-      required: [discountId]
+      required: [discountName]
       properties:
         discountId:
           type: integer
-        categoryId:
-          type: integer
-          format: int64
         discountName:
           type: string
           maxLength: 100
