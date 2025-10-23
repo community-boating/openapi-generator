@@ -308,24 +308,24 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripeConstantsDTO'
-  /stripe/paymentTest:
+  /payment:
     post:
       description: 'Creates test payment intent'
       tags:
-        - Stripe
+        - Payment
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CreatePaymentIntentDTO'
+              $ref: '#/components/schemas/OrderPaymentDTO'
       responses:
         '200':
           description: Returns payment intent
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentIntentDTO'
+                $ref: '#/components/schemas/OrderPaymentDTO'
 components:
   securitySchemes:
     staff:
@@ -338,17 +338,6 @@ components:
       bearerFormat: JWT
 
   schemas:
-    CreatePaymentIntentDTO:
-      required: [amountCents]
-      properties:
-        amountCents:
-          type: integer
-          format: int64
-    PaymentIntentDTO:
-      required: [clientSecret]
-      properties:
-        clientSecret:
-          type: string
     StripeConstantsDTO:
       required: [publicKey, account, apiVersion, locale]
       properties:
@@ -361,6 +350,30 @@ components:
         locale:
           type: string
         
+    CashTransaction:
+      required: [id, cashDrawerId, transactionAmountCents]
+      properties:
+        id:
+          type: integer
+          format: int64
+        cashDrawerId:
+          type: integer
+        transactionAmountCents:
+          type: integer
+          format: int64
+        cashDrawerChange:
+          $ref: '#/components/schemas/CashDrawersChangeDTO'
+    CashDrawersChangeDTO:
+      required: [id, changeType, changeAmountCents]
+      properties:
+        id:
+          type: integer
+        changeType:
+          type: string
+          maxLength: 50
+        changeAmountCents:
+          type: integer
+          format: int64
     BalanceTransactionDTO:
       required: [id, balanceId, transactionAmountCents]
       properties:
@@ -807,7 +820,7 @@ components:
         taxId:
           type: integer
           format: int64
-        taxAmountCents:
+        amountCents:
           type: integer
           format: int64
     LineItemDTO:
@@ -836,14 +849,6 @@ components:
           type: integer
           format: int64
         amountDiscountsCents:
-          readOnly: true
-          type: integer
-          format: int64
-        amountTaxesCents:
-          readOnly: true
-          type: integer
-          format: int64
-        amountTotalCents:
           readOnly: true
           type: integer
           format: int64
@@ -891,7 +896,7 @@ components:
           format: int64
         specifiedPercent:
           type: string
-        calculatedCents:
+        amountCents:
           type: integer
           format: int64
     PurchaseStockedItemDTO:

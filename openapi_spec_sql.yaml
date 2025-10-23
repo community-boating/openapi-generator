@@ -153,18 +153,14 @@ components:
         subscriptionId:
           $ref: '#/components/schemas/PersonSubscription'
         amountBaseCents:
+          readOnly: true
+          type: integer
+          format: int64
+        amountSpecifiedCents:
           type: integer
           format: int64
         amountDiscountsCents:
-          type: integer
-          format: int64
-        amountTaxesCents:
-          type: integer
-          format: int64
-        amountTotalCents:
-          type: integer
-          format: int64
-        amountPaidCents:
+          readOnly: true
           type: integer
           format: int64
           
@@ -213,7 +209,7 @@ components:
           $ref: '#/components/schemas/Tax'
         order:
           $ref: '#/components/schemas/OrderNew'
-        calculatedCents:
+        amountCents:
           type: integer
           format: int64
 
@@ -235,7 +231,7 @@ components:
         specifiedPercent:
           type: string
           format: int64
-        calculatedCents:
+        amountCents:
           type: integer
           format: int64
 
@@ -276,14 +272,13 @@ components:
           $ref: '#/components/schemas/Item'
         discountType:
           $ref: './shared.yaml#/components/schemas/DiscountType'
-        specifiedCents:
+        instanceId:
+          type: integer
+        amountCents:
           type: integer
           format: int64
-        specifiedPercent:
+        percent:
           type: string
-        calculatedCents:
-          type: integer
-          format: int64
         discountId:
           $ref: '#/components/schemas/Discount'
 
