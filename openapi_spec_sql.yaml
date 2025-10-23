@@ -70,8 +70,10 @@ components:
           type: boolean
         priceOverrideMin:
           type: integer
+          format: int64
         priceOverrideMax:
           type: integer
+          format: int64
         catalogId:
           $ref: '#/components/schemas/Catalog'
 
@@ -111,6 +113,7 @@ components:
           $ref: '#/components/schemas/Item'
         priceCents:
           type: integer
+          format: int64
         startActive:
           type: string
           format: date-time
@@ -149,12 +152,21 @@ components:
           $ref: '#/components/schemas/ItemInstance'
         subscriptionId:
           $ref: '#/components/schemas/PersonSubscription'
-        amountSpecifiedCents:
-          type: integer
         amountBaseCents:
           type: integer
-        amountAfterDiscountCents:
+          format: int64
+        amountDiscountsCents:
           type: integer
+          format: int64
+        amountTaxesCents:
+          type: integer
+          format: int64
+        amountTotalCents:
+          type: integer
+          format: int64
+        amountPaidCents:
+          type: integer
+          format: int64
           
 
     ItemTax:
@@ -185,6 +197,7 @@ components:
           maxLength: 200
         taxMinValueCents:
           type: integer
+          format: int64
         taxBeforeDiscount:
           type: boolean
         catalogId:
@@ -202,6 +215,7 @@ components:
           $ref: '#/components/schemas/OrderNew'
         calculatedCents:
           type: integer
+          format: int64
 
     LineItemDiscountInstance:
       required: [id, lineItemId, discountInstanceId, discountType]
@@ -217,10 +231,13 @@ components:
           $ref: './shared.yaml#/components/schemas/DiscountType'
         specifiedCents:
           type: integer
+          format: int64
         specifiedPercent:
           type: string
+          format: int64
         calculatedCents:
           type: integer
+          format: int64
 
     OrderNew:
       type: object
@@ -229,8 +246,21 @@ components:
         id:
           type: integer
           format: int64
-        orderAmountPaid:
+        amountBaseCents:
           type: integer
+          format: int64
+        amountDiscountsCents:
+          type: integer
+          format: int64
+        amountTaxesCents:
+          type: integer
+          format: int64
+        amountTotalCents:
+          type: integer
+          format: int64
+        amountPaidCents:
+          type: integer
+          format: int64
         orderStatus:
           $ref: './shared.yaml#/components/schemas/OrderStatusNew'
         personId:
@@ -246,10 +276,14 @@ components:
           $ref: '#/components/schemas/Item'
         discountType:
           $ref: './shared.yaml#/components/schemas/DiscountType'
-        amountCents:
+        specifiedCents:
           type: integer
-        percent:
+          format: int64
+        specifiedPercent:
           type: string
+        calculatedCents:
+          type: integer
+          format: int64
         discountId:
           $ref: '#/components/schemas/Discount'
 
@@ -268,6 +302,7 @@ components:
           maxLength: 100
         paymentAmountCents:
           type: integer
+          format: int64
         paymentStatus:
           $ref: './shared.yaml#/components/schemas/PaymentStatus'
         paymentDueDate:
@@ -288,6 +323,7 @@ components:
           $ref: '#/components/schemas/OrderPayment'
         transactionAmountCents:
           type: integer
+          format: int64
         purchasableState:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
         lineItemId:
@@ -308,6 +344,7 @@ components:
           minLength: 64
         balanceCents:
           type: integer
+          format: int64
         balanceType:
           $ref: './shared.yaml#/components/schemas/BalanceType'
         balanceOwner:
@@ -326,6 +363,7 @@ components:
           maxLength: 500
         transactionAmountCents:
           type: integer
+          format: int64
         paymentId:
           $ref: '#/components/schemas/OrderPayment'
 
@@ -338,7 +376,8 @@ components:
         cashDrawerId:
           $ref: '#/components/schemas/CashDrawer'
         transactionAmountCents:
-          type: string
+          type: integer
+          format: int64
         paymentId:
           $ref: '#/components/schemas/OrderPayment'
         cashDrawerChangeId:
@@ -354,7 +393,7 @@ components:
           maxLength: 50
         changeAmountCents:
           type: integer
-
+          format: int64
     ClassType:
       x-already-exists: true
       required: [id]
@@ -404,6 +443,7 @@ components:
           $ref: '#/components/schemas/Item'
         cyclePriceOverrideCents:
           type: integer
+          format: int64
 
     MembershipType:
       x-already-exists: true

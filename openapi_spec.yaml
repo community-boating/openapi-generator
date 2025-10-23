@@ -595,8 +595,10 @@ components:
           type: boolean
         priceOverrideMin:
           type: integer
+          format: int64
         priceOverrideMax:
           type: integer
+          format: int64
         itemInstances:
           type: array
           items:
@@ -792,6 +794,7 @@ components:
         transactionAmountCents:
           readOnly: true
           type: integer
+          format: int64
     OrderTaxDTO:
       type: object
       properties:
