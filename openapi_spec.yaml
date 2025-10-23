@@ -343,6 +343,7 @@ components:
       properties:
         amountCents:
           type: integer
+          format: int64
     PaymentIntentDTO:
       required: [clientSecret]
       properties:
@@ -373,6 +374,7 @@ components:
           format: int64
         transactionAmountCents:
           type: integer
+          format: int64
         purchasableState:
           readOnly: true
           allOf:
@@ -395,6 +397,7 @@ components:
           minLength: 64
         balanceCents:
           type: integer
+          format: int64
         balanceType:
           $ref: './shared.yaml#/components/schemas/BalanceType'
         balanceOwner:
@@ -491,6 +494,7 @@ components:
           type: boolean
         taxMinValueCents:
           type: integer
+          format: int64
     CatalogCategoryDTO:
       properties:
         assignId:
@@ -522,6 +526,7 @@ components:
           type: integer
         amountCents:
           type: integer
+          format: int64
         percent:
           type: string
         autoApply:
@@ -544,6 +549,7 @@ components:
           format: int64
         priceCents:
           type: integer
+          format: int64
           example: 12
         startActive:
           type: string
@@ -587,6 +593,10 @@ components:
           type: integer
         allowPriceOverride:
           type: boolean
+        priceOverrideMin:
+          type: integer
+        priceOverrideMax:
+          type: integer
         itemInstances:
           type: array
           items:
@@ -612,6 +622,7 @@ components:
           $ref: './shared.yaml#/components/schemas/DiscountType'
         amountCents:
           type: integer
+          format: int64
         percent:
           type: string
         discountId:
@@ -675,6 +686,7 @@ components:
           format: int64
         cyclePriceOverrideCents:
           type: integer
+          format: int64
     OrderWithDiscountsDTO:
       type: object
       properties:
@@ -702,14 +714,26 @@ components:
           type: integer
           format: int64
           example: 12
-        orderComputedCents:
-          type: integer
-          example: 1222
+        amountBaseCents:
           readOnly: true
-        orderAmountPaid:
           type: integer
-          example: 122
+          format: int64
+        amountDiscountsCents:
           readOnly: true
+          type: integer
+          format: int64
+        amountTaxesCents:
+          readOnly: true
+          type: integer
+          format: int64
+        amountTotalCents:
+          readOnly: true
+          type: integer
+          format: int64
+        amountPaidCents:
+          readOnly: true
+          type: integer
+          format: int64
         status:
           $ref: './shared.yaml#/components/schemas/OrderStatusNew'
           readOnly: true
@@ -749,6 +773,9 @@ components:
           nullable: true
           type: string
           format: date-time
+        stripeTransaction:
+          nullable: true
+          $ref: '#/components/schemas/StripeTransactionDTO'
 
     StripeTransactionDTO:
       required: [id, stripePaymentIntent, transactionAmountCents]
@@ -760,8 +787,10 @@ components:
           $ref: './shared.yaml#/components/schemas/StripeTransactionType'
         stripePaymentIntent:
           type: string
+          readOnly: true
           maxLength: 500
         transactionAmountCents:
+          readOnly: true
           type: integer
     OrderTaxDTO:
       type: object
@@ -774,6 +803,7 @@ components:
           format: int64
         taxAmountCents:
           type: integer
+          format: int64
     LineItemDTO:
       type: object
       properties:
@@ -792,15 +822,25 @@ components:
           nullable: true
           type: integer
           format: int64
-        amountSpecifiedCents:
-          readOnly: true
-          type: integer
         amountBaseCents:
           readOnly: true
           type: integer
-        amountAfterDiscountCents:
+          format: int64
+        amountSpecifiedCents:
+          type: integer
+          format: int64
+        amountDiscountsCents:
           readOnly: true
           type: integer
+          format: int64
+        amountTaxesCents:
+          readOnly: true
+          type: integer
+          format: int64
+        amountTotalCents:
+          readOnly: true
+          type: integer
+          format: int64
         classSignup:
           nullable: true
           $ref: '#/components/schemas/PurchaseClassSignupDTO'
@@ -842,10 +882,12 @@ components:
           $ref: './shared.yaml#/components/schemas/DiscountType'
         specifiedCents:
           type: integer
+          format: int64
         specifiedPercent:
           type: string
         calculatedCents:
           type: integer
+          format: int64
     PurchaseStockedItemDTO:
       properties:
         assignId:
@@ -1018,6 +1060,7 @@ components:
           $ref: '#/components/schemas/BalanceDTO'
         transactionAmountCents:
           type: integer
+          format: int64
         purchasableState:
           readOnly: true
           allOf:

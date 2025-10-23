@@ -68,6 +68,10 @@ components:
           type: integer
         allowPriceOverride:
           type: boolean
+        priceOverrideMin:
+          type: integer
+        priceOverrideMax:
+          type: integer
         catalogId:
           $ref: '#/components/schemas/Catalog'
 
