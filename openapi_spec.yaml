@@ -8,6 +8,22 @@ servers:
   - url: https://api.example.com
 
 paths:
+  /paths/test:
+    get:
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/UserTest'
   /users/me/{id}/{test}:
     get:
       summary: Get current user
