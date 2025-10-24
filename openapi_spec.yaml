@@ -545,6 +545,7 @@ components:
         categoryType:
           $ref: './shared.yaml#/components/schemas/CategoryType'
     CatalogCategoryDTO:
+      required: [categoryName, description]
       properties:
         assignId:
           type: integer
@@ -552,6 +553,8 @@ components:
         categoryName:
           type: string
           maxLength: 200
+        categoryType:
+          $ref: './shared.yaml#/components/schemas/CategoryType'
         description:
           type: string
           maxLength: 500
