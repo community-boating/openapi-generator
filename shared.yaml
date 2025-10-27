@@ -47,6 +47,7 @@ components:
       enum:
         - 'VARIABLE_AMOUNT'
         - 'VARIABLE_PERCENT'
+        - 'VARIABLE'
         - 'FIXED_AMOUNT'
         - 'FIXED_PERCENT'
     OrderStatusNew:
