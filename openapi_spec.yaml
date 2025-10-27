@@ -801,6 +801,10 @@ components:
           readOnly: true
           type: integer
           format: int64
+        amountToRefundCents:
+          readOnly: true
+          type: integer
+          format: int64
         amountPaidCents:
           readOnly: true
           type: integer
