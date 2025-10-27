@@ -276,7 +276,7 @@ components:
           type: integer
           format: int64
         orderStatus:
-          $ref: './shared.yaml#/components/schemas/OrderStatusNew'
+          $ref: './shared.yaml#/components/schemas/OrderStateNew'
         personId:
           $ref: '#/components/schemas/Person'
 

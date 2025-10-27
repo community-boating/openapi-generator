@@ -50,13 +50,14 @@ components:
         - 'VARIABLE'
         - 'FIXED_AMOUNT'
         - 'FIXED_PERCENT'
-    OrderStatusNew:
+    OrderStateNew:
       type: string
       enum:
         - 'OPEN'
         - 'PROCESSED'
         - 'PROCESSING'
         - 'REFUNDED'
+        - 'PARTIALLY_REFUNDED'
     StockChangeType:
       type: string
       enum:
