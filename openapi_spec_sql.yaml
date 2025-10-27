@@ -62,6 +62,10 @@ components:
         imageURL:
           type: string
           maxLength: 200
+        itemSKU:
+          nullable: true
+          type: string
+          maxLength: 500
         minQuantity:
           type: integer
         maxQuantity:

@@ -644,6 +644,10 @@ components:
           nullable: true
           type: string
           maxLength: 200
+        itemSKU:
+          nullable: true
+          type: string
+          maxLength: 500
         maxQuantity:
           type: integer
         minQuantity:
@@ -790,6 +794,10 @@ components:
           type: integer
           format: int64
         amountPendingCents:
+          readOnly: true
+          type: integer
+          format: int64
+        amountRefundedCents:
           readOnly: true
           type: integer
           format: int64
