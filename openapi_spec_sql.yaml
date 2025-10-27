@@ -332,6 +332,9 @@ components:
         paymentAmountCents:
           type: integer
           format: int64
+        paymentAmountRefunded:
+          type: integer
+          format: int64
         paymentStatus:
           $ref: './shared.yaml#/components/schemas/PaymentStatus'
         paymentDueDate:

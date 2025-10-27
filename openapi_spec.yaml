@@ -848,6 +848,10 @@ components:
         paymentAmountCents:
           nullable: false
           type: integer
+          format: int64
+        paymentAmountRefunded:
+          type: integer
+          format: int64
         paymentStatus:
           nullable: false
           $ref: './shared.yaml#/components/schemas/PaymentStatus'
