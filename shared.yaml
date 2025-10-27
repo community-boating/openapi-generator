@@ -75,8 +75,6 @@ components:
         - 'GIFT_CARD_LOAD'
         - 'ADD_MANUAL'
         - 'REMOVE_MANUAL'
-    newTest:
-      type: string
     ClassType:
       type: string
       enum:
