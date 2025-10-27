@@ -49,6 +49,8 @@ components:
           $ref: './shared.yaml#/components/schemas/ItemType'
         classTypeId:
           $ref: '#/components/schemas/ClassType'
+        classInstanceId:
+          $ref: '#/components/schemas/ClassInstance'
         membershipTypeId:
           $ref: '#/components/schemas/MembershipType'
         productId:
@@ -217,19 +219,28 @@ components:
         catalogId:
           $ref: '#/components/schemas/Catalog'
     
-    OrderTax:
-      required: [id, tax, order]
+    OrderItemTax:
+      required: [id, taxId, lineItem]
       properties:
         id:
           type: integer
           format: int64
         taxId:
           $ref: '#/components/schemas/Tax'
-        order:
-          $ref: '#/components/schemas/OrderNew'
+        lineItem:
+          $ref: '#/components/schemas/LineItem'
         amountCents:
           type: integer
           format: int64
+        amountRefunded:
+          type: integer
+          format: int64
+        taxableAmount:
+          type: integer
+          format: int64
+        taxRateUsed:
+          type: string
+          maxLength: 200
 
     LineItemDiscountInstance:
       required: [id, lineItemId, discountInstanceId, discountType]
@@ -431,6 +442,13 @@ components:
       required: [id]
       properties:
         id:
+          type: integer
+
+    ClassInstance:
+      x-already-exists: true
+      required: [id]
+      properties:
+        instanceId:
           type: integer
 
     PersonSubscription:

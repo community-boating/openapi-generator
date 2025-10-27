@@ -626,6 +626,9 @@ components:
         classTypeId:
           nullable: true
           type: integer
+        classInstanceId:
+          nullable: true
+          type: integer
         membershipTypeId:
           nullable: true
           type: integer
@@ -832,11 +835,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LineItemDTO'
-        appliedTaxes:
-          type: array
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/OrderTaxDTO'
         orderPayments:
           type: array
           readOnly: true
@@ -899,7 +897,7 @@ components:
           readOnly: true
           type: integer
           format: int64
-    OrderTaxDTO:
+    OrderItemTaxDTO:
       type: object
       properties:
         assignId:
@@ -911,6 +909,15 @@ components:
         amountCents:
           type: integer
           format: int64
+        amountRefunded:
+          type: integer
+          format: int64
+        taxableAmount:
+          type: integer
+          format: int64
+        taxRateUsed:
+          type: string
+          maxLength: 200
     LineItemDTO:
       type: object
       properties:
@@ -968,6 +975,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LineItemDiscountDTO'
+        appliedTaxes:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/OrderItemTaxDTO'
     LineItemDiscountDTO:
       properties:
         assignId:
