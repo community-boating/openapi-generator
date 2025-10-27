@@ -778,38 +778,47 @@ components:
           format: int64
           example: 12
         amountBaseCents:
+          description: Total of all items before discounts
           readOnly: true
           type: integer
           format: int64
         amountDiscountsCents:
+          description: Total of all discounts applied
           readOnly: true
           type: integer
           format: int64
         amountTaxesCents:
+          description: Total of all taxes applied
           readOnly: true
           type: integer
           format: int64
         amountTotalCents:
+          description: Total of all items with discounts and taxes
           readOnly: true
           type: integer
           format: int64
         amountPendingCents:
+          description: Total of all pending payments
           readOnly: true
           type: integer
           format: int64
         amountRefundedCents:
+          description: Total of all refunded payments
           readOnly: true
           type: integer
           format: int64
         amountToRefundCents:
+          description: Total of all refunded items
           readOnly: true
           type: integer
           format: int64
         amountToPayCents:
+          description: Total of all non-refunded items
           readOnly: true
           type: integer
           format: int64
         amountPaidCents:
+          description: Total of all successful payments
           readOnly: true
           type: integer
           format: int64
