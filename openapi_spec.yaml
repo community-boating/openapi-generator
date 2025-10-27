@@ -805,6 +805,10 @@ components:
           readOnly: true
           type: integer
           format: int64
+        amountToPayCents:
+          readOnly: true
+          type: integer
+          format: int64
         amountPaidCents:
           readOnly: true
           type: integer
