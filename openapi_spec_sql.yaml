@@ -181,14 +181,16 @@ components:
           description: Specified cost of a single unit of this line item(For catalog items that support variable pricing)
           type: integer
           format: int64
-        amountDiscountsCents:
+        amountDiscountsBaseCents:
           description: Total value (in cents) of all discounts applied to this line item
-          readOnly: true
+          type: integer
+          format: int64
+        amountDiscountsTotalCents:
+          description: Total value (in cents) of all discounts applied to this line item
           type: integer
           format: int64
         amountTotalCents:
           description: Base price of line item times quantity minus value of all discounts (in cents)
-          readOnly: true
           type: integer
           format: int64
         amountToRefundCents:
@@ -197,12 +199,10 @@ components:
           format: int64
         amountRefundedCents:
           description: Amount of money successfully refunded
-          readOnly: true
           type: integer
           format: int64
         amountPaidCents:
           description: Amount of money successfully paid
-          readOnly: true
           type: integer
           format: int64
 
@@ -284,7 +284,10 @@ components:
         specifiedPercent:
           type: string
           format: int64
-        amountCents:
+        amountBaseCents:
+          type: integer
+          format: int64
+        amountTotalCents:
           type: integer
           format: int64
 
@@ -328,7 +331,6 @@ components:
         amountCents:
           type: integer
           format: int64
-        
         percent:
           type: string
         discountId:

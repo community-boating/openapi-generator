@@ -965,8 +965,13 @@ components:
           description: Specified cost of a single unit of this line item(For catalog items that support variable pricing)
           type: integer
           format: int64
-        amountDiscountsCents:
-          description: Total value (in cents) of all discounts applied to this line item
+        amountDiscountsBaseCents:
+          description: Total value (in cents) of all discounts applied to a single unit of this line item
+          readOnly: true
+          type: integer
+          format: int64
+        amountDiscountsTotalCents:
+          description: Total value (in cents) of all discounts applied to all units of this line item
           readOnly: true
           type: integer
           format: int64
@@ -1034,7 +1039,12 @@ components:
           format: int64
         specifiedPercent:
           type: string
-        amountCents:
+        amountBaseCents:
+          readOnly: true
+          type: integer
+          format: int64
+        amountTotalCents:
+          readOnly: true
           type: integer
           format: int64
     PurchaseStockedItemDTO:
