@@ -869,7 +869,7 @@ components:
           readOnly: true
           type: integer
           format: int64
-        paymentDueCents:
+        paymentTotalCents:
           type: integer
           format: int64
         paymentRefundedCents:
@@ -918,7 +918,7 @@ components:
         taxId:
           type: integer
           format: int64
-        amountDueCents:
+        amountTotalCents:
           readOnly: true
           type: integer
           format: int64
@@ -1023,6 +1023,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LineItemDiscountDTO'
+        refunds:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemRefundDTO'
     LineItemDiscountDTO:
       properties:
         assignId:
@@ -1047,6 +1051,42 @@ components:
           readOnly: true
           type: integer
           format: int64
+    LineItemRefundDTO:
+      properties:
+        assignId:
+          type: integer
+          format: int64
+        amountToRefundUnitCents:
+          type: integer
+          format: int64
+        amountToRefundTotalCents:
+          readOnly: true
+          type: integer
+          format: int64
+        amountRefundedCents:
+          readOnly: true
+          type: integer
+          format: int64
+        refundQuantity:
+          type: integer
+        revokeAfter:
+          type: boolean
+        revokeDuring:
+          type: boolean
+        includeTaxes:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemRefundTaxDTO'
+    LineItemRefundTaxDTO:
+      required: [taxId]
+      properties:
+        assignId:
+          type: integer
+          format: int64
+        taxId:
+          type: integer
+          format: int64
+        
     PurchaseStockedItemDTO:
       properties:
         assignId:

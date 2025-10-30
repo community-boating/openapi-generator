@@ -181,28 +181,39 @@ components:
           description: Specified cost of a single unit of this line item(For catalog items that support variable pricing)
           type: integer
           format: int64
-        amountDiscountsBaseCents:
-          description: Total value (in cents) of all discounts applied to this line item
+        amountPaidCents:
+          description: Amount of money successfully paid
           type: integer
           format: int64
-        amountDiscountsTotalCents:
-          description: Total value (in cents) of all discounts applied to this line item
+
+    LineItemRefund:
+      properties:
+        assignId:
           type: integer
           format: int64
-        amountTotalCents:
-          description: Base price of line item times quantity minus value of all discounts (in cents)
-          type: integer
-          format: int64
-        amountToRefundCents:
-          description: Amount of money to refund (in cents)
+        lineItemId:
+          $ref: '#/components/schemas/LineItem'
+        amountToRefundUnitCents:
           type: integer
           format: int64
         amountRefundedCents:
-          description: Amount of money successfully refunded
           type: integer
           format: int64
-        amountPaidCents:
-          description: Amount of money successfully paid
+        refundQuantity:
+          type: integer
+        revokeAfter:
+          type: boolean
+        revokeDuring:
+          type: boolean
+    LineItemRefundTax:
+      required: [taxId]
+      properties:
+        assignId:
+          type: integer
+          format: int64
+        lineItemRefundId:
+          $ref: '#/components/schemas/LineItemRefund'
+        taxId:
           type: integer
           format: int64
 
@@ -250,7 +261,7 @@ components:
           $ref: '#/components/schemas/Tax'
         order:
           $ref: '#/components/schemas/OrderNew'
-        amountDueCents:
+        amountTotalCents:
           type: integer
           format: int64
         amountPaidCents:
@@ -369,7 +380,7 @@ components:
         paymentPaidCents:
           type: integer
           format: int64
-        paymentDueCents:
+        paymentTotalCents:
           type: integer
           format: int64
         paymentRefundedCents:
