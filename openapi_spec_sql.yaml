@@ -173,17 +173,38 @@ components:
         subscriptionId:
           $ref: '#/components/schemas/PersonSubscription'
         amountBaseCents:
+          description: Base cost of a single unit of this line item (From catalog or amount specified, if allowed)
           readOnly: true
           type: integer
           format: int64
         amountSpecifiedCents:
+          description: Specified cost of a single unit of this line item(For catalog items that support variable pricing)
           type: integer
           format: int64
         amountDiscountsCents:
+          description: Total value (in cents) of all discounts applied to this line item
           readOnly: true
           type: integer
           format: int64
-          
+        amountTotalCents:
+          description: Base price of line item times quantity minus value of all discounts (in cents)
+          readOnly: true
+          type: integer
+          format: int64
+        amountToRefundCents:
+          description: Amount of money to refund (in cents)
+          type: integer
+          format: int64
+        amountRefundedCents:
+          description: Amount of money successfully refunded
+          readOnly: true
+          type: integer
+          format: int64
+        amountPaidCents:
+          description: Amount of money successfully paid
+          readOnly: true
+          type: integer
+          format: int64
 
     ItemTax:
       required: [id, itemId, taxId]
@@ -219,23 +240,26 @@ components:
         catalogId:
           $ref: '#/components/schemas/Catalog'
     
-    OrderItemTax:
-      required: [id, taxId, lineItem]
+    OrderTax:
+      required: [id, taxId, orderNew]
       properties:
         id:
           type: integer
           format: int64
         taxId:
           $ref: '#/components/schemas/Tax'
-        lineItem:
-          $ref: '#/components/schemas/LineItem'
-        amountCents:
+        order:
+          $ref: '#/components/schemas/OrderNew'
+        amountDueCents:
           type: integer
           format: int64
-        amountRefunded:
+        amountPaidCents:
           type: integer
           format: int64
-        taxableAmount:
+        amountRefundedCents:
+          type: integer
+          format: int64
+        amountToRefundCents:
           type: integer
           format: int64
         taxRateUsed:
@@ -340,10 +364,16 @@ components:
         paymentSource:
           type: string
           maxLength: 100
-        paymentAmountCents:
+        paymentPaidCents:
           type: integer
           format: int64
-        paymentAmountRefunded:
+        paymentDueCents:
+          type: integer
+          format: int64
+        paymentRefundedCents:
+          type: integer
+          format: int64
+        paymentToRefundCents:
           type: integer
           format: int64
         paymentStatus:
@@ -448,7 +478,7 @@ components:
       x-already-exists: true
       required: [id]
       properties:
-        instanceId:
+        id:
           type: integer
 
     PersonSubscription:

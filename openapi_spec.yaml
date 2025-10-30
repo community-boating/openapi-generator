@@ -835,6 +835,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LineItemDTO'
+        appliedTaxes:
+          type: array
+          readOnly: true
+          items:
+            $ref: '#/components/schemas/OrderTaxDTO'
         orderPayments:
           type: array
           readOnly: true
@@ -860,11 +865,18 @@ components:
         paymentType:
           nullable: false
           $ref: './shared.yaml#/components/schemas/PaymentType'
-        paymentAmountCents:
-          nullable: false
+        paymentPaidCents:
+          readOnly: true
           type: integer
           format: int64
-        paymentAmountRefunded:
+        paymentDueCents:
+          type: integer
+          format: int64
+        paymentRefundedCents:
+          readOnly: true
+          type: integer
+          format: int64
+        paymentToRefundCents:
           type: integer
           format: int64
         paymentStatus:
@@ -897,7 +909,7 @@ components:
           readOnly: true
           type: integer
           format: int64
-    OrderItemTaxDTO:
+    OrderTaxDTO:
       type: object
       properties:
         assignId:
@@ -906,16 +918,24 @@ components:
         taxId:
           type: integer
           format: int64
-        amountCents:
+        amountDueCents:
+          readOnly: true
           type: integer
           format: int64
-        amountRefunded:
+        amountPaidCents:
+          readOnly: true
           type: integer
           format: int64
-        taxableAmount:
+        amountToRefundCents:
+          readOnly: true
+          type: integer
+          format: int64
+        amountRefundedCents:
+          readOnly: true
           type: integer
           format: int64
         taxRateUsed:
+          readOnly: true
           type: string
           maxLength: 200
     LineItemDTO:
@@ -937,13 +957,36 @@ components:
           type: integer
           format: int64
         amountBaseCents:
+          description: Base cost of a single unit of this line item (From catalog or amount specified, if allowed)
           readOnly: true
           type: integer
           format: int64
         amountSpecifiedCents:
+          description: Specified cost of a single unit of this line item(For catalog items that support variable pricing)
           type: integer
           format: int64
         amountDiscountsCents:
+          description: Total value (in cents) of all discounts applied to this line item
+          readOnly: true
+          type: integer
+          format: int64
+        amountTotalCents:
+          description: Base price of line item times quantity minus value of all discounts (in cents)
+          readOnly: true
+          type: integer
+          format: int64
+        amountToRefundCents:
+          description: Amount of money to refund (in cents)
+          readOnly: true
+          type: integer
+          format: int64
+        amountRefundedCents:
+          description: Amount of money successfully refunded
+          readOnly: true
+          type: integer
+          format: int64
+        amountPaidCents:
+          description: Amount of money successfully paid
           readOnly: true
           type: integer
           format: int64
@@ -975,11 +1018,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LineItemDiscountDTO'
-        appliedTaxes:
-          type: array
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/OrderItemTaxDTO'
     LineItemDiscountDTO:
       properties:
         assignId:
@@ -1117,6 +1155,9 @@ components:
         donationDate:
           type: string
           format: date-time
+        description:
+          type: string
+          maxLength: 500
         initiativeId:
           type: integer
         inMemoryOf:
@@ -1126,6 +1167,9 @@ components:
           nullable: true
           type: boolean
         inKind:
+          nullable: true
+          type: boolean
+        skipAck:
           nullable: true
           type: boolean
         personId:
