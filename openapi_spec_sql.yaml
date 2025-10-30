@@ -142,7 +142,7 @@ components:
           format: date-time
     
     ItemInstanceStockChange:
-      required: [itemInstanceId, changeAmount]
+      required: [itemInstanceId, changeAmount, changeType]
       properties:
         id:
           type: integer
@@ -193,6 +193,8 @@ components:
           format: int64
         lineItemId:
           $ref: '#/components/schemas/LineItem'
+        stockChangeId:
+          $ref: '#/components/schemas/ItemInstanceStockChange'
         amountToRefundUnitCents:
           type: integer
           format: int64

@@ -1069,6 +1069,8 @@ components:
           format: int64
         refundQuantity:
           type: integer
+        restock:
+          $ref: '#/components/schemas/PurchaseStockedItemDTO'
         revokeAfter:
           type: boolean
         revokeDuring:
@@ -1086,7 +1088,7 @@ components:
         taxId:
           type: integer
           format: int64
-        
+    #Maybe we split this into different dtos for different types (Purchase, Stock, Refund), idk (its all the same table)
     PurchaseStockedItemDTO:
       properties:
         assignId:
