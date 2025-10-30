@@ -1053,7 +1053,7 @@ components:
           format: int64
     LineItemRefundDTO:
       properties:
-        assignId:
+        id:
           type: integer
           format: int64
         amountToRefundUnitCents:
@@ -1080,7 +1080,7 @@ components:
     LineItemRefundTaxDTO:
       required: [taxId]
       properties:
-        assignId:
+        id:
           type: integer
           format: int64
         taxId:

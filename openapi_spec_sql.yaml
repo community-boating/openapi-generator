@@ -188,7 +188,7 @@ components:
 
     LineItemRefund:
       properties:
-        assignId:
+        id:
           type: integer
           format: int64
         lineItemId:
@@ -208,7 +208,7 @@ components:
     LineItemRefundTax:
       required: [taxId]
       properties:
-        assignId:
+        id:
           type: integer
           format: int64
         lineItemRefundId:
