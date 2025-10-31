@@ -1130,6 +1130,9 @@ components:
           readOnly: true
           allOf:
             - $ref: './shared.yaml#/components/schemas/PurchasableState'
+        voidCloseId:
+          readOnly: true
+          type: integer
     PurchaseGuestPrivilegesDTO:
       properties:
         assignId:
@@ -1144,6 +1147,9 @@ components:
           readOnly: true
           allOf:
             - $ref: './shared.yaml#/components/schemas/PurchasableState'
+        voidCloseId:
+          readOnly: true
+          type: integer
     PurchaseClassSignupDTO:
       required: [instanceId, personId]
       properties:
@@ -1173,6 +1179,9 @@ components:
           readOnly: true
           allOf:
             - $ref: './shared.yaml#/components/schemas/PurchasableState'
+        voidCloseId:
+          readOnly: true
+          type: integer
         calculatedInfo:
           readOnly: true
           allOf:
@@ -1219,6 +1228,9 @@ components:
           readOnly: true
           allOf:
             - $ref: './shared.yaml#/components/schemas/PurchasableState'
+        voidCloseId:
+          readOnly: true
+          type: integer
     PurchaseDonationDTO:
       required: [fundId, initiativeId, state]
       properties:
@@ -1261,6 +1273,9 @@ components:
           readOnly: true
           allOf:
             - $ref: './shared.yaml#/components/schemas/PurchasableState'
+        voidCloseId:
+          readOnly: true
+          type: integer
     PurchaseCardDTO:
       required: [cardNum]
       properties:
@@ -1277,6 +1292,9 @@ components:
           readOnly: true
           allOf:
             - $ref: './shared.yaml#/components/schemas/PurchasableState'
+        voidCloseId:
+          readOnly: true
+          type: integer
     PurchaseGiftCardDTO:
       properties:
         assignId:
