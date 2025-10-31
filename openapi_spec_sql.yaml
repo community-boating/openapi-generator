@@ -48,9 +48,9 @@ components:
         itemType:
           $ref: './shared.yaml#/components/schemas/ItemType'
         classTypeId:
-          $ref: '#/components/schemas/ClassType'
+          $ref: '#/components/schemas/ApClassType'
         classInstanceId:
-          $ref: '#/components/schemas/ClassInstance'
+          $ref: '#/components/schemas/ApClassInstance'
         membershipTypeId:
           $ref: '#/components/schemas/MembershipType'
         productId:
@@ -486,14 +486,14 @@ components:
         changeAmountCents:
           type: integer
           format: int64
-    ClassType:
+    ApClassType:
       x-already-exists: true
       required: [id]
       properties:
         id:
           type: integer
 
-    ClassInstance:
+    ApClassInstance:
       x-already-exists: true
       required: [id]
       properties:

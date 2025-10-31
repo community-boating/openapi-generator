@@ -78,7 +78,7 @@ components:
         - 'GIFT_CARD_LOAD'
         - 'ADD_MANUAL'
         - 'REMOVE_MANUAL'
-    ClassType:
+    ClassTypeEnum:
       type: string
       enum:
         - 'JP'
