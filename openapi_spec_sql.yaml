@@ -203,6 +203,8 @@ components:
           format: int64
         refundQuantity:
           type: integer
+        returnStock:
+          type: boolean
         revokeAfter:
           type: boolean
         revokeDuring:

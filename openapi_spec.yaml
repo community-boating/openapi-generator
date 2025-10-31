@@ -1070,7 +1070,11 @@ components:
         refundQuantity:
           type: integer
         restock:
-          $ref: '#/components/schemas/PurchaseStockedItemDTO'
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/PurchaseStockedItemDTO'
+        returnStock:
+          type: boolean
         revokeAfter:
           type: boolean
         revokeDuring:
