@@ -251,6 +251,8 @@ paths:
           type: ADMIN
       tags:
         - Catalog
+      security:
+        - staff: []
       responses:
         '200':
           description: Successfully syncs the catalog
