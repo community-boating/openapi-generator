@@ -273,7 +273,7 @@ paths:
   /catalog/inventory/{id}:
     get:
       parameters:
-        - in: query
+        - in: path
           name: id
           required: true
           schema:
@@ -292,7 +292,7 @@ paths:
                 $ref: '#/components/schemas/ItemStockDTO'
     post:
       parameters:
-        - in: query
+        - in: path
           name: id
           required: true
           schema:
