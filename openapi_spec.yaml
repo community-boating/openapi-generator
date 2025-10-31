@@ -1195,6 +1195,9 @@ components:
           type: integer
         enrollmentType:
           type: string
+        classStart:
+          type: string
+          format: date-time
     PurchaseMembershipDTO:
       required: [membershipTypeId, personId]
       properties:
