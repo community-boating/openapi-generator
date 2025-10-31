@@ -258,16 +258,18 @@ paths:
           description: Successfully syncs the catalog
   /catalog/inventory:
     get:
-      description: 'Gets the current catalog'
+      description: 'Gets the current inventory'
       tags:
         - Catalog
       responses:
         '200':
-          description: Successfully gets the catalog
+          description: Successfully gets the inventory
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CatalogDTO'
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemStockDTO'
   /catalog/inventory/{id}:
     get:
       parameters:
@@ -287,7 +289,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CatalogDTO'
+                $ref: '#/components/schemas/ItemStockDTO'
     post:
       parameters:
         - in: query
@@ -305,9 +307,20 @@ paths:
         - Catalog
       security:
         - staff: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockChangeDTO'
       responses:
         '200':
           description: Successfully syncs the catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ItemStockDTO'
+        
   /catalog:
     get:
       description: 'Gets the current catalog'
@@ -428,7 +441,17 @@ components:
           $ref: './shared.yaml#/components/schemas/StockChangeType'
         stockChangeAmount:
           type: integer
-
+    ItemStockDTO:
+      properties:
+        itemInstanceId:
+          type: integer
+          format: int64
+        itemName:
+          type: string
+        stockAmountRemaining:
+          type: integer
+        stockAmountSold:
+          type: integer
     PaymentTestDTO:
       properties:
         clientSecret:
