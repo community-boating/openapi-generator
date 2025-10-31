@@ -242,6 +242,18 @@ paths:
       responses:
         '200':
           description: Successfully cancelled the order
+  /catalog/syncClasses:
+    post:
+      description: 'Syncs the current catalog with prices from the db'
+      x-one-of-permissions:
+        - 
+          scope: admin
+          type: ADMIN
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully syncs the catalog
   /catalog:
     get:
       description: 'Gets the current catalog'
