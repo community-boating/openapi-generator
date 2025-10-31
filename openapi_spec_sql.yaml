@@ -174,7 +174,6 @@ components:
           $ref: '#/components/schemas/PersonSubscription'
         amountBaseCents:
           description: Base cost of a single unit of this line item (From catalog or amount specified, if allowed)
-          readOnly: true
           type: integer
           format: int64
         amountSpecifiedCents:
@@ -185,6 +184,8 @@ components:
           description: Amount of money successfully paid
           type: integer
           format: int64
+        deleted:
+          type: boolean
 
     LineItemRefund:
       properties:
@@ -332,6 +333,8 @@ components:
           $ref: './shared.yaml#/components/schemas/OrderStateNew'
         personId:
           $ref: '#/components/schemas/Person'
+        deleted:
+          type: boolean
 
     ItemDiscount:
       required: [id, itemId, discountId]
@@ -428,7 +431,6 @@ components:
         balanceAccountNumber:
           type: string
         balanceAccountToken:
-          readOnly: true
           type: string
           maxLength: 64
           minLength: 64

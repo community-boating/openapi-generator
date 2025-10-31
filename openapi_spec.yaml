@@ -845,6 +845,9 @@ components:
           readOnly: true
           items:
             $ref: '#/components/schemas/OrderPaymentDTO'
+        deleted:
+          readOnly: true
+          type: boolean
     CreateOrderPaymentDTO:
       type: object
       required: [orderId, payment]
@@ -1027,6 +1030,9 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/LineItemRefundDTO'
+        deleted:
+          readOnly: true
+          type: boolean
     LineItemDiscountDTO:
       properties:
         assignId:
