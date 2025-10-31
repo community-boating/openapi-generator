@@ -256,6 +256,58 @@ paths:
       responses:
         '200':
           description: Successfully syncs the catalog
+  /catalog/inventory:
+    get:
+      description: 'Gets the current catalog'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
+  /catalog/inventory/{id}:
+    get:
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      description: 'Gets the current catalog'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
+    post:
+      parameters:
+        - in: query
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      description: 'Updates the quantity of a specified item'
+      x-one-of-permissions:
+        - 
+          scope: admin
+          type: ADMIN
+      tags:
+        - Catalog
+      security:
+        - staff: []
+      responses:
+        '200':
+          description: Successfully syncs the catalog
   /catalog:
     get:
       description: 'Gets the current catalog'
@@ -369,6 +421,14 @@ components:
       bearerFormat: JWT
 
   schemas:
+
+    StockChangeDTO:
+      properties:
+        stockChangeType:
+          $ref: './shared.yaml#/components/schemas/StockChangeType'
+        stockChangeAmount:
+          type: integer
+
     PaymentTestDTO:
       properties:
         clientSecret:
@@ -556,8 +616,6 @@ components:
         categoryId:
           type: integer
           format: int64
-        categoryType:
-          $ref: './shared.yaml#/components/schemas/CategoryType'
     CatalogCategoryDTO:
       required: [categoryName, description]
       properties:
