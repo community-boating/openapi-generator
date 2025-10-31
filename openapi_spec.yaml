@@ -677,6 +677,9 @@ components:
         priceOverrideMax:
           type: integer
           format: int64
+        squareItemId:
+          type: string
+          maxLength: 200
         itemInstances:
           type: array
           items:
