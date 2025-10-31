@@ -1099,7 +1099,7 @@ components:
           format: int64
         quantity:
           type: integer
-        changeType:
+        stockChangeType:
           readOnly: true
           $ref: './shared.yaml#/components/schemas/StockChangeType'
         purchasableState:
