@@ -1283,22 +1283,6 @@ components:
         voidCloseId:
           readOnly: true
           type: integer
-        calculatedInfo:
-          readOnly: true
-          allOf:
-            - $ref: '#/components/schemas/CalculatedSignupInfo'
-    CalculatedSignupInfo: 
-      required: [spotsLeft, enrollmentType]
-      properties:
-        existing:
-          $ref: '#/components/schemas/PurchaseClassSignupDTO'
-        spotsLeft:
-          type: integer
-        enrollmentType:
-          type: string
-        classStart:
-          type: string
-          format: date-time
     PurchaseMembershipDTO:
       required: [membershipTypeId, personId]
       properties:
