@@ -1167,6 +1167,19 @@ components:
           readOnly: true
           allOf:
             - $ref: './shared.yaml#/components/schemas/PurchasableState'
+        calculatedInfo:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/CalculatedSignupInfo'
+    CalculatedSignupInfo: 
+      required: [spotsLeft, enrollmentType]
+      properties:
+        existing:
+          $ref: '#/components/schemas/PurchaseClassSignupDTO'
+        spotsLeft:
+          type: integer
+        enrollmentType:
+          type: string
     PurchaseMembershipDTO:
       required: [membershipTypeId, personId]
       properties:
