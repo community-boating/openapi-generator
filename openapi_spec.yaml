@@ -649,6 +649,7 @@ components:
         productId:
           nullable: true
           type: integer
+          format: int64
         itemName:
           nullable: true
           type: string
