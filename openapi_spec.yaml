@@ -452,6 +452,8 @@ components:
           type: integer
         stockAmountSold:
           type: integer
+        stockAmountRefunded:
+          type: integer
     PaymentTestDTO:
       properties:
         clientSecret:
