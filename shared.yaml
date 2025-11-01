@@ -117,6 +117,7 @@ components:
     CategoryType:
       type: string
       enum:
+        - 'ITEM_TAB'
         - 'ITEM'
         - 'DISCOUNT'
         - 'SHARED'
