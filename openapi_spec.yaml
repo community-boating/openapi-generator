@@ -575,8 +575,6 @@ components:
           type: boolean
         overrideTypeCheck:
           type: boolean
-        ClassSignupOverrides:
-          $ref: '#/components/schemas/ClassSignupOverrides'
     CatalogDTO:
       type: object
       properties:
