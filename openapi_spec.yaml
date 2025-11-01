@@ -1335,6 +1335,9 @@ components:
         description:
           type: string
           maxLength: 500
+        restriction:
+          type: string
+          maxLength: 500
         initiativeId:
           type: integer
         inMemoryOf:
