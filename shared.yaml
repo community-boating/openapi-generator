@@ -109,7 +109,7 @@ components:
         - 'STRIPE'
     StripeTransactionType:
       type: string
-      enum: 
+      enum:
         - 'CARD_STORED'
         - 'CARD_KEYED'
         - 'CARD_READER'
