@@ -969,7 +969,7 @@ components:
           readOnly: true
           type: integer
           format: int64
-        status:
+        orderStatus:
           $ref: './shared.yaml#/components/schemas/OrderStateNew'
           readOnly: true
         personId:
