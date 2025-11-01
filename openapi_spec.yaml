@@ -411,10 +411,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripeConstantsDTO'
-  /payment:
+  /staff/payment:
     post:
       security:
         - staff: []
+      description: 'Creates test payment intent'
+      tags:
+        - Payment
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderPaymentDTO'
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderPaymentDTO'
+  /member/payment:
+    post:
+      security:
         - member: []
       description: 'Creates test payment intent'
       tags:
