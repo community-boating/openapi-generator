@@ -204,7 +204,7 @@ paths:
         '202':
           description: TEST OK
 
-  /staff/orders/upsert:
+  /staff/compass_orders/upsert:
     post:
       description: 'Updates or inserts order and subobjects into the database for further use in the order system'
       parameters: []
@@ -225,7 +225,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
-  /member/orders/upsert:
+  /member/compass_orders/upsert:
     post:
       description: 'Updates or inserts order and subobjects into the database for further use in the order system'
       parameters: []
