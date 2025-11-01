@@ -204,13 +204,33 @@ paths:
         '202':
           description: TEST OK
 
-  /orders/upsert:
+  /staff/orders/upsert:
+    post:
+      description: 'Updates or inserts order and subobjects into the database for further use in the order system'
+      parameters: []
+      security:
+        - staff: []
+      tags:
+        -  CompassOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderWithDiscountsDTO'
+  /member/orders/upsert:
     post:
       description: 'Updates or inserts order and subobjects into the database for further use in the order system'
       parameters: []
       security:
         - member: []
-        - staff: []
       tags:
         -  CompassOrder
       requestBody:
@@ -237,6 +257,8 @@ paths:
             type: integer
             minimum: 1
           description: The order ID
+      security:
+        - staff: []
       tags:
         - CompassOrder
       responses:
