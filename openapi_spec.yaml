@@ -441,7 +441,7 @@ components:
       properties:
         stockChangeType:
           $ref: './shared.yaml#/components/schemas/StockChangeType'
-        stockChangeAmount:
+        changeAmount:
           type: integer
     ItemStockDTO:
       properties:
