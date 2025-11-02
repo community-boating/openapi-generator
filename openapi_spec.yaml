@@ -255,6 +255,7 @@ paths:
           required: true
           schema:
             type: integer
+            format: int64
             minimum: 1
           description: The order ID
       security:
