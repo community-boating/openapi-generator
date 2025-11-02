@@ -1261,7 +1261,6 @@ components:
           allOf:
             - $ref: './shared.yaml#/components/schemas/PurchasableState'
     PurchaseDamageWaiverDTO:
-      required: [personId]
       properties:
         waiverId:
           type: integer
