@@ -50,6 +50,11 @@ components:
         - 'VARIABLE'
         - 'FIXED_AMOUNT'
         - 'FIXED_PERCENT'
+    OrderSource:
+      type: string
+      enum:
+        - 'IN_PERSON'
+        - 'ONLINE'
     OrderStateNew:
       type: string
       enum:

@@ -927,6 +927,8 @@ components:
           type: integer
           format: int64
           example: 12
+        OrderSource:
+          $ref: './shared.yaml#/components/schemas/OrderSource'
         amountBaseCents:
           description: Total of all items before discounts
           readOnly: true

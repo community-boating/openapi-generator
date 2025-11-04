@@ -320,6 +320,8 @@ components:
         id:
           type: integer
           format: int64
+        OrderSource:
+          $ref: './shared.yaml#/components/schemas/OrderSource'
         amountBaseCents:
           type: integer
           format: int64
