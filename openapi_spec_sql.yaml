@@ -314,6 +314,9 @@ components:
         amountTotalCents:
           type: integer
           format: int64
+        universalCode:
+          type: string
+          maxLength: 100
 
     OrderNew:
       type: object

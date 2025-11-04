@@ -739,6 +739,7 @@ components:
         universalCode:
           writeOnly: true
           format: string
+          maxLength: 200
         endActive:
           type: string
           format: date
