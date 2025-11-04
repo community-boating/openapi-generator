@@ -933,6 +933,17 @@ components:
           format: int64
         discountId:
           type: integer
+        instanceId:
+          type: integer
+        discountType:
+          $ref: './shared.yaml#/components/schemas/DiscountType'
+        amountCents:
+          type: integer
+          format: int64
+        percent:
+          type: string
+        discountName:
+          type: string
         shouldAutoAssign:
           type: boolean
     
