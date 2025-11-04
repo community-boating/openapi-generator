@@ -736,6 +736,9 @@ components:
         startActive:
           type: string
           format: date
+        universalCode:
+          writeOnly: true
+          format: string
         endActive:
           type: string
           format: date
@@ -1204,6 +1207,8 @@ components:
           nullable: false
           type: integer
           format: int64
+        appliedCode:
+          type: string
         isApplied:
           type: boolean
         discountInstanceId:
