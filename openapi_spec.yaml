@@ -1204,6 +1204,8 @@ components:
           nullable: false
           type: integer
           format: int64
+        isApplied:
+          type: boolean
         discountInstanceId:
           nullable: false
           type: integer
