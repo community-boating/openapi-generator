@@ -944,8 +944,6 @@ components:
           type: string
         discountName:
           type: string
-        shouldAutoAssign:
-          type: boolean
     
     OrderDTO:
       type: object
