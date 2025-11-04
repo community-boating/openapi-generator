@@ -394,6 +394,9 @@ components:
         paymentSource:
           type: string
           maxLength: 100
+        paymentServiceChangeCents:
+          type: integer
+          format: int64
         paymentPaidCents:
           type: integer
           format: int64
