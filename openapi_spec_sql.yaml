@@ -167,6 +167,9 @@ components:
         id:
           type: integer
           format: int64
+        referenceId:
+          type: string
+          maxLength: 200
         parentItemId:
           $ref: '#/components/schemas/LineItem'
         orderId:
@@ -347,6 +350,8 @@ components:
           format: int64
         itemId:
           $ref: '#/components/schemas/Item'
+        requiresParentEligibility:
+          type: boolean
         discountType:
           $ref: './shared.yaml#/components/schemas/DiscountType'
         amountCents:

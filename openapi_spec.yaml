@@ -831,6 +831,8 @@ components:
           format: int64
         discountType:
           $ref: './shared.yaml#/components/schemas/DiscountType'
+        requiresParentEligibility:
+          type: boolean
         amountCents:
           type: integer
           format: int64
@@ -1093,6 +1095,9 @@ components:
           nullable: false
           type: integer
           format: int64
+        referenceId:
+          type: string
+          maxLength: 200
         parentItemId:
           type: integer
           format: int64
