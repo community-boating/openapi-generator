@@ -930,7 +930,7 @@ components:
         OrderSource:
           $ref: './shared.yaml#/components/schemas/OrderSource'
         amountServiceChangeCents:
-          description: Total cost of service chagnes (Stripe transaction fees mostly)
+          description: Total cost of service charges (Payment fees paid by customer, maybe we will add restock service fee?)
           readOnly: true
           type: integer
           format: int64
