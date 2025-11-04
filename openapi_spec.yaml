@@ -345,8 +345,20 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ItemStockDTO'
-        
+  
   /catalog:
+    get:
+      description: 'Gets the current catalog'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
+  /staff/catalog:
     get:
       description: 'Gets the current catalog'
       tags:
