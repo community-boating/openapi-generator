@@ -955,7 +955,9 @@ components:
           format: int64
           example: 12
         OrderSource:
-          $ref: './shared.yaml#/components/schemas/OrderSource'
+          readOnly: true
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/OrderSource'
         amountServiceChangeCents:
           description: Total cost of service charges (Payment fees paid by customer, maybe we will add restock service fee?)
           readOnly: true
