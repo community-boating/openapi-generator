@@ -250,6 +250,10 @@ paths:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
   /member/compass-order:
     get:
+      tags:
+        -  CompassOrder
+      security:
+        - member: []
       description: 'Returns the current order this person has open'
       responses:
         '200':
