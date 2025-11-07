@@ -508,7 +508,7 @@ paths:
       security:
         - member: []
       parameters:
-        - in: query
+        - in: path
           name: id # Note the name is the same as in the path
           required: true
           schema:
