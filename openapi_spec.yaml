@@ -219,12 +219,6 @@ paths:
         - staff: []
       tags:
         -  CompassOrder
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/OrderDTO'
       responses:
         '200':
           description: Successfully updated/inserted order
