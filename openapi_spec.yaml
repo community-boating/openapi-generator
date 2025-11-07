@@ -494,6 +494,8 @@ paths:
     get:
       security:
         - member: []
+      tags:
+        - Payment
       description: 'Creates a payment intent'
       responses:
         '200':
