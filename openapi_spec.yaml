@@ -248,6 +248,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
+  /member/compass-order/summary:
+    get:
+      tags:
+        -  CompassOrder
+      security:
+        - member: []
+      description: 'Returns the current order this person has open'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderWithDiscountsDTO'
+        '404':
+          description: Order doesn't exist
   /member/compass-order:
     get:
       tags:
@@ -262,6 +278,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
+        '404':
+          description: Order doesn't exist
     post:
       description: 'Updates or inserts order and subobjects into the database for further use in the order system'
       parameters: []
@@ -1020,7 +1038,29 @@ components:
           type: string
         discountName:
           type: string
-    
+    OrderSummaryDTO:
+      type: object
+      required: [lineItems, orderNum]
+      properties:
+        assignId:
+          nullable: true
+          type: integer
+          format: int64
+          example: 12
+        orderSource:
+          readOnly: true
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/OrderSource'
+        orderStatus:
+          $ref: './shared.yaml#/components/schemas/OrderStateNew'
+          readOnly: true
+        personId:
+          type: integer
+          example: 12
+        itemCount:
+          type: integer
+        version:
+          type: integer
     OrderDTO:
       type: object
       required: [lineItems, orderNum]
@@ -1030,7 +1070,7 @@ components:
           type: integer
           format: int64
           example: 12
-        OrderSource:
+        orderSource:
           readOnly: true
           allOf:
             - $ref: './shared.yaml#/components/schemas/OrderSource'
@@ -1572,6 +1612,7 @@ components:
           type: integer
           format: int64
         personId:
+          readOnly: true
           type: integer
         cardNum:
           type: string
