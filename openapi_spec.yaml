@@ -86,6 +86,7 @@ paths:
                 $ref: '#/components/schemas/TestResponse'
         '401':
           description: Invalid credentials
+
   /balances:
     get:
       summary: Gets a list of balances for a specified person
@@ -203,8 +204,35 @@ paths:
       responses:
         '202':
           description: TEST OK
-
-  /staff/compass_orders/upsert:
+  /staff/compass-order/{id}:
+    get:
+      description: 'Gets an existing order by id'
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The order id
+      security:
+        - staff: []
+      tags:
+        -  CompassOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderWithDiscountsDTO'
+  /staff/compass-order:
     post:
       description: 'Updates or inserts order and subobjects into the database for further use in the order system'
       parameters: []
@@ -225,7 +253,16 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
-  /member/compass_orders/upsert:
+  /member/compass-order:
+    get:
+      description: 'Returns the current order this person has open'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderWithDiscountsDTO'
     post:
       description: 'Updates or inserts order and subobjects into the database for further use in the order system'
       parameters: []
@@ -246,7 +283,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
-  /orders/cancel/{id}:
+  /member/orders/cancel:
+    post:
+      description: 'Cancels current person order, deleting if possible'
+      security:
+        - member: []
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Successfully cancelled the order
+  /staff/orders/cancel/{id}:
     post:
       description: 'Cancels an order, deleting if possible'
       parameters:
@@ -444,11 +491,40 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderPaymentDTO'
+  /member/checkout-session:
+    get:
+      security:
+        - member: []
+      description: 'Creates a payment intent'
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutSessionDTO'
+  /member/payment/cancel/{id}:
+    post:
+      security:
+        - member: []
+      parameters:
+        - in: query
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      description: 'Cancels a payment'
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: Returns payment intent
   /member/payment:
     post:
       security:
         - member: []
-      description: 'Creates test payment intent'
+      description: 'Creates a payment intent'
       tags:
         - Payment
       requestBody:
@@ -490,7 +566,6 @@ components:
       bearerFormat: JWT
 
   schemas:
-
     StockChangeDTO:
       properties:
         stockChangeType:
@@ -1014,6 +1089,8 @@ components:
         personId:
           type: integer
           example: 12
+        itemCount:
+          type: integer
         lineItems:
           type: array
           items:
@@ -1031,6 +1108,11 @@ components:
         deleted:
           readOnly: true
           type: boolean
+    CheckoutSessionDTO:
+      type: object
+      properties:
+        checkoutSecret:
+          type: string
     CreateOrderPaymentDTO:
       type: object
       required: [orderId, payment]
@@ -1094,6 +1176,10 @@ components:
         transactionType:
           $ref: './shared.yaml#/components/schemas/StripeTransactionType'
         stripePaymentIntent:
+          type: string
+          readOnly: true
+          maxLength: 500
+        stripePaymentSecret:
           type: string
           readOnly: true
           maxLength: 500
