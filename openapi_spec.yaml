@@ -1090,6 +1090,8 @@ components:
           example: 12
         itemCount:
           type: integer
+        version:
+          type: integer
         lineItems:
           type: array
           items:

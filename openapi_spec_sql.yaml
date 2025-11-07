@@ -344,6 +344,8 @@ components:
           format: int64
         itemCount:
           type: integer
+        version:
+          type: integer
         orderStatus:
           $ref: './shared.yaml#/components/schemas/OrderStateNew'
         personId:
