@@ -1612,12 +1612,21 @@ components:
           type: integer
           format: int64
         personId:
-          readOnly: true
+          writeOnly: true
           type: integer
         cardNum:
+          writeOnly: true
           type: string
+        isRecharge:
+          writeOnly: true
+          type: boolean
         balance:
-          $ref: '#/components/schemas/BalanceDTO'
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/BalanceDTO'
+        balanceTransactionType:
+          readOnly: true
+          $ref: './shared.yaml#/components/schemas/BalanceTransactionType'
         transactionAmountCents:
           type: integer
           format: int64
