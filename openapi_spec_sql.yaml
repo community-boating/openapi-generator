@@ -456,9 +456,6 @@ components:
           type: string
           maxLength: 64
           minLength: 64
-        balanceCents:
-          type: integer
-          format: int64
         balanceType:
           $ref: './shared.yaml#/components/schemas/BalanceType'
         balanceOwner:

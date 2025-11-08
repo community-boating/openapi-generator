@@ -681,6 +681,7 @@ components:
           maxLength: 64
           minLength: 64
         balanceCents:
+          readOnly: true
           type: integer
           format: int64
         balanceType:
