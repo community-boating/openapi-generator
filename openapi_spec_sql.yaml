@@ -320,7 +320,7 @@ components:
 
     OrderNew:
       type: object
-      required: [orderId, status]
+      required: [orderId, status, version]
       properties:
         id:
           type: integer

@@ -1064,7 +1064,7 @@ components:
           type: integer
     OrderDTO:
       type: object
-      required: [lineItems, orderNum]
+      required: [lineItems, orderNum, version]
       properties:
         assignId:
           nullable: true
