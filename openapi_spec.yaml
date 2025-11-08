@@ -93,7 +93,16 @@ paths:
       security:
         - staff: []
       tags:
-        - Payment
+        - Balance
+      x-is-paginated: true
+      parameters:
+        - in: query
+          name: personId # Note the name is the same as in the path
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: The owner of the balance
       responses:
         '200':
           description: Successful fetch of balances
@@ -108,7 +117,7 @@ paths:
       security:
         - staff: []
       tags:
-        - Payment
+        - Balance
       requestBody:
         required: true
         content:
