@@ -1860,9 +1860,24 @@ components:
     PersonNameInfo:
       type: object
       properties:
-        nameFirst:
+        middleInitial:
           type: string
-      x-already-exists: true
+          maxLength: 10
+        first:
+          type: string
+          maxLength: 100
+        last:
+          type: string
+          maxLength: 100
+        prefix:
+          type: string
+          maxLength: 100
+        suffix:
+          type: string
+          maxLength: 100
+        preferred:
+          type: string
+          maxLength: 100
     AddressDTO:
       type: object
       properties:
