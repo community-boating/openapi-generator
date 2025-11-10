@@ -1847,6 +1847,7 @@ components:
           example: 117
     PersonPublicDTO:
       type: object
+      required: [temp]
       properties:
         personId:
           readOnly: true
@@ -1855,6 +1856,10 @@ components:
           type: string
           maxLength: 100
           pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+        temp:
+          type: string
+          maxLength: 1
+          minLength: 1
         phonePrimary:
           x-dto-column-prefix: PHONE_PRIMARY
           allOf:
