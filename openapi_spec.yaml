@@ -1902,17 +1902,25 @@ components:
     AddressDTO:
       type: object
       properties:
+        assignId:
+          type: integer
+          format: int64
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
+        isPrimary:
+          type: boolean
         line1:
-          x-dto-column: ADDR_1
           type: string
           maxLength: 200
           minLength: 1
         line2:
-          x-dto-column: ADDR_2
           type: string
           maxLength: 200
         line3:
-          x-dto-column: ADDR_3
           type: string
           maxLength: 200
         state:
@@ -1922,14 +1930,12 @@ components:
         city:
           type: string
           maxLength: 50
-        county:
+        country:
           type: string
           maxLength: 50
         zip:
           type: string
           maxLength: 15
-        testA:
-          $ref: '#/components/schemas/ValidationTestDTO'
     ValidationTestDTO:
       type: object
       properties:
