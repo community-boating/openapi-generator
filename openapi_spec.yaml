@@ -1863,7 +1863,7 @@ components:
         prefix:
           x-dto-column: NAME_PREFIX
           type: string
-          maxLength: 100
+          maxLength: 50
         first:
           x-dto-column: NAME_FIRST
           type: string
@@ -1871,7 +1871,7 @@ components:
         middleInitial:
           x-dto-column: NAME_MIDDLE_INITIAL
           type: string
-          maxLength: 10
+          maxLength: 5
         last:
           x-dto-column: NAME_LAST
           type: string
@@ -1879,7 +1879,7 @@ components:
         suffix:
           x-dto-column: NAME_SUFFIX
           type: string
-          maxLength: 100
+          maxLength: 50
         preferred:
           x-dto-column: NAME_PREFERRED
           type: string
