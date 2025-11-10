@@ -1859,6 +1859,9 @@ components:
           $ref: '#/components/schemas/PersonNameInfo'
     PersonNameInfo:
       type: object
+      properties:
+        nameFirst:
+          type: string
       x-already-exists: true
     AddressDTO:
       type: object
