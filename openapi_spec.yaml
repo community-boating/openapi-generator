@@ -1843,7 +1843,6 @@ components:
         instanceId:
           type: integer
           example: 117
-    
     PersonPublicDTO:
       type: object
       properties:
@@ -1852,11 +1851,23 @@ components:
           type: integer
         email:
           type: string
-          maxLength: 150
+          maxLength: 100
+          pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
         address: 
           $ref: '#/components/schemas/AddressDTO'
         name:
           $ref: '#/components/schemas/PersonNameInfo'
+        relationTypeId:
+          x-dto-column: TYPE_ID
+          type: integer
+        relationsA:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonPublicDTO'
+        relationsB:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonPublicDTO'
     PersonNameInfo:
       type: object
       properties:
@@ -1888,27 +1899,31 @@ components:
       type: object
       properties:
         line1:
+          x-dto-column: ADDR_1
           type: string
-          maxLength: 100
+          maxLength: 200
           minLength: 1
         line2:
+          x-dto-column: ADDR_2
           type: string
-          maxLength: 100
+          maxLength: 200
         line3:
+          x-dto-column: ADDR_3
           type: string
-          maxLength: 100
+          maxLength: 200
         state:
           type: string
-          maxLength: 2
+          maxLength: 50
           minLength: 2
         city:
           type: string
-          maxLength: 100
+          maxLength: 50
         county:
           type: string
-          maxLength: 100
+          maxLength: 50
         zip:
-          type: integer
+          type: string
+          maxLength: 15
         testA:
           $ref: '#/components/schemas/ValidationTestDTO'
     ValidationTestDTO:
