@@ -1909,3 +1909,17 @@ components:
           maxLength: 100
         zip:
           type: integer
+    ValidationTestDTO:
+      type: object
+      properties:
+        testA:
+          type: string
+          maxLength: 100
+          minLength: 10
+        testB:
+          type: integer
+          minimum: 1
+          maximum: 25
+        testC:
+          type: string
+          pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
