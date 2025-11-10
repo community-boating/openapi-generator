@@ -1847,7 +1847,7 @@ components:
           example: 117
     PersonPublicDTO:
       type: object
-      required: [temp]
+      required: [temp, updatedOn]
       properties:
         personId:
           readOnly: true
@@ -1856,6 +1856,10 @@ components:
           type: string
           maxLength: 100
           pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+        updatedOn:
+          readOnly: true
+          type: string
+          format: date-time
         temp:
           type: string
           maxLength: 1
