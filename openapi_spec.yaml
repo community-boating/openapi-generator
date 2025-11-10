@@ -1860,22 +1860,28 @@ components:
     PersonNameInfo:
       type: object
       properties:
+        prefix:
+          x-dto-column: NAME_PREFIX
+          type: string
+          maxLength: 100
+        first:
+          x-dto-column: NAME_FIRST
+          type: string
+          maxLength: 100
         middleInitial:
+          x-dto-column: NAME_MIDDLE_INITIAL
           type: string
           maxLength: 10
-        first:
-          type: string
-          maxLength: 100
         last:
-          type: string
-          maxLength: 100
-        prefix:
+          x-dto-column: NAME_LAST
           type: string
           maxLength: 100
         suffix:
+          x-dto-column: NAME_SUFFIX
           type: string
           maxLength: 100
         preferred:
+          x-dto-column: NAME_PREFERRED
           type: string
           maxLength: 100
     AddressDTO:
