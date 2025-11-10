@@ -71,6 +71,8 @@ paths:
       description: Tests Post.
       security:
         - member: []
+      tags:
+        - Member
       requestBody:
         required: true
         content:
