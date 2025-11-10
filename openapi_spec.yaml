@@ -65,6 +65,27 @@ paths:
             application/json:
               schema:
                 $ref: './shared.yaml#/components/schemas/Boolean'
+  /member/personCreate:
+    post:
+      summary: Test
+      description: Tests Post.
+      security:
+        - member: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonPublicDTO'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/TestResponse'
+        '401':
+          description: Invalid credentials
   /member/test:
     post:
       summary: Test
@@ -86,10 +107,49 @@ paths:
                 $ref: '#/components/schemas/TestResponse'
         '401':
           description: Invalid credentials
-
-  /balances:
+  /staff/balance/{number}:
     get:
-      summary: Gets a list of balances for a specified person
+      security:
+        - staff: []
+      tags:
+        - Balance
+      parameters:
+        - in: path
+          name: number
+          required: true
+          schema:
+            type: string
+          description: The balance number
+      responses:
+        '200':
+          description: Updated balance dto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceDTO'
+  /member/balance/{number}:
+    get:
+      security:
+        - member: []
+      tags:
+        - Balance
+      parameters:
+        - in: path
+          name: number
+          required: true
+          schema:
+            type: string
+          description: The balance number
+      responses:
+        '200':
+          description: Updated balance dto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceDTO'
+  /staff/balances: 
+    get:
+      summary: Gets a list of balances
       security:
         - staff: []
       tags:
@@ -97,7 +157,7 @@ paths:
       x-is-paginated: true
       parameters:
         - in: query
-          name: personId # Note the name is the same as in the path
+          name: personId
           required: false
           schema:
             type: integer
@@ -113,7 +173,7 @@ paths:
                 items:
                   $ref: '#/components/schemas/BalanceDTO'
     post:
-      summary: Gets a list of balances for a specified person
+      summary: Updated or creates a balance
       security:
         - staff: []
       tags:
@@ -126,13 +186,11 @@ paths:
               $ref: '#/components/schemas/BalanceDTO'
       responses:
         '200':
-          description: Successful fetch of balances
+          description: Updated balance dto
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/BalanceDTO'
+                $ref: '#/components/schemas/BalanceDTO'
 
   /ap-class/get-eligible/{personId}:
     get:
@@ -1785,3 +1843,44 @@ components:
         instanceId:
           type: integer
           example: 117
+    
+    PersonPublicDTO:
+      type: object
+      properties:
+        personId:
+          readOnly: true
+          type: integer
+        email:
+          type: string
+          maxLength: 150
+        address: 
+          $ref: '#/components/schemas/AddressDTO'
+        name:
+          $ref: '#/components/schemas/PersonNameInfo'
+    PersonNameInfo:
+      x-already-exists: true
+    AddressDTO:
+      type: object
+      properties:
+        line1:
+          type: string
+          maxLength: 100
+          minLength: 1
+        line2:
+          type: string
+          maxLength: 100
+        line3:
+          type: string
+          maxLength: 100
+        state:
+          type: string
+          maxLength: 2
+          minLength: 2
+        city:
+          type: string
+          maxLength: 100
+        county:
+          type: string
+          maxLength: 100
+        zip:
+          type: integer
