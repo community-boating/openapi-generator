@@ -133,3 +133,11 @@ components:
         - 'HOME'
         - 'CELL'
         - 'MOBILE'
+    
+    PersonRelationType:
+      type: integer
+      enum:
+        - value: 1
+          name: TestA
+        - value: 2
+          name: TestB

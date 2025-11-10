@@ -1879,6 +1879,8 @@ components:
         relationTypeId:
           x-dto-column: TYPE_ID
           type: integer
+        relationType:
+          $ref: './shared.yaml/#/components/schemas/PersonRelationType'
         relationsA:
           x-column-parent-fk: A
           type: array
