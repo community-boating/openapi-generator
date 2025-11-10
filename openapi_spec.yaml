@@ -1863,10 +1863,12 @@ components:
           x-dto-column: TYPE_ID
           type: integer
         relationsA:
+          x-column-parent-fk: A
           type: array
           items:
             $ref: '#/components/schemas/PersonPublicDTO'
         relationsB:
+          x-column-parent-fk: B
           type: array
           items:
             $ref: '#/components/schemas/PersonPublicDTO'
