@@ -579,6 +579,9 @@ components:
           format: date-time
         isPrimary:
           type: boolean
+        name:
+          type: string
+          maxLength: 100
         line1:
           type: string
           maxLength: 200

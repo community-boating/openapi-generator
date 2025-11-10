@@ -126,3 +126,10 @@ components:
         - 'ITEM'
         - 'DISCOUNT'
         - 'SHARED'
+    PhoneType:
+      type: string
+      enum:
+        - 'WORK'
+        - 'HOME'
+        - 'CELL'
+        - 'MOBILE'
