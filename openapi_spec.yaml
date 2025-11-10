@@ -1909,6 +1909,8 @@ components:
           maxLength: 100
         zip:
           type: integer
+        testA:
+          $ref: '#/components/schemas/ValidationTestDTO'
     ValidationTestDTO:
       type: object
       properties:
