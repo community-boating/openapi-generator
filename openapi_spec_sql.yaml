@@ -658,10 +658,7 @@ components:
         requiredString:
           type: string
           maxLength: 100
-        children:
-          type: array
-          items:
-            $ref: '#/components/schemas/TestTypeChild'
+        
     
     TestTypeChild:
       x-use-new: true
