@@ -642,35 +642,3 @@ components:
       properties:
         cashDrawerId:
           type: integer
-
-
-    TestTypeRoot:
-      x-use-new: true
-      type: object
-      required: [id, requiredString]
-      properties:
-        id:
-          type: integer
-          format: int64
-        optionalString:
-          type: string
-          maxLength: 100
-        requiredString:
-          type: string
-          maxLength: 100
-        
-    
-    TestTypeChild:
-      x-use-new: true
-      type: object
-      required: [id]
-      properties:
-        id:
-          type: integer
-          format: int64
-        readOnlyString:
-          readOnly: true
-          type: string
-          maxLength: 100
-        parentId:
-          $ref: '#/components/schemas/TestTypeRoot'
