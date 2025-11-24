@@ -44,7 +44,8 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
 
     //Build relationship model
 
-    List<CBIResourceInfo> resources = CBIResourceInfo.getResourcesFromModels(allModels);
+    ArrayList<CBIResourceInfo> resources = CBIResourceInfo.getResourcesFromModels(allModels);
+    CBIRelationInfo.findAllRelations(resources);
     for(CBIResourceInfo resource: resources) {
       resource.updateModelRefs();
       //resource.combineModelTypes();

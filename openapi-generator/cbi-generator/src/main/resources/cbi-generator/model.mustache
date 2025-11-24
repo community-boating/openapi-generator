@@ -1,8 +1,15 @@
 {{#models}}
     {{#model}}
-        {{name}}
+        Model name: {{name}}
         {{#vendorExtensions}}
-            {{{this}}}
+            {{#x-cbi-resource-info}}
+                {{^relations.isEmpty}}
+                    Has relations:
+                {{/relations.isEmpty}}
+                {{#getRelations}}
+                    {{{this}}}
+                {{/getRelations}}
+            {{/x-cbi-resource-info}}
         {{/vendorExtensions}}
         {{#allVars}}
             {{name}}

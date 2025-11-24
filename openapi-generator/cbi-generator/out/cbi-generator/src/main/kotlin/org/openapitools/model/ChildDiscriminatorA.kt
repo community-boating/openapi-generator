@@ -1,5 +1,4 @@
-        ChildDiscriminatorA
-            {x-use-new=true}
+        Model name: ChildDiscriminatorA
             parentAdded
                 {}
             id

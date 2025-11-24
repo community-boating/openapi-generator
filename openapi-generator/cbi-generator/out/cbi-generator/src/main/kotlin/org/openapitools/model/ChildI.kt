@@ -1,4 +1,3 @@
-        ChildI
-            {x-use-new=true, x-parent=interface}
+        Model name: ChildI
             id
                 {x-dto-name=assignId}

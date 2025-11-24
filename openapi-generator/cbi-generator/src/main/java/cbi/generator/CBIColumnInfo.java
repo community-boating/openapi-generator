@@ -25,6 +25,7 @@ public class CBIColumnInfo {
             column.columnName = property.name;
             column.columnNameDB = property.nameInSnakeCase;
             column.columnType = property.dataType;
+            columns.add(column);
         }
         property.vendorExtensions.put("x-cbi-column-info", column);
         column.modelProperties.add(new ModelAndProperty(model, property));
@@ -43,6 +44,10 @@ public class CBIColumnInfo {
             return this.columnName.equals(otherCast.columnName) && this.columnType.equals(otherCast.columnType);
         }
         return false;
+    }
+    @Override
+    public String toString() {
+        return "Column Name: " + this.columnName + ", Column Type: " + this.columnType;
     }
     static class ModelAndProperty {
         CodegenModel model;
@@ -69,6 +74,7 @@ public class CBIColumnInfo {
                 definition = fromMap((Map<?, ?>)relationDefinition);
             }else if(property.isModel || (property.isArray && property.items.isModel)) {
                 definition = new CBIRelationDefinition();
+                definition.isBackref = false;
             }else {
                 return null;
             }
@@ -88,18 +94,18 @@ public class CBIColumnInfo {
                 definition.modelA = model.name;
 
             if(definition.relationName == null) {
-                if(definition.isBackref) {
+                if(definition.isBackref != null && definition.isBackref) {
                     definition.relationName = definition.modelB + "_TO_" + definition.modelA;
                 }else{
                     definition.relationName = definition.modelA + "_TO_" + definition.modelB;
                 }
             }
 
-            if(definition.forwardRef == null && !definition.isBackref){
+            if(definition.forwardRef == null && definition.isBackref != null && !definition.isBackref){
                 definition.forwardRef = property.name;
             }
 
-            if(definition.backwardRef == null && definition.isBackref){
+            if(definition.backwardRef == null && definition.isBackref != null && definition.isBackref){
                 definition.backwardRef = property.name;
             }
 

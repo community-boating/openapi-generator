@@ -17,7 +17,7 @@ public class CBIResourceInfo {
     ArrayList<CBIColumnInfo> columns = new ArrayList<>();
     ArrayList<CodegenModel> generated = new ArrayList<>();
     ArrayList<CodegenModel> schema = new ArrayList<>();
-    ArrayList<CBIRelationInfo> relations = new ArrayList<>();
+    public ArrayList<CBIRelationInfo> relations = new ArrayList<>();
     static ArrayList<CBIResourceInfo> getResourcesFromModels(Map<String, ModelsMap> allModels){
         ArrayList<CBIResourceInfo> resources = new ArrayList<>();
         for(String modelName: allModels.keySet()){
@@ -54,6 +54,9 @@ public class CBIResourceInfo {
             return this.baseName.equals(otherCast.baseName);
         }
         return false;
+    }
+    public List<CBIRelationInfo> getRelations() {
+        return relations;
     }
     static Boolean compareProperty(CodegenProperty property1, CodegenProperty property2) {
         return property1.name.equals(property2.name) && property1.dataType.equals(property2.dataType);

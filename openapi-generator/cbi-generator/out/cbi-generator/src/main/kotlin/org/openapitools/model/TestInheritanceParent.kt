@@ -1,6 +1,5 @@
-        TestInheritanceParent
-            {x-use-new=true, x-cbi-resource-info=cbi.generator.CBIResourceInfo@397bd382, x-parent=true}
+        Model name: TestInheritanceParent
             id
-                {x-dto-name=assignId, x-cbi-column-info=cbi.generator.CBIColumnInfo@46325ff}
+                {x-dto-name=assignId, x-cbi-column-info=Column Name: id, Column Type: Long}
             parentValue
-                {x-cbi-column-info=cbi.generator.CBIColumnInfo@2f0aacd6}
+                {x-cbi-column-info=Column Name: parentValue, Column Type: String}

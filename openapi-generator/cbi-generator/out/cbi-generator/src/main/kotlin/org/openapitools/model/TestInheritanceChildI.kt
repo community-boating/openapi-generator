@@ -1,5 +1,4 @@
-        TestInheritanceChildI
-            {x-use-new=true, x-interface=true}
+        Model name: TestInheritanceChildI
             id
                 {x-dto-name=assignId}
             parentValue

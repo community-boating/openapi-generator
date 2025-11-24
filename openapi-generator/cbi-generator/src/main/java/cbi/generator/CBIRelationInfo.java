@@ -45,6 +45,7 @@ public class CBIRelationInfo {
     }
     static ArrayList<CBIRelationInfo> findAllRelations(ArrayList<CBIResourceInfo> resources) {
         ArrayList<CBIRelationInfo> relations = new ArrayList<>();
+        //Change it so it will check all resource combinations rather than based on column, for relations specified without using a column
         for(CBIResourceInfo resourceA: resources){
             for(CBIColumnInfo column: resourceA.columns){
                 if(column.modelProperties != null && !column.modelProperties.isEmpty()) {
@@ -60,14 +61,18 @@ public class CBIRelationInfo {
                         }
                         if(relationInfo == null){
                             CBIResourceInfo resourceB = findByName(resources, relationDefinition.modelB);
-                            relationInfo = CBIRelationInfo.getRelationInfo(resourceA, resourceB, relationDefinition);
-                            relations.add(relationInfo);
+                            if(resourceB != null) {
+                                relationInfo = CBIRelationInfo.makeRelationInfo(resourceA, resourceB, relationDefinition);
+                                relations.add(relationInfo);
+                            }
                         }
-                        if(relationInfo.forwardRef == null && !relationDefinition.isBackref) {
-                            relationInfo.forwardRef = column;
-                        }
-                        if(relationInfo.backRef == null && relationDefinition.isBackref) {
-                            relationInfo.backRef = column;
+                        if(relationInfo != null) {
+                            if (relationInfo.forwardRef == null && !relationDefinition.isBackref) {
+                                relationInfo.forwardRef = column;
+                            }
+                            if (relationInfo.backRef == null && relationDefinition.isBackref) {
+                                relationInfo.backRef = column;
+                            }
                         }
                     }
                 }
@@ -75,7 +80,7 @@ public class CBIRelationInfo {
         }
         return null;
     }
-    static CBIRelationInfoNormal getRelationInfo(CBIResourceInfo resourceA, CBIResourceInfo resourceB, CBIColumnInfo.CBIRelationDefinition definition) {
+    static CBIRelationInfoNormal makeRelationInfo(CBIResourceInfo resourceA, CBIResourceInfo resourceB, CBIColumnInfo.CBIRelationDefinition definition) {
         CBIRelationInfoNormal relationInfo = null;
         if(definition.relationType == CBIRelationType.ONE_TO_ONE) {
             relationInfo = new CBIRelationInfoOneToOne();
@@ -87,6 +92,8 @@ public class CBIRelationInfo {
             relationInfo = new CBIRelationInfoManyToMany();
         }
         if(relationInfo != null) {
+            resourceA.relations.add(relationInfo);
+            resourceB.relations.add(relationInfo);
             relationInfo.relationName = definition.relationName;
             if(definition.isBackref) {
                 relationInfo.resourceA = resourceB;
@@ -105,6 +112,10 @@ class CBIRelationInfoNormal extends CBIRelationInfo {
     CBIResourceInfo resourceB;
     CBIRelationInfoNormal(CBIRelationType type) {
         super(type);
+    }
+    @Override
+    public String toString() {
+        return "RelationName: " + relationName + ", Resource A: " + resourceA.baseName + ", Resource B: " + resourceB.baseName + ", Forward ref: (" + forwardRef + "), Back ref: (" + backRef + ")";
     }
 }
 

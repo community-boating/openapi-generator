@@ -94,8 +94,6 @@ components:
           x-relation-definition:
             #relationType: 'ONE_TO_ONE'
             isBackref: true
-            testRef:
-              $ref: '#/components/schemas/TestTypeRoot'
 
           allOf:
             - $ref: '#/components/schemas/TestTypeRoot'

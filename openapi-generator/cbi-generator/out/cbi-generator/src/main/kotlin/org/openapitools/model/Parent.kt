@@ -1,4 +1,3 @@
-        Parent
-            {x-use-new=true, x-cbi-resource-info=cbi.generator.CBIResourceInfo@8e0ff4ca, x-parent=true}
+        Model name: Parent
             id
-                {x-dto-name=assignId, x-cbi-column-info=cbi.generator.CBIColumnInfo@46325ff}
+                {x-dto-name=assignId, x-cbi-column-info=Column Name: id, Column Type: Long}

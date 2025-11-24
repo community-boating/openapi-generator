@@ -1,12 +1,13 @@
-        TestTypeChildMultiple
-            {x-use-new=true, x-cbi-resource-info=cbi.generator.CBIResourceInfo@3fa993a0}
+        Model name: TestTypeChildMultiple
+                    Has relations:
+                    RelationName: TestTypeChildMultiple_TO_TestTypeRoot, Resource A: TestTypeChildMultiple, Resource B: TestTypeRoot, Forward ref: (Column Name: parentId, Column Type: TestTypeRoot), Back ref: (Column Name: childMultiple, Column Type: List)
             id
-                {x-dto-name=assignId, x-cbi-column-info=cbi.generator.CBIColumnInfo@46325ff}
+                {x-dto-name=assignId, x-cbi-column-info=Column Name: id, Column Type: Long}
             testDTOOnly
-                {x-dto-only=true, x-cbi-column-info=cbi.generator.CBIColumnInfo@2681534a}
+                {x-dto-only=true, x-cbi-column-info=Column Name: testDTOOnly, Column Type: Int}
             testDAOOnly
-                {x-dao-only=true, x-cbi-column-info=cbi.generator.CBIColumnInfo@6153f7d}
+                {x-dao-only=true, x-cbi-column-info=Column Name: testDAOOnly, Column Type: Int}
             aString
-                {x-cbi-column-info=cbi.generator.CBIColumnInfo@9285f9c1}
+                {x-cbi-column-info=Column Name: aString, Column Type: String}
             parentId
-                {x-use-new=true, x-cbi-column-info=cbi.generator.CBIColumnInfo@bbd12f17, x-dto-flat=true, x-relation-definition-cloned=RelationType: ONE_TO_ONE, isBackref: null}
+                {x-use-new=true, x-cbi-column-info=Column Name: parentId, Column Type: TestTypeRoot, x-dto-flat=true, x-relation-definition-cloned=RelationType: ONE_TO_ONE, isBackref: false}

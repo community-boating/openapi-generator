@@ -1,10 +1,11 @@
-        TestThroughTableChild
-            {x-use-new=true, x-cbi-resource-info=cbi.generator.CBIResourceInfo@bb673001}
+        Model name: TestThroughTableChild
+                    Has relations:
+                    RelationName: TestThroughTableChild_TO_TestTypeRoot, Resource A: TestThroughTableChild, Resource B: TestTypeRoot, Forward ref: (null), Back ref: (Column Name: childrenThroughTable, Column Type: List)
             id
-                {x-dto-name=assignId, x-cbi-column-info=cbi.generator.CBIColumnInfo@46325ff}
+                {x-dto-name=assignId, x-cbi-column-info=Column Name: id, Column Type: Long}
             derping
-                {x-cbi-column-info=cbi.generator.CBIColumnInfo@4fd2cef2}
+                {x-cbi-column-info=Column Name: derping, Column Type: String}
             readOnlyString
-                {x-cbi-column-info=cbi.generator.CBIColumnInfo@3546e702}
+                {x-cbi-column-info=Column Name: readOnlyString, Column Type: String}
             testChild
-                {x-relation-definition-cloned=RelationType: ONE_TO_ONE, isBackref: null, x-use-new=true, x-cbi-column-info=cbi.generator.CBIColumnInfo@dbc444e6}
+                {x-relation-definition-cloned=RelationType: ONE_TO_ONE, isBackref: false, x-use-new=true, x-cbi-column-info=Column Name: testChild, Column Type: TestInheritanceChild}

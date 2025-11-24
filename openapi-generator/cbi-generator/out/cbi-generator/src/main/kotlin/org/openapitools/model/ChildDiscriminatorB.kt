@@ -1,10 +1,9 @@
-        ChildDiscriminatorB
-            {x-use-new=true, x-cbi-resource-info=cbi.generator.CBIResourceInfo@2b02f542}
+        Model name: ChildDiscriminatorB
             parentAdded
-                {x-cbi-column-info=cbi.generator.CBIColumnInfo@b6413f6e}
+                {x-cbi-column-info=Column Name: parentAdded, Column Type: Boolean}
             id
-                {x-dto-name=assignId, x-cbi-column-info=cbi.generator.CBIColumnInfo@46325ff}
+                {x-dto-name=assignId, x-cbi-column-info=Column Name: id, Column Type: Long}
             childType
-                {x-use-new=true, x-cbi-column-info=cbi.generator.CBIColumnInfo@c1532ae0}
+                {x-use-new=true, x-cbi-column-info=Column Name: childType, Column Type: ChildType}
             childValueB
-                {x-cbi-column-info=cbi.generator.CBIColumnInfo@aaa0731c}
+                {x-cbi-column-info=Column Name: childValueB, Column Type: String}
