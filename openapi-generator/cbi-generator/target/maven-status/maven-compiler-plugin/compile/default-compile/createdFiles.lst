@@ -1,0 +1,12 @@
+cbi\generator\CBIResourceInfo.class
+cbi\generator\CbiGeneratorGenerator.class
+cbi\generator\CBIRelationInfoOneToOneTyped.class
+cbi\generator\CBIResourceInfo$TypeUnionResult.class
+cbi\generator\CBIRelationType.class
+cbi\generator\CBIRelationInfoOneToOne.class
+cbi\generator\CBIColumnInfo$CBIRelationDefinition.class
+cbi\generator\CBIRelationInfoManyToMany.class
+cbi\generator\CBIRelationInfoOneToMany.class
+cbi\generator\CBIColumnInfo.class
+cbi\generator\CBIRelationInfoNormal.class
+cbi\generator\CBIRelationInfo.class

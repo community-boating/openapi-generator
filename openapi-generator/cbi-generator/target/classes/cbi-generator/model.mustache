@@ -1,0 +1,14 @@
+{{#models}}
+    {{#model}}
+        {{name}}
+        {{#vendorExtensions}}
+            {{{this}}}
+        {{/vendorExtensions}}
+        {{#allVars}}
+            {{name}}
+            {{#vendorExtensions}}
+                {{{this}}}
+            {{/vendorExtensions}}
+        {{/allVars}}
+    {{/model}}
+{{/models}}

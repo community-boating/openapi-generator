@@ -1,0 +1,12 @@
+        ChildDiscriminatorA
+            {x-use-new=true}
+            parentAdded
+                {}
+            id
+                {x-dto-name=assignId}
+            childType
+                {x-use-new=true}
+            interfaceValue
+                {}
+            childValueA
+                {}
