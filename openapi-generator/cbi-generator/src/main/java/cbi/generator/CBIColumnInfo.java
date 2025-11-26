@@ -11,11 +11,20 @@ public class CBIColumnInfo {
     String columnNameDB;
     String columnName;
     String columnType;
+    Boolean isArray = false;
+    CBIRelationInfo relation;
     ArrayList<ModelAndProperty> modelProperties = new ArrayList<>();
+    static String getPropertyType(CodegenProperty property) {
+        if(property.isArray){
+            return property.items.dataType;
+        }else{
+            return property.dataType;
+        }
+    }
     static CBIColumnInfo getOrAdd(ArrayList<CBIColumnInfo> columns, CodegenModel model, CodegenProperty property) {
         CBIColumnInfo column = null;
         for(CBIColumnInfo columnI : columns) {
-            if(columnI.columnName.equals(property.name) && columnI.columnType.equals(property.dataType)){
+            if(columnI.columnName.equals(property.name) && columnI.columnType.equals(getPropertyType(property)) && (columnI.isArray == property.isArray)){
                 column = columnI;
                 break;
             }
@@ -24,12 +33,29 @@ public class CBIColumnInfo {
             column = new CBIColumnInfo();
             column.columnName = property.name;
             column.columnNameDB = property.nameInSnakeCase;
-            column.columnType = property.dataType;
+            column.columnType = getPropertyType(property);
+            column.isArray = property.isArray;
             columns.add(column);
         }
         property.vendorExtensions.put("x-cbi-column-info", column);
         column.modelProperties.add(new ModelAndProperty(model, property));
         return column;
+    }
+    void addToModel(CodegenModel model) {
+        CodegenProperty property = new CodegenProperty();
+        property.name = this.columnName;
+        property.baseName = this.columnName;
+        property.isArray = this.isArray;
+        if(this.isArray){
+            CodegenProperty items = new CodegenProperty();
+            items.isModel = true;
+            items.dataType = this.columnType;
+            property.items = items;
+        }else{
+            property.isModel = true;
+            property.dataType = this.columnType;
+        }
+        model.allVars.add(property);
     }
     @Override
     public int hashCode(){
@@ -82,13 +108,12 @@ public class CBIColumnInfo {
             if(property.isArray && property.items.isModel){
                 definition.relationType = CBIRelationType.ONE_TO_MANY;
                 definition.isBackref = true;
-                if(definition.modelB == null)
-                    definition.modelB = property.items.dataType;
             }else if(property.isModel){
-                definition.relationType = CBIRelationType.ONE_TO_ONE;
-                if(definition.modelB == null)
-                    definition.modelB = property.dataType;
+                definition.relationType = CBIRelationType.ONE_TO_ONE;;
             }
+
+            if(definition.modelB == null)
+                definition.modelB = getPropertyType(property);
 
             if(definition.modelA == null)
                 definition.modelA = model.name;
@@ -108,6 +133,11 @@ public class CBIColumnInfo {
             if(definition.backwardRef == null && definition.isBackref != null && definition.isBackref){
                 definition.backwardRef = property.name;
             }
+
+            if(definition.forwardRef == null)
+                definition.forwardRef = "forwardRef";
+            if(definition.backwardRef == null)
+                definition.backwardRef = "backRef";
 
             return definition;
         }

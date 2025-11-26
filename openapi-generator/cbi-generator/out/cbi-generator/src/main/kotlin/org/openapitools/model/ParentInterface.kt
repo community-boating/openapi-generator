@@ -1,3 +1,9 @@
-        Model name: ParentInterface
-            interfaceValue
-                {x-cbi-column-info=Column Name: interfaceValue, Column Type: Boolean}
+Model name: ParentInterface
+                    SCHEMA
+    Variables:
+        Variable Name: interfaceValue
+            Is Required: false
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: 

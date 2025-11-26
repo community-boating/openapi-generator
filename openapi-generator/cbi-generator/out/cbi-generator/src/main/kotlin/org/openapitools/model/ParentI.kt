@@ -1,3 +1,9 @@
-        Model name: ParentI
-            interfaceProperty
-                {x-is-overridden=true, x-cbi-column-info=Column Name: interfaceProperty, Column Type: String}
+Model name: ParentI
+                    SCHEMA
+    Variables:
+        Variable Name: interfaceProperty
+            Is Required: false
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: 

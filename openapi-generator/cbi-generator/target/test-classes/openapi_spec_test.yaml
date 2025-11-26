@@ -34,7 +34,6 @@ components:
           maxLength: 100
         child:
           readOnly: true
-          x-backref: parentId
           allOf:
             - $ref: '#/components/schemas/TestTypeChild'
         childMultiple:

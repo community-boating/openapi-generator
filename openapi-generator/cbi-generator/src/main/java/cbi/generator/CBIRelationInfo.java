@@ -1,5 +1,7 @@
 package cbi.generator;
 
+import org.openapitools.codegen.CodegenModel;
+
 import java.util.ArrayList;
 
 enum CBIRelationType {
@@ -18,6 +20,7 @@ public class CBIRelationInfo {
     CBIColumnInfo forwardRef;
     //Back ref property B -> A
     CBIColumnInfo backRef;
+    CBIColumnInfo.CBIRelationDefinition definition;
     CBIRelationInfo(CBIRelationType type) {
         this.type = type;
     }
@@ -67,12 +70,12 @@ public class CBIRelationInfo {
                             }
                         }
                         if(relationInfo != null) {
-                            if (relationInfo.forwardRef == null && !relationDefinition.isBackref) {
+                            if (!relationDefinition.isBackref) {
                                 relationInfo.forwardRef = column;
-                            }
-                            if (relationInfo.backRef == null && relationDefinition.isBackref) {
+                            } else {
                                 relationInfo.backRef = column;
                             }
+                            column.relation = relationInfo;
                         }
                     }
                 }
@@ -92,6 +95,7 @@ public class CBIRelationInfo {
             relationInfo = new CBIRelationInfoManyToMany();
         }
         if(relationInfo != null) {
+            relationInfo.definition = definition;
             resourceA.relations.add(relationInfo);
             resourceB.relations.add(relationInfo);
             relationInfo.relationName = definition.relationName;
@@ -113,9 +117,34 @@ class CBIRelationInfoNormal extends CBIRelationInfo {
     CBIRelationInfoNormal(CBIRelationType type) {
         super(type);
     }
+
+    void addMissingColumns() {
+        if(forwardRef == null) {
+            forwardRef = new CBIColumnInfo();
+            forwardRef.relation = this;
+            forwardRef.columnName = definition.forwardRef;
+            forwardRef.columnType = resourceB.baseName;
+            for(CodegenModel model : resourceA.schema) {
+                forwardRef.addToModel(model);
+            }
+        }
+        if(backRef == null) {
+            backRef = new CBIColumnInfo();
+            backRef.relation = this;
+            backRef.columnName = definition.backwardRef;
+            if(type == CBIRelationType.MANY_TO_MANY || type == CBIRelationType.ONE_TO_MANY){
+                backRef.isArray = true;
+            }
+            backRef.columnType = resourceA.baseName;
+            for(CodegenModel model : resourceA.schema) {
+                backRef.addToModel(model);
+            }
+        }
+    }
+
     @Override
     public String toString() {
-        return "RelationName: " + relationName + ", Resource A: " + resourceA.baseName + ", Resource B: " + resourceB.baseName + ", Forward ref: (" + forwardRef + "), Back ref: (" + backRef + ")";
+        return "RelationName: " + relationName + "\nResource A: " + resourceA.baseName + "\nResource B: " + resourceB.baseName + "\nForward ref: (" + forwardRef + ")\nBack ref: (" + backRef + ")";
     }
 }
 

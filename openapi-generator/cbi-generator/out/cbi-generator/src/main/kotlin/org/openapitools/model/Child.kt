@@ -1,5 +1,16 @@
-        Model name: Child
-            id
-                {x-dto-name=assignId}
-            interfaceProperty
-                {x-is-overridden=true}
+            ChildI
+            ParentI
+Model name: Child
+    Variables:
+        Variable Name: id
+            Is Required: false
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: false
+        Variable Name: interfaceProperty
+            Is Required: false
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: false

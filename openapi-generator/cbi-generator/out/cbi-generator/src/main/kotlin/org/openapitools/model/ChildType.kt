@@ -1,1 +1,3 @@
-        Model name: ChildType
+Model name: ChildType
+                    SCHEMA
+    Variables:

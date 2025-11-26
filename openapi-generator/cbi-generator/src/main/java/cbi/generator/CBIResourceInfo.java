@@ -13,6 +13,7 @@ public class CBIResourceInfo {
     Boolean hasTable = true;
     Boolean hasDAO = true;
     Boolean hasDTO = true;
+    Boolean isBase = false;
     String baseName;
     ArrayList<CBIColumnInfo> columns = new ArrayList<>();
     ArrayList<CodegenModel> generated = new ArrayList<>();
@@ -69,47 +70,69 @@ public class CBIResourceInfo {
     }
     TypeUnionResult typeUnion(CodegenModel model1, CodegenModel model2) {
         TypeUnionResult result = new TypeUnionResult();
+        result.model = new CodegenModel();
+        result.model.allVars = new ArrayList<>();
+        result.model.name = "TODO_UNION";
         result.matchedNone = true;
         result.fromExisting = false;
         boolean hasAll = true;
         for(CodegenProperty property1 : model1.allVars) {
+            boolean hasVar = false;
             for(CodegenProperty property2: model2.allVars) {
                 if(compareProperty(property1, property2)){
                     result.model.allVars.add(property1.clone());
                     result.matchedNone = false;
-                }else{
-                    hasAll = false;
+                    hasVar = true;
                 }
             }
+            if(!hasVar)
+                hasAll = false;
         }
         result.matchedAll = hasAll;
         for(CodegenModel modelGenerated : generated) {
             hasAll = true;
             for(CodegenProperty property1 : modelGenerated.allVars) {
+                boolean hasVar = false;
                 for(CodegenProperty property2: result.model.allVars) {
-                    if(!compareProperty(property1, property2)){
-                        hasAll = false;
+                    if(compareProperty(property1, property2)){
+                        hasVar = true;
+                        break;
                     }
                 }
+                if(!hasVar)
+                    hasAll = false;
             }
             if(hasAll){
                 result.fromExisting = true;
+                result.model = modelGenerated;
                 break;
             }
         }
-        if(!result.matchedNone && !result.fromExisting)
-            generated.add(result.model);
+        if(model1.allVars.size() != model2.allVars.size() || model1.allVars.size() != result.model.allVars.size())
+            result.matchedAll = false;
         return result;
     }
-    void combineModels(ArrayList<CodegenModel> models1, ArrayList<CodegenModel> models2) {
+    ArrayList<CodegenModel> combineModels(ArrayList<CodegenModel> models1, ArrayList<CodegenModel> models2, Boolean skipIfMatchAll) {
+        ArrayList<CodegenModel> added = new ArrayList<>();
         for(CodegenModel model1 : models1) {
             for(CodegenModel model2 : models2) {
-                typeUnion(model1, model2);
+                if(model1 == model2)
+                    break;
+                TypeUnionResult result = typeUnion(model1, model2);
+                if(!result.matchedNone && (!result.matchedAll || skipIfMatchAll)) {
+                    added.add(result.model);
+                }
             }
         }
+        return added;
     }
     void combineModelTypes() {
-        combineModels(this.schema, this.schema);
+        this.generated = combineModels(this.schema, this.schema, false);
+        ArrayList<CodegenModel> added;
+        do {
+            added = combineModels(this.generated, this.schema, true);
+            this.generated.addAll(added);
+        } while(!added.isEmpty());
     }
     void updateModelRefs() {
         for(CodegenModel model: schema) {

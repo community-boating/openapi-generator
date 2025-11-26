@@ -1,3 +1,9 @@
-        Model name: Parent
-            id
-                {x-dto-name=assignId, x-cbi-column-info=Column Name: id, Column Type: Long}
+Model name: Parent
+                    SCHEMA
+    Variables:
+        Variable Name: id
+            Is Required: false
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: false

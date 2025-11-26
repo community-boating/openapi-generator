@@ -1,7 +1,21 @@
-        Model name: ParentDiscriminator
-            parentAdded
-                {x-cbi-column-info=Column Name: parentAdded, Column Type: Boolean}
-            id
-                {x-dto-name=assignId, x-cbi-column-info=Column Name: id, Column Type: Long}
-            childType
-                {x-use-new=true, x-cbi-column-info=Column Name: childType, Column Type: ChildType}
+Model name: ParentDiscriminator
+                    SCHEMA
+    Variables:
+        Variable Name: parentAdded
+            Is Required: false
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: 
+        Variable Name: id
+            Is Required: false
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: false
+        Variable Name: childType
+            Is Required: true
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: 

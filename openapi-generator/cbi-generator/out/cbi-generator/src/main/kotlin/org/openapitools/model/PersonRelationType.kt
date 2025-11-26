@@ -1,1 +1,3 @@
-        Model name: PersonRelationType
+Model name: PersonRelationType
+                    SCHEMA
+    Variables:

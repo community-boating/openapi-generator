@@ -48,7 +48,12 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
     CBIRelationInfo.findAllRelations(resources);
     for(CBIResourceInfo resource: resources) {
       resource.updateModelRefs();
-      //resource.combineModelTypes();
+      for(CBIRelationInfo relation: resource.relations) {
+        if(relation instanceof CBIRelationInfoNormal) {
+          ((CBIRelationInfoNormal) relation).addMissingColumns();
+        }
+      }
+      resource.combineModelTypes();
       //resource.updateColumns();
     }
 

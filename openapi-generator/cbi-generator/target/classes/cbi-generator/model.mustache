@@ -1,20 +1,40 @@
 {{#models}}
     {{#model}}
-        Model name: {{name}}
+        {{#interfaces}}
+            {{this}}
+        {{/interfaces}}
+Model name: {{name}}
         {{#vendorExtensions}}
             {{#x-cbi-resource-info}}
-                {{^relations.isEmpty}}
-                    Has relations:
-                {{/relations.isEmpty}}
-                {{#getRelations}}
-                    {{{this}}}
-                {{/getRelations}}
+                {{#schema}}
+                    SCHEMA
+                {{/schema}}
+                {{#generated}}
+                    HAS GENERATED
+                {{/generated}}
             {{/x-cbi-resource-info}}
         {{/vendorExtensions}}
+    Variables:
         {{#allVars}}
-            {{name}}
+        Variable Name: {{name}}
+            Is Required: {{required}}
+            Is Read Only: {{isReadOnly}}
+            Is Write Only: {{isWriteOnly}}
+            Is Inherited: {{isInherited}}
+            Is Overridden: {{isOverridden}}
             {{#vendorExtensions}}
-                {{{this}}}
+                {{#x-cbi-column-info}}
+                    {{#relation}}
+                    Relation:
+                        Name: {{relationName}}
+                        Resource A: {{resourceA.baseName}}
+                        Resource B: {{resourceB.baseName}}
+                        Forward ref: {{^forwardRef}}null{{/forwardRef}}{{#forwardRef}}
+{{> cbi-column}}{{/forwardRef}}
+                        Back ref: {{^backRef}}null{{/backRef}}{{#backRef}}
+{{> cbi-column}}{{/backRef}}
+                    {{/relation}}
+                {{/x-cbi-column-info}}
             {{/vendorExtensions}}
         {{/allVars}}
     {{/model}}
