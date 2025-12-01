@@ -1,5 +1,21 @@
 Model name: Parent
-                    SCHEMA
+                Has Resource:
+                Parent
+                MODEL META
+                    hasDTO: true
+                    hasDAO: true
+                    hasTable: true
+                    isResource: true
+                    isBase: true
+
+                    varsIncluded: none
+                    
+                    varsExcluded: none
+                    
+                    relationsIncluded: none
+                    
+                    relationsExcluded: none
+                    
     Variables:
         Variable Name: id
             Is Required: false
@@ -7,3 +23,4 @@ Model name: Parent
             Is Write Only: false
             Is Inherited: false
             Is Overridden: false
+                    COL INFO

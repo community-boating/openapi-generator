@@ -1,8 +1,11 @@
 package cbi.generator;
 
+import cbi.generator.relation.CBIRelationInfo;
+import cbi.generator.relation.CBIRelationInfoNormal;
+import cbi.generator.resource.CBIResourceInfo;
+import cbi.generator.resource.CBIResourceInfoBase;
 import org.openapitools.codegen.*;
 import org.openapitools.codegen.model.*;
-import io.swagger.models.properties.*;
 
 import java.util.*;
 import java.io.File;
@@ -44,17 +47,21 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
 
     //Build relationship model
 
-    ArrayList<CBIResourceInfo> resources = CBIResourceInfo.getResourcesFromModels(allModels);
+    ArrayList<CBIResourceInfoBase> resources = CBIResourceInfo.getResourcesFromModels(allModels);
     CBIRelationInfo.findAllRelations(resources);
-    for(CBIResourceInfo resource: resources) {
-      resource.updateModelRefs();
+    for(CBIResourceInfoBase resource: resources) {
       for(CBIRelationInfo relation: resource.relations) {
         if(relation instanceof CBIRelationInfoNormal) {
           ((CBIRelationInfoNormal) relation).addMissingColumns();
         }
       }
-      resource.combineModelTypes();
+      //resource.combineModelTypes();
       //resource.updateColumns();
+    }
+
+    for(CBIResourceInfoBase resource: resources) {
+      resource.updateModelRefs();
+      resource.updateColumns();
     }
 
     for(ModelsMap modelMaps : allModels.values()) {

@@ -1,25 +1,45 @@
 Model name: TestTypeChild
-                    SCHEMA
+                Has Resource:
+                TestTypeChild
+                MODEL META
+                    hasDTO: true
+                    hasDAO: true
+                    hasTable: true
+                    isResource: true
+                    isBase: true
+
+                    varsIncluded: none
+                    
+                    varsExcluded: none
+                    
+                    relationsIncluded: none
+                    
+                    relationsExcluded: none
+                    
     Variables:
         Variable Name: id
-            Is Required: true
+            Is Required: false
             Is Read Only: false
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+                    COL INFO
         Variable Name: readOnlyString
             Is Required: false
             Is Read Only: true
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+                    COL INFO
         Variable Name: parentId
             Is Required: false
             Is Read Only: false
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+                    COL INFO
                     Relation:
+                        
                         Name: TestTypeRoot_TO_TestTypeChild
                         Resource A: TestTypeRoot
                         Resource B: TestTypeChild

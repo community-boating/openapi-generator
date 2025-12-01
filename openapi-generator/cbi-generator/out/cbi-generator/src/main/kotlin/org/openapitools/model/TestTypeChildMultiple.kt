@@ -1,5 +1,21 @@
 Model name: TestTypeChildMultiple
-                    SCHEMA
+                Has Resource:
+                TestTypeChildMultiple
+                MODEL META
+                    hasDTO: true
+                    hasDAO: true
+                    hasTable: true
+                    isResource: true
+                    isBase: true
+
+                    varsIncluded: none
+                    
+                    varsExcluded: none
+                    
+                    relationsIncluded: none
+                    
+                    relationsExcluded: none
+                    
     Variables:
         Variable Name: id
             Is Required: true
@@ -7,31 +23,37 @@ Model name: TestTypeChildMultiple
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+                    COL INFO
         Variable Name: testDTOOnly
             Is Required: false
             Is Read Only: false
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+                    COL INFO
         Variable Name: testDAOOnly
             Is Required: false
             Is Read Only: false
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+                    COL INFO
         Variable Name: aString
             Is Required: false
             Is Read Only: true
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+                    COL INFO
         Variable Name: parentId
             Is Required: false
             Is Read Only: false
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+                    COL INFO
                     Relation:
+                        
                         Name: TestTypeChildMultiple_TO_TestTypeRoot
                         Resource A: TestTypeChildMultiple
                         Resource B: TestTypeRoot

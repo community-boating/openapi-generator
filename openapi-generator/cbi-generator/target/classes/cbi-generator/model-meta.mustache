@@ -1,0 +1,25 @@
+                    hasDTO: {{hasDTO}}
+                    hasDAO: {{hasDAO}}
+                    hasTable: {{hasTable}}
+                    isResource: {{isResource}}
+                    isBase: {{isBase}}
+
+                    varsIncluded: {{^varsIncluded}}none
+                    {{/varsIncluded}}{{#varsIncluded}}
+                        {{this}},
+                    {{/varsIncluded}}
+
+                    varsExcluded: {{^varsExcluded}}none
+                    {{/varsExcluded}}{{#varsExcluded}}
+                        {{this}},
+                    {{/varsExcluded}}
+
+                    relationsIncluded: {{^relationsIncluded}}none
+                    {{/relationsIncluded}}{{#relationsIncluded}}
+                        {{this}},
+                    {{/relationsIncluded}}
+
+                    relationsExcluded: {{^relationsExcluded}}none
+                    {{/relationsExcluded}}{{#relationsExcluded}}
+                        {{this}},
+                    {{/relationsExcluded}}

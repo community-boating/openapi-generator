@@ -13,6 +13,8 @@ src/main/kotlin/org/openapitools/model/TestInheritanceChildI.kt
 src/main/kotlin/org/openapitools/model/TestInheritanceParent.kt
 src/main/kotlin/org/openapitools/model/TestInheritanceParentOther.kt
 src/main/kotlin/org/openapitools/model/TestThroughTableChild.kt
+src/main/kotlin/org/openapitools/model/TestThroughTableChildSub.kt
 src/main/kotlin/org/openapitools/model/TestTypeChild.kt
 src/main/kotlin/org/openapitools/model/TestTypeChildMultiple.kt
+src/main/kotlin/org/openapitools/model/TestTypeChildSub.kt
 src/main/kotlin/org/openapitools/model/TestTypeRoot.kt

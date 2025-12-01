@@ -6,13 +6,13 @@
 Model name: {{name}}
         {{#vendorExtensions}}
             {{#x-cbi-resource-info}}
-                {{#schema}}
-                    SCHEMA
-                {{/schema}}
-                {{#generated}}
-                    HAS GENERATED
-                {{/generated}}
+                Has Resource:
+                {{baseName}}
             {{/x-cbi-resource-info}}
+            {{#x-model-meta}}
+                MODEL META
+{{>model-meta}}
+            {{/x-model-meta}}
         {{/vendorExtensions}}
     Variables:
         {{#allVars}}
@@ -24,8 +24,10 @@ Model name: {{name}}
             Is Overridden: {{isOverridden}}
             {{#vendorExtensions}}
                 {{#x-cbi-column-info}}
+                    COL INFO
                     {{#relation}}
                     Relation:
+                        {{#superRelation}}SUPER RELATION: {{relationName}}{{/superRelation}}
                         Name: {{relationName}}
                         Resource A: {{resourceA.baseName}}
                         Resource B: {{resourceB.baseName}}

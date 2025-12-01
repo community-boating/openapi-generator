@@ -78,7 +78,6 @@ components:
     TestTypeChild:
       x-use-new: true
       type: object
-      required: [ id ]
       properties:
         id:
           x-dto-name: assignId
@@ -90,12 +89,21 @@ components:
           maxLength: 100
         parentId:
           x-dto-flat: true
-          x-relation-definition:
+          x-relation-meta:
             #relationType: 'ONE_TO_ONE'
             isBackref: true
 
           allOf:
             - $ref: '#/components/schemas/TestTypeRoot'
+
+    TestTypeChildSub:
+      x-use-new: true
+      type: object
+      x-vars-included:
+        - id
+        - readOnlyString
+      allOf:
+        - $ref: '#/components/schemas/TestTypeChild'
 
     TestThroughTableChild:
       x-use-new: true
@@ -113,6 +121,14 @@ components:
           readOnly: true
           type: string
           maxLength: 100
+        testChild:
+          $ref: '#/components/schemas/TestInheritanceParent'
+    TestThroughTableChildSub:
+      x-use-new: true
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/TestThroughTableChild'
+      properties:
         testChild:
           $ref: '#/components/schemas/TestInheritanceChild'
     TestInheritanceParent:
