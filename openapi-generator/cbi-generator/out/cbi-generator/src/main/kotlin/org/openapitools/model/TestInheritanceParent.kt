@@ -1,6 +1,9 @@
+            TestInheritanceChildAndTestInheritanceParent
+            TestInheritanceChildIAndTestInheritanceParent
 Model name: TestInheritanceParent
-                Has Resource:
-                TestInheritanceParent
+                Has Resource: TestInheritanceParent
+                    Relation Name: 
+                    Child Resource: TestInheritanceChildI
                 MODEL META
                     hasDTO: true
                     hasDAO: true
@@ -39,7 +42,12 @@ Model name: TestInheritanceParent
             Is Overridden: 
                     COL INFO
                     Relation:
-                        
+                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceChild
+                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceChildI
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceChildI
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceChild
+                        Base Name: TestThroughTableChild_TO_TestInheritanceParent
                         Name: TestThroughTableChild_TO_TestInheritanceParent
                         Resource A: TestThroughTableChild
                         Resource B: TestInheritanceParent

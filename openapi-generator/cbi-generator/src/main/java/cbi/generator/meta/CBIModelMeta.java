@@ -33,6 +33,52 @@ public class CBIModelMeta extends MetaBase {
         this.relationsExcluded = this.getStringArray("x-relations-excluded");
     }
 
+    public static int hasRelation(CodegenModel model, String relationName) {
+        CBIModelMeta meta = CBIModelMeta.getOrAdd(model);
+        int has = meta.hasRelation(relationName);
+        if(has != 0)
+            return has;
+        if(model.interfaceModels == null)
+            return 0;
+        for(CodegenModel parent: model.interfaceModels) {
+            has = hasRelation(parent, relationName);
+            if(has != 0)
+                return has;
+        }
+        return 0;
+    }
+
+    int hasRelation(String relationName) {
+        if(relationsIncluded.contains(relationName))
+            return 1;
+        if(relationsExcluded.contains(relationName))
+            return -1;
+        return 0;
+    }
+
+    public static int hasVar(CodegenModel model, String varName) {
+        CBIModelMeta meta = CBIModelMeta.getOrAdd(model);
+        int has = meta.hasVar(varName);
+        if(has != 0)
+            return has;
+        if(model.interfaceModels == null)
+            return 0;
+        for(CodegenModel parent: model.interfaceModels) {
+            has = hasVar(parent, varName);
+            if(has != 0)
+                return has;
+        }
+        return 0;
+    }
+
+    int hasVar(String varName) {
+        if(varsIncluded.contains(varName))
+            return 1;
+        if(varsExcluded.contains(varName))
+            return -1;
+        return 0;
+    }
+
     public static boolean hasParentDiscriminator(CodegenModel model) {
         if(model.interfaceModels != null) {
             for (CodegenModel parent : model.interfaceModels) {

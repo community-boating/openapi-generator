@@ -5,67 +5,46 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="708c956b-77f3-4487-a796-38b24f696262" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/ModelAndProperty.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/enums/CBIRelationType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/meta/CBIColumnMeta.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/meta/CBIModelMeta.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/meta/CBIRelationMeta.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/meta/MetaBase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoManyToMany.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoManyToManyBase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoManyToManySelf.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoNormal.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoOneToMany.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoOneToOne.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoOneToOneTyped.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/resource/CBIResourceInfo.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/resource/CBIResourceInfoBase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/resource/CBIResourceInfoChild.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/cbi-generator/src/main/resources/cbi-generator/model-meta.mustache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/.openapi-generator/FILES" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/.openapi-generator/FILES" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/.openapi-generator/VERSION" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/.openapi-generator/VERSION" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/Child.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/Child.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ChildDiscriminatorA.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ChildDiscriminatorA.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ChildDiscriminatorB.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ChildDiscriminatorB.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ChildI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ChildI.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ChildType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ChildType.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/Parent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/Parent.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ParentDiscriminator.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ParentDiscriminator.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ParentI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ParentI.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ParentInterface.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/ParentInterface.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/PersonRelationType.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/PersonRelationType.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestInheritanceChild.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestInheritanceChild.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestInheritanceChildI.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestInheritanceChildI.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestInheritanceParent.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestInheritanceParent.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestInheritanceParentOther.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestInheritanceParentOther.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestThroughTableChild.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestThroughTableChild.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestThroughTableChildSub.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestThroughTableChildSub.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestTypeChild.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestTypeChild.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestTypeChildMultiple.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestTypeChildMultiple.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestTypeChildSub.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestTypeChildSub.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestTypeRoot.kt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/out/cbi-generator/src/main/kotlin/org/openapitools/model/TestTypeRoot.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/CBIColumnInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/CBIColumnInfo.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/CBIRelationInfo.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/CBIResourceInfo.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/CbiGeneratorGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/CbiGeneratorGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/meta/CBIModelMeta.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/meta/CBIModelMeta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/meta/CBIRelationMeta.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/meta/CBIRelationMeta.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoNormal.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoNormal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoOneToOneTyped.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoOneToOneTyped.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/resource/CBIResourceInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/resource/CBIResourceInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/resource/CBIResourceInfoBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/resource/CBIResourceInfoShared.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/resource/CBIResourceInfoChild.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/resource/CBIResourceInfoChild.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/resources/cbi-generator/model.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/resources/cbi-generator/model.mustache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/src/test/resources/openapi_spec_test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/test/resources/openapi_spec_test.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi-generator/model.mustache" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi-generator/model.mustache" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIColumnInfo$CBIRelationDefinition.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIColumnInfo$ModelAndProperty.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIColumnInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIColumnInfo.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIRelationInfo.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIRelationInfoManyToMany.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIRelationInfoNormal.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIRelationInfoOneToMany.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIRelationInfoOneToOne.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIRelationInfoOneToOneTyped.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIRelationType.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIResourceInfo$TypeUnionResult.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CBIResourceInfo.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CbiGeneratorGenerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CbiGeneratorGenerator.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/cbi-generator/target/test-classes/openapi_spec_test.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/test-classes/openapi_spec_test.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/meta/CBIModelMeta.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/meta/CBIModelMeta.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/meta/CBIRelationMeta.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/meta/CBIRelationMeta.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/relation/CBIRelationInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/relation/CBIRelationInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/relation/CBIRelationInfoNormal.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/relation/CBIRelationInfoNormal.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/relation/CBIRelationInfoOneToOneTyped.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/relation/CBIRelationInfoOneToOneTyped.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/resource/CBIResourceInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/resource/CBIResourceInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/resource/CBIResourceInfoBase$TypeUnionResult.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/resource/CBIResourceInfoBase.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/resource/CBIResourceInfoChild.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/resource/CBIResourceInfoChild.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,9 +64,9 @@
   <component name="ProjectCodeStyleSettingsMigration">
     <option name="version" value="2" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="362IHGn7TRXVqYFF3AYHaukVnzF" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />

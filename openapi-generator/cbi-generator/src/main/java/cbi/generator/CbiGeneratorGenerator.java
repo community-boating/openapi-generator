@@ -3,7 +3,7 @@ package cbi.generator;
 import cbi.generator.relation.CBIRelationInfo;
 import cbi.generator.relation.CBIRelationInfoNormal;
 import cbi.generator.resource.CBIResourceInfo;
-import cbi.generator.resource.CBIResourceInfoBase;
+import cbi.generator.resource.CBIResourceInfoShared;
 import org.openapitools.codegen.*;
 import org.openapitools.codegen.model.*;
 
@@ -47,11 +47,23 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
 
     //Build relationship model
 
-    ArrayList<CBIResourceInfoBase> resources = CBIResourceInfo.getResourcesFromModels(allModels);
+    ArrayList<CBIResourceInfoShared> resources = CBIResourceInfo.getResourcesFromModels(allModels);
     CBIRelationInfo.findAllRelations(resources);
-    for(CBIResourceInfoBase resource: resources) {
+    for(CBIResourceInfoShared resource: resources) {
+      CBIResourceInfoShared.HighestRelations highestRelations = resource.getHighestRelations();
       for(CBIRelationInfo relation: resource.relations) {
         if(relation instanceof CBIRelationInfoNormal) {
+          relation.meta.hasForward = false;
+          relation.meta.hasBackward = false;
+          if(highestRelations.A.contains(relation)){
+            //if(relation.resourceA.equals(resource))
+              relation.meta.hasForward = true;
+            //if(((CBIRelationInfoNormal) relation).resourceB.equals(resource))
+            //  relation.meta.hasBackward = true;
+          }
+          if(highestRelations.B.contains(relation)){
+            relation.meta.hasBackward = true;
+          }
           ((CBIRelationInfoNormal) relation).addMissingColumns();
         }
       }
@@ -59,10 +71,27 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
       //resource.updateColumns();
     }
 
-    for(CBIResourceInfoBase resource: resources) {
+    ArrayList<ModelMap> generatedAll = new ArrayList<>();
+
+    for(CBIResourceInfoShared resource: resources) {
       resource.updateModelRefs();
       resource.updateColumns();
+      if(resource instanceof CBIResourceInfo){
+        ArrayList<CodegenModel> generated = ((CBIResourceInfo) resource).mergeSubResources();
+        for(CodegenModel modelGenerated: generated) {
+          ModelMap modelMap = new ModelMap();
+          modelMap.setModel(modelGenerated);
+          generatedAll.add(modelMap);
+        }
+      }
+      CBIResourceInfoShared.updateModelInterfaces(resource.model);
+
     }
+
+    ModelsMap map = new ModelsMap();
+    map.setModels(generatedAll);
+
+    allModels.put("GENERATED", map);
 
     for(ModelsMap modelMaps : allModels.values()) {
       for(ModelMap modelMap : modelMaps.getModels()) {

@@ -1,6 +1,6 @@
 Model name: TestTypeRoot
-                Has Resource:
-                TestTypeRoot
+                Has Resource: TestTypeRoot
+                    Relation Name: 
                 MODEL META
                     hasDTO: true
                     hasDAO: true
@@ -46,7 +46,8 @@ Model name: TestTypeRoot
             Is Overridden: 
                     COL INFO
                     Relation:
-                        
+                            Sub Relation: TestTypeRoot_TO_TestTypeChildSub
+                        Base Name: TestTypeRoot_TO_TestTypeChild
                         Name: TestTypeRoot_TO_TestTypeChild
                         Resource A: TestTypeRoot
                         Resource B: TestTypeChild
@@ -66,7 +67,7 @@ Model name: TestTypeRoot
             Is Overridden: 
                     COL INFO
                     Relation:
-                        
+                        Base Name: TestTypeChildMultiple_TO_TestTypeRoot
                         Name: TestTypeChildMultiple_TO_TestTypeRoot
                         Resource A: TestTypeChildMultiple
                         Resource B: TestTypeRoot
@@ -86,9 +87,10 @@ Model name: TestTypeRoot
             Is Overridden: 
                     COL INFO
                     Relation:
-                        
-                        Name: TestThroughTableChild_TO_TestTypeRoot
-                        Resource A: TestThroughTableChild
+                            Super Relation: TestThroughTableChild_TO_TestTypeRoot
+                        Base Name: TestThroughTableChild_TO_TestTypeRoot
+                        Name: TestThroughTableChildSub_TO_TestTypeRoot
+                        Resource A: TestThroughTableChildSub
                         Resource B: TestTypeRoot
                         Forward ref: 
                             Column Name: TestThroughTableChild_TO_TestTypeRootForwardRef
@@ -96,25 +98,5 @@ Model name: TestTypeRoot
                             Is Array: false
                         Back ref: 
                             Column Name: childrenThroughTable
-                            Column Type: TestThroughTableChild
+                            Column Type: TestThroughTableChildSub
                             Is Array: true
-        Variable Name: TestTypeRoot_TO_TestTypeChildSubForwardRef
-            Is Required: false
-            Is Read Only: false
-            Is Write Only: false
-            Is Inherited: false
-            Is Overridden: 
-                    COL INFO
-                    Relation:
-                        
-                        Name: TestTypeRoot_TO_TestTypeChildSub
-                        Resource A: TestTypeRoot
-                        Resource B: TestTypeChildSub
-                        Forward ref: 
-                            Column Name: TestTypeRoot_TO_TestTypeChildSubForwardRef
-                            Column Type: TestTypeChildSub
-                            Is Array: false
-                        Back ref: 
-                            Column Name: parentId
-                            Column Type: TestTypeRoot
-                            Is Array: false

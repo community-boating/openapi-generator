@@ -1,7 +1,7 @@
             ParentDiscriminator
 Model name: ChildDiscriminatorB
-                Has Resource:
-                ChildDiscriminatorB
+                Has Resource: ChildDiscriminatorB
+                    Relation Name: 
                 MODEL META
                     hasDTO: true
                     hasDAO: true

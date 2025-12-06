@@ -2,13 +2,25 @@ package cbi.generator.relation;
 
 import cbi.generator.CBIColumnInfo;
 import cbi.generator.enums.CBIRelationType;
-import cbi.generator.resource.CBIResourceInfoBase;
+import cbi.generator.resource.CBIResourceInfoShared;
 
 public class CBIRelationInfoNormal extends CBIRelationInfo {
     //Resource B
-    CBIResourceInfoBase resourceB;
+    public CBIResourceInfoShared resourceB;
     CBIRelationInfoNormal(CBIRelationType type) {
         super(type);
+    }
+
+    public boolean isHigherA(CBIRelationInfoNormal other) {
+        return other.resourceA.hasParent(this.resourceA);
+        //boolean greaterB = other.resourceB.hasParent(this.resourceB);
+        //boolean equalA = other.resourceA.equals(this.resourceA);
+        //boolean equalB = other.resourceB.equals(this.resourceB);
+        //return (other.resourceA.hasParent(this.resourceA) && greaterB) || (other.resourceA.hasParent(this.resourceA) && equalB) || (greaterB && equalA);
+    }
+
+    public boolean isHigherB(CBIRelationInfoNormal other) {
+        return other.resourceB.hasParent(this.resourceB);
     }
 
     public void addMissingColumns() {
@@ -17,7 +29,10 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
             forwardRef.relation = this;
             forwardRef.columnName = meta.forwardRef;
             forwardRef.columnType = resourceB.baseName;
-            forwardRef.addToModel();
+            if(meta.hasForward)
+                forwardRef.addToModel();
+            else
+                forwardRef.removeFromModel();
         }
         if(backRef == null) {
             backRef = new CBIColumnInfo(resourceB, null);
@@ -28,7 +43,10 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
             }
             backRef.columnType = resourceA.baseName;
             //backRef.columnName = "WHATADERP";
-            backRef.addToModel();
+            if(meta.hasBackward)
+                backRef.addToModel();
+            else
+                backRef.removeFromModel();
             System.out.println(backRef.relation == null);
         }
     }

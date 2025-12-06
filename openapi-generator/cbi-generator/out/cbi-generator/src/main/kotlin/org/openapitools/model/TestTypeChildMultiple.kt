@@ -1,6 +1,6 @@
 Model name: TestTypeChildMultiple
-                Has Resource:
-                TestTypeChildMultiple
+                Has Resource: TestTypeChildMultiple
+                    Relation Name: 
                 MODEL META
                     hasDTO: true
                     hasDAO: true
@@ -53,7 +53,7 @@ Model name: TestTypeChildMultiple
             Is Overridden: 
                     COL INFO
                     Relation:
-                        
+                        Base Name: TestTypeChildMultiple_TO_TestTypeRoot
                         Name: TestTypeChildMultiple_TO_TestTypeRoot
                         Resource A: TestTypeChildMultiple
                         Resource B: TestTypeRoot

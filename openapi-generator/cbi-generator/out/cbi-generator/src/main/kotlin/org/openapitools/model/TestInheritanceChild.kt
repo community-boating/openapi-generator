@@ -1,7 +1,11 @@
             TestInheritanceChildI
+            TestInheritanceChildAndTestInheritanceParent
+            TestInheritanceChildIAndTestInheritanceChild
 Model name: TestInheritanceChild
-                Has Resource:
-                TestInheritanceChild
+                Has Resource: TestInheritanceChild
+                    Base Resource: TestInheritanceParent
+                    Relation Name: 
+                    Parent Resource: TestInheritanceChildI
                 MODEL META
                     hasDTO: true
                     hasDAO: true
@@ -39,15 +43,16 @@ Model name: TestInheritanceChild
             Is Inherited: true
             Is Overridden: false
                     COL INFO
-        Variable Name: TestThroughTableChildSub_TO_TestInheritanceChildBackwardRef
+        Variable Name: TestThroughTableChild_TO_TestInheritanceParentBackwardRef
             Is Required: false
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: 
                     COL INFO
                     Relation:
-                        
+                            Super Relation: TestThroughTableChild_TO_TestInheritanceParent
+                        Base Name: TestThroughTableChild_TO_TestInheritanceParent
                         Name: TestThroughTableChildSub_TO_TestInheritanceChild
                         Resource A: TestThroughTableChildSub
                         Resource B: TestInheritanceChild
@@ -56,6 +61,6 @@ Model name: TestInheritanceChild
                             Column Type: TestInheritanceChild
                             Is Array: false
                         Back ref: 
-                            Column Name: TestThroughTableChildSub_TO_TestInheritanceChildBackwardRef
+                            Column Name: TestThroughTableChild_TO_TestInheritanceParentBackwardRef
                             Column Type: TestThroughTableChildSub
                             Is Array: false

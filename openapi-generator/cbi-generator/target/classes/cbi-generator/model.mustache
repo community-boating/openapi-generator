@@ -6,8 +6,19 @@
 Model name: {{name}}
         {{#vendorExtensions}}
             {{#x-cbi-resource-info}}
-                Has Resource:
-                {{baseName}}
+                Has Resource: {{baseName}}
+                {{#base}}
+                    Base Resource: {{baseName}}
+                {{/base}}
+                {{#getHighestRelations}}
+                    Relation Name: {{relationName}}
+                {{/getHighestRelations}}
+                {{#findParentResource}}
+                    Parent Resource: {{baseName}}
+                {{/findParentResource}}
+                {{#findChildResources}}
+                    Child Resource: {{baseName}}
+                {{/findChildResources}}
             {{/x-cbi-resource-info}}
             {{#x-model-meta}}
                 MODEL META
@@ -27,7 +38,13 @@ Model name: {{name}}
                     COL INFO
                     {{#relation}}
                     Relation:
-                        {{#superRelation}}SUPER RELATION: {{relationName}}{{/superRelation}}
+                        {{#superRelation}}
+                            Super Relation: {{relationName}}
+                        {{/superRelation}}
+                        {{#subRelations}}
+                            Sub Relation: {{relationName}}
+                        {{/subRelations}}
+                        Base Name: {{getRelationBaseName}}
                         Name: {{relationName}}
                         Resource A: {{resourceA.baseName}}
                         Resource B: {{resourceB.baseName}}

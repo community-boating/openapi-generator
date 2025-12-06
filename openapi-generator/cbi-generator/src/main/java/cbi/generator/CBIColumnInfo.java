@@ -3,7 +3,7 @@ package cbi.generator;
 import cbi.generator.meta.CBIColumnMeta;
 import cbi.generator.relation.CBIRelationInfo;
 import cbi.generator.resource.CBIResourceInfo;
-import cbi.generator.resource.CBIResourceInfoBase;
+import cbi.generator.resource.CBIResourceInfoShared;
 import cbi.generator.resource.CBIResourceInfoChild;
 import org.openapitools.codegen.CodegenModel;
 import org.openapitools.codegen.CodegenProperty;
@@ -19,11 +19,11 @@ public class CBIColumnInfo extends ModelAndProperty {
     public ModelAndProperty inheritedFrom = null;
     public CBIRelationInfo relation;
     public CBIColumnMeta meta = null;
-    public CBIResourceInfoBase resource = null;
+    public CBIResourceInfoShared resource = null;
 
     public CBIColumnInfo getParentColumn() {
         if(resource instanceof CBIResourceInfoChild) {
-            CBIResourceInfo parent = ((CBIResourceInfoChild) resource).parent;
+            CBIResourceInfo parent = ((CBIResourceInfoChild) resource).base;
             for(CBIColumnInfo column: parent.columns) {
                 if(column.compare(this)){
                     return column;
@@ -50,7 +50,7 @@ public class CBIColumnInfo extends ModelAndProperty {
         return this.isArray == other.isArray && this.columnName.equals(other.columnName);
     }
 
-    public CBIColumnInfo(CBIResourceInfoBase resource, CodegenProperty property) {
+    public CBIColumnInfo(CBIResourceInfoShared resource, CodegenProperty property) {
         super(resource.model, property);
         resource.columns.add(this);
         this.resource = resource;
@@ -70,7 +70,7 @@ public class CBIColumnInfo extends ModelAndProperty {
             return property.dataType;
         }
     }
-    public static CBIColumnInfo getOrAdd(ArrayList<CBIColumnInfo> columns, CBIResourceInfoBase resource, CodegenProperty property) {
+    public static CBIColumnInfo getOrAdd(ArrayList<CBIColumnInfo> columns, CBIResourceInfoShared resource, CodegenProperty property) {
         CBIColumnInfo column = null;
         CodegenModel model = resource.model;
         String columnType = getPropertyType(property);
@@ -95,8 +95,26 @@ public class CBIColumnInfo extends ModelAndProperty {
 
         return column;
     }
+    public void removeFromModel() {
+        for(CodegenProperty propertyExisting: this.model.allVars) {
+            if(propertyExisting.name.equals(this.columnName)) {
+                model.allVars.remove(propertyExisting);
+                break;
+            }
+        }
+    }
     public void addToModel() {
-        CodegenProperty property = new CodegenProperty();
+        CodegenProperty property = null;
+        for(CodegenProperty propertyExisting: this.model.allVars) {
+            if(propertyExisting.name.equals(this.columnName)) {
+                property = propertyExisting;
+                break;
+            }
+        }
+        if(property == null) {
+            property = new CodegenProperty();
+            model.allVars.add(property);
+        }
         property.name = this.columnName;
         property.baseName = this.columnName;
         property.isArray = this.isArray;
@@ -107,15 +125,16 @@ public class CBIColumnInfo extends ModelAndProperty {
             CodegenProperty items = new CodegenProperty();
             items.isModel = true;
             items.dataType = this.columnType;
+            property.dataType = "List";
             property.items = items;
         }else{
             property.isModel = true;
             property.dataType = this.columnType;
         }
+        property.datatypeWithEnum = "";
         if(property.name.equals("TestThroughTableChild_TO_TestInheritanceChildBackwardRef")){
             System.out.println("WHAT");
         }
-        model.allVars.add(property);
         if(property.name.equals("TestThroughTableChild_TO_TestInheritanceChildBackwardRef")){
             System.out.println("WHAT");
         }

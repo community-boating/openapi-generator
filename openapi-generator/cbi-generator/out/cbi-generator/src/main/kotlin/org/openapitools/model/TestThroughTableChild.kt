@@ -1,6 +1,8 @@
+            TestThroughTableChildSubAndTestThroughTableChild
 Model name: TestThroughTableChild
-                Has Resource:
-                TestThroughTableChild
+                Has Resource: TestThroughTableChild
+                    Relation Name: 
+                    Child Resource: TestThroughTableChildSub
                 MODEL META
                     hasDTO: true
                     hasDAO: true
@@ -46,7 +48,12 @@ Model name: TestThroughTableChild
             Is Overridden: 
                     COL INFO
                     Relation:
-                        
+                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceChild
+                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceChildI
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceChildI
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceChild
+                        Base Name: TestThroughTableChild_TO_TestInheritanceParent
                         Name: TestThroughTableChild_TO_TestInheritanceParent
                         Resource A: TestThroughTableChild
                         Resource B: TestInheritanceParent
@@ -66,7 +73,8 @@ Model name: TestThroughTableChild
             Is Overridden: 
                     COL INFO
                     Relation:
-                        
+                            Sub Relation: TestThroughTableChildSub_TO_TestTypeRoot
+                        Base Name: TestThroughTableChild_TO_TestTypeRoot
                         Name: TestThroughTableChild_TO_TestTypeRoot
                         Resource A: TestThroughTableChild
                         Resource B: TestTypeRoot

@@ -1,6 +1,8 @@
+            TestTypeChildSubAndTestTypeChild
 Model name: TestTypeChild
-                Has Resource:
-                TestTypeChild
+                Has Resource: TestTypeChild
+                    Relation Name: 
+                    Child Resource: TestTypeChildSub
                 MODEL META
                     hasDTO: true
                     hasDAO: true
@@ -39,7 +41,8 @@ Model name: TestTypeChild
             Is Overridden: 
                     COL INFO
                     Relation:
-                        
+                            Sub Relation: TestTypeRoot_TO_TestTypeChildSub
+                        Base Name: TestTypeRoot_TO_TestTypeChild
                         Name: TestTypeRoot_TO_TestTypeChild
                         Resource A: TestTypeRoot
                         Resource B: TestTypeChild

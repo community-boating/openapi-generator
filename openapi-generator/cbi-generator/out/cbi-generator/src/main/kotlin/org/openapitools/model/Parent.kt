@@ -1,6 +1,9 @@
+            ChildAndParent
+            ChildIAndParent
 Model name: Parent
-                Has Resource:
-                Parent
+                Has Resource: Parent
+                    Relation Name: 
+                    Child Resource: ChildI
                 MODEL META
                     hasDTO: true
                     hasDAO: true

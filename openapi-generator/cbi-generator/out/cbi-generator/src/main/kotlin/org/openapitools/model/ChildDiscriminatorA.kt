@@ -1,8 +1,8 @@
             ParentDiscriminator
             ParentInterface
 Model name: ChildDiscriminatorA
-                Has Resource:
-                ChildDiscriminatorA
+                Has Resource: ChildDiscriminatorA
+                    Relation Name: 
                 MODEL META
                     hasDTO: true
                     hasDAO: true

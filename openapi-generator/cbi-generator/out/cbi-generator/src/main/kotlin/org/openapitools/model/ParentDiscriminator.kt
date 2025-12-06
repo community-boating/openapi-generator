@@ -1,6 +1,6 @@
 Model name: ParentDiscriminator
-                Has Resource:
-                ParentDiscriminator
+                Has Resource: ParentDiscriminator
+                    Relation Name: 
                 MODEL META
                     hasDTO: true
                     hasDAO: true

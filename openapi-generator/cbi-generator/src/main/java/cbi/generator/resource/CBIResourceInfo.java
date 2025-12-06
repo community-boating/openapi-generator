@@ -1,28 +1,22 @@
 package cbi.generator.resource;
 
-import cbi.generator.CBIColumnInfo;
 import cbi.generator.relation.CBIRelationInfo;
-import cbi.generator.ModelAndProperty;
 import cbi.generator.meta.CBIModelMeta;
-import cbi.generator.meta.CBIRelationMeta;
 import org.openapitools.codegen.CodegenModel;
-import org.openapitools.codegen.CodegenProperty;
 import org.openapitools.codegen.model.ModelMap;
 import org.openapitools.codegen.model.ModelsMap;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import static cbi.generator.meta.CBIModelMeta.getInheritedFrom;
-
-public class CBIResourceInfo extends CBIResourceInfoBase {
+public class CBIResourceInfo extends CBIResourceInfoShared {
     public ArrayList<CBIResourceInfoChild> subResources = new ArrayList<>();
-    public static ArrayList<CBIResourceInfoBase> getResourcesFromModels(Map<String, ModelsMap> allModels){
+    public static ArrayList<CBIResourceInfoShared> getResourcesFromModels(Map<String, ModelsMap> allModels){
         ArrayList<CBIResourceInfo> resources = new ArrayList<>();
         ArrayList<CBIResourceInfoChild> subResources = new ArrayList<>();
         ArrayList<CodegenModel> nonBaseModels = new ArrayList<>();
+        ArrayList<CodegenModel> nonResourceModels = new ArrayList<>();
         for(String modelName: allModels.keySet()){
             List<ModelMap> modelList = allModels.get(modelName).getModels();
             for(ModelMap modelMap : modelList) {
@@ -30,8 +24,10 @@ public class CBIResourceInfo extends CBIResourceInfoBase {
                 if(CBIModelMeta.isBaseModel(model)){
                     CBIResourceInfo added = fromBaseModel(model);
                     resources.add(added);
-                }else{
+                }else if(CBIModelMeta.isResourceModel(model)){
                     nonBaseModels.add(model);
+                }else{
+                    nonResourceModels.add(model);
                 }
             }
         }
@@ -45,17 +41,35 @@ public class CBIResourceInfo extends CBIResourceInfoBase {
                 }
             }
         }
-        ArrayList<CBIResourceInfoBase> allResources = new ArrayList<>(resources.size() + subResources.size());
+        for(CodegenModel model: nonResourceModels) {
+            CBIResourceInfoShared.updateColumns(model);
+        }
+        ArrayList<CBIResourceInfoShared> allResources = new ArrayList<>(resources.size() + subResources.size());
         allResources.addAll(resources);
         allResources.addAll(subResources);
-        for(CBIResourceInfoBase resource: allResources) {
+        for(CBIResourceInfoShared resource: allResources) {
             resource.updateColumns();
         }
         return allResources;
     }
 
-    public static CBIResourceInfoBase findByName(ArrayList<CBIResourceInfoBase> resources, String name) {
-        for(CBIResourceInfoBase resource: resources) {
+    public ArrayList<CodegenModel> getAllModels() {
+        ArrayList<CodegenModel> models = new ArrayList<>();
+        models.add(this.model);
+        for(CBIResourceInfoChild sub: this.subResources) {
+            models.add(sub.model);
+        }
+        return models;
+    }
+
+    public ArrayList<CodegenModel> mergeSubResources() {
+        ArrayList<CodegenModel> allModels = this.getAllModels();
+        ArrayList<CodegenModel> generated = combineModels(allModels, allModels, false);
+        return generated;
+    }
+
+    public static CBIResourceInfoShared findByName(ArrayList<CBIResourceInfoShared> resources, String name) {
+        for(CBIResourceInfoShared resource: resources) {
             if(resource.baseName.equals(name)){
                 return resource;
             }
