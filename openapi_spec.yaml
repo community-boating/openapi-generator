@@ -1928,6 +1928,8 @@ components:
           x-dto-column: NAME_PREFERRED
           type: string
           maxLength: 100
+    TestChange:
+      type: object
     AddressDTO:
       type: object
       properties:
