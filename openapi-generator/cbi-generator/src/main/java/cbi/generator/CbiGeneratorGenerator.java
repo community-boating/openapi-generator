@@ -72,7 +72,38 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
     //Build relationship model
     ArrayList<CBIResourceInfoShared> resources = CBIResourceInfo.getResourcesFromModels(allModels);
     ArrayList<CBIRelationInfo> relations = CBIRelationInfo.findAllRelations(resources);
-    for(CBIResourceInfoShared resource: resources) {
+    for(CBIRelationInfo relation: relations) {
+      if(relation instanceof CBIRelationInfoNormal && relation.subRelations != null && !relation.subRelations.isEmpty()) {
+        //relation.meta.hasBackward = false;
+        //relation.meta.hasForward = false;
+        for(CBIRelationInfo subRelation: relation.subRelations){
+          if(subRelation instanceof CBIRelationInfoNormal) {
+            //subRelation.meta.hasForward = false;
+            //subRelation.meta.hasBackward = false;
+            if (relation.resourceA.equals(subRelation.resourceA) && ((CBIRelationInfoNormal) subRelation).resourceB.hasParent(((CBIRelationInfoNormal) relation).resourceB)){
+              relation.meta.hasForward = true;
+              subRelation.meta.hasForward = false;
+            }else{
+              relation.meta.hasForward = false;
+              subRelation.meta.hasForward = true;
+            }
+            if (((CBIRelationInfoNormal) relation).resourceB.equals(((CBIRelationInfoNormal) subRelation).resourceB) && subRelation.resourceA.hasParent(relation.resourceA)){
+              relation.meta.hasBackward = true;
+              subRelation.meta.hasBackward = false;
+            }else{
+              relation.meta.hasBackward = true;
+              subRelation.meta.hasBackward = true;
+            }
+          }
+        }
+      }
+    }
+    for(CBIRelationInfo relation: relations) {
+      if(relation instanceof CBIRelationInfoNormal) {
+        relation.addMissingColumns();
+      }
+    }
+    /*for(CBIResourceInfoShared resource: resources) {
       CBIResourceInfoShared.HighestRelations highestRelations = resource.getHighestRelations();
       for(CBIRelationInfo relation: resource.relations) {
 
@@ -88,13 +119,14 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
             //  throw new RuntimeException(relationInfoA.typeRelation.toString());
           }
           if(highestRelations.A.contains(relation)){
-            //if(relation.resourceA.equals(resource))
+            if(((CBIRelationInfoNormal) relation).resourceB.getBaseResource().equals(resource.getBaseResource()))
               relation.meta.hasForward = true;
             //if(((CBIRelationInfoNormal) relation).resourceB.equals(resource))
             //  relation.meta.hasBackward = true;
           }
           if(highestRelations.B.contains(relation)){
-            relation.meta.hasBackward = true;
+            if(((CBIRelationInfoNormal) relation).resourceA.getBaseResource().equals(resource.getBaseResource()))
+              relation.meta.hasBackward = true;
           }
         }
 
@@ -103,7 +135,7 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
       }
       //resource.combineModelTypes();
       //resource.updateColumns();
-    }
+    }*/
 
     ArrayList<ModelMap> generatedAll = new ArrayList<>();
 

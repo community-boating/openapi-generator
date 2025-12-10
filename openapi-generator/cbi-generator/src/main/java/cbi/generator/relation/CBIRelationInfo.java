@@ -268,7 +268,7 @@ public abstract class CBIRelationInfo {
                     }
                     if (relationInfo == null) {
                         if(relationMeta.relationType == CBIRelationType.ONE_TO_ONE_TYPED){
-                            if(resourceA instanceof CBIResourceInfo){
+                            /*if(resourceA instanceof CBIResourceInfo){
                                 String type = column.property.dataType;
                                 List<CBIResourceInfoShared> resourceBs = resources.stream().filter((a) -> a.model.interfaces != null && a.model.interfaces.contains(type)).collect(Collectors.toList());
                                 CBIRelationInfoOneToOneTyped relationInfoTyped = CBIRelationInfoOneToOneTyped.makeRelationInfoOneToOneTyped(resourceA, resourceBs, relationMeta, true, true);
@@ -279,27 +279,28 @@ public abstract class CBIRelationInfo {
                                 for(CBIRelationInfoOneToOne typeRelation: relationInfoTyped.typeRelations) {
                                     findOrAddBaseRelation(relations, typeRelation);
                                 }
-                            }
+                            }*/
                         }else {
                             CBIResourceInfoShared resourceB = CBIResourceInfo.findByName(resources, relationMeta.modelB);
                             if (resourceB == null)
                                 throw new RuntimeException("Unable to find resource B for relation(relationName: " + relationMeta.relationName + ", modelB: " + relationMeta.modelB + ")");
                             relationInfo = CBIRelationInfo.makeRelationInfo(resourceA, resourceB, relationMeta, true, true);
-                            relations.add(relationInfo);
-                            findOrAddBaseRelation(relations, relationInfo);
+                            //relations.add(relationInfo);
+                            //findOrAddBaseRelation(relations, relationInfo);
                         }
                         if(relationInfo != null) {
                             relations.add(relationInfo);
                             findOrAddBaseRelation(relations, relationInfo);
                         }
                     }
-
-                    if (!Boolean.TRUE.equals(relationMeta.isBackref)) {
-                        relationInfo.forwardRef = column;
-                    } else {
-                        relationInfo.backRef = column;
+                    if(relationInfo != null) {
+                        if (!Boolean.TRUE.equals(relationMeta.isBackref)) {
+                            relationInfo.forwardRef = column;
+                        } else {
+                            relationInfo.backRef = column;
+                        }
+                        relationInfo.updateColumns();
                     }
-                    relationInfo.updateColumns();
                 }
             }
         }

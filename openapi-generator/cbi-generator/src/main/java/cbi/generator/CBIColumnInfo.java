@@ -29,7 +29,7 @@ public class CBIColumnInfo extends ModelAndProperty {
     public CBIResourceInfoShared resource = null;
 
     public boolean isBackref() {
-        if(this.relation != null)
+        if(this.relation != null && this.relation.backRef != null)
             return this.relation.backRef.equals(this);
         return false;
     }
@@ -117,7 +117,7 @@ public class CBIColumnInfo extends ModelAndProperty {
         String by = this.resource.getNameTable();
         String suffix = "." + this.columnName;
         String tableCol = by + suffix;
-        if(this.relation instanceof CBIRelationInfoOneToOneTyped){
+        /*if(this.relation instanceof CBIRelationInfoOneToOneTyped){
             StringBuilder sb = new StringBuilder();
             sb.append(":");
             sb.append(this.columnType);
@@ -139,7 +139,7 @@ public class CBIColumnInfo extends ModelAndProperty {
             });
             sb.append("}");
             return sb.toString();
-        }
+        }*/
         if(this.getRelationNormal() != null) {
             boolean isOptional = this.property != null && this.property.isOptional;
             if(this.isBackref()) {
