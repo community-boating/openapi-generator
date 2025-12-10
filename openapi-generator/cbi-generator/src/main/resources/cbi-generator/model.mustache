@@ -33,6 +33,7 @@ Model name: {{name}}
             Is Write Only: {{isWriteOnly}}
             Is Inherited: {{isInherited}}
             Is Overridden: {{isOverridden}}
+            Default Value: {{defaultValue}}
             {{#vendorExtensions}}
                 {{#x-cbi-column-info}}
                     COL INFO
@@ -44,6 +45,7 @@ Model name: {{name}}
                         {{#subRelations}}
                             Sub Relation: {{relationName}}
                         {{/subRelations}}
+                        Type: {{type}}
                         Base Name: {{getRelationBaseName}}
                         Name: {{relationName}}
                         Resource A: {{resourceA.baseName}}

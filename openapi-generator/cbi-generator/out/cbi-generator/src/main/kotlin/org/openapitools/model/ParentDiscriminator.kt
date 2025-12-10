@@ -23,6 +23,7 @@ Model name: ParentDiscriminator
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
         Variable Name: id
             Is Required: false
@@ -30,6 +31,7 @@ Model name: ParentDiscriminator
             Is Write Only: false
             Is Inherited: false
             Is Overridden: false
+            Default Value: 
                     COL INFO
         Variable Name: childType
             Is Required: true
@@ -37,4 +39,5 @@ Model name: ParentDiscriminator
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO

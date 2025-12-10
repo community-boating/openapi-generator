@@ -11,7 +11,7 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
         super(type);
     }
 
-    public boolean isHigherA(CBIRelationInfoNormal other) {
+    public boolean isHigherA(CBIRelationInfo other) {
         return other.resourceA.hasParent(this.resourceA);
         //boolean greaterB = other.resourceB.hasParent(this.resourceB);
         //boolean equalA = other.resourceA.equals(this.resourceA);
@@ -23,17 +23,20 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
         return other.resourceB.hasParent(this.resourceB);
     }
 
+    @Override
     public void addMissingColumns() {
         if(forwardRef == null) {
             forwardRef = new CBIColumnInfo(resourceA, null);
             forwardRef.relation = this;
             forwardRef.columnName = meta.forwardRef;
             forwardRef.columnType = resourceB.baseName;
-            if(meta.hasForward)
-                forwardRef.addToModel();
-            else
-                forwardRef.removeFromModel();
+            if(backRef != null)
+                forwardRef.isRequired = backRef.isRequired;
         }
+        if(meta.hasForward)
+            forwardRef.addToModel();
+        else
+            forwardRef.removeFromModel();
         if(backRef == null) {
             backRef = new CBIColumnInfo(resourceB, null);
             backRef.relation = this;
@@ -41,14 +44,16 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
             if(type == CBIRelationType.MANY_TO_MANY || type == CBIRelationType.ONE_TO_MANY){
                 backRef.isArray = true;
             }
+            if(forwardRef != null)
+                backRef.isRequired = forwardRef.isRequired;
             backRef.columnType = resourceA.baseName;
             //backRef.columnName = "WHATADERP";
-            if(meta.hasBackward)
-                backRef.addToModel();
-            else
-                backRef.removeFromModel();
-            System.out.println(backRef.relation == null);
         }
+        if(meta.hasBackward)
+            backRef.addToModel();
+        else
+            backRef.removeFromModel();
+
     }
 
     @Override

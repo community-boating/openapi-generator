@@ -1,0 +1,245 @@
+openapi: 3.0.0
+info:
+  description: ""
+  title: ""
+  version: "1"
+servers:
+- url: /
+paths: {}
+components:
+  schemas:
+    PersonRelationType:
+      enum:
+      - null
+      - null
+      type: integer
+    TestTypeRoot:
+      properties:
+        id:
+          format: int64
+          type: integer
+          x-dto-name: assignId
+        optionalStringDTO:
+          maxLength: 100
+          minLength: 25
+          type: string
+          x-dto-only: true
+        requiredString:
+          maxLength: 100
+          type: string
+        child:
+          allOf:
+          - $ref: "#/components/schemas/TestTypeChild"
+          readOnly: true
+        childMultiple:
+          items:
+            $ref: "#/components/schemas/TestTypeChildMultiple"
+          readOnly: true
+          type: array
+          x-include-when-flat: true
+          x-backref: parentId
+        childrenThroughTable:
+          items:
+            $ref: "#/components/schemas/TestThroughTableChild"
+          type: array
+          writeOnly: true
+      required:
+      - id
+      - requiredString
+      type: object
+      x-use-new: true
+    TestTypeChildMultiple:
+      properties:
+        id:
+          format: int64
+          type: integer
+          x-dto-name: assignId
+        testDTOOnly:
+          default: 100
+          type: integer
+          x-dto-only: true
+        testDAOOnly:
+          default: 100
+          type: integer
+          x-dao-only: true
+        aString:
+          maxLength: 100
+          readOnly: true
+          type: string
+        parentId:
+          allOf:
+          - $ref: "#/components/schemas/TestTypeRoot"
+          x-dto-flat: true
+      required:
+      - id
+      type: object
+      x-use-new: true
+    TestTypeChild:
+      properties:
+        id:
+          format: int64
+          type: integer
+          x-dto-name: assignId
+        readOnlyString:
+          maxLength: 100
+          readOnly: true
+          type: string
+        parentId:
+          allOf:
+          - $ref: "#/components/schemas/TestTypeRoot"
+          x-dto-flat: true
+          x-relation-meta:
+            isBackref: true
+      type: object
+      x-use-new: true
+    TestTypeChildSub:
+      allOf:
+      - $ref: "#/components/schemas/TestTypeChild"
+      type: object
+      x-use-new: true
+      x-vars-included:
+      - id
+      - readOnlyString
+    TestThroughTableChild:
+      properties:
+        id:
+          format: int64
+          type: integer
+          x-dto-name: assignId
+        derping:
+          maxLength: 100
+          type: string
+        readOnlyString:
+          maxLength: 100
+          readOnly: true
+          type: string
+        testChild:
+          $ref: "#/components/schemas/TestInheritanceParent"
+      required:
+      - id
+      type: object
+      x-use-new: true
+    TestThroughTableChildSub:
+      allOf:
+      - $ref: "#/components/schemas/TestThroughTableChild"
+      properties:
+        testChild:
+          $ref: "#/components/schemas/TestInheritanceChild"
+      type: object
+      x-use-new: true
+    TestInheritanceParent:
+      properties:
+        id:
+          format: int64
+          type: integer
+          x-dto-name: assignId
+        parentValue:
+          maxLength: 100
+          type: string
+      type: object
+      x-use-new: true
+      x-parent: true
+    TestInheritanceParentOther:
+      properties:
+        parentOtherValue:
+          maxLength: 100
+          type: string
+      x-use-new: true
+      x-interface: true
+    TestInheritanceChild:
+      allOf:
+      - $ref: "#/components/schemas/TestInheritanceChildI"
+      type: object
+      x-use-new: true
+    TestInheritanceChildI:
+      allOf:
+      - $ref: "#/components/schemas/TestInheritanceParent"
+      - $ref: "#/components/schemas/TestInheritanceParentOther"
+      x-use-new: true
+      x-interface: true
+    Parent:
+      properties:
+        id:
+          format: int64
+          type: integer
+          x-dto-name: assignId
+      x-use-new: true
+      x-parent: true
+    ParentI:
+      properties:
+        interfaceProperty:
+          type: string
+          x-is-overridden: true
+      x-use-new: true
+      x-parent: interface
+    Child:
+      allOf:
+      - $ref: "#/components/schemas/ChildI"
+      - $ref: "#/components/schemas/ParentI"
+      type: object
+      x-use-new: true
+    ChildI:
+      allOf:
+      - $ref: "#/components/schemas/Parent"
+      x-use-new: true
+      x-parent: interface
+    ParentInterface:
+      properties:
+        interfaceValue:
+          type: boolean
+      x-use-new: true
+      x-parent: false
+    ChildType:
+      enum:
+      - ChildA
+      - ChildB
+      type: string
+      x-use-new: true
+    ParentDiscriminator:
+      discriminator:
+        mapping:
+          ChildA: "#/components/schemas/ChildDiscriminatorA"
+          ChildB: "#/components/schemas/ChildDiscriminatorB"
+        propertyName: childType
+      properties:
+        parentAdded:
+          type: boolean
+        id:
+          format: int64
+          type: integer
+          x-dto-name: assignId
+        childType:
+          $ref: "#/components/schemas/ChildType"
+      required:
+      - childType
+      type: object
+      x-use-new: true
+    ChildDiscriminatorA:
+      allOf:
+      - $ref: "#/components/schemas/ParentDiscriminator"
+      - $ref: "#/components/schemas/ParentInterface"
+      - properties:
+          id:
+            format: int64
+            type: integer
+            x-dto-name: assignId
+          childValueA:
+            maxLength: 100
+            type: string
+        type: object
+      x-use-new: true
+    ChildDiscriminatorB:
+      allOf:
+      - $ref: "#/components/schemas/ParentDiscriminator"
+      - properties:
+          id:
+            format: int64
+            type: integer
+            x-dto-name: assignId
+          childValueB:
+            maxLength: 100
+            type: string
+        type: object
+      x-use-new: true
+  securitySchemes: {}
+

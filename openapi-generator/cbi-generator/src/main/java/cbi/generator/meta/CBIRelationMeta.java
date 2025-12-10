@@ -75,12 +75,30 @@ public class CBIRelationMeta extends MetaBase {
         }
     }
 
+    public static String toCamelCase(String string) {
+        if(string != null && string.length() > 1)
+            return string.substring(0, 1).toLowerCase() + string.substring(1);
+        return string;
+    }
+
+    public static String toPascalCase(String string) {
+        if(string != null && string.length() > 1)
+            return string.substring(0, 1).toUpperCase() + string.substring(1);
+        return string;
+    }
+
     public void makeForwardRef() {
-        this.forwardRef = this.relationName + "ForwardRef";
+        if(this.modelA.equals(this.modelB))
+            this.forwardRef = this.relationName + "ForwardRef";
+        else
+            this.forwardRef = toCamelCase(this.modelB);
     }
 
     public void makeBackwardRef() {
-        this.backwardRef = this.relationName + "BackwardRef";
+        if(this.modelA.equals(this.modelB))
+            this.backwardRef = this.relationName + "BackwardRef";
+        else
+            this.backwardRef = toCamelCase(this.modelA) + (this.relationType == CBIRelationType.ONE_TO_MANY ? "s" : "");
     }
 
     public static CBIRelationMeta fromModelAndProperty(ModelAndProperty modelAndProperty) {
@@ -98,12 +116,13 @@ public class CBIRelationMeta extends MetaBase {
         }else {
             return null;
         }
-
-        if(property.isArray && property.items.isModel){
-            meta.relationType = CBIRelationType.ONE_TO_MANY;
-            meta.isBackref = true;
-        }else if(property.isModel){
-            meta.relationType = CBIRelationType.ONE_TO_ONE;
+        if(meta.relationType == null){
+            if(property.isArray && property.items.isModel){
+                meta.relationType = CBIRelationType.ONE_TO_MANY;
+                meta.isBackref = true;
+            }else if(property.isModel){
+                meta.relationType = CBIRelationType.ONE_TO_ONE;
+            }
         }
 
         if(meta.modelB == null)

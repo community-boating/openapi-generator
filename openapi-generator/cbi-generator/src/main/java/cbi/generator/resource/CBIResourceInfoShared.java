@@ -24,6 +24,71 @@ public abstract class CBIResourceInfoShared {
     public CodegenModel model;
     public ArrayList<CBIRelationInfo> relations = new ArrayList<>();
 
+    public String getNameTable() {
+        return this.baseName + "Table";
+    }
+
+    public CBIColumnInfo getPrimary() {
+        for(CBIColumnInfo column: columns) {
+            if(column.meta.isPrimary){
+                return column;
+            }
+        }
+        return null;
+    }
+
+    public String getNameSQL() {
+        CBIModelMeta meta = CBIModelMeta.getOrAdd(this.model);
+        if(meta.nameSQL != null)
+            return meta.nameSQL;
+        return toSnakeCase(this.model.schemaName);
+    }
+
+    public static String toSnakeCase(String input) {
+        return input
+                .replaceAll("([a-z])([A-Z])", "$1_$2")
+                .replaceAll("([A-Z])([A-Z][a-z])", "$1_$2")
+                .toLowerCase();
+    }
+
+    public String getTableObjectParent() {
+        String primaryType = getPrimary().property.complexType;
+        if(primaryType == null)
+            primaryType = getPrimary().property.dataType;
+        return "IdTable<" + primaryType + ">(\"" + this.getNameSQL() + "\")";
+    }
+
+    public String getDAOCompanion() {
+        CBIColumnInfo primary = getPrimary();
+        String companionObject = "";
+        if(primary.property.isInteger){
+            companionObject = "IntEntityClass";
+        }
+        if(primary.property.isLong){
+            companionObject = "LongEntityClass";
+        }
+        return "companion object: " + companionObject + "<" + this.getNameDAO() + ">(" + this.getNameTable() + ")";
+    }
+
+    public String getDAOClass() {
+        CBIColumnInfo primary = getPrimary();
+        String primaryType = primary.property.complexType;
+        if(primaryType == null)
+            primaryType = primary.property.dataType;
+        String entityClass = "";
+        if(primary.property.isInteger){
+            entityClass = "IntEntity";
+        }
+        if(primary.property.isLong){
+            entityClass = "LongEntity";
+        }
+        return this.getNameDAO() + "(id: EntityID<" + primaryType + ">) : " + entityClass + "(id)";
+    }
+
+    public String getNameDAO() {
+        return this.baseName + "DAO";
+    }
+
     public static Boolean compareProperty(CodegenProperty property1, CodegenProperty property2) {
         boolean isEqual = property1.name.equals(property2.name) && property1.isArray == property2.isArray;
         if(isEqual){
@@ -209,23 +274,37 @@ public abstract class CBIResourceInfoShared {
         for (Iterator<CodegenProperty> it = model.allVars.iterator(); it.hasNext(); ) {
             CodegenProperty property = it.next();
             CBIRelationMeta relationMeta = CBIRelationMeta.fromModelAndProperty(new ModelAndProperty(model, property));
-            if(relationMeta != null) {
-                //property.vendorExtensions.put("x-relation-meta-cloned", relationMeta);
-            }
-
+            updateColumnShared(model, property);
             if(CBIModelMeta.hasVar(model, property.name) < 0)
                 it.remove();
-            //info.inheritedFrom = getInheritedFrom(property, model);
+            property.isInherited = getInheritedFrom(property, model) != null;
             //property.isInherited = info.inheritedFrom != null;
+        }
+    }
+    public static void updateColumnShared(CodegenModel model, CodegenProperty property) {
+        CBIRelationMeta relationMeta = CBIRelationMeta.fromModelAndProperty(new ModelAndProperty(model, property));
+        CBIModelMeta modelMeta = CBIModelMeta.getOrAdd(model);
+        if(property.name.equalsIgnoreCase("id") && !property.dataType.startsWith("EntityID<") && modelMeta.isResource){
+            property.complexType = property.dataType;
+            property.dataType = "EntityID<" + property.dataType + ">";
+        }
+        if(property.defaultValue != null) {
+            if(property.defaultValue.equals("null") && !property.isOptional)
+                property.defaultValue = null;
+            if(property.isString && property.defaultValue != null) {
+                if(!property.defaultValue.startsWith("\""))
+                    property.defaultValue = "\"" + property.defaultValue + "\"";
+            }
+        }
+
+        if(relationMeta != null) {
+            property.vendorExtensions.put("x-relation-meta-cloned", relationMeta);
         }
     }
     public void updateColumns() {
         for (Iterator<CodegenProperty> it = model.allVars.iterator(); it.hasNext(); ) {
             CodegenProperty property = it.next();
-            CBIRelationMeta relationMeta = CBIRelationMeta.fromModelAndProperty(new ModelAndProperty(model, property));
-            if(relationMeta != null) {
-                property.vendorExtensions.put("x-relation-meta-cloned", relationMeta);
-            }
+            updateColumnShared(model, property);
             CBIColumnInfo info = CBIColumnInfo.getOrAdd(columns, this, property);
             if(CBIModelMeta.hasVar(model, info.columnName) < 0)
                 it.remove();

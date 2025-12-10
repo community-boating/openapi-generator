@@ -23,6 +23,7 @@ Model name: TestTypeRoot
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
         Variable Name: optionalStringDTO
             Is Required: false
@@ -30,6 +31,7 @@ Model name: TestTypeRoot
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
         Variable Name: requiredString
             Is Required: true
@@ -37,6 +39,7 @@ Model name: TestTypeRoot
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
         Variable Name: child
             Is Required: false
@@ -44,9 +47,11 @@ Model name: TestTypeRoot
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
                     Relation:
                             Sub Relation: TestTypeRoot_TO_TestTypeChildSub
+                        Type: ONE_TO_ONE
                         Base Name: TestTypeRoot_TO_TestTypeChild
                         Name: TestTypeRoot_TO_TestTypeChild
                         Resource A: TestTypeRoot
@@ -65,8 +70,10 @@ Model name: TestTypeRoot
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
                     Relation:
+                        Type: ONE_TO_ONE
                         Base Name: TestTypeChildMultiple_TO_TestTypeRoot
                         Name: TestTypeChildMultiple_TO_TestTypeRoot
                         Resource A: TestTypeChildMultiple
@@ -85,18 +92,43 @@ Model name: TestTypeRoot
             Is Write Only: true
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
                     Relation:
                             Super Relation: TestThroughTableChild_TO_TestTypeRoot
+                        Type: ONE_TO_MANY
                         Base Name: TestThroughTableChild_TO_TestTypeRoot
                         Name: TestThroughTableChildSub_TO_TestTypeRoot
                         Resource A: TestThroughTableChildSub
                         Resource B: TestTypeRoot
                         Forward ref: 
-                            Column Name: TestThroughTableChild_TO_TestTypeRootForwardRef
+                            Column Name: testThroughTableChild
                             Column Type: TestTypeRoot
                             Is Array: false
                         Back ref: 
                             Column Name: childrenThroughTable
                             Column Type: TestThroughTableChildSub
                             Is Array: true
+        Variable Name: testTypeRoot
+            Is Required: false
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: 
+            Default Value: 
+                    COL INFO
+                    Relation:
+                            Super Relation: TestTypeRoot_TO_TestTypeChild
+                        Type: ONE_TO_ONE
+                        Base Name: TestTypeRoot_TO_TestTypeChild
+                        Name: TestTypeRoot_TO_TestTypeChildSub
+                        Resource A: TestTypeRoot
+                        Resource B: TestTypeChildSub
+                        Forward ref: 
+                            Column Name: testTypeRoot
+                            Column Type: TestTypeChildSub
+                            Is Array: false
+                        Back ref: 
+                            Column Name: parentId
+                            Column Type: TestTypeRoot
+                            Is Array: false

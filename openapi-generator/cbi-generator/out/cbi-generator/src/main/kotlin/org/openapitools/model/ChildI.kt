@@ -1,6 +1,4 @@
             Parent
-            ChildIAndParent
-            ChildIAndChild
 Model name: ChildI
                 Has Resource: ChildI
                     Base Resource: Parent
@@ -29,4 +27,5 @@ Model name: ChildI
             Is Write Only: false
             Is Inherited: true
             Is Overridden: false
+            Default Value: 
                     COL INFO

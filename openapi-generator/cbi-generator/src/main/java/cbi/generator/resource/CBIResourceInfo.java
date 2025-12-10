@@ -18,16 +18,18 @@ public class CBIResourceInfo extends CBIResourceInfoShared {
         ArrayList<CodegenModel> nonBaseModels = new ArrayList<>();
         ArrayList<CodegenModel> nonResourceModels = new ArrayList<>();
         for(String modelName: allModels.keySet()){
-            List<ModelMap> modelList = allModels.get(modelName).getModels();
-            for(ModelMap modelMap : modelList) {
-                CodegenModel model = modelMap.getModel();
-                if(CBIModelMeta.isBaseModel(model)){
-                    CBIResourceInfo added = fromBaseModel(model);
-                    resources.add(added);
-                }else if(CBIModelMeta.isResourceModel(model)){
-                    nonBaseModels.add(model);
-                }else{
-                    nonResourceModels.add(model);
+            if(!modelName.equals("DummyImport")) {
+                List<ModelMap> modelList = allModels.get(modelName).getModels();
+                for (ModelMap modelMap : modelList) {
+                    CodegenModel model = modelMap.getModel();
+                    if (CBIModelMeta.isBaseModel(model)) {
+                        CBIResourceInfo added = fromBaseModel(model);
+                        resources.add(added);
+                    } else if (CBIModelMeta.isResourceModel(model)) {
+                        nonBaseModels.add(model);
+                    } else {
+                        nonResourceModels.add(model);
+                    }
                 }
             }
         }

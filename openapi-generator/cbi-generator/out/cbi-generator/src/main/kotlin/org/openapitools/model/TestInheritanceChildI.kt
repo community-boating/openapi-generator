@@ -1,7 +1,5 @@
             TestInheritanceParent
             TestInheritanceParentOther
-            TestInheritanceChildIAndTestInheritanceParent
-            TestInheritanceChildIAndTestInheritanceChild
 Model name: TestInheritanceChildI
                 Has Resource: TestInheritanceChildI
                     Base Resource: TestInheritanceParent
@@ -30,6 +28,7 @@ Model name: TestInheritanceChildI
             Is Write Only: false
             Is Inherited: true
             Is Overridden: false
+            Default Value: 
                     COL INFO
         Variable Name: parentValue
             Is Required: false
@@ -37,6 +36,7 @@ Model name: TestInheritanceChildI
             Is Write Only: false
             Is Inherited: true
             Is Overridden: false
+            Default Value: 
                     COL INFO
         Variable Name: parentOtherValue
             Is Required: false
@@ -44,16 +44,19 @@ Model name: TestInheritanceChildI
             Is Write Only: false
             Is Inherited: true
             Is Overridden: false
+            Default Value: 
                     COL INFO
-        Variable Name: TestThroughTableChild_TO_TestInheritanceParentBackwardRef
+        Variable Name: testThroughTableChild
             Is Required: false
             Is Read Only: false
             Is Write Only: false
             Is Inherited: true
             Is Overridden: 
+            Default Value: 
                     COL INFO
                     Relation:
                             Super Relation: TestThroughTableChild_TO_TestInheritanceParent
+                        Type: ONE_TO_ONE
                         Base Name: TestThroughTableChild_TO_TestInheritanceParent
                         Name: TestThroughTableChildSub_TO_TestInheritanceChildI
                         Resource A: TestThroughTableChildSub
@@ -63,6 +66,6 @@ Model name: TestInheritanceChildI
                             Column Type: TestInheritanceChildI
                             Is Array: false
                         Back ref: 
-                            Column Name: TestThroughTableChild_TO_TestInheritanceParentBackwardRef
+                            Column Name: testThroughTableChild
                             Column Type: TestThroughTableChildSub
                             Is Array: false

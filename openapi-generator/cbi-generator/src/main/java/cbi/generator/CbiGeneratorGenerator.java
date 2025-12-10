@@ -2,13 +2,28 @@ package cbi.generator;
 
 import cbi.generator.relation.CBIRelationInfo;
 import cbi.generator.relation.CBIRelationInfoNormal;
+import cbi.generator.relation.CBIRelationInfoOneToOne;
 import cbi.generator.resource.CBIResourceInfo;
 import cbi.generator.resource.CBIResourceInfoShared;
+import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
+import io.swagger.parser.util.DeserializationUtils;
+import io.swagger.v3.oas.models.Components;
+import io.swagger.v3.oas.models.OpenAPI;
+import io.swagger.v3.oas.models.media.Schema;
+import io.swagger.v3.parser.OpenAPIV3Parser;
+import io.swagger.v3.parser.core.models.ParseOptions;
+import io.swagger.v3.parser.core.models.SwaggerParseResult;
 import org.openapitools.codegen.*;
+import org.openapitools.codegen.languages.JavaClientCodegen;
 import org.openapitools.codegen.model.*;
 
-import java.util.*;
 import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConfig {
 
@@ -44,17 +59,34 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
     // to try debugging your code generator:
     // set a break point on the next line.
     // then debug the JUnit test called LaunchGeneratorInDebugger
+    Map<String, Schema> schemas = this.openAPI.getComponents().getSchemas();
 
+    for(ModelsMap modelMaps : allModels.values()) {
+      for(ModelMap modelMap : modelMaps.getModels()) {
+        CodegenModel model = modelMap.getModel();
+        RequiredFixer.applyRequiredToCodegenModel(model, schemas);
+        //model.vendorExtensions.put("x-test", "hi-its-test");
+        //modelMap.setModel(model);
+      }
+    }
     //Build relationship model
-
     ArrayList<CBIResourceInfoShared> resources = CBIResourceInfo.getResourcesFromModels(allModels);
-    CBIRelationInfo.findAllRelations(resources);
+    ArrayList<CBIRelationInfo> relations = CBIRelationInfo.findAllRelations(resources);
     for(CBIResourceInfoShared resource: resources) {
       CBIResourceInfoShared.HighestRelations highestRelations = resource.getHighestRelations();
       for(CBIRelationInfo relation: resource.relations) {
+
         if(relation instanceof CBIRelationInfoNormal) {
           relation.meta.hasForward = false;
           relation.meta.hasBackward = false;
+          if(relation instanceof CBIRelationInfoOneToOne) {
+            CBIRelationInfoOneToOne relationInfoA = ((CBIRelationInfoOneToOne) relation);
+            if(relationInfoA.typeRelation != null){
+              System.out.println(relation.meta);
+              System.out.println(relationInfoA.relationName);
+            }
+            //  throw new RuntimeException(relationInfoA.typeRelation.toString());
+          }
           if(highestRelations.A.contains(relation)){
             //if(relation.resourceA.equals(resource))
               relation.meta.hasForward = true;
@@ -64,8 +96,10 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
           if(highestRelations.B.contains(relation)){
             relation.meta.hasBackward = true;
           }
-          ((CBIRelationInfoNormal) relation).addMissingColumns();
         }
+
+        relation.addMissingColumns();
+
       }
       //resource.combineModelTypes();
       //resource.updateColumns();
@@ -76,14 +110,14 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
     for(CBIResourceInfoShared resource: resources) {
       resource.updateModelRefs();
       resource.updateColumns();
-      if(resource instanceof CBIResourceInfo){
+      /*if(resource instanceof CBIResourceInfo){
         ArrayList<CodegenModel> generated = ((CBIResourceInfo) resource).mergeSubResources();
         for(CodegenModel modelGenerated: generated) {
           ModelMap modelMap = new ModelMap();
           modelMap.setModel(modelGenerated);
           generatedAll.add(modelMap);
         }
-      }
+      }*/
       CBIResourceInfoShared.updateModelInterfaces(resource.model);
 
     }
@@ -91,15 +125,8 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
     ModelsMap map = new ModelsMap();
     map.setModels(generatedAll);
 
-    allModels.put("GENERATED", map);
+    //allModels.put("GENERATED", map);
 
-    for(ModelsMap modelMaps : allModels.values()) {
-      for(ModelMap modelMap : modelMaps.getModels()) {
-        //CodegenModel model = modelMap.getModel();
-        //model.vendorExtensions.put("x-test", "hi-its-test");
-        //modelMap.setModel(model);
-      }
-    }
 
 
 
@@ -110,8 +137,136 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
       // example:
       // co.httpMethod = co.httpMethod.toLowerCase();
     }*/
-
     return super.postProcessAllModels(allModels);
+  }
+
+  ArrayList<OpenAPI> additionalFiles = null;
+
+  @Override
+  public void processOpts() {
+    super.processOpts();
+
+    loadAdditionalFiles();
+
+    mergeOperations();
+
+    mergeModels();
+
+    supportingFiles.add(new SupportingFile(
+            "paths.kt.mustache", // template name
+            sourceFolder, // folder inside output
+            "Paths.kt" // generated file name
+    ));
+
+  }
+
+  private void loadAdditionalFiles() {
+    if (additionalFiles == null) {
+      additionalFiles = new ArrayList<>();
+      try {
+        String inputSpecPath = (String) additionalProperties.get("inputSpec");
+        if (inputSpecPath == null)
+          inputSpecPath = this.inputSpec;
+        Path specPath = Paths.get(inputSpecPath);
+        Path specDir = specPath.toAbsolutePath().getParent();
+        // Resolve relative folder from the spec file location
+        Path folder = specDir.normalize();
+        if (!Files.exists(folder)) {
+          System.err.println("Extra path folder not found: " + folder);
+          return;
+        }
+        List<Path> files = Files.walk(folder)
+                .filter(p -> (p.toString().endsWith(".yaml")
+                        || p.toString().endsWith(".yml")
+                        || p.toString().endsWith(".json")) &&
+                        !p.equals(specPath))
+                .collect(Collectors.toList());
+
+        System.out.println("Merging " + files.size() + " external path files...");
+
+        System.out.println(specPath);
+
+        for(Path p: files) {
+          System.out.println(p);
+        }
+
+        if (openAPI.getPaths() == null) {
+          openAPI.setPaths(new io.swagger.v3.oas.models.Paths());
+        }
+
+        ParseOptions options = new ParseOptions();
+        options.setResolve(true);          // resolves $refs
+        options.setResolveFully(false);     // resolves all refs completely
+        options.setFlatten(true);          // flattens the model
+        options.setValidateExternalRefs(true);
+        options.setValidateInternalRefs(true);
+        options.setResolveResponses(true);
+        options.setResolveRequestBody(true);
+
+        for (Path p : files) {
+          File f = p.toFile();
+          SwaggerParseResult parseResult = new OpenAPIV3Parser().readLocation(
+                  f.getAbsolutePath(), null, options
+          );
+
+          if (parseResult == null) {
+            throw new RuntimeException("PARSE RESULT IS NULL");
+          }
+
+          if (parseResult.getMessages() != null && !parseResult.getMessages().isEmpty()) {
+            for(String message: parseResult.getMessages()) {
+              System.out.println("MESSAGE: " + message);
+            }
+            List<String> missingRefMessages = parseResult.getMessages().stream()
+                    .filter(m -> m.contains("is not of type `schema`") || m.contains("Could not find ") || m.contains("is missing")).collect(Collectors.toList());
+
+            if (!missingRefMessages.isEmpty()) {
+              throw new RuntimeException("Missing component reference in " + f.getName() + ": "
+                      + String.join(", ", missingRefMessages));
+            }
+
+            // Optional: log other warnings
+            //parseResult.getMessages().forEach(System.err::println);
+          }
+
+          OpenAPI extra = parseResult.getOpenAPI();
+          if (extra == null || extra.getPaths() == null) {
+            System.err.println("Skipping path file (no paths found): " + f);
+          }
+
+          additionalFiles.add(extra);
+        }
+
+      } catch (Exception e) {
+        throw new RuntimeException("Failed to merge external paths", e);
+      }
+    }
+  }
+
+  private void mergeOperations() {
+    if(this.openAPI.getPaths() == null)
+      this.openAPI.setPaths(new io.swagger.v3.oas.models.Paths());
+    this.additionalFiles.forEach(additional -> {
+      additional.getPaths().forEach((pathName, path) -> {
+        this.openAPI.getPaths().put(pathName, path);
+      });
+    });
+  }
+
+  private void mergeModels() {
+    if(this.openAPI.getComponents() == null)
+      this.openAPI.setComponents(new Components());
+    if(this.openAPI.getComponents().getSchemas() == null)
+      this.openAPI.getComponents().setSchemas(new TreeMap<>());
+    this.additionalFiles.forEach(additional -> {
+      additional.getComponents().getSchemas().forEach((schemaName, schema) -> {
+        if(!this.openAPI.getComponents().getSchemas().containsKey(schemaName))
+          if(!schemaName.endsWith("_1")) {
+            RefNormalizer.normalizeRefs(schema);
+            this.openAPI.getComponents().getSchemas().put(schemaName, schema);
+          }
+      });
+    });
   }
 
   /**
@@ -127,16 +282,19 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
   public CbiGeneratorGenerator() {
     super();
 
-    typeMapping.put("integer", "Int");      // integer → Int
-    typeMapping.put("long", "Long");        // long → Long
-    typeMapping.put("number", "Double");    // number → Double
-    typeMapping.put("string", "String");    // string → String
-    typeMapping.put("boolean", "Boolean");  // boolean → Boolean
+    typeMapping.put("integer", "kotlin.Int");      // integer → Int
+    typeMapping.put("long", "kotlin.Long");        // long → Long
+    typeMapping.put("number", "kotlin.Double");    // number → Double
+    typeMapping.put("string", "kotlin.String");    // string → String
+    typeMapping.put("boolean", "kotlin.Boolean");  // boolean → Boolean
     typeMapping.put("DateTime", "kotlinx.datetime.LocalDateTime"); // date-time → Instant
     typeMapping.put("Date", "kotlinx.datetime.LocalDate");
+    typeMapping.put("date", "kotlinx.datetime.LocalDate");
+    typeMapping.put("datetime", "kotlinx.datetime.LocalDateTime");
     importMapping.put("DateTime", "kotlinx.datetime.LocalDateTime"); // date-time → Instant
     importMapping.put("Date", "kotlinx.datetime.LocalDate");
-
+    importMapping.put("date", "kotlinx.datetime.LocalDate");
+    importMapping.put("datetime", "kotlinx.datetime.LocalDateTime");
     // set the output folder here
     outputFolder = "generated-code/cbi-generator";
 
@@ -168,17 +326,17 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
     /**
      * Api Package.  Optional, if needed, this can be used in templates
      */
-    apiPackage = "org.openapitools.api";
+    apiPackage = "org.communityboating.api";
 
     /**
      * Model Package.  Optional, if needed, this can be used in templates
      */
-    modelPackage = "org.openapitools.model";
+    modelPackage = "org.communityboating.model";
 
     /**
      * Reserved words.  Override this with reserved words specific to your language
      */
-    reservedWords = new HashSet<String> (
+    reservedWords = new HashSet<String>(
             Arrays.asList(
                     "sample1",  // replace with static values
                     "sample2")
@@ -189,6 +347,8 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
      * are available in models, apis, and supporting files
      */
     additionalProperties.put("apiVersion", apiVersion);
+
+    apiNameSuffix = "";
 
     /**
      * Supporting Files.  You can write single files for the generator with the

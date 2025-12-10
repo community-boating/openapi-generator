@@ -23,6 +23,7 @@ Model name: TestTypeChildMultiple
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
         Variable Name: testDTOOnly
             Is Required: false
@@ -30,6 +31,7 @@ Model name: TestTypeChildMultiple
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 100
                     COL INFO
         Variable Name: testDAOOnly
             Is Required: false
@@ -37,6 +39,7 @@ Model name: TestTypeChildMultiple
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 100
                     COL INFO
         Variable Name: aString
             Is Required: false
@@ -44,6 +47,7 @@ Model name: TestTypeChildMultiple
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
         Variable Name: parentId
             Is Required: false
@@ -51,8 +55,10 @@ Model name: TestTypeChildMultiple
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
                     Relation:
+                        Type: ONE_TO_ONE
                         Base Name: TestTypeChildMultiple_TO_TestTypeRoot
                         Name: TestTypeChildMultiple_TO_TestTypeRoot
                         Resource A: TestTypeChildMultiple

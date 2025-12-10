@@ -7,11 +7,12 @@ import cbi.generator.meta.CBIRelationMeta;
 import cbi.generator.resource.CBIResourceInfo;
 import cbi.generator.resource.CBIResourceInfoShared;
 import cbi.generator.resource.CBIResourceInfoChild;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
-public class CBIRelationInfo {
+public abstract class CBIRelationInfo {
     public String relationName;
     public CBIRelationType type;
     //Resource A
@@ -91,6 +92,8 @@ public class CBIRelationInfo {
         return null;
     }
 
+    public abstract void addMissingColumns();
+
     public static CBIRelationInfoNormal findOrAddBaseRelation(ArrayList<CBIRelationInfo> relations, CBIRelationInfo potentialChild){
         if(potentialChild instanceof CBIRelationInfoNormal){
             CBIResourceInfoShared resourceA = potentialChild.resourceA;
@@ -152,7 +155,7 @@ public class CBIRelationInfo {
         }
 
         if(hasRelationA) {
-            if(!hasA) {
+            //if(!hasA) {
 
                 //if(!hasB || !childResourceA.hasParent(existingB.resourceA)){
                     childResourceA.relations.add(newRelation);
@@ -163,7 +166,7 @@ public class CBIRelationInfo {
                 }
                 //existingA = newRelation;
                 //childResourceA.relations.add(newRelation);
-            }else{
+            //}else{
                 if(hasB){
                     System.out.println("BOOMERANG");
                 }
@@ -173,7 +176,7 @@ public class CBIRelationInfo {
                 //}
                 //existingA.parentRelation = existingA;
                 System.out.println(relationNameBase);
-            }
+            //}
             /*if(existingA.resourceA.hasParent(childResourceA)){
                 existingA.parentRelation = newRelation;
                 //newRelation.childRelations.add(existingA);
@@ -185,7 +188,7 @@ public class CBIRelationInfo {
             }*/
         }
         if(hasRelationB) {
-            if(!hasB) {
+            //if(!hasB) {
                 //if(!hasA || !childResourceB.hasParent(existingA.resourceB)){
                     childResourceB.relations.add(newRelation);
                 //}
@@ -195,12 +198,12 @@ public class CBIRelationInfo {
                     //newRelation.parentRelation = existingA;
                 //}
                 //existingB = newRelation;
-            }else{
+            //}else{
                 //if(existingB.parentRelation == null) {
                     //potentialParent.childRelations.add(existingB);
                     //existingB.parentRelation = potentialParent;
                 //}
-            }
+            //}
             /*if(existingB.resourceB.hasParent(childResourceB)){
                 existingB.parentRelation = newRelation;
                 //newRelation.childRelations.add(existingB);
@@ -264,15 +267,34 @@ public class CBIRelationInfo {
                         }
                     }
                     if (relationInfo == null) {
-                        CBIResourceInfoShared resourceB = CBIResourceInfo.findByName(resources, relationMeta.modelB);
-                        if(resourceB == null)
-                            throw new RuntimeException("Unable to find resource B for relation(relationName: " + relationMeta.relationName + ", modelB: " + relationMeta.modelB + ")");
-                        relationInfo = CBIRelationInfo.makeRelationInfo(resourceA, resourceB, relationMeta, true, true);
-                        relations.add(relationInfo);
-                        findOrAddBaseRelation(relations, relationInfo);
+                        if(relationMeta.relationType == CBIRelationType.ONE_TO_ONE_TYPED){
+                            if(resourceA instanceof CBIResourceInfo){
+                                String type = column.property.dataType;
+                                List<CBIResourceInfoShared> resourceBs = resources.stream().filter((a) -> a.model.interfaces != null && a.model.interfaces.contains(type)).collect(Collectors.toList());
+                                CBIRelationInfoOneToOneTyped relationInfoTyped = CBIRelationInfoOneToOneTyped.makeRelationInfoOneToOneTyped(resourceA, resourceBs, relationMeta, true, true);
+                                relationInfo = relationInfoTyped;
+                                relations.addAll(relationInfoTyped.typeRelations);
+                                relations.add(relationInfo);
+                                //findOrAddBaseRelation(relations, relationInfo);
+                                for(CBIRelationInfoOneToOne typeRelation: relationInfoTyped.typeRelations) {
+                                    findOrAddBaseRelation(relations, typeRelation);
+                                }
+                            }
+                        }else {
+                            CBIResourceInfoShared resourceB = CBIResourceInfo.findByName(resources, relationMeta.modelB);
+                            if (resourceB == null)
+                                throw new RuntimeException("Unable to find resource B for relation(relationName: " + relationMeta.relationName + ", modelB: " + relationMeta.modelB + ")");
+                            relationInfo = CBIRelationInfo.makeRelationInfo(resourceA, resourceB, relationMeta, true, true);
+                            relations.add(relationInfo);
+                            findOrAddBaseRelation(relations, relationInfo);
+                        }
+                        if(relationInfo != null) {
+                            relations.add(relationInfo);
+                            findOrAddBaseRelation(relations, relationInfo);
+                        }
                     }
 
-                    if (!relationMeta.isBackref) {
+                    if (!Boolean.TRUE.equals(relationMeta.isBackref)) {
                         relationInfo.forwardRef = column;
                     } else {
                         relationInfo.backRef = column;
@@ -304,7 +326,7 @@ public class CBIRelationInfo {
                 resourceB.relations.add(relationInfo);
             }
             relationInfo.relationName = meta.relationName;
-            if(meta.isBackref && swapBack) {
+            if(Boolean.TRUE.equals(meta.isBackref) && swapBack) {
                 relationInfo.resourceA = resourceB;
                 relationInfo.resourceB = resourceA;
             }else{

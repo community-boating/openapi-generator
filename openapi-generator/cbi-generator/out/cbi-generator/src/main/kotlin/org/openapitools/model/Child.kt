@@ -1,7 +1,5 @@
             ChildI
             ParentI
-            ChildAndParent
-            ChildIAndChild
 Model name: Child
                 Has Resource: Child
                     Base Resource: Parent
@@ -29,6 +27,7 @@ Model name: Child
             Is Write Only: false
             Is Inherited: true
             Is Overridden: false
+            Default Value: 
                     COL INFO
         Variable Name: interfaceProperty
             Is Required: false
@@ -36,4 +35,5 @@ Model name: Child
             Is Write Only: false
             Is Inherited: true
             Is Overridden: false
+            Default Value: 
                     COL INFO

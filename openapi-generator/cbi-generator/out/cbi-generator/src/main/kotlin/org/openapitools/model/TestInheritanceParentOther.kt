@@ -21,3 +21,4 @@ Model name: TestInheritanceParentOther
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 

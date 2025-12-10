@@ -6,8 +6,8 @@ import java.util.Collections;
 import java.util.Map;
 
 public class CBIColumnMeta extends MetaBase {
-    String columnNameDB;
-    Boolean isPrimary;
+    public String columnNameDB;
+    public Boolean isPrimary;
     public CBIColumnMeta(Map<String, Object> map) {
         super(map);
         this.columnNameDB = getString("x-column-name-db", null);

@@ -1,5 +1,3 @@
-            ChildAndParent
-            ChildIAndParent
 Model name: Parent
                 Has Resource: Parent
                     Relation Name: 
@@ -26,4 +24,5 @@ Model name: Parent
             Is Write Only: false
             Is Inherited: false
             Is Overridden: false
+            Default Value: 
                     COL INFO

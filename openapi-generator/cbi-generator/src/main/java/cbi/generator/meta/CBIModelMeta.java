@@ -16,6 +16,7 @@ public class CBIModelMeta extends MetaBase {
     public boolean hasTable;
     public Boolean isResource;
     public Boolean isBase;
+    public String nameSQL;
     public ArrayList<String> varsIncluded;
     public ArrayList<String> varsExcluded;
     public ArrayList<String> relationsIncluded;
@@ -27,6 +28,7 @@ public class CBIModelMeta extends MetaBase {
         this.hasTable = this.getBoolean("x-has-table", true);
         this.isResource = this.getBoolean("x-is-resource", null);
         this.isBase = this.getBoolean("x-is-base", null);
+        this.nameSQL = this.getString("x-name-sql", null);
         this.varsIncluded = this.getStringArray("x-vars-included");
         this.varsExcluded = this.getStringArray("x-vars-excluded");
         this.relationsIncluded = this.getStringArray("x-relations-included");

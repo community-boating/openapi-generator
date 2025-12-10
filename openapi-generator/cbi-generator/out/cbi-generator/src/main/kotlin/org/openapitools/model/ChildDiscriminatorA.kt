@@ -25,6 +25,7 @@ Model name: ChildDiscriminatorA
             Is Write Only: false
             Is Inherited: true
             Is Overridden: false
+            Default Value: 
                     COL INFO
         Variable Name: id
             Is Required: false
@@ -32,6 +33,7 @@ Model name: ChildDiscriminatorA
             Is Write Only: false
             Is Inherited: true
             Is Overridden: false
+            Default Value: 
                     COL INFO
         Variable Name: childType
             Is Required: true
@@ -39,6 +41,7 @@ Model name: ChildDiscriminatorA
             Is Write Only: false
             Is Inherited: true
             Is Overridden: false
+            Default Value: 
                     COL INFO
         Variable Name: interfaceValue
             Is Required: false
@@ -46,6 +49,7 @@ Model name: ChildDiscriminatorA
             Is Write Only: false
             Is Inherited: true
             Is Overridden: false
+            Default Value: 
                     COL INFO
         Variable Name: childValueA
             Is Required: false
@@ -53,4 +57,5 @@ Model name: ChildDiscriminatorA
             Is Write Only: false
             Is Inherited: false
             Is Overridden: false
+            Default Value: 
                     COL INFO

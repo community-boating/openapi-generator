@@ -3,7 +3,6 @@ src/main/kotlin/org/openapitools/model/ChildDiscriminatorA.kt
 src/main/kotlin/org/openapitools/model/ChildDiscriminatorB.kt
 src/main/kotlin/org/openapitools/model/ChildI.kt
 src/main/kotlin/org/openapitools/model/ChildType.kt
-src/main/kotlin/org/openapitools/model/GENERATED.kt
 src/main/kotlin/org/openapitools/model/Parent.kt
 src/main/kotlin/org/openapitools/model/ParentDiscriminator.kt
 src/main/kotlin/org/openapitools/model/ParentI.kt

@@ -1,4 +1,3 @@
-            TestTypeChildSubAndTestTypeChild
 Model name: TestTypeChild
                 Has Resource: TestTypeChild
                     Relation Name: 
@@ -25,6 +24,7 @@ Model name: TestTypeChild
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
         Variable Name: readOnlyString
             Is Required: false
@@ -32,6 +32,7 @@ Model name: TestTypeChild
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
         Variable Name: parentId
             Is Required: false
@@ -39,9 +40,11 @@ Model name: TestTypeChild
             Is Write Only: false
             Is Inherited: false
             Is Overridden: 
+            Default Value: 
                     COL INFO
                     Relation:
                             Sub Relation: TestTypeRoot_TO_TestTypeChildSub
+                        Type: ONE_TO_ONE
                         Base Name: TestTypeRoot_TO_TestTypeChild
                         Name: TestTypeRoot_TO_TestTypeChild
                         Resource A: TestTypeRoot
