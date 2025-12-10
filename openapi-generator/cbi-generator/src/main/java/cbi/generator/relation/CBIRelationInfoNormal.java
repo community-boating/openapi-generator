@@ -33,7 +33,7 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
             if(backRef != null)
                 forwardRef.isRequired = backRef.isRequired;
         }
-        if(Boolean.TRUE.equals(meta.hasForward))
+        if(!Boolean.FALSE.equals(meta.hasForward))
             forwardRef.addToModel();
         else
             forwardRef.removeFromModel();
@@ -49,7 +49,7 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
             backRef.columnType = resourceA.baseName;
             //backRef.columnName = "WHATADERP";
         }
-        if(Boolean.TRUE.equals(meta.hasBackward))
+        if(!Boolean.FALSE.equals(meta.hasBackward))
             backRef.addToModel();
         else
             backRef.removeFromModel();

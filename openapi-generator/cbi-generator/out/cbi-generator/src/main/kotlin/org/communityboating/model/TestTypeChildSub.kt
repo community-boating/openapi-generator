@@ -39,3 +39,26 @@ Model name: TestTypeChildSub
             Is Overridden: false
             Default Value: &quot;null&quot;
                     COL INFO
+        Variable Name: parentId
+            Is Required: true
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: true
+            Is Overridden: false
+            Default Value: 
+                    COL INFO
+                    Relation:
+                            Super Relation: TestTypeRoot_TO_TestTypeChild
+                        Type: ONE_TO_ONE
+                        Base Name: TestTypeRoot_TO_TestTypeChild
+                        Name: TestTypeRoot_TO_TestTypeChildSub
+                        Resource A: TestTypeRoot
+                        Resource B: TestTypeChildSub
+                        Forward ref: 
+                            Column Name: testTypeRoot
+                            Column Type: TestTypeChildSub
+                            Is Array: false
+                        Back ref: 
+                            Column Name: parentId
+                            Column Type: TestTypeRoot
+                            Is Array: false

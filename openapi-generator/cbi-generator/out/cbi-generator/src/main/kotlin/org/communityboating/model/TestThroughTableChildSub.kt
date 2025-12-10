@@ -20,6 +20,29 @@ Model name: TestThroughTableChildSub
                     relationsExcluded: none
                     
     Variables:
+        Variable Name: testChild
+            Is Required: true
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: false
+            Default Value: 
+                    COL INFO
+                    Relation:
+                            Super Relation: TestThroughTableChild_TO_TestInheritanceParent
+                        Type: ONE_TO_ONE
+                        Base Name: TestThroughTableChild_TO_TestInheritanceParent
+                        Name: TestThroughTableChildSub_TO_TestInheritanceChildI
+                        Resource A: TestThroughTableChildSub
+                        Resource B: TestInheritanceChildI
+                        Forward ref: 
+                            Column Name: testChild
+                            Column Type: TestInheritanceChildI
+                            Is Array: false
+                        Back ref: 
+                            Column Name: testThroughTableChild
+                            Column Type: TestThroughTableChildSub
+                            Is Array: false
         Variable Name: id
             Is Required: true
             Is Read Only: false

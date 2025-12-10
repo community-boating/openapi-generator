@@ -44,7 +44,6 @@ Model name: TestTypeChild
                     COL INFO
                     Relation:
                             Sub Relation: TestTypeRoot_TO_TestTypeChildSub
-                            Sub Relation: TestTypeRoot_TO_TestTypeChildSub
                         Type: ONE_TO_ONE
                         Base Name: TestTypeRoot_TO_TestTypeChild
                         Name: TestTypeRoot_TO_TestTypeChild
