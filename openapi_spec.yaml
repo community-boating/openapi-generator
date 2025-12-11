@@ -1613,7 +1613,7 @@ components:
           readOnly: true
           type: integer
     PurchaseDonationDTO:
-      required: [fundId, state]
+      required: [fundId, initiativeId, state]
       properties:
         donationId:
           nullable: false
