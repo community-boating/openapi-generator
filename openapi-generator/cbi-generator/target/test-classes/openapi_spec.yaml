@@ -1,0 +1,22 @@
+openapi: 3.0.3
+info:
+  title: Simple API with JWT Auth
+  version: 1.0.0
+  description: A minimal OpenAPI spec with JWT authentication and simple models.
+
+servers:
+  - url: https://api.example.com
+
+paths: {}
+components:
+  securitySchemes:
+    staff:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    member:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+  schemas: {}

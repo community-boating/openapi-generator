@@ -1,0 +1,50 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Subscription
+paths: {}
+components:
+  schemas:
+    PersonSubscription:
+      required: [ id, personId, subscriptionId, billingCycle ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        personId:
+          $ref: '../existing.yaml#/components/schemas/Person'
+        subscriptionId:
+          $ref: '#/components/schemas/Subscription'
+        billingDate:
+          type: string
+          format: date
+        billingCycle:
+          type: string
+          maxLength: 50
+
+    Subscription:
+      required: [ id, name, billingCycle ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        name:
+          type: string
+          maxLength: 200
+        billingCycle:
+          type: string
+          maxLength: 50
+
+    SubscriptionItem:
+      required: [ id, subscriptionId, itemId ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        subscriptionId:
+          $ref: '#/components/schemas/Subscription'
+        itemId:
+          $ref: './catalog.yaml#/components/schemas/Item'
+        cyclePriceOverrideCents:
+          type: integer
+          format: int64

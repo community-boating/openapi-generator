@@ -1,0 +1,158 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Person
+paths:
+  /member/personCreate:
+    post:
+      summary: Test
+      description: Tests Post.
+      security:
+        - member: [ ]
+      tags:
+        - Member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonPublicDTO'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonPublicDTO'
+        '401':
+          description: Invalid credentials
+components:
+  schemas:
+    PersonPublicDTO:
+      type: object
+      required: [ temp, updatedOn ]
+      properties:
+        personId:
+          readOnly: true
+          type: integer
+        email:
+          type: string
+          maxLength: 100
+          pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+        updatedOn:
+          readOnly: true
+          type: string
+          format: date-time
+        temp:
+          type: string
+          maxLength: 1
+          minLength: 1
+        phonePrimary:
+          x-dto-column-prefix: PHONE_PRIMARY
+          allOf:
+            - $ref: '#/components/schemas/PhoneDTO'
+        phoneSecondary:
+          x-dto-column-prefix: PHONE_ALTERNATE
+          allOf:
+            - $ref: '#/components/schemas/PhoneDTO'
+        address:
+          $ref: '#/components/schemas/Address'
+        name:
+          $ref: '#/components/schemas/PersonNameInfo'
+        relationTypeId:
+          x-dto-column: TYPE_ID
+          type: integer
+        relationType:
+          $ref: './shared.yaml/#/components/schemas/PersonRelationType'
+        relationsA:
+          x-column-parent-fk: A
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonPublicDTO'
+        relationsB:
+          x-column-parent-fk: B
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonPublicDTO'
+    PhoneDTO:
+      type: object
+      properties:
+        number:
+          x-dto-column: ""
+          type: string
+          maxLength: 100
+          pattern: ^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$
+        type:
+          $ref: './shared.yaml/#/components/schemas/PhoneType'
+    PersonNameInfo:
+      type: object
+      properties:
+        prefix:
+          x-dto-column: NAME_PREFIX
+          type: string
+          maxLength: 50
+        first:
+          x-dto-column: NAME_FIRST
+          type: string
+          maxLength: 100
+        middleInitial:
+          x-dto-column: NAME_MIDDLE_INITIAL
+          type: string
+          maxLength: 5
+        last:
+          x-dto-column: NAME_LAST
+          type: string
+          maxLength: 100
+        suffix:
+          x-dto-column: NAME_SUFFIX
+          type: string
+          maxLength: 50
+        preferred:
+          x-dto-column: NAME_PREFERRED
+          type: string
+          maxLength: 100
+    Address:
+      type: object
+      required: [ id ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        personId:
+          $ref: './existing.yaml#/components/schemas/Person'
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
+        isPrimary:
+          type: boolean
+        name:
+          type: string
+          maxLength: 100
+        line1:
+          type: string
+          maxLength: 200
+          minLength: 1
+        line2:
+          x-dto-column: ADDR_2
+          type: string
+          maxLength: 200
+        line3:
+          x-dto-column: ADDR_3
+          type: string
+          maxLength: 200
+        state:
+          type: string
+          maxLength: 50
+          minLength: 2
+        city:
+          type: string
+          maxLength: 50
+        country:
+          type: string
+          maxLength: 50
+        zip:
+          type: string
+          maxLength: 15

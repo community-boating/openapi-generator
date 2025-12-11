@@ -78,14 +78,23 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
         //relation.meta.hasForward = false;
         Map<CBIResourceInfoShared, ArrayList<CBIRelationInfoNormal>> relationsByA = new HashMap<>();
         Map<CBIResourceInfoShared, ArrayList<CBIRelationInfoNormal>> relationsByB = new HashMap<>();
-        relationsByA.put(relation.resourceA, new ArrayList<>(List.of((CBIRelationInfoNormal) relation)));
-        relationsByB.put(((CBIRelationInfoNormal) relation).resourceB, new ArrayList<>(List.of((CBIRelationInfoNormal) relation)));
-        for(CBIRelationInfo subRelation: relation.subRelations) {
-          if(subRelation instanceof CBIRelationInfoNormal) {
-            relationsByA.getOrDefault(subRelation.resourceA, new ArrayList<>()).add((CBIRelationInfoNormal) subRelation);
-            relationsByB.getOrDefault(((CBIRelationInfoNormal) subRelation).resourceB, new ArrayList<>()).add((CBIRelationInfoNormal) subRelation);
+        if(relation.relationName.equalsIgnoreCase("orderLineItems")) {
+          relationsByA.put(relation.resourceA, new ArrayList<>(List.of((CBIRelationInfoNormal) relation)));
+          relationsByB.put(((CBIRelationInfoNormal) relation).resourceB, new ArrayList<>(List.of((CBIRelationInfoNormal) relation)));
+          for (CBIRelationInfo subRelation : relation.subRelations) {
+            if (subRelation instanceof CBIRelationInfoNormal) {
+              if(relationsByA.containsKey(subRelation.resourceA)){
+                System.out.println("USING EXISTING");
+              }
+              relationsByA.getOrDefault(subRelation.resourceA, new ArrayList<>()).add((CBIRelationInfoNormal) subRelation);
+              relationsByB.getOrDefault(((CBIRelationInfoNormal) subRelation).resourceB, new ArrayList<>()).add((CBIRelationInfoNormal) subRelation);
+            }
+          }
+          if (relation.relationName.equalsIgnoreCase("orderLineItems")) {
+            System.out.println("FOR RELATION:" + relation.relationName);
           }
         }
+
         relationsByA.forEach((resource, byA) -> {
           boolean hasBase = byA.stream().anyMatch(a -> a.resourceB.equals(((CBIRelationInfoNormal) relation).resourceB));
           if(byA.size() >= 2 && hasBase) {
@@ -101,14 +110,8 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
         });
         relationsByB.forEach((resource, byB) -> {
           boolean hasBase = byB.stream().anyMatch(a -> a.resourceA.equals(relation.resourceA));
-          if(resource.model.classname.equalsIgnoreCase("OrderDTO")){
-            throw new RuntimeException("WHAT THE CRAPPER BUTTER");
-          }
           if(byB.size() >= 2 && hasBase) {
             byB.forEach(relationByB -> {
-              if(resource.baseName.equalsIgnoreCase("OrderDTO")){
-                throw new RuntimeException("WHAT THE CRAPPER BUTTER");
-              }
               if(relationByB.resourceA.equals(relation.resourceA)){
                 relationByB.meta.hasBackward = true;
               }else{

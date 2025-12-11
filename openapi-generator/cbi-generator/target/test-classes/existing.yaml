@@ -1,0 +1,64 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Existing
+paths: {}
+components:
+  schemas:
+    ApClassType:
+      x-already-exists: true
+      required: [ id ]
+      properties:
+        id:
+          type: integer
+
+    ApClassInstance:
+      x-already-exists: true
+      required: [ id ]
+      properties:
+        id:
+          type: integer
+
+    MembershipType:
+      x-already-exists: true
+      required: [ id ]
+      properties:
+        id:
+          type: integer
+
+    Person:
+      x-already-exists: true
+      required: [ id ]
+      properties:
+        id:
+          type: integer
+
+    DiscountInstance:
+      x-already-exists: true
+      required: [ id ]
+      properties:
+        id:
+          type: integer
+
+    Discount:
+      x-already-exists: true
+      required: [ id ]
+      properties:
+        id:
+          type: integer
+
+    CashDrawer:
+      x-already-exists: true
+      required: [ cashDrawerId ]
+      properties:
+        cashDrawerId:
+          x-is-primary: true
+          type: integer
+
+    Donation:
+      x-already-exists: true
+      required: [ fundId, initiativeId, state, donationId ]
+      properties:
+        donationId:
+          x-is-primary: true
+          type: integer

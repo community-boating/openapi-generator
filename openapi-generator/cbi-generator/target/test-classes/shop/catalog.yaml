@@ -1,0 +1,331 @@
+openapi: 3.0.3
+info:
+  version: 1.0.0
+  title: Catalog
+paths:
+  /catalog/syncClasses:
+    post:
+      description: 'Syncs the current catalog with prices from the db'
+      x-one-of-permissions:
+        - scope: admin
+          type: ADMIN
+      tags:
+        - Catalog
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully syncs the catalog
+  /catalog/inventory:
+    get:
+      description: 'Gets the current inventory'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the inventory
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemStockDTO'
+  /catalog/inventory/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      description: 'Gets the current catalog'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the catalog
+          content:
+            application/json:
+              schema:
+                type: integer
+    post:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      description: 'Updates the quantity of a specified item'
+      x-one-of-permissions:
+        - scope: admin
+          type: ADMIN
+      tags:
+        - Catalog
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockChangeDTO'
+      responses:
+        '200':
+          description: Successfully syncs the catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemStockDTO'
+
+  /catalog:
+    get:
+      description: 'Gets the current catalog'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Catalog'
+  /staff/catalog:
+    get:
+      description: 'Gets the current catalog'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Catalog'
+    post:
+      description: 'Updates the current catalog'
+      x-one-of-permissions:
+        - scope: admin
+          type: ADMIN
+      tags:
+        - Catalog
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Catalog'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Catalog'
+
+
+
+
+components:
+  schemas:
+    StockChangeDTO:
+      properties:
+        stockChangeType:
+          $ref: '../shared.yaml#/components/schemas/StockChangeType'
+        changeAmount:
+          type: integer
+    ItemStockDTO:
+      properties:
+        itemInstanceId:
+          type: integer
+          format: int64
+        itemName:
+          type: string
+        stockAmountRemaining:
+          type: integer
+        stockAmountSold:
+          type: integer
+        stockAmountRefunded:
+          type: integer
+    Catalog:
+      required: [ id ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
+        catalogName:
+          type: string
+          maxLength: 200
+    Product:
+      required: [ id, productName, productDescription, active, catalogId ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        productName:
+          type: string
+          maxLength: 200
+        productDescription:
+          type: string
+          maxLength: 500
+        active:
+          type: boolean
+        catalogId:
+          $ref: '#/components/schemas/Catalog'
+
+    Item:
+      required: [ id, type ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        itemType:
+          $ref: '../shared.yaml#/components/schemas/ItemType'
+        classTypeId:
+          $ref: '../existing.yaml#/components/schemas/ApClassType'
+        classInstanceId:
+          $ref: '../existing.yaml#/components/schemas/ApClassInstance'
+        membershipTypeId:
+          $ref: '../existing.yaml#/components/schemas/MembershipType'
+        productId:
+          $ref: '#/components/schemas/Product'
+        itemName:
+          type: string
+          maxLength: 200
+        itemDescription:
+          type: string
+          maxLength: 500
+        imageURL:
+          type: string
+          maxLength: 200
+        itemSKU:
+          nullable: true
+          type: string
+          maxLength: 500
+        minQuantity:
+          type: integer
+        maxQuantity:
+          type: integer
+        allowPriceOverride:
+          type: boolean
+        priceOverrideMin:
+          type: integer
+          format: int64
+        priceOverrideMax:
+          type: integer
+          format: int64
+        squareItemId:
+          type: string
+          maxLength: 200
+        catalogId:
+          $ref: '#/components/schemas/Catalog'
+
+    DiscountCategory:
+      required: [ id, discountId ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        discountId:
+          $ref: '../existing.yaml#/components/schemas/Discount'
+        categoryId:
+          $ref: '#/components/schemas/Category'
+
+
+    ItemCategory:
+      required: [ id, item, categoryId ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        item:
+          $ref: '#/components/schemas/Item'
+        categoryId:
+          $ref: '#/components/schemas/Category'
+
+    Category:
+      required: [ id, categoryName, description, catalogId ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        categoryName:
+          type: string
+          maxLength: 200
+        description:
+          type: string
+          maxLength: 500
+        categoryType:
+          $ref: '../shared.yaml#/components/schemas/CategoryType'
+        catalogId:
+          $ref: '#/components/schemas/Catalog'
+
+    ItemInstance:
+      required: [ id, itemId ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        itemId:
+          $ref: '#/components/schemas/Item'
+        priceCents:
+          type: integer
+          format: int64
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
+
+    Tax:
+      required: [ id, taxName, taxRate, taxMinValueCents, catalogId ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        taxName:
+          type: string
+          maxLength: 200
+        taxCode:
+          type: string
+          maxLength: 500
+        taxRate:
+          type: string
+          maxLength: 200
+        taxMinValueCents:
+          type: integer
+          format: int64
+        taxBeforeDiscount:
+          type: boolean
+        catalogId:
+          $ref: '#/components/schemas/Catalog'
+
+    ItemInstanceStockChange:
+      required: [ itemInstanceId, changeAmount, stockChangeType ]
+      properties:
+        id:
+          type: integer
+          format: int64
+        itemInstanceId:
+          $ref: '#/components/schemas/ItemInstance'
+        lineItem:
+          $ref: './order.yaml#/components/schemas/LineItem'
+        changeAmount:
+          type: integer
+        stockChangeType:
+          $ref: '../shared.yaml#/components/schemas/StockChangeType'
+        purchasableState:
+          $ref: '../shared.yaml#/components/schemas/PurchasableState'

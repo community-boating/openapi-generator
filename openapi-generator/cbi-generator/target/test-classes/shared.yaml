@@ -1,0 +1,394 @@
+openapi: 3.0.3
+info:
+  title: Shared Types
+  version: 1.0.0
+  description: Shared
+
+paths: {}
+
+components:
+  schemas:
+    EnumTest:
+      type: string
+      enum:
+        - A
+        - B
+        - C
+        - D
+    Boolean:
+      type: string
+      enum:
+        - T
+        - F
+    RuleType:
+      type: string
+      enum:
+        - 'PARENT_DISCOUNT'
+        - 'YOUTH'
+        - 'SENIOR'
+        - 'VETERAN'
+        - 'RENEWAL'
+        - '30FULLUPGRADE'
+        - '30FULLCOMBO'
+        - 'FIXED_PERCENT'
+    ItemType:
+      type: string
+      enum:
+        - 'MEMBERSHIP'
+        - 'PAID_CLASS'
+        - 'DONATION'
+        - 'DAMAGE_WAIVER'
+        - 'GUEST_PRIVS'
+        - 'PRODUCT'
+        - 'CARD'
+        - 'GIFT_CARD'
+    DiscountType:
+      type: string
+      enum:
+        - 'VARIABLE_AMOUNT'
+        - 'VARIABLE_PERCENT'
+        - 'VARIABLE'
+        - 'FIXED_AMOUNT'
+        - 'FIXED_PERCENT'
+    OrderSource:
+      type: string
+      enum:
+        - 'IN_PERSON'
+        - 'ONLINE'
+    OrderStateNew:
+      type: string
+      enum:
+        - 'OPEN'
+        - 'PROCESSED'
+        - 'PROCESSING'
+        - 'REFUNDING'
+        - 'REFUNDED'
+        - 'PARTIALLY_REFUNDED'
+    StockChangeType:
+      type: string
+      enum:
+        - 'PURCHASE'
+        - 'RETURN'
+        - 'RESTOCK'
+        - 'OTHER'
+    BalanceType:
+      type: string
+      enum:
+        - 'GIFT_CARD'
+        - 'HOUSE_ACCOUNT'
+    BalanceTransactionType:
+      type: string
+      enum:
+        - 'GIFT_CARD_PURCHASE'
+        - 'GIFT_CARD_LOAD'
+        - 'ADD_MANUAL'
+        - 'REMOVE_MANUAL'
+    ClassTypeEnum:
+      type: string
+      enum:
+        - 'JP'
+        - 'AP'
+    PurchasableState: 
+      type: string
+      enum:
+        - 'PROTO'
+        - 'ACTIVE'
+        - 'REVOKED'
+        - 'REVOKED_REFUNDED'
+        - 'REVOKED_REFUNDED_PARTIALLY'
+    PaymentStatus:
+      type: string
+      enum:
+        - 'PENDING'
+        - 'SUCCESSFUL'
+        - 'FAILED'
+        - 'REFUNDED'
+        - 'PARTIALLY_REFUNDED'
+    PaymentType:
+      type: string
+      enum:
+        - 'CHECK'
+        - 'OTHER'
+        - 'CASH'
+        - 'BALANCE'
+        - 'STRIPE'
+    StripeTransactionType:
+      type: string
+      enum:
+        - 'CARD_STORED'
+        - 'CARD_KEYED'
+        - 'CARD_READER'
+        - 'WALLET'
+    CategoryType:
+      type: string
+      enum:
+        - 'ITEM_TAB'
+        - 'ITEM'
+        - 'DISCOUNT'
+        - 'SHARED'
+    PhoneType:
+      type: string
+      enum:
+        - 'WORK'
+        - 'HOME'
+        - 'CELL'
+        - 'MOBILE'
+    
+    PersonRelationType:
+      type: integer
+      enum:
+        - value: 1
+          name: TestA
+        - value: 2
+          name: TestB
+
+    TestTypeRoot:
+      x-use-new: true
+      type: object
+      required: [ id, requiredString ]
+      properties:
+        id:
+          x-dto-name: assignId
+          type: integer
+          format: int64
+        optionalStringDTO:
+          x-dto-only: true
+          type: string
+          maxLength: 100
+          minLength: 25
+          default: derp
+        requiredString:
+          type: string
+          maxLength: 100
+        child:
+          readOnly: true
+          x-backref: parentId
+          allOf:
+            - $ref: '#/components/schemas/TestTypeChild'
+        childMultiple:
+          readOnly: true
+          x-include-when-flat: true
+          x-backref: parentId
+          type: array
+          items:
+            $ref: '#/components/schemas/TestTypeChildMultiple'
+        childrenThroughTable:
+          writeOnly: true
+          type: array
+          items:
+            $ref: '#/components/schemas/TestThroughTableChild'
+
+    TestTypeChildMultiple:
+      x-use-new: true
+      type: object
+      required: [ id ]
+      properties:
+        id:
+          x-dto-name: assignId
+          type: integer
+          format: int64
+        testDTOOnly:
+          x-dto-only: true
+          type: integer
+          default: 100
+        testDAOOnly:
+          x-dao-only: true
+          type: integer
+          default: 100
+        aString:
+          readOnly: true
+          type: string
+          maxLength: 100
+        parentId:
+          x-dto-flat: true
+          allOf:
+            - $ref: '#/components/schemas/TestTypeRoot'
+
+    TestTypeChild:
+      x-use-new: true
+      type: object
+      required: [ id ]
+      properties:
+        id:
+          x-dto-name: assignId
+          type: integer
+          format: int64
+        readOnlyString:
+          readOnly: true
+          type: string
+          maxLength: 100
+        parentId:
+          x-dto-flat: true
+          allOf:
+            - $ref: '#/components/schemas/TestTypeRoot'
+
+    TestThroughTableChild:
+      x-use-new: true
+      type: object
+      required: [ id ]
+      properties:
+        id:
+          x-dto-name: assignId
+          type: integer
+          format: int64
+        derping:
+          type: string
+          maxLength: 100
+        readOnlyString:
+          readOnly: true
+          type: string
+          maxLength: 100
+        testChild:
+          $ref: '#/components/schemas/TestInheritanceChild'
+    TestInheritanceParent:
+      x-use-new: true
+      type: object
+      x-parent: true
+      required: [id]
+      properties:
+        id:
+          x-dto-name: assignId
+          type: integer
+          format: int64
+        parentValue:
+          type: string
+          maxLength: 100
+
+    TestInheritanceParentOther:
+      x-use-new: true
+      x-interface: true
+      properties:
+        parentOtherValue:
+          type: string
+          maxLength: 100
+
+    TestInheritanceChild:
+      x-use-new: true
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/TestInheritanceChildI'
+
+    TestInheritanceChildI:
+      x-use-new: true
+      x-interface: true
+      allOf:
+        - $ref: '#/components/schemas/TestInheritanceParent'
+        - $ref: '#/components/schemas/TestInheritanceParentOther'
+
+    Parent:
+      x-use-new: true
+      x-parent: true
+      properties:
+        id:
+          x-dto-name: assignId
+          type: integer
+          format: int64
+    ParentI:
+      x-use-new: true
+      x-parent: interface
+      properties:
+        interfaceProperty:
+          x-is-overridden: true
+          type: string
+    Child:
+      x-use-new: true
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ChildI'
+        - $ref: '#/components/schemas/ParentI'
+    ChildI:
+      x-use-new: true
+      x-parent: interface
+      allOf:
+        - $ref: '#/components/schemas/Parent'
+
+    ParentInt:
+      x-use-new: true
+      x-parent: false
+      properties:
+        interfaceValue:
+          type: boolean
+
+    ChildType:
+      x-use-new: true
+      type: string
+      enum:
+        - 'ChildA'
+        - 'ChildB'
+    ParentDiscriminator:
+      x-use-new: true
+      type: object
+      required: [ childType ]
+      properties:
+        parentAdded:
+          type: boolean
+        id:
+          x-dto-name: assignId
+          type: integer
+          format: int64
+        childType:
+          $ref: '#/components/schemas/ChildType'
+
+      discriminator:
+        mapping:
+          ChildA: '#/components/schemas/ChildDiscriminatorA'
+          ChildB: '#/components/schemas/ChildDiscriminatorB'
+        x-parent-col: parent_id
+        x-parent-var: parentId
+        propertyName: childType
+
+    ChildDiscriminatorA:
+      x-use-new: true
+      allOf:
+        - $ref: '#/components/schemas/ParentDiscriminator'
+        - $ref: '#/components/schemas/ParentInt'
+        - type: object
+          properties:
+            id:
+              x-dto-name: assignId
+              type: integer
+              format: int64
+            childValueA:
+              type: string
+              maxLength: 100
+    ChildDiscriminatorB:
+      x-use-new: true
+      allOf:
+        - $ref: '#/components/schemas/ParentDiscriminator'
+        - type: object
+          properties:
+            id:
+              x-dto-name: assignId
+              type: integer
+              format: int64
+            childValueB:
+              type: string
+              maxLength: 100
+
+    ParentDiscriminator2:
+      x-use-new: true
+      x-parent: true
+      oneOf:
+        - $ref: '#/components/schemas/ChildDiscriminatorA2'
+        - $ref: '#/components/schemas/ChildDiscriminatorB2'
+
+    ChildDiscriminatorA2:
+      x-use-new: true
+      type: object
+      properties:
+        childType:
+          type: string
+          const: 'ChildA'
+        childValueA:
+          type: string
+          maxLength: 100
+    ChildDiscriminatorB2:
+      x-use-new: true
+      properties:
+        childType:
+          type: string
+          const: 'ChildB'
+        childValueB:
+          type: string
+          maxLength: 100
+
