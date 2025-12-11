@@ -1880,7 +1880,7 @@ components:
           x-dto-column: TYPE_ID
           type: integer
         relationType:
-          $ref: './shared.yaml/#/components/schemas/PersonRelationType'
+          $ref: './shared.yaml#/components/schemas/PersonRelationType'
         relationsA:
           x-column-parent-fk: A
           type: array
@@ -1900,7 +1900,7 @@ components:
           maxLength: 100
           pattern: ^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$
         type:
-          $ref: './shared.yaml/#/components/schemas/PhoneType'
+          $ref: './shared.yaml#/components/schemas/PhoneType'
     PersonNameInfo:
       type: object
       properties:
