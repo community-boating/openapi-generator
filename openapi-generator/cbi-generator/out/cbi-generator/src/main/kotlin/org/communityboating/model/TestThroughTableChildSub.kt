@@ -24,7 +24,7 @@ Model name: TestThroughTableChildSub
             Is Required: true
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: false
             Default Value: 
                     COL INFO

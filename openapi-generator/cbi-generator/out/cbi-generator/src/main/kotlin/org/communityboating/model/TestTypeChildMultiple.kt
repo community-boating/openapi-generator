@@ -49,3 +49,25 @@ Model name: TestTypeChildMultiple
             Is Overridden: 
             Default Value: &quot;null&quot;
                     COL INFO
+        Variable Name: parentId
+            Is Required: true
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: 
+            Default Value: 
+                    COL INFO
+                    Relation:
+                        Type: ONE_TO_ONE
+                        Base Name: TestTypeChildMultiple_TO_TestTypeRoot
+                        Name: TestTypeChildMultiple_TO_TestTypeRoot
+                        Resource A: TestTypeChildMultiple
+                        Resource B: TestTypeRoot
+                        Forward ref: 
+                            Column Name: parentId
+                            Column Type: TestTypeRoot
+                            Is Array: false
+                        Back ref: 
+                            Column Name: childMultiple
+                            Column Type: TestTypeChildMultiple
+                            Is Array: true

@@ -64,3 +64,48 @@ Model name: TestTypeRoot
                             Column Name: parentId
                             Column Type: TestTypeRoot
                             Is Array: false
+        Variable Name: childMultiple
+            Is Required: true
+            Is Read Only: true
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: 
+            Default Value: 
+                    COL INFO
+                    Relation:
+                        Type: ONE_TO_ONE
+                        Base Name: TestTypeChildMultiple_TO_TestTypeRoot
+                        Name: TestTypeChildMultiple_TO_TestTypeRoot
+                        Resource A: TestTypeChildMultiple
+                        Resource B: TestTypeRoot
+                        Forward ref: 
+                            Column Name: parentId
+                            Column Type: TestTypeRoot
+                            Is Array: false
+                        Back ref: 
+                            Column Name: childMultiple
+                            Column Type: TestTypeChildMultiple
+                            Is Array: true
+        Variable Name: childrenThroughTable
+            Is Required: true
+            Is Read Only: false
+            Is Write Only: true
+            Is Inherited: false
+            Is Overridden: 
+            Default Value: 
+                    COL INFO
+                    Relation:
+                            Sub Relation: TestThroughTableChildSub_TO_TestTypeRoot
+                        Type: ONE_TO_MANY
+                        Base Name: TestThroughTableChild_TO_TestTypeRoot
+                        Name: TestThroughTableChild_TO_TestTypeRoot
+                        Resource A: TestThroughTableChild
+                        Resource B: TestTypeRoot
+                        Forward ref: 
+                            Column Name: testThroughTableChild
+                            Column Type: TestTypeRoot
+                            Is Array: false
+                        Back ref: 
+                            Column Name: childrenThroughTable
+                            Column Type: TestThroughTableChild
+                            Is Array: true

@@ -7,6 +7,8 @@ import cbi.generator.resource.CBIResourceInfoShared;
 public class CBIRelationInfoNormal extends CBIRelationInfo {
     //Resource B
     public CBIResourceInfoShared resourceB;
+    public boolean forwardOverride;
+    public boolean backwardOverride;
     CBIRelationInfoNormal(CBIRelationType type) {
         super(type);
     }
@@ -33,10 +35,12 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
             if(backRef != null)
                 forwardRef.isRequired = backRef.isRequired;
         }
-        if(!Boolean.FALSE.equals(meta.hasForward))
-            forwardRef.addToModel();
-        else
-            forwardRef.removeFromModel();
+        if(!forwardOverride) {
+            if (!Boolean.FALSE.equals(meta.hasForward))
+                forwardRef.addToModel();
+            else
+                forwardRef.removeFromModel();
+        }
         if(backRef == null) {
             backRef = new CBIColumnInfo(resourceB, null);
             backRef.relation = this;
@@ -49,10 +53,12 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
             backRef.columnType = resourceA.baseName;
             //backRef.columnName = "WHATADERP";
         }
-        if(!Boolean.FALSE.equals(meta.hasBackward))
-            backRef.addToModel();
-        else
-            backRef.removeFromModel();
+        if(!backwardOverride) {
+            if (!Boolean.FALSE.equals(meta.hasBackward))
+                backRef.addToModel();
+            else
+                backRef.removeFromModel();
+        }
 
     }
 

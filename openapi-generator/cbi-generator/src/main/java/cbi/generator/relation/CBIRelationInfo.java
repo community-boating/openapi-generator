@@ -108,8 +108,8 @@ public abstract class CBIRelationInfo {
             if(existing == null) {
                 CBIRelationMeta meta = CBIRelationMeta.fromResources(potentialChild.getBaseRelation().meta, resourceA, resourceB, false, false);
                 existing = CBIRelationInfo.makeRelationInfo(resourceA, resourceB, meta, true, false);
-                existing.meta.hasForward = false;
-                existing.meta.hasBackward = false;
+                //existing.meta.hasForward = false;
+                //existing.meta.hasBackward = false;
                 relations.add(existing);
             }
             existing.subRelations.add(potentialChild);

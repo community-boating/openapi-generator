@@ -6,6 +6,18 @@
   <component name="ChangeListManager">
     <list default="true" id="708c956b-77f3-4487-a796-38b24f696262" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/CbiGeneratorGenerator.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/CbiGeneratorGenerator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfo.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfo.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoNormal.java" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/src/main/java/cbi/generator/relation/CBIRelationInfoNormal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/cbi-generator-openapi-generator-1.0.0-tests.jar" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/cbi-generator-openapi-generator-1.0.0-tests.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/cbi-generator-openapi-generator-1.0.0.jar" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/cbi-generator-openapi-generator-1.0.0.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CbiGeneratorGenerator.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/CbiGeneratorGenerator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/relation/CBIRelationInfo.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/relation/CBIRelationInfo.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/relation/CBIRelationInfoNormal.class" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/classes/cbi/generator/relation/CBIRelationInfoNormal.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/surefire-reports/TEST-cbi.generator.CbiGeneratorGeneratorTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/surefire-reports/TEST-cbi.generator.CbiGeneratorGeneratorTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/cbi-generator/target/surefire-reports/cbi.generator.CbiGeneratorGeneratorTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/cbi-generator/target/surefire-reports/cbi.generator.CbiGeneratorGeneratorTest.txt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

@@ -76,26 +76,48 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
       if(relation instanceof CBIRelationInfoNormal && relation.subRelations != null && !relation.subRelations.isEmpty()) {
         //relation.meta.hasBackward = false;
         //relation.meta.hasForward = false;
-        for(CBIRelationInfo subRelation: relation.subRelations){
+        Map<CBIResourceInfoShared, ArrayList<CBIRelationInfoNormal>> relationsByA = new HashMap<>();
+        Map<CBIResourceInfoShared, ArrayList<CBIRelationInfoNormal>> relationsByB = new HashMap<>();
+        relationsByA.put(relation.resourceA, new ArrayList<>(List.of((CBIRelationInfoNormal) relation)));
+        relationsByB.put(((CBIRelationInfoNormal) relation).resourceB, new ArrayList<>(List.of((CBIRelationInfoNormal) relation)));
+        for(CBIRelationInfo subRelation: relation.subRelations) {
           if(subRelation instanceof CBIRelationInfoNormal) {
-            //subRelation.meta.hasForward = false;
-            //subRelation.meta.hasBackward = false;
-            if (relation.resourceA.equals(subRelation.resourceA) && ((CBIRelationInfoNormal) subRelation).resourceB.hasParent(((CBIRelationInfoNormal) relation).resourceB)){
-              relation.meta.hasForward = true;
-              subRelation.meta.hasForward = false;
-            }else{
-              relation.meta.hasForward = false;
-              subRelation.meta.hasForward = true;
-            }
-            if (((CBIRelationInfoNormal) relation).resourceB.equals(((CBIRelationInfoNormal) subRelation).resourceB) && subRelation.resourceA.hasParent(relation.resourceA)){
-              relation.meta.hasBackward = true;
-              subRelation.meta.hasBackward = false;
-            }else{
-              relation.meta.hasBackward = true;
-              subRelation.meta.hasBackward = true;
-            }
+            relationsByA.getOrDefault(subRelation.resourceA, new ArrayList<>()).add((CBIRelationInfoNormal) subRelation);
+            relationsByB.getOrDefault(((CBIRelationInfoNormal) subRelation).resourceB, new ArrayList<>()).add((CBIRelationInfoNormal) subRelation);
           }
         }
+        relationsByA.forEach((resource, byA) -> {
+          boolean hasBase = byA.stream().anyMatch(a -> a.resourceB.equals(((CBIRelationInfoNormal) relation).resourceB));
+          if(byA.size() >= 2 && hasBase) {
+            byA.forEach(relationByA -> {
+              if(relationByA.resourceB.equals(((CBIRelationInfoNormal) relation).resourceB)){
+                relationByA.meta.hasForward = true;
+              }else{
+                relationByA.forwardOverride = true;
+                relationByA.meta.hasForward = false;
+              }
+            });
+          }
+        });
+        relationsByB.forEach((resource, byB) -> {
+          boolean hasBase = byB.stream().anyMatch(a -> a.resourceA.equals(relation.resourceA));
+          if(resource.model.classname.equalsIgnoreCase("OrderDTO")){
+            throw new RuntimeException("WHAT THE CRAPPER BUTTER");
+          }
+          if(byB.size() >= 2 && hasBase) {
+            byB.forEach(relationByB -> {
+              if(resource.baseName.equalsIgnoreCase("OrderDTO")){
+                throw new RuntimeException("WHAT THE CRAPPER BUTTER");
+              }
+              if(relationByB.resourceA.equals(relation.resourceA)){
+                relationByB.meta.hasBackward = true;
+              }else{
+                relationByB.backwardOverride = true;
+                relationByB.meta.hasBackward = false;
+              }
+            });
+          }
+        });
       }
     }
     for(CBIRelationInfo relation: relations) {

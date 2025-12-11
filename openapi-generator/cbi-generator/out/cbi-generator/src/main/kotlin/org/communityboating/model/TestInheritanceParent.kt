@@ -34,3 +34,30 @@ Model name: TestInheritanceParent
             Is Overridden: 
             Default Value: &quot;null&quot;
                     COL INFO
+        Variable Name: testThroughTableChild
+            Is Required: true
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: 
+            Default Value: 
+                    COL INFO
+                    Relation:
+                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceChild
+                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceChildI
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceChildI
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceChild
+                        Type: ONE_TO_ONE
+                        Base Name: TestThroughTableChild_TO_TestInheritanceParent
+                        Name: TestThroughTableChild_TO_TestInheritanceParent
+                        Resource A: TestThroughTableChild
+                        Resource B: TestInheritanceParent
+                        Forward ref: 
+                            Column Name: testChild
+                            Column Type: TestInheritanceParent
+                            Is Array: false
+                        Back ref: 
+                            Column Name: testThroughTableChild
+                            Column Type: TestThroughTableChild
+                            Is Array: false

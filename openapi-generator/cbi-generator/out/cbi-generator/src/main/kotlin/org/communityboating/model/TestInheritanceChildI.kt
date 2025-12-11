@@ -50,7 +50,7 @@ Model name: TestInheritanceChildI
             Is Required: true
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: 
             Default Value: 
                     COL INFO
