@@ -1200,8 +1200,8 @@ components:
         personId:
           type: integer
           example: 12
-        itemCount:
-          type: integer
+        #itemCount:
+        #  type: integer
         version:
           type: integer
         lineItems:

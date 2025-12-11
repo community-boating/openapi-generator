@@ -342,8 +342,8 @@ components:
         amountPaidCents:
           type: integer
           format: int64
-        itemCount:
-          type: integer
+        #itemCount:
+        #  type: integer
         version:
           type: integer
         orderStatus:
