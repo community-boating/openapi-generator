@@ -370,6 +370,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
   /member/orders/{id}/poll:
+    parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          description: The order ID
     post:
       description: 'Polls order'
       security:
