@@ -369,6 +369,20 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
+  /member/orders/{id}/poll:
+    post:
+      description: 'Polls order'
+      security:
+        - member: []
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Successfully cancelled the order
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml#/components/schemas/OrderStateNew'
   /member/orders/cancel:
     post:
       description: 'Cancels current person order, deleting if possible'
@@ -1613,7 +1627,7 @@ components:
           readOnly: true
           type: integer
     PurchaseDonationDTO:
-      required: [fundId, initiativeId, state]
+      required: [fundId,initiativeId, state]
       properties:
         donationId:
           nullable: false
