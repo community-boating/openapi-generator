@@ -369,7 +369,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
-  /member/orders/{id}/poll:
+  /orders/{id}/poll:
     parameters:
         - in: path
           name: id # Note the name is the same as in the path
@@ -381,8 +381,6 @@ paths:
           description: The order ID
     post:
       description: 'Polls order'
-      security:
-        - member: []
       tags:
         - CompassOrder
       responses:
