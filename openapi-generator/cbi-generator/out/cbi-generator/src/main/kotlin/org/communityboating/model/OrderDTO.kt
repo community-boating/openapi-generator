@@ -1,13 +1,18 @@
-            OrderNew
+            OrderNewInterface
 Model name: OrderDTO
-                Has Resource: OrderDTO
-                    Base Resource: OrderNew
-                    Relation Name: 
+                Resource Suffix: 
+                    Relation: OrderNew_TO_Person, Resource A: OrderDTO, ResourceB: Person, hasForward: , hasBackward: false
+                    Relation: orderLineItems, Resource A: LineItemDTO, ResourceB: OrderDTO, hasForward: true, hasBackward: true
+                    Relation: orderLineItems, Resource A: LineItem, ResourceB: OrderDTO, hasForward: false, hasBackward: false
+                    Relation: OrderPayment_TO_OrderNew, Resource A: OrderPayment, ResourceB: OrderDTO, hasForward: false, hasBackward: 
+                    Relation: OrderTax_TO_OrderNew, Resource A: OrderTax, ResourceB: OrderDTO, hasForward: false, hasBackward: 
+                Has Resource: Order
                     Parent Resource: OrderNew
                 MODEL META
                     hasDTO: true
-                    hasDAO: true
-                    hasTable: true
+                    hasDAO: false
+                    hasTable: false
+                    hasInterface: true
                     isResource: true
                     isBase: false
 
@@ -152,8 +157,8 @@ Model name: OrderDTO
                             Super Relation: OrderNew_TO_Person
                         Type: ONE_TO_ONE
                         Base Name: OrderNew_TO_Person
-                        Name: OrderDTO_TO_Person
-                        Resource A: OrderDTO
+                        Name: OrderNew_TO_Person
+                        Resource A: Order
                         Resource B: Person
                         Forward ref: 
                             Column Name: personId
@@ -183,16 +188,16 @@ Model name: OrderDTO
                             Super Relation: orderLineItems
                         Type: ONE_TO_MANY
                         Base Name: orderLineItems
-                        Name: LineItem_TO_OrderDTO
+                        Name: orderLineItems
                         Resource A: LineItem
-                        Resource B: OrderDTO
+                        Resource B: Order
                         Forward ref: 
                             Column Name: orderId
                             Column Type: OrderDTO
                             Is Array: false
                         Back ref: 
                             Column Name: lineItems
-                            Column Type: LineItem
+                            Column Type: LineItemDTO
                             Is Array: true
         Variable Name: orderPayment
             Is Required: true
@@ -206,9 +211,9 @@ Model name: OrderDTO
                             Super Relation: OrderPayment_TO_OrderNew
                         Type: ONE_TO_ONE
                         Base Name: OrderPayment_TO_OrderNew
-                        Name: OrderPayment_TO_OrderDTO
+                        Name: OrderPayment_TO_OrderNew
                         Resource A: OrderPayment
-                        Resource B: OrderDTO
+                        Resource B: Order
                         Forward ref: 
                             Column Name: orderId
                             Column Type: OrderDTO
@@ -229,9 +234,9 @@ Model name: OrderDTO
                             Super Relation: OrderTax_TO_OrderNew
                         Type: ONE_TO_ONE
                         Base Name: OrderTax_TO_OrderNew
-                        Name: OrderTax_TO_OrderDTO
+                        Name: OrderTax_TO_OrderNew
                         Resource A: OrderTax
-                        Resource B: OrderDTO
+                        Resource B: Order
                         Forward ref: 
                             Column Name: order
                             Column Type: OrderDTO

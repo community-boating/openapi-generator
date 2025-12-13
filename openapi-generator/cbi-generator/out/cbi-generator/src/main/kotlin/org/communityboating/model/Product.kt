@@ -1,10 +1,14 @@
 Model name: Product
+                Resource Suffix: 
+                    Relation: Item_TO_Product, Resource A: Item, ResourceB: Product, hasForward: , hasBackward: 
+                    Relation: Product_TO_Catalog, Resource A: Product, ResourceB: Catalog, hasForward: , hasBackward: 
                 Has Resource: Product
-                    Relation Name: 
+                    Base Resource: Product
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

@@ -1,11 +1,16 @@
             Purchasable
 Model name: PurchaseGiftCardDTO
+                Resource Suffix: 
+                    Relation: PurchaseGiftCardDTO_TO_Balance, Resource A: PurchaseGiftCardDTO, ResourceB: Balance, hasForward: , hasBackward: 
+                    Relation: PurchaseGiftCardDTO_TO_LineItem, Resource A: PurchaseGiftCardDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseGiftCardDTO_TO_LineItem, Resource A: PurchaseGiftCardDTO, ResourceB: LineItem, hasForward: true, hasBackward: true
                 Has Resource: PurchaseGiftCardDTO
-                    Relation Name: 
+                    Base Resource: PurchaseGiftCardDTO
                 MODEL META
                     hasDTO: true
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -113,7 +118,7 @@ Model name: PurchaseGiftCardDTO
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: PurchaseGiftCardDTO_TO_LineItemDTO
+                            Sub Relation: PurchaseGiftCardDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseGiftCardDTO_TO_LineItem
                         Name: PurchaseGiftCardDTO_TO_LineItem
@@ -124,6 +129,6 @@ Model name: PurchaseGiftCardDTO
                             Column Type: LineItem
                             Is Array: false
                         Back ref: 
-                            Column Name: purchaseGiftCardDTO
+                            Column Name: giftCard
                             Column Type: PurchaseGiftCardDTO
                             Is Array: false

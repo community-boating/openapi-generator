@@ -14,6 +14,7 @@ C:\Users\alexj\Documents\openapi-generator\openapi-generator\cbi-generator\src\m
 C:\Users\alexj\Documents\openapi-generator\openapi-generator\cbi-generator\src\main\java\cbi\generator\RefNormalizer.java
 C:\Users\alexj\Documents\openapi-generator\openapi-generator\cbi-generator\src\main\java\cbi\generator\meta\CBIRelationMeta.java
 C:\Users\alexj\Documents\openapi-generator\openapi-generator\cbi-generator\src\main\java\cbi\generator\relation\CBIRelationInfoNormal.java
+C:\Users\alexj\Documents\openapi-generator\openapi-generator\cbi-generator\src\main\java\cbi\generator\Util.java
 C:\Users\alexj\Documents\openapi-generator\openapi-generator\cbi-generator\src\main\java\cbi\generator\relation\CBIRelationInfoManyToMany.java
 C:\Users\alexj\Documents\openapi-generator\openapi-generator\cbi-generator\src\main\java\cbi\generator\relation\CBIRelationInfoManyToManyBase.java
 C:\Users\alexj\Documents\openapi-generator\openapi-generator\cbi-generator\src\main\java\cbi\generator\relation\CBIRelationInfoOneToMany.java

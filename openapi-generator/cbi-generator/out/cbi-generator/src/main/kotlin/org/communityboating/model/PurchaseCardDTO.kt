@@ -1,11 +1,15 @@
             Purchasable
 Model name: PurchaseCardDTO
+                Resource Suffix: 
+                    Relation: PurchaseCardDTO_TO_LineItem, Resource A: PurchaseCardDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseCardDTO_TO_LineItem, Resource A: PurchaseCardDTO, ResourceB: LineItem, hasForward: true, hasBackward: true
                 Has Resource: PurchaseCardDTO
-                    Relation Name: 
+                    Base Resource: PurchaseCardDTO
                 MODEL META
                     hasDTO: true
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -83,7 +87,7 @@ Model name: PurchaseCardDTO
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: PurchaseCardDTO_TO_LineItemDTO
+                            Sub Relation: PurchaseCardDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseCardDTO_TO_LineItem
                         Name: PurchaseCardDTO_TO_LineItem
@@ -94,6 +98,6 @@ Model name: PurchaseCardDTO
                             Column Type: LineItem
                             Is Array: false
                         Back ref: 
-                            Column Name: purchaseCardDTO
+                            Column Name: card
                             Column Type: PurchaseCardDTO
                             Is Array: false

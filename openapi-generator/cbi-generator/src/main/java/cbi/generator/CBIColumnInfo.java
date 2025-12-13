@@ -5,7 +5,6 @@ import cbi.generator.meta.CBIColumnMeta;
 import cbi.generator.meta.CBIRelationMeta;
 import cbi.generator.relation.CBIRelationInfo;
 import cbi.generator.relation.CBIRelationInfoNormal;
-import cbi.generator.relation.CBIRelationInfoOneToOne;
 import cbi.generator.relation.CBIRelationInfoOneToOneTyped;
 import cbi.generator.resource.CBIResourceInfo;
 import cbi.generator.resource.CBIResourceInfoShared;
@@ -15,7 +14,6 @@ import org.openapitools.codegen.CodegenProperty;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Optional;
 
 public class CBIColumnInfo extends ModelAndProperty {
 
@@ -329,13 +327,13 @@ public class CBIColumnInfo extends ModelAndProperty {
         if(property == null) {
             property = new CodegenProperty();
             model.allVars.add(property);
-            property.name = this.columnName;
             property.nameInSnakeCase = CBIResourceInfoShared.toSnakeCase(this.columnName);
             property.nameInPascalCase = CBIRelationMeta.toPascalCase(this.columnName);
             property.baseName = this.columnName;
             property.isArray = this.isArray;
             property.vendorExtensions = new HashMap<>();
         }
+        property.name = this.columnName;
         property.required = this.isRequired;
         property.isNullable = !property.required;
         property.isOptional = property.isNullable;

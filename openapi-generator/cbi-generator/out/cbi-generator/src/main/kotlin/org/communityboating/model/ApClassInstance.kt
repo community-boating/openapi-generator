@@ -1,10 +1,13 @@
 Model name: ApClassInstance
+                Resource Suffix: 
+                    Relation: Item_TO_ApClassInstance, Resource A: Item, ResourceB: ApClassInstance, hasForward: , hasBackward: 
                 Has Resource: ApClassInstance
-                    Relation Name: 
+                    Base Resource: ApClassInstance
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

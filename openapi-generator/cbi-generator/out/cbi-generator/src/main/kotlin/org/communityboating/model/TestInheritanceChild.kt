@@ -1,13 +1,15 @@
             TestInheritanceChildI
 Model name: TestInheritanceChild
-                Has Resource: TestInheritanceChild
-                    Base Resource: TestInheritanceParent
-                    Relation Name: 
-                    Parent Resource: TestInheritanceChildI
+                Resource Suffix: 
+                    Relation: TestThroughTableChild_TO_TestInheritanceParent, Resource A: TestThroughTableChildSub, ResourceB: TestInheritanceChild, hasForward: false, hasBackward: false
+                    Relation: TestThroughTableChild_TO_TestInheritanceParent, Resource A: TestThroughTableChild, ResourceB: TestInheritanceChild, hasForward: false, hasBackward: true
+                Has Resource: TestInheritance
+                    Parent Resource: TestInheritance
                 MODEL META
-                    hasDTO: true
-                    hasDAO: true
-                    hasTable: true
+                    hasDTO: false
+                    hasDAO: false
+                    hasTable: false
+                    hasInterface: true
                     isResource: true
                     isBase: false
 
@@ -56,9 +58,9 @@ Model name: TestInheritanceChild
                             Super Relation: TestThroughTableChild_TO_TestInheritanceParent
                         Type: ONE_TO_ONE
                         Base Name: TestThroughTableChild_TO_TestInheritanceParent
-                        Name: TestThroughTableChild_TO_TestInheritanceChild
+                        Name: TestThroughTableChild_TO_TestInheritanceParent
                         Resource A: TestThroughTableChild
-                        Resource B: TestInheritanceChild
+                        Resource B: TestInheritance
                         Forward ref: 
                             Column Name: testChild
                             Column Type: TestInheritanceChild

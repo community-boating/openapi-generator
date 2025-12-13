@@ -26,44 +26,43 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
     }
 
     @Override
-    public void addMissingColumns() {
+    public void syncColumnsToModel() {
+        //boolean isRequired = (forwardRef != null && forwardRef.isRequired) || (backRef != null && backRef.isRequired);
         if(forwardRef == null) {
             forwardRef = new CBIColumnInfo(resourceA, null);
-            forwardRef.relation = this;
-            forwardRef.columnName = meta.forwardRef;
-            forwardRef.columnType = resourceB.baseName;
-            if(backRef != null)
-                forwardRef.isRequired = backRef.isRequired;
         }
+        //forwardRef.isRequired = isRequired;
+        forwardRef.columnName = meta.forwardRef;
+        forwardRef.columnType = resourceB.name;
         if(!forwardOverride) {
-            if (!Boolean.FALSE.equals(meta.hasForward))
+            if (!Boolean.FALSE.equals(meta.hasForward)) {
                 forwardRef.addToModel();
-            else
+                forwardRef.relation = this;
+            }else{
                 forwardRef.removeFromModel();
+            }
         }
         if(backRef == null) {
             backRef = new CBIColumnInfo(resourceB, null);
-            backRef.relation = this;
-            backRef.columnName = meta.backwardRef;
             if(type == CBIRelationType.MANY_TO_MANY || type == CBIRelationType.ONE_TO_MANY){
                 backRef.isArray = true;
             }
-            if(forwardRef != null)
-                backRef.isRequired = forwardRef.isRequired;
-            backRef.columnType = resourceA.baseName;
-            //backRef.columnName = "WHATADERP";
         }
+        backRef.columnName = meta.backwardRef;
+        backRef.columnType = resourceA.name;
         if(!backwardOverride) {
-            if (!Boolean.FALSE.equals(meta.hasBackward))
+            if (!Boolean.FALSE.equals(meta.hasBackward)) {
                 backRef.addToModel();
-            else
+                backRef.relation = this;
+            }else {
                 backRef.removeFromModel();
+            }
         }
 
     }
 
     @Override
     public String toString() {
-        return "RelationName: " + relationName + "\nResource A: " + resourceA.baseName + "\nResource B: " + resourceB.baseName + "\nForward ref: (" + forwardRef + ")\nBack ref: (" + backRef + ")";
+        return "RelationName: " + relationName + "\nResource A: " + resourceA.name + "\nResource B: " + resourceB.name + "\nForward ref: (" + forwardRef + ")\nBack ref: (" + backRef + ")";
     }
 }

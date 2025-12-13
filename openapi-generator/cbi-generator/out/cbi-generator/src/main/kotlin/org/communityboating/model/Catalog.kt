@@ -1,10 +1,16 @@
 Model name: Catalog
+                Resource Suffix: 
+                    Relation: Category_TO_Catalog, Resource A: Category, ResourceB: Catalog, hasForward: , hasBackward: 
+                    Relation: Item_TO_Catalog, Resource A: Item, ResourceB: Catalog, hasForward: , hasBackward: 
+                    Relation: Product_TO_Catalog, Resource A: Product, ResourceB: Catalog, hasForward: , hasBackward: 
+                    Relation: Tax_TO_Catalog, Resource A: Tax, ResourceB: Catalog, hasForward: , hasBackward: 
                 Has Resource: Catalog
-                    Relation Name: 
+                    Base Resource: Catalog
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

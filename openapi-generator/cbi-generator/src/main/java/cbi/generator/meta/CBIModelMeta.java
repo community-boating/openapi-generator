@@ -11,23 +11,27 @@ import java.util.Map;
 import static cbi.generator.resource.CBIResourceInfo.compareProperty;
 
 public class CBIModelMeta extends MetaBase {
-    public boolean hasDTO;
-    public boolean hasDAO;
+    public Boolean hasDTO;
+    public Boolean hasDAO;
     public boolean hasTable;
+    public boolean hasInterface;
     public Boolean isResource;
-    public Boolean isBase;
+    public boolean isBase;
     public String nameSQL;
+    public String nameSuffix;
     public ArrayList<String> varsIncluded;
     public ArrayList<String> varsExcluded;
     public ArrayList<String> relationsIncluded;
     public ArrayList<String> relationsExcluded;
     public CBIModelMeta(Map<String, Object> map) {
         super(map);
-        this.hasDTO = this.getBoolean("x-has-dto", true);
-        this.hasDAO = this.getBoolean("x-has-dao", true);
+        this.hasDTO = this.getBoolean("x-has-dto", null);
+        this.hasDAO = this.getBoolean("x-has-dao", null);
         this.hasTable = this.getBoolean("x-has-table", true);
+        this.hasInterface = this.getBoolean("x-has-interface", true);
         this.isResource = this.getBoolean("x-is-resource", null);
-        this.isBase = this.getBoolean("x-is-base", null);
+        //this.isBase = this.getBoolean("x-is-base", null);
+        this.nameSuffix = this.getString("x-name-suffix", null);
         this.nameSQL = this.getString("x-name-sql", null);
         this.varsIncluded = this.getStringArray("x-vars-included");
         this.varsExcluded = this.getStringArray("x-vars-excluded");
@@ -110,13 +114,17 @@ public class CBIModelMeta extends MetaBase {
         if(meta.isResource == null) {
             meta.isResource = primary != null;
         }
-        if(meta.isBase == null) {
-            if(primary == null) {
-                meta.isBase = false;
-            }else {
-                primary.isInherited = getInheritedFrom(primary, model) != null;
-                meta.isBase = !primary.isInherited || hasParentDiscriminator(model);
-            }
+        if(primary == null) {
+            meta.isBase = false;
+        }else {
+            primary.isInherited = getInheritedFrom(primary, model) != null;
+            meta.isBase = !primary.isInherited || hasParentDiscriminator(model);
+        }
+        if(meta.hasDAO == null){
+            meta.hasDAO = model.classname.endsWith("DAO");
+        }
+        if(meta.hasDTO == null){
+            meta.hasDTO = model.classname.endsWith("DTO");
         }
         model.vendorExtensions.put("x-model-meta", meta);
         return meta;

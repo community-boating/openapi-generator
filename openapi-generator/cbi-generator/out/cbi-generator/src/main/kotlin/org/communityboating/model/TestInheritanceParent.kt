@@ -1,11 +1,15 @@
 Model name: TestInheritanceParent
+                Resource Suffix: 
+                    Relation: TestThroughTableChild_TO_TestInheritanceParent, Resource A: TestThroughTableChild, ResourceB: TestInheritanceParent, hasForward: true, hasBackward: true
+                    Relation: TestThroughTableChild_TO_TestInheritanceParent, Resource A: TestThroughTableChildSub, ResourceB: TestInheritanceParent, hasForward: true, hasBackward: false
                 Has Resource: TestInheritanceParent
-                    Relation Name: 
-                    Child Resource: TestInheritanceChildI
+                    Base Resource: TestInheritanceParent
+                    Child Resource: TestInheritance
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -43,11 +47,11 @@ Model name: TestInheritanceParent
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceChild
-                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceParent
-                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceChildI
-                            Sub Relation: TestThroughTableChild_TO_TestInheritanceChildI
-                            Sub Relation: TestThroughTableChild_TO_TestInheritanceChild
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceParent
                         Type: ONE_TO_ONE
                         Base Name: TestThroughTableChild_TO_TestInheritanceParent
                         Name: TestThroughTableChild_TO_TestInheritanceParent

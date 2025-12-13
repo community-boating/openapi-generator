@@ -1,15 +1,17 @@
-            TestInheritanceParent
+            TestInheritanceParentInterface
             TestInheritanceParentOther
 Model name: TestInheritanceChildI
-                Has Resource: TestInheritanceChildI
-                    Base Resource: TestInheritanceParent
-                    Relation Name: 
+                Resource Suffix: 
+                    Relation: TestThroughTableChild_TO_TestInheritanceParent, Resource A: TestThroughTableChildSub, ResourceB: TestInheritanceChildI, hasForward: false, hasBackward: false
+                    Relation: TestThroughTableChild_TO_TestInheritanceParent, Resource A: TestThroughTableChild, ResourceB: TestInheritanceChildI, hasForward: false, hasBackward: true
+                Has Resource: TestInheritance
                     Parent Resource: TestInheritanceParent
-                    Child Resource: TestInheritanceChild
+                    Child Resource: TestInheritance
                 MODEL META
-                    hasDTO: true
-                    hasDAO: true
-                    hasTable: true
+                    hasDTO: false
+                    hasDAO: false
+                    hasTable: false
+                    hasInterface: true
                     isResource: true
                     isBase: false
 
@@ -58,9 +60,9 @@ Model name: TestInheritanceChildI
                             Super Relation: TestThroughTableChild_TO_TestInheritanceParent
                         Type: ONE_TO_ONE
                         Base Name: TestThroughTableChild_TO_TestInheritanceParent
-                        Name: TestThroughTableChild_TO_TestInheritanceChildI
+                        Name: TestThroughTableChild_TO_TestInheritanceParent
                         Resource A: TestThroughTableChild
-                        Resource B: TestInheritanceChildI
+                        Resource B: TestInheritance
                         Forward ref: 
                             Column Name: testChild
                             Column Type: TestInheritanceChildI

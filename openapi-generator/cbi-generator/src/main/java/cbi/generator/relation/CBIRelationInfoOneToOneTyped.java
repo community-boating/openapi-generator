@@ -2,15 +2,11 @@ package cbi.generator.relation;
 
 import cbi.generator.CBIColumnInfo;
 import cbi.generator.enums.CBIRelationType;
-import cbi.generator.meta.CBIModelMeta;
 import cbi.generator.meta.CBIRelationMeta;
-import cbi.generator.resource.CBIResourceInfo;
-import cbi.generator.resource.CBIResourceInfoChild;
 import cbi.generator.resource.CBIResourceInfoShared;
 import org.openapitools.codegen.CodegenDiscriminator;
 import org.openapitools.codegen.CodegenModel;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.TreeMap;
@@ -72,7 +68,7 @@ public class CBIRelationInfoOneToOneTyped extends CBIRelationInfo {
         return relationInfo;
     }
     @Override
-    public void addMissingColumns() {
+    public void syncColumnsToModel() {
         //this.typeRelations.forEach(CBIRelationInfoNormal::addMissingColumns);
 
     }

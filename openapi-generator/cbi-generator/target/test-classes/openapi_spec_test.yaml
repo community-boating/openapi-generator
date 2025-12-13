@@ -100,7 +100,6 @@ components:
       x-use-new: true
       type: object
       x-vars-included:
-        - id
         - readOnlyString
       allOf:
         - $ref: '#/components/schemas/TestTypeChild'

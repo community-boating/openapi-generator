@@ -12,13 +12,13 @@ import java.util.Map;
 
 public class CBIResourceInfo extends CBIResourceInfoShared {
     public ArrayList<CBIResourceInfoChild> subResources = new ArrayList<>();
-    public static ArrayList<CBIResourceInfoShared> getResourcesFromModels(Map<String, ModelsMap> allModels){
+    public static ArrayList<CBIResourceInfoShared> getResourcesFromModels(Map<String, ModelsMap> allModels) {
         ArrayList<CBIResourceInfo> resources = new ArrayList<>();
         ArrayList<CBIResourceInfoChild> subResources = new ArrayList<>();
         ArrayList<CodegenModel> nonBaseModels = new ArrayList<>();
         ArrayList<CodegenModel> nonResourceModels = new ArrayList<>();
-        for(String modelName: allModels.keySet()){
-            if(!modelName.equals("DummyImport")) {
+        for (String modelName : allModels.keySet()) {
+            if (!modelName.equals("DummyImport")) {
                 List<ModelMap> modelList = allModels.get(modelName).getModels();
                 for (ModelMap modelMap : modelList) {
                     CodegenModel model = modelMap.getModel();
@@ -33,8 +33,8 @@ public class CBIResourceInfo extends CBIResourceInfoShared {
                 }
             }
         }
-        for(CodegenModel model: nonBaseModels) {
-            for(CBIResourceInfo resource : resources){
+        for (CodegenModel model : nonBaseModels) {
+            for (CBIResourceInfo resource : resources) {
                 CodegenModel model2 = resource.model;
                 if (model != model2 && hasParentRecurse(model2, model)) {
                     CBIResourceInfoChild child = new CBIResourceInfoChild(resource, model);
@@ -43,13 +43,19 @@ public class CBIResourceInfo extends CBIResourceInfoShared {
                 }
             }
         }
-        for(CodegenModel model: nonResourceModels) {
+        for (CodegenModel model : nonResourceModels) {
             CBIResourceInfoShared.updateColumns(model);
         }
         ArrayList<CBIResourceInfoShared> allResources = new ArrayList<>(resources.size() + subResources.size());
         allResources.addAll(resources);
         allResources.addAll(subResources);
-        for(CBIResourceInfoShared resource: allResources) {
+        for (CBIResourceInfoShared resource : allResources) {
+            if(resource instanceof CBIResourceInfo){
+                if(resource.getDAOResource() == null)
+                    resource.getModelMeta().hasDAO = true;
+            }
+            if(Boolean.FALSE.equals(resource.getModelMeta().hasDAO))
+                resource.getModelMeta().hasTable = false;
             resource.updateColumns();
         }
         return allResources;
@@ -72,12 +78,12 @@ public class CBIResourceInfo extends CBIResourceInfoShared {
 
     public static CBIResourceInfoShared findByName(ArrayList<CBIResourceInfoShared> resources, String name) {
         for(CBIResourceInfoShared resource: resources) {
-            if(resource.baseName.equals(name)){
+            if(resource.name.equals(name)){
                 return resource;
             }
             if(resource instanceof CBIResourceInfo) {
                 for (CBIResourceInfoChild subResource : ((CBIResourceInfo) resource).subResources) {
-                    if (subResource.baseName.equals(name)) {
+                    if (subResource.name.equals(name)) {
                         return subResource;
                     }
                 }
@@ -88,7 +94,7 @@ public class CBIResourceInfo extends CBIResourceInfoShared {
 
     @Override
     public int hashCode(){
-        return baseName.hashCode();
+        return name.hashCode();
     }
     @Override
     public boolean equals(final Object other){
@@ -96,7 +102,7 @@ public class CBIResourceInfo extends CBIResourceInfoShared {
             return false;
         if(other instanceof CBIResourceInfo){
             CBIResourceInfo otherCast = (CBIResourceInfo) other;
-            return this.baseName.equals(otherCast.baseName);
+            return this.name.equals(otherCast.name);
         }
         return false;
     }
@@ -122,7 +128,7 @@ public class CBIResourceInfo extends CBIResourceInfoShared {
     }
     static CBIResourceInfo fromBaseModel(CodegenModel base) {
         CBIResourceInfo info = new CBIResourceInfo();
-        info.baseName = base.name;
+        info.name = base.name;
         info.model = base;
         return info;
     }

@@ -1,10 +1,13 @@
 Model name: MembershipType
+                Resource Suffix: 
+                    Relation: Item_TO_MembershipType, Resource A: Item, ResourceB: MembershipType, hasForward: , hasBackward: 
                 Has Resource: MembershipType
-                    Relation Name: 
+                    Base Resource: MembershipType
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

@@ -1,10 +1,13 @@
 Model name: DiscountInstance
+                Resource Suffix: 
+                    Relation: LineItemDiscountInstance_TO_DiscountInstance, Resource A: LineItemDiscountInstance, ResourceB: DiscountInstance, hasForward: , hasBackward: 
                 Has Resource: DiscountInstance
-                    Relation Name: 
+                    Base Resource: DiscountInstance
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

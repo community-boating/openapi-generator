@@ -1,10 +1,14 @@
 Model name: Discount
+                Resource Suffix: 
+                    Relation: DiscountCategory_TO_Discount, Resource A: DiscountCategory, ResourceB: Discount, hasForward: , hasBackward: 
+                    Relation: ItemDiscount_TO_Discount, Resource A: ItemDiscount, ResourceB: Discount, hasForward: , hasBackward: 
                 Has Resource: Discount
-                    Relation Name: 
+                    Base Resource: Discount
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

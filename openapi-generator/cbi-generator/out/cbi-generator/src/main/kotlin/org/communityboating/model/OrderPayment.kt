@@ -1,10 +1,17 @@
 Model name: OrderPayment
+                Resource Suffix: 
+                    Relation: BalanceTransaction_TO_OrderPayment, Resource A: BalanceTransaction, ResourceB: OrderPayment, hasForward: , hasBackward: 
+                    Relation: CashTransaction_TO_OrderPayment, Resource A: CashTransaction, ResourceB: OrderPayment, hasForward: , hasBackward: 
+                    Relation: OrderPayment_TO_OrderNew, Resource A: OrderPayment, ResourceB: OrderNew, hasForward: true, hasBackward: 
+                    Relation: StripeTransaction_TO_OrderPayment, Resource A: StripeTransaction, ResourceB: OrderPayment, hasForward: , hasBackward: 
+                    Relation: OrderPayment_TO_OrderNew, Resource A: OrderPayment, ResourceB: OrderDTO, hasForward: false, hasBackward: 
                 Has Resource: OrderPayment
-                    Relation Name: 
+                    Base Resource: OrderPayment
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -34,7 +41,7 @@ Model name: OrderPayment
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: OrderPayment_TO_OrderDTO
+                            Sub Relation: OrderPayment_TO_OrderNew
                         Type: ONE_TO_ONE
                         Base Name: OrderPayment_TO_OrderNew
                         Name: OrderPayment_TO_OrderNew

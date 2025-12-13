@@ -2,22 +2,20 @@ package cbi.generator.resource;
 
 import cbi.generator.CBIColumnInfo;
 import cbi.generator.ModelAndProperty;
+import cbi.generator.Util;
 import cbi.generator.meta.CBIModelMeta;
 import cbi.generator.meta.CBIRelationMeta;
 import cbi.generator.relation.CBIRelationInfo;
-import cbi.generator.relation.CBIRelationInfoNormal;
 import org.openapitools.codegen.CodegenModel;
 import org.openapitools.codegen.CodegenProperty;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.Map;
-import java.util.TreeMap;
 
 import static cbi.generator.meta.CBIModelMeta.getInheritedFrom;
 
 public abstract class CBIResourceInfoShared {
-    public String baseName;
+    public String name;
     public ArrayList<CBIColumnInfo> columns = new ArrayList<>();
     //ArrayList<CodegenModel> generated = new ArrayList<>();
     //ArrayList<CodegenModel> schema = new ArrayList<>();
@@ -25,7 +23,7 @@ public abstract class CBIResourceInfoShared {
     public ArrayList<CBIRelationInfo> relations = new ArrayList<>();
 
     public String getNameTable() {
-        return this.baseName + "Table";
+        return this.getBaseName() + "Table";
     }
 
     public CBIColumnInfo getPrimary() {
@@ -37,8 +35,12 @@ public abstract class CBIResourceInfoShared {
         return null;
     }
 
+    public CBIModelMeta getModelMeta() {
+        return CBIModelMeta.getOrAdd(this.model);
+    }
+
     public String getNameSQL() {
-        CBIModelMeta meta = CBIModelMeta.getOrAdd(this.model);
+        CBIModelMeta meta = getModelMeta();
         if(meta.nameSQL != null)
             return meta.nameSQL;
         return toSnakeCase(this.model.schemaName);
@@ -82,11 +84,30 @@ public abstract class CBIResourceInfoShared {
         if(primary.property.isLong){
             entityClass = "LongEntity";
         }
-        return this.getNameDAO() + "(id: EntityID<" + primaryType + ">) : " + entityClass + "(id)";
+        String extraClass = "";
+        if(this.hasInterface())
+            extraClass = ", " + this.getNameInterface();
+        return this.getNameDAO() + "(id: EntityID<" + primaryType + ">) : " + entityClass + "(id)" + extraClass;
+    }
+
+    public String getNameDTO() {
+        if("DTO".equals(this.getResourceSuffix())){
+            return this.name;
+        }
+        return this.getBaseName() + "DTO";
     }
 
     public String getNameDAO() {
-        return this.baseName + "DAO";
+        if("DAO".equals(this.getResourceSuffix()))
+            return this.name;
+        return this.getBaseName() + "DAO";
+    }
+
+    public String getNameInterface() {
+        if(!this.isDAO() && !this.hasDTO()){
+            return this.name;
+        }
+        return this.getBaseName() + "Interface";
     }
 
     public static Boolean compareProperty(CodegenProperty property1, CodegenProperty property2) {
@@ -97,27 +118,57 @@ public abstract class CBIResourceInfoShared {
         }
         return isEqual;
     }
+    public static class TypeUnionResultModelVar {
+        public CodegenProperty propertyParent;
+        public CodegenProperty propertyChild;
+        public TypeUnionResultModelVar(CodegenProperty propertyParent, CodegenProperty propertyChild) {
+            this.propertyParent = propertyParent;
+            this.propertyChild = propertyChild;
+        }
+    }
     public static class TypeUnionResult {
-        public CodegenModel model;
+        public CodegenModel modelBase;
+        public CodegenModel modelParent;
+        public CodegenModel modelBoth;
+        public ArrayList<TypeUnionResultModelVar> modelVars;
         public Boolean matchedAll;
         public Boolean matchedNone;
-        public Boolean fromExisting;
+        public boolean shouldAdd = false;
+        //public Boolean fromExisting;
     }
-    static TypeUnionResult typeUnion(CodegenModel model1, CodegenModel model2) {
+    public static TypeUnionResult typeUnion(CodegenModel modelBase, CodegenModel modelParent) {
         TypeUnionResult result = new TypeUnionResult();
-        result.model = new CodegenModel();
-        result.model.allVars = new ArrayList<>();
-        result.model.name = model1.name + "And" + model2.name;
+        result.modelBase = modelBase;
+        result.modelParent = modelParent;
+        result.modelBoth = new CodegenModel();
+        result.modelVars = new ArrayList<>();
+        result.modelBoth.allVars = new ArrayList<>();
+        result.modelBoth.name = modelBase.name + "And" + modelParent.name;
+        result.modelBoth.classname = result.modelBoth.name;
+        result.modelBoth.classFilename = result.modelBoth.classname;
         result.matchedNone = true;
-        result.fromExisting = false;
-        //result.matchExact = true;
-        for(CodegenProperty property1 : model1.allVars) {
-            for(CodegenProperty property2: model2.allVars) {
-                if(compareProperty(property1, property2)){
-                    result.model.allVars.add(property1.clone());
-                    result.matchedNone = false;
+        result.matchedAll = true;
+        for(CodegenProperty propertyParent : modelParent.allVars) {
+            boolean isModel1 = Util.isPropertyModel(propertyParent);
+            boolean hasProperty = false;
+            for(CodegenProperty propertyChild: modelBase.allVars) {
+                boolean isModel2 = Util.isPropertyModel(propertyChild);
+                boolean isModel = isModel1 || isModel2;
+                if (compareProperty(propertyParent, propertyChild)) {
+                    if(isModel1 && isModel2) {
+                        result.modelVars.add(new TypeUnionResultModelVar(propertyParent, propertyChild));
+                        hasProperty = true;
+                    }else if(!isModel) {
+                        result.modelBoth.allVars.add(propertyParent.clone());
+                        hasProperty = true;
+                    }
                     break;
                 }
+            }
+            if(hasProperty){
+                result.matchedNone = false;
+            }else{
+                result.matchedAll = false;
             }
         }
         /*for(CodegenModel modelGenerated : generated) {
@@ -139,7 +190,6 @@ public abstract class CBIResourceInfoShared {
                 break;
             }
         }*/
-        result.matchedAll = (model1.allVars.size() == model2.allVars.size()) && (model1.allVars.size() == result.model.allVars.size());
         return result;
     }
     static ArrayList<CodegenModel> combineModels(ArrayList<CodegenModel> models1, ArrayList<CodegenModel> models2, Boolean skipIfMatchAll) {
@@ -150,67 +200,40 @@ public abstract class CBIResourceInfoShared {
                     break;
                 TypeUnionResult result = typeUnion(model1, model2);
                 if (!result.matchedNone) {
-                    added.add(result.model);
+                    added.add(result.modelBoth);
                 }
-                if(result.model != null && !result.matchedNone){
+                if(result.modelBoth != null && !result.matchedNone){
                     if(model1.interfaceModels == null)
                         model1.interfaceModels = new ArrayList<>();
                     if(model2.interfaceModels == null)
                         model2.interfaceModels = new ArrayList<>();
-                    model1.interfaceModels.add(result.model);
-                    model2.interfaceModels.add(result.model);
+                    model1.interfaceModels.add(result.modelBoth);
+                    model2.interfaceModels.add(result.modelBoth);
                 }
             }
         }
         return added;
     }
-    public static class HighestRelations {
-        public ArrayList<CBIRelationInfoNormal> A = new ArrayList<>();
-        public ArrayList<CBIRelationInfoNormal> B = new ArrayList<>();
+    public boolean isBase() {
+        return getBaseResource().equals(this);
     }
-    public HighestRelations getHighestRelations() {
-        HighestRelations highest = new HighestRelations();
-        for(CBIRelationInfo relation: relations) {
-            if(relation instanceof CBIRelationInfoNormal) {
-                CBIRelationInfo base = relation.getBaseRelation();
-                CBIRelationInfoNormal highestCurrentA = null;
-                CBIRelationInfoNormal highestCurrentB = null;
-
-                for(CBIRelationInfoNormal h: highest.A) {
-                    if(h.getBaseRelation() == base){
-                        highestCurrentA = h;
-                        break;
-                    }
-                }
-
-                if (highestCurrentA != null) {
-                    if (((CBIRelationInfoNormal) relation).isHigherA(highestCurrentA)){
-                        highest.A.remove(highestCurrentA);
-                        highest.A.add((CBIRelationInfoNormal) relation);
-                    }
-                } else {
-                    highest.A.add((CBIRelationInfoNormal) relation);
-                }
-
-                for(CBIRelationInfoNormal h: highest.B) {
-                    if(h.getBaseRelation() == base){
-                        highestCurrentB = h;
-                        break;
-                    }
-                }
-
-                if (highestCurrentB != null) {
-                    if (((CBIRelationInfoNormal) relation).isHigherB(highestCurrentB)){
-                        highest.B.remove(highestCurrentB);
-                        highest.B.add((CBIRelationInfoNormal) relation);
-                    }
-                } else {
-                    highest.B.add((CBIRelationInfoNormal) relation);
-                }
-
-            }
+    public boolean isDAO() {
+        return this.getModelMeta().hasDAO;
+    }
+    public boolean hasDTO() {
+        return this.getModelMeta().hasDTO;
+    }
+    public boolean hasInterface() {
+        return this.getModelMeta().hasInterface;
+    }
+    public CBIResourceInfoShared getDAOResource() {
+        if(this.isDAO())
+            return this;
+        for(CBIResourceInfoChild sub: this.getBaseResource().subResources){
+            if(sub.isDAO())
+                return sub;
         }
-        return highest;
+        return null;
     }
     public CBIResourceInfo getBaseResource() {
         if(this instanceof CBIResourceInfo) {
@@ -221,8 +244,31 @@ public abstract class CBIResourceInfoShared {
         }
         return null;
     }
-    public String TestName(){
-        return "YOLO DERP";
+    public String getBaseName() {
+        String suffix = getResourceSuffix();
+        if(suffix != null){
+            int index = this.name.lastIndexOf(suffix);
+            if(index > 0)
+                return this.name.substring(0, index);
+            return this.name;
+        }
+        return this.name;
+    }
+    public String getResourceSuffix() {
+        String nameSuffix = getModelMeta().nameSuffix;
+        if(nameSuffix != null)
+            return nameSuffix;
+        if(this.getBaseResource().equals(this))
+            return null;
+        int startIndex = 0;
+        String nameBase = this.getBaseResource().name;
+
+        while(startIndex < this.name.length() && startIndex < nameBase.length() && this.name.charAt(startIndex) == nameBase.charAt(startIndex)){
+            startIndex++;
+        }
+        if(startIndex > 0)
+            return this.name.substring(startIndex);
+        return null;
     }
     public CBIResourceInfoShared findParentResource() {
         CBIResourceInfo baseResource = getBaseResource();
@@ -263,7 +309,11 @@ public abstract class CBIResourceInfoShared {
         model.interfaces = new ArrayList<>();
         if(model.interfaceModels != null) {
             for (CodegenModel parent : model.interfaceModels) {
-                model.interfaces.add(parent.name);
+                CBIResourceInfoShared info = CBIResourceInfoShared.fromModel(parent);
+                if(info != null && info.hasInterface())
+                    model.interfaces.add(info.getNameInterface());
+                else
+                    model.interfaces.add(parent.name);
             }
         }
     }

@@ -1,10 +1,16 @@
 Model name: Balance
+                Resource Suffix: 
+                    Relation: Balance_TO_Person, Resource A: Balance, ResourceB: Person, hasForward: , hasBackward: 
+                    Relation: BalanceTransaction_TO_Balance, Resource A: BalanceTransaction, ResourceB: Balance, hasForward: , hasBackward: 
+                    Relation: PaymentSource_TO_Balance, Resource A: PaymentSource, ResourceB: Balance, hasForward: , hasBackward: 
+                    Relation: PurchaseGiftCardDTO_TO_Balance, Resource A: PurchaseGiftCardDTO, ResourceB: Balance, hasForward: , hasBackward: 
                 Has Resource: Balance
-                    Relation Name: 
+                    Base Resource: Balance
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

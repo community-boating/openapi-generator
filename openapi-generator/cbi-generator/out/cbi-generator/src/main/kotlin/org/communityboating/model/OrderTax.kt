@@ -1,10 +1,15 @@
 Model name: OrderTax
+                Resource Suffix: 
+                    Relation: OrderTax_TO_Tax, Resource A: OrderTax, ResourceB: Tax, hasForward: , hasBackward: 
+                    Relation: OrderTax_TO_OrderNew, Resource A: OrderTax, ResourceB: OrderNew, hasForward: true, hasBackward: 
+                    Relation: OrderTax_TO_OrderNew, Resource A: OrderTax, ResourceB: OrderDTO, hasForward: false, hasBackward: 
                 Has Resource: OrderTax
-                    Relation Name: 
+                    Base Resource: OrderTax
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -56,7 +61,7 @@ Model name: OrderTax
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: OrderTax_TO_OrderDTO
+                            Sub Relation: OrderTax_TO_OrderNew
                         Type: ONE_TO_ONE
                         Base Name: OrderTax_TO_OrderNew
                         Name: OrderTax_TO_OrderNew

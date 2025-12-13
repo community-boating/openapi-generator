@@ -1,11 +1,15 @@
             Purchasable
 Model name: PurchaseMembershipDTO
+                Resource Suffix: 
+                    Relation: PurchaseMembershipDTO_TO_LineItem, Resource A: PurchaseMembershipDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseMembershipDTO_TO_LineItem, Resource A: PurchaseMembershipDTO, ResourceB: LineItem, hasForward: true, hasBackward: true
                 Has Resource: PurchaseMembershipDTO
-                    Relation Name: 
+                    Base Resource: PurchaseMembershipDTO
                 MODEL META
                     hasDTO: true
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -107,7 +111,7 @@ Model name: PurchaseMembershipDTO
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: PurchaseMembershipDTO_TO_LineItemDTO
+                            Sub Relation: PurchaseMembershipDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseMembershipDTO_TO_LineItem
                         Name: PurchaseMembershipDTO_TO_LineItem
@@ -118,6 +122,6 @@ Model name: PurchaseMembershipDTO
                             Column Type: LineItem
                             Is Array: false
                         Back ref: 
-                            Column Name: purchaseMembershipDTO
+                            Column Name: membership
                             Column Type: PurchaseMembershipDTO
                             Is Array: false

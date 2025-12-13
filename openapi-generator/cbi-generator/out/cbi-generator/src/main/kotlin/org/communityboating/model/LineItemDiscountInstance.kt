@@ -1,10 +1,15 @@
 Model name: LineItemDiscountInstance
+                Resource Suffix: 
+                    Relation: LineItemDiscountInstance_TO_LineItem, Resource A: LineItemDiscountInstance, ResourceB: LineItem, hasForward: true, hasBackward: 
+                    Relation: LineItemDiscountInstance_TO_DiscountInstance, Resource A: LineItemDiscountInstance, ResourceB: DiscountInstance, hasForward: , hasBackward: 
+                    Relation: LineItemDiscountInstance_TO_LineItem, Resource A: LineItemDiscountInstance, ResourceB: LineItemDTO, hasForward: false, hasBackward: 
                 Has Resource: LineItemDiscountInstance
-                    Relation Name: 
+                    Base Resource: LineItemDiscountInstance
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -34,7 +39,7 @@ Model name: LineItemDiscountInstance
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: LineItemDiscountInstance_TO_LineItemDTO
+                            Sub Relation: LineItemDiscountInstance_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: LineItemDiscountInstance_TO_LineItem
                         Name: LineItemDiscountInstance_TO_LineItem

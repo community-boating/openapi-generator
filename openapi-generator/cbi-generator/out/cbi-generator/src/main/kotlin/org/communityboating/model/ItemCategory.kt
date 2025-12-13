@@ -1,10 +1,14 @@
 Model name: ItemCategory
+                Resource Suffix: 
+                    Relation: ItemCategory_TO_Item, Resource A: ItemCategory, ResourceB: Item, hasForward: , hasBackward: 
+                    Relation: ItemCategory_TO_Category, Resource A: ItemCategory, ResourceB: Category, hasForward: , hasBackward: 
                 Has Resource: ItemCategory
-                    Relation Name: 
+                    Base Resource: ItemCategory
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

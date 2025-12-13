@@ -1,9 +1,0 @@
-
-
-# PersonRelationType
-
-## Enum
-
-
-
-

@@ -1,11 +1,15 @@
             Purchasable
 Model name: PurchaseDamageWaiverDTO
+                Resource Suffix: 
+                    Relation: PurchaseDamageWaiverDTO_TO_LineItem, Resource A: PurchaseDamageWaiverDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseDamageWaiverDTO_TO_LineItem, Resource A: PurchaseDamageWaiverDTO, ResourceB: LineItem, hasForward: true, hasBackward: true
                 Has Resource: PurchaseDamageWaiverDTO
-                    Relation Name: 
+                    Base Resource: PurchaseDamageWaiverDTO
                 MODEL META
                     hasDTO: true
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -75,7 +79,7 @@ Model name: PurchaseDamageWaiverDTO
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: PurchaseDamageWaiverDTO_TO_LineItemDTO
+                            Sub Relation: PurchaseDamageWaiverDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseDamageWaiverDTO_TO_LineItem
                         Name: PurchaseDamageWaiverDTO_TO_LineItem
@@ -86,6 +90,6 @@ Model name: PurchaseDamageWaiverDTO
                             Column Type: LineItem
                             Is Array: false
                         Back ref: 
-                            Column Name: purchaseDamageWaiverDTO
+                            Column Name: damageWaiver
                             Column Type: PurchaseDamageWaiverDTO
                             Is Array: false

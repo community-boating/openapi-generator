@@ -1,10 +1,16 @@
 Model name: ItemInstance
+                Resource Suffix: 
+                    Relation: ItemInstance_TO_Item, Resource A: ItemInstance, ResourceB: Item, hasForward: , hasBackward: 
+                    Relation: ItemInstanceStockChange_TO_ItemInstance, Resource A: ItemInstanceStockChange, ResourceB: ItemInstance, hasForward: , hasBackward: 
+                    Relation: LineItem_TO_ItemInstance, Resource A: LineItem, ResourceB: ItemInstance, hasForward: , hasBackward: true
+                    Relation: LineItem_TO_ItemInstance, Resource A: LineItemDTO, ResourceB: ItemInstance, hasForward: , hasBackward: false
                 Has Resource: ItemInstance
-                    Relation Name: 
+                    Base Resource: ItemInstance
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -102,7 +108,7 @@ Model name: ItemInstance
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: LineItemDTO_TO_ItemInstance
+                            Sub Relation: LineItem_TO_ItemInstance
                         Type: ONE_TO_ONE
                         Base Name: LineItem_TO_ItemInstance
                         Name: LineItem_TO_ItemInstance

@@ -2,11 +2,8 @@ package cbi.generator;
 
 import cbi.generator.relation.CBIRelationInfo;
 import cbi.generator.relation.CBIRelationInfoNormal;
-import cbi.generator.relation.CBIRelationInfoOneToOne;
 import cbi.generator.resource.CBIResourceInfo;
 import cbi.generator.resource.CBIResourceInfoShared;
-import com.fasterxml.jackson.dataformat.yaml.YAMLMapper;
-import io.swagger.parser.util.DeserializationUtils;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.media.Schema;
@@ -14,7 +11,6 @@ import io.swagger.v3.parser.OpenAPIV3Parser;
 import io.swagger.v3.parser.core.models.ParseOptions;
 import io.swagger.v3.parser.core.models.SwaggerParseResult;
 import org.openapitools.codegen.*;
-import org.openapitools.codegen.languages.JavaClientCodegen;
 import org.openapitools.codegen.model.*;
 
 import java.io.File;
@@ -23,7 +19,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConfig {
 
@@ -78,30 +73,54 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
         //relation.meta.hasForward = false;
         Map<CBIResourceInfoShared, ArrayList<CBIRelationInfoNormal>> relationsByA = new HashMap<>();
         Map<CBIResourceInfoShared, ArrayList<CBIRelationInfoNormal>> relationsByB = new HashMap<>();
-        if(relation.relationName.equalsIgnoreCase("orderLineItems")) {
-          relationsByA.put(relation.resourceA, new ArrayList<>(List.of((CBIRelationInfoNormal) relation)));
-          relationsByB.put(((CBIRelationInfoNormal) relation).resourceB, new ArrayList<>(List.of((CBIRelationInfoNormal) relation)));
-          for (CBIRelationInfo subRelation : relation.subRelations) {
-            if (subRelation instanceof CBIRelationInfoNormal) {
-              if(relationsByA.containsKey(subRelation.resourceA)){
-                System.out.println("USING EXISTING");
-              }
-              relationsByA.getOrDefault(subRelation.resourceA, new ArrayList<>()).add((CBIRelationInfoNormal) subRelation);
-              relationsByB.getOrDefault(((CBIRelationInfoNormal) subRelation).resourceB, new ArrayList<>()).add((CBIRelationInfoNormal) subRelation);
-            }
-          }
-          if (relation.relationName.equalsIgnoreCase("orderLineItems")) {
-            System.out.println("FOR RELATION:" + relation.relationName);
+
+        relationsByA.put(relation.resourceA, new ArrayList<>(List.of((CBIRelationInfoNormal) relation)));
+        relationsByB.put(((CBIRelationInfoNormal) relation).resourceB, new ArrayList<>(List.of((CBIRelationInfoNormal) relation)));
+        for (CBIRelationInfo subRelation : relation.subRelations) {
+          if (subRelation instanceof CBIRelationInfoNormal) {
+            if(!relationsByA.containsKey(subRelation.resourceA))
+              relationsByA.put(subRelation.resourceA, new ArrayList<>());
+            relationsByA.get(subRelation.resourceA).add((CBIRelationInfoNormal) subRelation);
+            if(!relationsByB.containsKey(((CBIRelationInfoNormal) subRelation).resourceB))
+              relationsByB.put(((CBIRelationInfoNormal) subRelation).resourceB, new ArrayList<>());
+            relationsByB.getOrDefault(((CBIRelationInfoNormal) subRelation).resourceB, new ArrayList<>()).add((CBIRelationInfoNormal) subRelation);
           }
         }
 
+
+
         relationsByA.forEach((resource, byA) -> {
-          boolean hasBase = byA.stream().anyMatch(a -> a.resourceB.equals(((CBIRelationInfoNormal) relation).resourceB));
-          if(byA.size() >= 2 && hasBase) {
+          if(byA.size() >= 2) {
+            CBIRelationInfoNormal relationMatch = null;
+            for(CBIRelationInfoNormal relationByA: byA) {
+              boolean isABase = relationByA.resourceA.isBase();
+              boolean isBBase = relationByA.resourceB.isBase();
+              boolean isADAO = relationByA.resourceA.isDAO();
+              boolean isBDAO = relationByA.resourceB.isDAO();
+              String suffixA = relationByA.resourceA.getResourceSuffix();
+              String suffixB = relationByA.resourceB.getResourceSuffix();
+              boolean suffixMatch = suffixA != null && suffixA.equals(suffixB);
+              if(isADAO){
+                if(isBDAO){
+                  relationMatch = relationByA;
+                  break;
+                }
+              }else if(isBBase){
+                relationMatch = relationByA;
+                if(isABase) {
+                  break;
+                }
+              }else if(suffixMatch){
+                relationMatch = relationByA;
+                break;
+              }
+            }
+            final CBIRelationInfoNormal relationMatchF = relationMatch;
             byA.forEach(relationByA -> {
-              if(relationByA.resourceB.equals(((CBIRelationInfoNormal) relation).resourceB)){
+              boolean isMatch = relationByA.equals(relationMatchF);
+              if (isMatch) {
                 relationByA.meta.hasForward = true;
-              }else{
+              } else {
                 relationByA.forwardOverride = true;
                 relationByA.meta.hasForward = false;
               }
@@ -109,12 +128,37 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
           }
         });
         relationsByB.forEach((resource, byB) -> {
-          boolean hasBase = byB.stream().anyMatch(a -> a.resourceA.equals(relation.resourceA));
-          if(byB.size() >= 2 && hasBase) {
+          if(byB.size() >= 2) {
+            CBIRelationInfoNormal relationMatch = null;
+            for(CBIRelationInfoNormal relationByB: byB) {
+              boolean isABase = relationByB.resourceA.isBase();
+              boolean isBBase = relationByB.resourceB.isBase();
+              boolean isADAO = relationByB.resourceA.isDAO();
+              boolean isBDAO = relationByB.resourceB.isDAO();
+              String suffixA = relationByB.resourceA.getResourceSuffix();
+              String suffixB = relationByB.resourceB.getResourceSuffix();
+              boolean suffixMatch = suffixA != null && suffixA.equals(suffixB);
+              if(isBDAO){
+                if(isADAO){
+                  relationMatch = relationByB;
+                  break;
+                }
+              }else if(isABase){
+                relationMatch = relationByB;
+                if(isBBase) {
+                  break;
+                }
+              }else if(suffixMatch){
+                relationMatch = relationByB;
+                break;
+              }
+            }
+            final CBIRelationInfoNormal relationMatchF = relationMatch;
             byB.forEach(relationByB -> {
-              if(relationByB.resourceA.equals(relation.resourceA)){
+              boolean isMatch = relationByB.equals(relationMatchF);
+              if (isMatch) {
                 relationByB.meta.hasBackward = true;
-              }else{
+              } else {
                 relationByB.backwardOverride = true;
                 relationByB.meta.hasBackward = false;
               }
@@ -124,43 +168,14 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
       }
     }
     for(CBIRelationInfo relation: relations) {
+      if(relation.isBase())
+        relation.mergeAndUpdateMetas();
+    }
+    for(CBIRelationInfo relation: relations) {
       if(relation instanceof CBIRelationInfoNormal) {
-        relation.addMissingColumns();
+        relation.syncColumnsToModel();
       }
     }
-    /*for(CBIResourceInfoShared resource: resources) {
-      CBIResourceInfoShared.HighestRelations highestRelations = resource.getHighestRelations();
-      for(CBIRelationInfo relation: resource.relations) {
-
-        if(relation instanceof CBIRelationInfoNormal) {
-          relation.meta.hasForward = false;
-          relation.meta.hasBackward = false;
-          if(relation instanceof CBIRelationInfoOneToOne) {
-            CBIRelationInfoOneToOne relationInfoA = ((CBIRelationInfoOneToOne) relation);
-            if(relationInfoA.typeRelation != null){
-              System.out.println(relation.meta);
-              System.out.println(relationInfoA.relationName);
-            }
-            //  throw new RuntimeException(relationInfoA.typeRelation.toString());
-          }
-          if(highestRelations.A.contains(relation)){
-            if(((CBIRelationInfoNormal) relation).resourceB.getBaseResource().equals(resource.getBaseResource()))
-              relation.meta.hasForward = true;
-            //if(((CBIRelationInfoNormal) relation).resourceB.equals(resource))
-            //  relation.meta.hasBackward = true;
-          }
-          if(highestRelations.B.contains(relation)){
-            if(((CBIRelationInfoNormal) relation).resourceA.getBaseResource().equals(resource.getBaseResource()))
-              relation.meta.hasBackward = true;
-          }
-        }
-
-        relation.addMissingColumns();
-
-      }
-      //resource.combineModelTypes();
-      //resource.updateColumns();
-    }*/
 
     ArrayList<ModelMap> generatedAll = new ArrayList<>();
 
@@ -175,15 +190,66 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
           generatedAll.add(modelMap);
         }
       }*/
-      CBIResourceInfoShared.updateModelInterfaces(resource.model);
-
+    }
+    ArrayList<CBIResourceInfoShared.TypeUnionResult> results = new ArrayList<>();
+    for(Map.Entry<String, ModelsMap> entry: allModels.entrySet()) {
+      ModelsMap maps = entry.getValue();
+      for(ModelMap map: maps.getModels()){
+        CodegenModel model = map.getModel();
+        if(model.interfaceModels != null && !model.interfaceModels.isEmpty()){
+          ArrayList<CBIResourceInfoShared.TypeUnionResult> resultsParent = new ArrayList<>();
+          for (Iterator<CodegenModel> it = model.interfaceModels.iterator(); it.hasNext(); ) {
+            CodegenModel parentModel = it.next();
+            CBIResourceInfoShared.TypeUnionResult result = CBIResourceInfoShared.typeUnion(model, parentModel);
+            resultsParent.add(result);
+            System.out.print("Base Model: " + model.name + "Parent Model: " + parentModel.name + ": ");
+            if(!result.matchedAll) {
+              it.remove();
+              if(!result.matchedNone){
+                result.shouldAdd = true;
+                System.out.println("MATCHED SOME, ADDING SUB INTERFACE");
+              }else {
+                System.err.println("WARNING DELETING INTERFACE");
+              }
+            }else{
+              System.out.println("MATCHED ALL, KEEPING INTERFACE");
+            }
+          }
+          results.addAll(resultsParent);
+          resultsParent.forEach(a -> {
+            if(a.shouldAdd){
+              if(a.modelParent.interfaceModels == null)
+                a.modelParent.interfaceModels = new ArrayList<>();
+              a.modelParent.interfaceModels.add(a.modelBoth);
+              a.modelBase.interfaceModels.add(a.modelBoth);
+            }
+          });
+        }
+      }
+    }
+    for(CBIResourceInfoShared.TypeUnionResult result: results) {
+      if(!result.matchedAll && !result.matchedNone) {
+        ModelsMap modelsMapAdded = new ModelsMap();
+        modelsMapAdded.setImports(List.of());
+        ModelMap modelMapAdded = new ModelMap();
+        modelMapAdded.put(result.modelBoth.name, result.modelBoth);
+        modelMapAdded.setModel(result.modelBoth);
+        modelsMapAdded.setModels(List.of(modelMapAdded));
+        modelsMapAdded.put(result.modelBoth.classname, modelMapAdded);
+        allModels.put(result.modelBoth.classFilename, modelsMapAdded);
+      }
     }
 
-    ModelsMap map = new ModelsMap();
-    map.setModels(generatedAll);
-
-    //allModels.put("GENERATED", map);
-
+    for(Map.Entry<String, ModelsMap> entry: allModels.entrySet()) {
+      ModelsMap maps = entry.getValue();
+      for (ModelMap map : maps.getModels()) {
+        CodegenModel model = map.getModel();
+        CBIResourceInfoShared.updateModelInterfaces(model);
+        if(model.name.equals("LineItemDTO")) {
+          System.out.println("WHATG");
+        }
+      }
+    }
 
 
 

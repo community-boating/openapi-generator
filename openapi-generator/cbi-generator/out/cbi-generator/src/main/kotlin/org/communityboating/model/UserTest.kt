@@ -1,10 +1,12 @@
 Model name: UserTest
+                Resource Suffix: 
                 Has Resource: UserTest
-                    Relation Name: 
+                    Base Resource: UserTest
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

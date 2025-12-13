@@ -1,10 +1,14 @@
 Model name: TestTypeChildMultiple
+                Resource Suffix: 
+                    Relation: TestTypeChildMultiple_TO_TestTypeRoot, Resource A: TestTypeChildMultiple, ResourceB: TestTypeRoot, hasForward: , hasBackward: 
+                    Relation: TestTypeRoot_TO_TestTypeChildMultiple, Resource A: TestTypeChildMultiple, ResourceB: TestTypeRoot, hasForward: , hasBackward: 
                 Has Resource: TestTypeChildMultiple
-                    Relation Name: 
+                    Base Resource: TestTypeChildMultiple
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -65,6 +69,28 @@ Model name: TestTypeChildMultiple
                         Resource B: TestTypeRoot
                         Forward ref: 
                             Column Name: parentId
+                            Column Type: TestTypeRoot
+                            Is Array: false
+                        Back ref: 
+                            Column Name: testTypeChildMultiple
+                            Column Type: TestTypeChildMultiple
+                            Is Array: false
+        Variable Name: testTypeChildMultiple
+            Is Required: true
+            Is Read Only: false
+            Is Write Only: false
+            Is Inherited: false
+            Is Overridden: 
+            Default Value: 
+                    COL INFO
+                    Relation:
+                        Type: ONE_TO_MANY
+                        Base Name: TestTypeRoot_TO_TestTypeChildMultiple
+                        Name: TestTypeRoot_TO_TestTypeChildMultiple
+                        Resource A: TestTypeChildMultiple
+                        Resource B: TestTypeRoot
+                        Forward ref: 
+                            Column Name: testTypeChildMultiple
                             Column Type: TestTypeRoot
                             Is Array: false
                         Back ref: 

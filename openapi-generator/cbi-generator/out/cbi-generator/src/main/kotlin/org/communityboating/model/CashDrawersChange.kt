@@ -1,10 +1,13 @@
 Model name: CashDrawersChange
+                Resource Suffix: 
+                    Relation: CashTransaction_TO_CashDrawersChange, Resource A: CashTransaction, ResourceB: CashDrawersChange, hasForward: , hasBackward: 
                 Has Resource: CashDrawersChange
-                    Relation Name: 
+                    Base Resource: CashDrawersChange
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

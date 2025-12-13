@@ -1,10 +1,14 @@
 Model name: PaymentSource
+                Resource Suffix: 
+                    Relation: PaymentSource_TO_Person, Resource A: PaymentSource, ResourceB: Person, hasForward: , hasBackward: 
+                    Relation: PaymentSource_TO_Balance, Resource A: PaymentSource, ResourceB: Balance, hasForward: , hasBackward: 
                 Has Resource: PaymentSource
-                    Relation Name: 
+                    Base Resource: PaymentSource
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

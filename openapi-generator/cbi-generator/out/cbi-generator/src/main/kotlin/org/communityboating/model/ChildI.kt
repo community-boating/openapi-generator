@@ -1,14 +1,14 @@
-            Parent
+            ParentInterface
 Model name: ChildI
+                Resource Suffix: 
                 Has Resource: ChildI
-                    Base Resource: Parent
-                    Relation Name: 
                     Parent Resource: Parent
                     Child Resource: Child
                 MODEL META
-                    hasDTO: true
-                    hasDAO: true
-                    hasTable: true
+                    hasDTO: false
+                    hasDAO: false
+                    hasTable: false
+                    hasInterface: true
                     isResource: true
                     isBase: false
 

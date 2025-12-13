@@ -1,10 +1,16 @@
 Model name: BalanceTransaction
+                Resource Suffix: 
+                    Relation: BalanceTransaction_TO_Balance, Resource A: BalanceTransaction, ResourceB: Balance, hasForward: , hasBackward: 
+                    Relation: BalanceTransaction_TO_OrderPayment, Resource A: BalanceTransaction, ResourceB: OrderPayment, hasForward: , hasBackward: 
+                    Relation: BalanceTransaction_TO_LineItem, Resource A: BalanceTransaction, ResourceB: LineItem, hasForward: true, hasBackward: 
+                    Relation: BalanceTransaction_TO_LineItem, Resource A: BalanceTransaction, ResourceB: LineItemDTO, hasForward: false, hasBackward: 
                 Has Resource: BalanceTransaction
-                    Relation Name: 
+                    Base Resource: BalanceTransaction
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -102,7 +108,7 @@ Model name: BalanceTransaction
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: BalanceTransaction_TO_LineItemDTO
+                            Sub Relation: BalanceTransaction_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: BalanceTransaction_TO_LineItem
                         Name: BalanceTransaction_TO_LineItem

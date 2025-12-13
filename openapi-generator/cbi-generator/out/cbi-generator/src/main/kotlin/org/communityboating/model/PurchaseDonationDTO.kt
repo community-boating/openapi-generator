@@ -1,11 +1,15 @@
             Purchasable
 Model name: PurchaseDonationDTO
+                Resource Suffix: 
+                    Relation: PurchaseDonationDTO_TO_LineItem, Resource A: PurchaseDonationDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseDonationDTO_TO_LineItem, Resource A: PurchaseDonationDTO, ResourceB: LineItem, hasForward: true, hasBackward: true
                 Has Resource: PurchaseDonationDTO
-                    Relation Name: 
+                    Base Resource: PurchaseDonationDTO
                 MODEL META
                     hasDTO: true
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -147,7 +151,7 @@ Model name: PurchaseDonationDTO
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: PurchaseDonationDTO_TO_LineItemDTO
+                            Sub Relation: PurchaseDonationDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseDonationDTO_TO_LineItem
                         Name: PurchaseDonationDTO_TO_LineItem
@@ -158,6 +162,6 @@ Model name: PurchaseDonationDTO
                             Column Type: LineItem
                             Is Array: false
                         Back ref: 
-                            Column Name: purchaseDonationDTO
+                            Column Name: donation
                             Column Type: PurchaseDonationDTO
                             Is Array: false

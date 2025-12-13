@@ -1,10 +1,14 @@
 Model name: Subscription
+                Resource Suffix: 
+                    Relation: PersonSubscription_TO_Subscription, Resource A: PersonSubscription, ResourceB: Subscription, hasForward: , hasBackward: 
+                    Relation: SubscriptionItem_TO_Subscription, Resource A: SubscriptionItem, ResourceB: Subscription, hasForward: , hasBackward: 
                 Has Resource: Subscription
-                    Relation Name: 
+                    Base Resource: Subscription
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

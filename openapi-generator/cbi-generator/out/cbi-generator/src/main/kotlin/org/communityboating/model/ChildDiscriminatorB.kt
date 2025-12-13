@@ -1,11 +1,13 @@
-            ParentDiscriminator
+            ParentDiscriminatorInterface
 Model name: ChildDiscriminatorB
+                Resource Suffix: 
                 Has Resource: ChildDiscriminatorB
-                    Relation Name: 
+                    Base Resource: ChildDiscriminatorB
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

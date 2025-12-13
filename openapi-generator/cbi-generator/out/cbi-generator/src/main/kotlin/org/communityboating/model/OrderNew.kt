@@ -1,11 +1,18 @@
 Model name: OrderNew
+                Resource Suffix: 
+                    Relation: orderLineItems, Resource A: LineItem, ResourceB: OrderNew, hasForward: true, hasBackward: true
+                    Relation: OrderNew_TO_Person, Resource A: OrderNew, ResourceB: Person, hasForward: , hasBackward: true
+                    Relation: OrderPayment_TO_OrderNew, Resource A: OrderPayment, ResourceB: OrderNew, hasForward: true, hasBackward: 
+                    Relation: OrderTax_TO_OrderNew, Resource A: OrderTax, ResourceB: OrderNew, hasForward: true, hasBackward: 
+                    Relation: orderLineItems, Resource A: LineItemDTO, ResourceB: OrderNew, hasForward: false, hasBackward: false
                 Has Resource: OrderNew
-                    Relation Name: 
-                    Child Resource: OrderDTO
+                    Base Resource: OrderNew
+                    Child Resource: Order
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -107,7 +114,7 @@ Model name: OrderNew
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: OrderDTO_TO_Person
+                            Sub Relation: OrderNew_TO_Person
                         Type: ONE_TO_ONE
                         Base Name: OrderNew_TO_Person
                         Name: OrderNew_TO_Person
@@ -138,9 +145,9 @@ Model name: OrderNew
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: LineItemDTO_TO_OrderNew
-                            Sub Relation: LineItemDTO_TO_OrderDTO
-                            Sub Relation: LineItem_TO_OrderDTO
+                            Sub Relation: orderLineItems
+                            Sub Relation: orderLineItems
+                            Sub Relation: orderLineItems
                         Type: ONE_TO_MANY
                         Base Name: orderLineItems
                         Name: orderLineItems
@@ -163,7 +170,7 @@ Model name: OrderNew
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: OrderPayment_TO_OrderDTO
+                            Sub Relation: OrderPayment_TO_OrderNew
                         Type: ONE_TO_ONE
                         Base Name: OrderPayment_TO_OrderNew
                         Name: OrderPayment_TO_OrderNew
@@ -186,7 +193,7 @@ Model name: OrderNew
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: OrderTax_TO_OrderDTO
+                            Sub Relation: OrderTax_TO_OrderNew
                         Type: ONE_TO_ONE
                         Base Name: OrderTax_TO_OrderNew
                         Name: OrderTax_TO_OrderNew

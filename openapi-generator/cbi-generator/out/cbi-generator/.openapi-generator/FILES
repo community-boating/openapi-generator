@@ -53,6 +53,7 @@ src/main/kotlin/org/communityboating/model/ItemType.kt
 src/main/kotlin/org/communityboating/model/LineItem.kt
 src/main/kotlin/org/communityboating/model/LineItemAvailableDiscount.kt
 src/main/kotlin/org/communityboating/model/LineItemDTO.kt
+src/main/kotlin/org/communityboating/model/LineItemDTOAndLineItem.kt
 src/main/kotlin/org/communityboating/model/LineItemDiscountInstance.kt
 src/main/kotlin/org/communityboating/model/LineItemRefund.kt
 src/main/kotlin/org/communityboating/model/LineItemRefundTax.kt

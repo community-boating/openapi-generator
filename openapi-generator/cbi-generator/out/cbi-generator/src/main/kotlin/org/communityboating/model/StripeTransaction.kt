@@ -1,10 +1,13 @@
 Model name: StripeTransaction
+                Resource Suffix: 
+                    Relation: StripeTransaction_TO_OrderPayment, Resource A: StripeTransaction, ResourceB: OrderPayment, hasForward: , hasBackward: 
                 Has Resource: StripeTransaction
-                    Relation Name: 
+                    Base Resource: StripeTransaction
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

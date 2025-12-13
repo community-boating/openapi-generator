@@ -1,11 +1,14 @@
 Model name: TestTypeChild
+                Resource Suffix: 
+                    Relation: TestTypeChild_TO_TestTypeRoot, Resource A: TestTypeRoot, ResourceB: TestTypeChild, hasForward: true, hasBackward: true
                 Has Resource: TestTypeChild
-                    Relation Name: 
-                    Child Resource: TestTypeChildSub
+                    Base Resource: TestTypeChild
+                    Child Resource: TestTypeChild
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -43,14 +46,14 @@ Model name: TestTypeChild
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: TestTypeRoot_TO_TestTypeChildSub
+                            Sub Relation: TestTypeChild_TO_TestTypeRoot
                         Type: ONE_TO_ONE
-                        Base Name: TestTypeRoot_TO_TestTypeChild
-                        Name: TestTypeRoot_TO_TestTypeChild
+                        Base Name: TestTypeChild_TO_TestTypeRoot
+                        Name: TestTypeChild_TO_TestTypeRoot
                         Resource A: TestTypeRoot
                         Resource B: TestTypeChild
                         Forward ref: 
-                            Column Name: child
+                            Column Name: testTypeRoot
                             Column Type: TestTypeChild
                             Is Array: false
                         Back ref: 

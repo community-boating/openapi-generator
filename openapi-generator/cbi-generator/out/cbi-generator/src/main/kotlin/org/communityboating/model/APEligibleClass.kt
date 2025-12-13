@@ -1,8 +1,9 @@
 Model name: APEligibleClass
                 MODEL META
-                    hasDTO: true
-                    hasDAO: true
+                    hasDTO: false
+                    hasDAO: false
                     hasTable: true
+                    hasInterface: true
                     isResource: false
                     isBase: false
 

@@ -1,11 +1,15 @@
             Purchasable
 Model name: PurchaseClassSignupDTO
+                Resource Suffix: 
+                    Relation: PurchaseClassSignupDTO_TO_LineItem, Resource A: PurchaseClassSignupDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseClassSignupDTO_TO_LineItem, Resource A: PurchaseClassSignupDTO, ResourceB: LineItem, hasForward: true, hasBackward: true
                 Has Resource: PurchaseClassSignupDTO
-                    Relation Name: 
+                    Base Resource: PurchaseClassSignupDTO
                 MODEL META
                     hasDTO: true
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -99,7 +103,7 @@ Model name: PurchaseClassSignupDTO
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: PurchaseClassSignupDTO_TO_LineItemDTO
+                            Sub Relation: PurchaseClassSignupDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseClassSignupDTO_TO_LineItem
                         Name: PurchaseClassSignupDTO_TO_LineItem
@@ -110,6 +114,6 @@ Model name: PurchaseClassSignupDTO
                             Column Type: LineItem
                             Is Array: false
                         Back ref: 
-                            Column Name: purchaseClassSignupDTO
+                            Column Name: classSignup
                             Column Type: PurchaseClassSignupDTO
                             Is Array: false

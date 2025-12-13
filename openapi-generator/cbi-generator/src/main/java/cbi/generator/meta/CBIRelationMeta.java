@@ -1,6 +1,7 @@
 package cbi.generator.meta;
 
 import cbi.generator.ModelAndProperty;
+import cbi.generator.Util;
 import cbi.generator.enums.CBIRelationType;
 import cbi.generator.resource.CBIResourceInfoShared;
 import org.openapitools.codegen.CodegenModel;
@@ -20,6 +21,8 @@ public class CBIRelationMeta extends MetaBase {
     public String backwardRef;
     public CBIRelationType relationType;
     public Boolean isBackref;
+    public Boolean isForwardOptional;
+    public Boolean isBackOptional;
     public Boolean hasForward;
     public Boolean hasBackward;
 
@@ -33,6 +36,8 @@ public class CBIRelationMeta extends MetaBase {
         this.backwardRef = this.getString("backRef", null);
         this.relationType = this.getEnum("relationType", null, CBIRelationType.class);
         this.isBackref = this.getBoolean("isBackref", null);
+        this.isForwardOptional = this.getBoolean("isForwardOptional", null);
+        this.isBackOptional = this.getBoolean("isBackOptional", null);
         this.hasForward = this.getBoolean("hasForward", true);
         this.hasBackward = this.getBoolean("hasBackward", true);
     }
@@ -47,6 +52,8 @@ public class CBIRelationMeta extends MetaBase {
         this.backwardRef = existing.backwardRef;
         this.relationType = existing.relationType;
         this.isBackref = existing.isBackref;
+        this.isForwardOptional = existing.isForwardOptional;
+        this.isBackOptional = existing.isBackOptional;
         this.hasForward = existing.hasForward;
         this.hasBackward = existing.hasBackward;
     }
@@ -57,21 +64,23 @@ public class CBIRelationMeta extends MetaBase {
 
     public static CBIRelationMeta fromResources(CBIRelationMeta existingMeta, CBIResourceInfoShared resourceA, CBIResourceInfoShared resourceB, boolean swapBack, boolean useResourceName) {
         CBIRelationMeta metaCloned = new CBIRelationMeta(existingMeta);
-        metaCloned.modelA = resourceA.baseName;
-        metaCloned.modelB = resourceB.baseName;
-        metaCloned.makeMetaNameFromModels(swapBack);
-        if(!useResourceName) {
-            metaCloned.makeForwardRef();
-            metaCloned.makeBackwardRef();
-        }
+        metaCloned.modelA = resourceA.name;
+        metaCloned.modelB = resourceB.name;
+        //metaCloned.makeMetaNameFromModels(swapBack);
+        //if(!useResourceName) {
+        //if(metaCloned.forwardRef == null)
+        //metaCloned.makeForwardRef(resourceB.getBaseResource().name);
+        //if(metaCloned.backwardRef == null)
+        //metaCloned.makeBackwardRef(resourceA.getBaseResource().name);
+        //}
         return metaCloned;
     }
 
-    public void makeMetaNameFromModels(boolean swapBack) {
+    public String makeMetaNameFromModels(boolean swapBack) {
         if(swapBack && this.isBackref != null && this.isBackref) {
-            this.relationName = this.modelB + "_TO_" + this.modelA;
+            return this.modelB + "_TO_" + this.modelA;
         }else{
-            this.relationName = this.modelA + "_TO_" + this.modelB;
+            return this.modelA + "_TO_" + this.modelB;
         }
     }
 
@@ -87,18 +96,18 @@ public class CBIRelationMeta extends MetaBase {
         return string;
     }
 
-    public void makeForwardRef() {
+    public String makeForwardRef(String modelB) {
         if(this.modelA.equals(this.modelB))
-            this.forwardRef = this.relationName + "ForwardRef";
+            return this.relationName + "ForwardRef";
         else
-            this.forwardRef = toCamelCase(this.modelB);
+            return toCamelCase(modelB != null ? modelB : this.modelB);
     }
 
-    public void makeBackwardRef() {
+    public String makeBackwardRef(String modelA) {
         if(this.modelA.equals(this.modelB))
-            this.backwardRef = this.relationName + "BackwardRef";
+            return this.relationName + "BackwardRef";
         else
-            this.backwardRef = toCamelCase(this.modelA) + (this.relationType == CBIRelationType.ONE_TO_MANY ? "s" : "");
+            return toCamelCase(modelA != null ? modelA : this.modelA) + (this.relationType == CBIRelationType.ONE_TO_MANY ? "s" : "");
     }
 
     public static CBIRelationMeta fromModelAndProperty(ModelAndProperty modelAndProperty) {
@@ -110,7 +119,7 @@ public class CBIRelationMeta extends MetaBase {
             meta = (CBIRelationMeta) relationMeta;
         }else if(relationMeta instanceof Map) {
             meta = new CBIRelationMeta((Map<String, Object>)relationMeta);
-        }else if(property.isModel || (property.isArray && property.items.isModel)) {
+        }else if(Util.isPropertyModel(property)) {
             meta = new CBIRelationMeta();
             meta.isBackref = false;
         }else {
@@ -131,9 +140,9 @@ public class CBIRelationMeta extends MetaBase {
         if(meta.modelA == null)
             meta.modelA = model.name;
 
-        if(meta.relationName == null) {
-            meta.makeMetaNameFromModels(true);
-        }
+        //if(meta.relationName == null) {
+        //    meta.makeMetaNameFromModels(true);
+        //}
 
         if(meta.forwardRef == null && meta.isBackref != null && !meta.isBackref){
             meta.forwardRef = property.name;
@@ -143,10 +152,10 @@ public class CBIRelationMeta extends MetaBase {
             meta.backwardRef = property.name;
         }
 
-        if(meta.forwardRef == null)
-            meta.makeForwardRef();
-        if(meta.backwardRef == null)
-            meta.makeBackwardRef();
+        //if(meta.forwardRef == null)
+        //    meta.makeForwardRef(null);
+        //if(meta.backwardRef == null)
+        //    meta.makeBackwardRef(null);
 
         property.vendorExtensions.put("x-relation-meta", relationMeta);
 

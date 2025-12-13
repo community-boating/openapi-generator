@@ -1,11 +1,15 @@
             Purchasable
 Model name: PurchaseGuestPrivilegesDTO
+                Resource Suffix: 
+                    Relation: PurchaseGuestPrivilegesDTO_TO_LineItem, Resource A: PurchaseGuestPrivilegesDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseGuestPrivilegesDTO_TO_LineItem, Resource A: PurchaseGuestPrivilegesDTO, ResourceB: LineItem, hasForward: true, hasBackward: true
                 Has Resource: PurchaseGuestPrivilegesDTO
-                    Relation Name: 
+                    Base Resource: PurchaseGuestPrivilegesDTO
                 MODEL META
                     hasDTO: true
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -75,7 +79,7 @@ Model name: PurchaseGuestPrivilegesDTO
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: PurchaseGuestPrivilegesDTO_TO_LineItemDTO
+                            Sub Relation: PurchaseGuestPrivilegesDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseGuestPrivilegesDTO_TO_LineItem
                         Name: PurchaseGuestPrivilegesDTO_TO_LineItem
@@ -86,6 +90,6 @@ Model name: PurchaseGuestPrivilegesDTO
                             Column Type: LineItem
                             Is Array: false
                         Back ref: 
-                            Column Name: purchaseGuestPrivilegesDTO
+                            Column Name: guestPrivs
                             Column Type: PurchaseGuestPrivilegesDTO
                             Is Array: false

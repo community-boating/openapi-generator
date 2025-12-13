@@ -1,10 +1,12 @@
 Model name: Donation
+                Resource Suffix: 
                 Has Resource: Donation
-                    Relation Name: 
+                    Base Resource: Donation
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

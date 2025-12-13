@@ -1,10 +1,16 @@
 Model name: PersonSubscription
+                Resource Suffix: 
+                    Relation: LineItem_TO_PersonSubscription, Resource A: LineItem, ResourceB: PersonSubscription, hasForward: , hasBackward: true
+                    Relation: PersonSubscription_TO_Person, Resource A: PersonSubscription, ResourceB: Person, hasForward: , hasBackward: 
+                    Relation: PersonSubscription_TO_Subscription, Resource A: PersonSubscription, ResourceB: Subscription, hasForward: , hasBackward: 
+                    Relation: LineItem_TO_PersonSubscription, Resource A: LineItemDTO, ResourceB: PersonSubscription, hasForward: , hasBackward: false
                 Has Resource: PersonSubscription
-                    Relation Name: 
+                    Base Resource: PersonSubscription
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -94,7 +100,7 @@ Model name: PersonSubscription
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: LineItemDTO_TO_PersonSubscription
+                            Sub Relation: LineItem_TO_PersonSubscription
                         Type: ONE_TO_ONE
                         Base Name: LineItem_TO_PersonSubscription
                         Name: LineItem_TO_PersonSubscription

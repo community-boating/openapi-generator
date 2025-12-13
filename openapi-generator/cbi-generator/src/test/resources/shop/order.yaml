@@ -474,6 +474,8 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/LineItem'
+      x-vars-excluded:
+        - deleted
       properties:
         classSignup:
           nullable: true
@@ -715,8 +717,6 @@ components:
           readOnly: true
           type: integer
           format: int64
-
-
 
     ItemDiscount:
       required: [ id, itemId, discountId ]

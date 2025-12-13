@@ -1,10 +1,18 @@
 Model name: Person
+                Resource Suffix: 
+                    Relation: Address_TO_Person, Resource A: Address, ResourceB: Person, hasForward: , hasBackward: 
+                    Relation: Balance_TO_Person, Resource A: Balance, ResourceB: Person, hasForward: , hasBackward: 
+                    Relation: OrderNew_TO_Person, Resource A: OrderNew, ResourceB: Person, hasForward: , hasBackward: true
+                    Relation: PaymentSource_TO_Person, Resource A: PaymentSource, ResourceB: Person, hasForward: , hasBackward: 
+                    Relation: PersonSubscription_TO_Person, Resource A: PersonSubscription, ResourceB: Person, hasForward: , hasBackward: 
+                    Relation: OrderNew_TO_Person, Resource A: OrderDTO, ResourceB: Person, hasForward: , hasBackward: false
                 Has Resource: Person
-                    Relation Name: 
+                    Base Resource: Person
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -78,7 +86,7 @@ Model name: Person
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: OrderDTO_TO_Person
+                            Sub Relation: OrderNew_TO_Person
                         Type: ONE_TO_ONE
                         Base Name: OrderNew_TO_Person
                         Name: OrderNew_TO_Person

@@ -1,10 +1,13 @@
 Model name: Address
+                Resource Suffix: 
+                    Relation: Address_TO_Person, Resource A: Address, ResourceB: Person, hasForward: , hasBackward: 
                 Has Resource: Address
-                    Relation Name: 
+                    Base Resource: Address
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

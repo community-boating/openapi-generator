@@ -1,10 +1,14 @@
 Model name: ItemTax
+                Resource Suffix: 
+                    Relation: ItemTax_TO_Item, Resource A: ItemTax, ResourceB: Item, hasForward: , hasBackward: 
+                    Relation: ItemTax_TO_Tax, Resource A: ItemTax, ResourceB: Tax, hasForward: , hasBackward: 
                 Has Resource: ItemTax
-                    Relation Name: 
+                    Base Resource: ItemTax
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

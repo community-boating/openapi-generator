@@ -1,11 +1,17 @@
 Model name: TestThroughTableChild
+                Resource Suffix: 
+                    Relation: TestThroughTableChild_TO_TestInheritanceParent, Resource A: TestThroughTableChild, ResourceB: TestInheritanceParent, hasForward: true, hasBackward: true
+                    Relation: TestTypeRoot_TO_TestThroughTableChild, Resource A: TestThroughTableChild, ResourceB: TestTypeRoot, hasForward: , hasBackward: true
+                    Relation: TestThroughTableChild_TO_TestInheritanceParent, Resource A: TestThroughTableChild, ResourceB: TestInheritanceChild, hasForward: false, hasBackward: true
+                    Relation: TestThroughTableChild_TO_TestInheritanceParent, Resource A: TestThroughTableChild, ResourceB: TestInheritanceChildI, hasForward: false, hasBackward: true
                 Has Resource: TestThroughTableChild
-                    Relation Name: 
-                    Child Resource: TestThroughTableChildSub
+                    Base Resource: TestThroughTableChild
+                    Child Resource: TestThroughTableChild
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -51,11 +57,11 @@ Model name: TestThroughTableChild
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceChild
-                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceParent
-                            Sub Relation: TestThroughTableChildSub_TO_TestInheritanceChildI
-                            Sub Relation: TestThroughTableChild_TO_TestInheritanceChildI
-                            Sub Relation: TestThroughTableChild_TO_TestInheritanceChild
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceParent
+                            Sub Relation: TestThroughTableChild_TO_TestInheritanceParent
                         Type: ONE_TO_ONE
                         Base Name: TestThroughTableChild_TO_TestInheritanceParent
                         Name: TestThroughTableChild_TO_TestInheritanceParent
@@ -78,10 +84,10 @@ Model name: TestThroughTableChild
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: TestThroughTableChildSub_TO_TestTypeRoot
+                            Sub Relation: TestTypeRoot_TO_TestThroughTableChild
                         Type: ONE_TO_MANY
-                        Base Name: TestThroughTableChild_TO_TestTypeRoot
-                        Name: TestThroughTableChild_TO_TestTypeRoot
+                        Base Name: TestTypeRoot_TO_TestThroughTableChild
+                        Name: TestTypeRoot_TO_TestThroughTableChild
                         Resource A: TestThroughTableChild
                         Resource B: TestTypeRoot
                         Forward ref: 

@@ -6,6 +6,10 @@
 Model name: {{name}}
         {{#vendorExtensions}}
             {{#x-cbi-resource-info}}
+                Resource Suffix: {{findResourceSuffix}}
+                {{#relations}}
+                    Relation: {{getRelationBaseName}}, Resource A: {{resourceA.model.classname}}, ResourceB: {{resourceB.model.classname}}, hasForward: {{meta.hasForward}}, hasBackward: {{meta.hasBackward}}
+                {{/relations}}
                 Has Resource: {{baseName}}
                 {{#base}}
                     Base Resource: {{baseName}}

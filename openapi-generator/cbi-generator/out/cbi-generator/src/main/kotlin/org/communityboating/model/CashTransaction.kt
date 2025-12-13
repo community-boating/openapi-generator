@@ -1,10 +1,15 @@
 Model name: CashTransaction
+                Resource Suffix: 
+                    Relation: CashTransaction_TO_CashDrawer, Resource A: CashTransaction, ResourceB: CashDrawer, hasForward: true, hasBackward: true
+                    Relation: CashTransaction_TO_OrderPayment, Resource A: CashTransaction, ResourceB: OrderPayment, hasForward: , hasBackward: 
+                    Relation: CashTransaction_TO_CashDrawersChange, Resource A: CashTransaction, ResourceB: CashDrawersChange, hasForward: , hasBackward: 
                 Has Resource: CashTransaction
-                    Relation Name: 
+                    Base Resource: CashTransaction
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -25,7 +30,7 @@ Model name: CashTransaction
             Is Overridden: false
             Default Value: 
                     COL INFO
-        Variable Name: cashDrawerId
+        Variable Name: cashDrawer
             Is Required: true
             Is Read Only: false
             Is Write Only: false
@@ -40,7 +45,7 @@ Model name: CashTransaction
                         Resource A: CashTransaction
                         Resource B: CashDrawer
                         Forward ref: 
-                            Column Name: cashDrawerId
+                            Column Name: cashDrawer
                             Column Type: CashDrawer
                             Is Array: false
                         Back ref: 

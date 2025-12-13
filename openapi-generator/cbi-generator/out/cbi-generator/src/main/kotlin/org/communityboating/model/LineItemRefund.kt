@@ -1,10 +1,16 @@
 Model name: LineItemRefund
+                Resource Suffix: 
+                    Relation: LineItemRefund_TO_LineItem, Resource A: LineItemRefund, ResourceB: LineItem, hasForward: true, hasBackward: 
+                    Relation: LineItemRefund_TO_ItemInstanceStockChange, Resource A: LineItemRefund, ResourceB: ItemInstanceStockChange, hasForward: , hasBackward: 
+                    Relation: LineItemRefundTax_TO_LineItemRefund, Resource A: LineItemRefundTax, ResourceB: LineItemRefund, hasForward: , hasBackward: 
+                    Relation: LineItemRefund_TO_LineItem, Resource A: LineItemRefund, ResourceB: LineItemDTO, hasForward: false, hasBackward: 
                 Has Resource: LineItemRefund
-                    Relation Name: 
+                    Base Resource: LineItemRefund
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -34,7 +40,7 @@ Model name: LineItemRefund
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: LineItemRefund_TO_LineItemDTO
+                            Sub Relation: LineItemRefund_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: LineItemRefund_TO_LineItem
                         Name: LineItemRefund_TO_LineItem

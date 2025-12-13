@@ -1,10 +1,13 @@
 Model name: LineItemRefundTax
+                Resource Suffix: 
+                    Relation: LineItemRefundTax_TO_LineItemRefund, Resource A: LineItemRefundTax, ResourceB: LineItemRefund, hasForward: , hasBackward: 
                 Has Resource: LineItemRefundTax
-                    Relation Name: 
+                    Base Resource: LineItemRefundTax
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

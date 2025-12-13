@@ -1,8 +1,9 @@
 Model name: CreateOrderPaymentDTO
                 MODEL META
                     hasDTO: true
-                    hasDAO: true
+                    hasDAO: false
                     hasTable: true
+                    hasInterface: true
                     isResource: false
                     isBase: false
 

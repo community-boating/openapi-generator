@@ -1,10 +1,13 @@
 Model name: CashDrawer
+                Resource Suffix: 
+                    Relation: CashTransaction_TO_CashDrawer, Resource A: CashTransaction, ResourceB: CashDrawer, hasForward: true, hasBackward: true
                 Has Resource: CashDrawer
-                    Relation Name: 
+                    Base Resource: CashDrawer
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -40,7 +43,7 @@ Model name: CashDrawer
                         Resource A: CashTransaction
                         Resource B: CashDrawer
                         Forward ref: 
-                            Column Name: cashDrawerId
+                            Column Name: cashDrawer
                             Column Type: CashDrawer
                             Is Array: false
                         Back ref: 

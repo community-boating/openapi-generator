@@ -1,20 +1,40 @@
-            LineItem
+            LineItemDTOAndLineItem
 Model name: LineItemDTO
-                Has Resource: LineItemDTO
-                    Base Resource: LineItem
-                    Relation Name: 
-                    Parent Resource: LineItem
+                Resource Suffix: 
+                    Relation: PurchaseClassSignupDTO_TO_LineItem, Resource A: PurchaseClassSignupDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseMembershipDTO_TO_LineItem, Resource A: PurchaseMembershipDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseDonationDTO_TO_LineItem, Resource A: PurchaseDonationDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseCardDTO_TO_LineItem, Resource A: PurchaseCardDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseGiftCardDTO_TO_LineItem, Resource A: PurchaseGiftCardDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseGuestPrivilegesDTO_TO_LineItem, Resource A: PurchaseGuestPrivilegesDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: PurchaseDamageWaiverDTO_TO_LineItem, Resource A: PurchaseDamageWaiverDTO, ResourceB: LineItemDTO, hasForward: false, hasBackward: true
+                    Relation: LineItem_TO_PurchaseStockedItemDTO, Resource A: LineItemDTO, ResourceB: PurchaseStockedItemDTO, hasForward: , hasBackward: false
+                    Relation: LineItem_TO_LineItem, Resource A: LineItemDTO, ResourceB: LineItem, hasForward: false, hasBackward: false
+                    Relation: orderLineItems, Resource A: LineItemDTO, ResourceB: OrderNew, hasForward: false, hasBackward: false
+                    Relation: LineItem_TO_ItemInstance, Resource A: LineItemDTO, ResourceB: ItemInstance, hasForward: , hasBackward: false
+                    Relation: LineItem_TO_PersonSubscription, Resource A: LineItemDTO, ResourceB: PersonSubscription, hasForward: , hasBackward: false
+                    Relation: BalanceTransaction_TO_LineItem, Resource A: BalanceTransaction, ResourceB: LineItemDTO, hasForward: false, hasBackward: 
+                    Relation: ItemInstanceStockChange_TO_LineItem, Resource A: ItemInstanceStockChange, ResourceB: LineItemDTO, hasForward: false, hasBackward: 
+                    Relation: LineItem_TO_LineItem, Resource A: LineItemDTO, ResourceB: LineItemDTO, hasForward: true, hasBackward: true
+                    Relation: LineItem_TO_LineItem, Resource A: LineItemDTO, ResourceB: LineItemDTO, hasForward: true, hasBackward: true
+                    Relation: LineItem_TO_LineItem, Resource A: LineItem, ResourceB: LineItemDTO, hasForward: false, hasBackward: false
+                    Relation: orderLineItems, Resource A: LineItemDTO, ResourceB: OrderDTO, hasForward: true, hasBackward: true
+                    Relation: LineItemDiscountInstance_TO_LineItem, Resource A: LineItemDiscountInstance, ResourceB: LineItemDTO, hasForward: false, hasBackward: 
+                    Relation: LineItemRefund_TO_LineItem, Resource A: LineItemRefund, ResourceB: LineItemDTO, hasForward: false, hasBackward: 
+                Has Resource: LineItem
                 MODEL META
                     hasDTO: true
-                    hasDAO: true
-                    hasTable: true
+                    hasDAO: false
+                    hasTable: false
+                    hasInterface: true
                     isResource: true
                     isBase: false
 
                     varsIncluded: none
                     
-                    varsExcluded: none
-                    
+                    varsExcluded: 
+                        deleted,
+
                     relationsIncluded: none
                     
                     relationsExcluded: none
@@ -24,7 +44,7 @@ Model name: LineItemDTO
             Is Required: true
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: false
             Default Value: 
                     COL INFO
@@ -32,9 +52,9 @@ Model name: LineItemDTO
                             Super Relation: PurchaseClassSignupDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseClassSignupDTO_TO_LineItem
-                        Name: PurchaseClassSignupDTO_TO_LineItemDTO
+                        Name: PurchaseClassSignupDTO_TO_LineItem
                         Resource A: PurchaseClassSignupDTO
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItem
                             Column Type: LineItemDTO
@@ -47,7 +67,7 @@ Model name: LineItemDTO
             Is Required: true
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: false
             Default Value: 
                     COL INFO
@@ -55,9 +75,9 @@ Model name: LineItemDTO
                             Super Relation: PurchaseMembershipDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseMembershipDTO_TO_LineItem
-                        Name: PurchaseMembershipDTO_TO_LineItemDTO
+                        Name: PurchaseMembershipDTO_TO_LineItem
                         Resource A: PurchaseMembershipDTO
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItem
                             Column Type: LineItemDTO
@@ -70,7 +90,7 @@ Model name: LineItemDTO
             Is Required: true
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: false
             Default Value: 
                     COL INFO
@@ -78,9 +98,9 @@ Model name: LineItemDTO
                             Super Relation: PurchaseDonationDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseDonationDTO_TO_LineItem
-                        Name: PurchaseDonationDTO_TO_LineItemDTO
+                        Name: PurchaseDonationDTO_TO_LineItem
                         Resource A: PurchaseDonationDTO
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItem
                             Column Type: LineItemDTO
@@ -93,7 +113,7 @@ Model name: LineItemDTO
             Is Required: true
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: false
             Default Value: 
                     COL INFO
@@ -101,9 +121,9 @@ Model name: LineItemDTO
                             Super Relation: PurchaseCardDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseCardDTO_TO_LineItem
-                        Name: PurchaseCardDTO_TO_LineItemDTO
+                        Name: PurchaseCardDTO_TO_LineItem
                         Resource A: PurchaseCardDTO
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItem
                             Column Type: LineItemDTO
@@ -116,7 +136,7 @@ Model name: LineItemDTO
             Is Required: true
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: false
             Default Value: 
                     COL INFO
@@ -124,9 +144,9 @@ Model name: LineItemDTO
                             Super Relation: PurchaseGiftCardDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseGiftCardDTO_TO_LineItem
-                        Name: PurchaseGiftCardDTO_TO_LineItemDTO
+                        Name: PurchaseGiftCardDTO_TO_LineItem
                         Resource A: PurchaseGiftCardDTO
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItem
                             Column Type: LineItemDTO
@@ -139,7 +159,7 @@ Model name: LineItemDTO
             Is Required: true
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: false
             Default Value: 
                     COL INFO
@@ -147,9 +167,9 @@ Model name: LineItemDTO
                             Super Relation: PurchaseGuestPrivilegesDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseGuestPrivilegesDTO_TO_LineItem
-                        Name: PurchaseGuestPrivilegesDTO_TO_LineItemDTO
+                        Name: PurchaseGuestPrivilegesDTO_TO_LineItem
                         Resource A: PurchaseGuestPrivilegesDTO
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItem
                             Column Type: LineItemDTO
@@ -162,7 +182,7 @@ Model name: LineItemDTO
             Is Required: true
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: false
             Default Value: 
                     COL INFO
@@ -170,9 +190,9 @@ Model name: LineItemDTO
                             Super Relation: PurchaseDamageWaiverDTO_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: PurchaseDamageWaiverDTO_TO_LineItem
-                        Name: PurchaseDamageWaiverDTO_TO_LineItemDTO
+                        Name: PurchaseDamageWaiverDTO_TO_LineItem
                         Resource A: PurchaseDamageWaiverDTO
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItem
                             Column Type: LineItemDTO
@@ -185,7 +205,7 @@ Model name: LineItemDTO
             Is Required: true
             Is Read Only: false
             Is Write Only: false
-            Is Inherited: false
+            Is Inherited: true
             Is Overridden: false
             Default Value: 
                     COL INFO
@@ -193,8 +213,8 @@ Model name: LineItemDTO
                             Super Relation: LineItem_TO_PurchaseStockedItemDTO
                         Type: ONE_TO_ONE
                         Base Name: LineItem_TO_PurchaseStockedItemDTO
-                        Name: LineItemDTO_TO_PurchaseStockedItemDTO
-                        Resource A: LineItemDTO
+                        Name: LineItem_TO_PurchaseStockedItemDTO
+                        Resource A: LineItem
                         Resource B: PurchaseStockedItemDTO
                         Forward ref: 
                             Column Name: stockChange
@@ -204,14 +224,6 @@ Model name: LineItemDTO
                             Column Name: lineItem
                             Column Type: LineItemDTO
                             Is Array: false
-        Variable Name: deleted
-            Is Required: false
-            Is Read Only: true
-            Is Write Only: false
-            Is Inherited: true
-            Is Overridden: false
-            Default Value: null
-                    COL INFO
         Variable Name: id
             Is Required: true
             Is Read Only: false
@@ -248,9 +260,9 @@ Model name: LineItemDTO
                             Super Relation: LineItem_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: LineItem_TO_LineItem
-                        Name: LineItemDTO_TO_LineItemDTO
-                        Resource A: LineItemDTO
-                        Resource B: LineItemDTO
+                        Name: LineItem_TO_LineItem
+                        Resource A: LineItem
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: parentItemId
                             Column Type: LineItemDTO
@@ -271,9 +283,9 @@ Model name: LineItemDTO
                             Super Relation: orderLineItems
                         Type: ONE_TO_MANY
                         Base Name: orderLineItems
-                        Name: LineItemDTO_TO_OrderDTO
-                        Resource A: LineItemDTO
-                        Resource B: OrderDTO
+                        Name: orderLineItems
+                        Resource A: LineItem
+                        Resource B: Order
                         Forward ref: 
                             Column Name: orderId
                             Column Type: OrderDTO
@@ -294,8 +306,8 @@ Model name: LineItemDTO
                             Super Relation: LineItem_TO_ItemInstance
                         Type: ONE_TO_ONE
                         Base Name: LineItem_TO_ItemInstance
-                        Name: LineItemDTO_TO_ItemInstance
-                        Resource A: LineItemDTO
+                        Name: LineItem_TO_ItemInstance
+                        Resource A: LineItem
                         Resource B: ItemInstance
                         Forward ref: 
                             Column Name: itemInstanceId
@@ -317,8 +329,8 @@ Model name: LineItemDTO
                             Super Relation: LineItem_TO_PersonSubscription
                         Type: ONE_TO_ONE
                         Base Name: LineItem_TO_PersonSubscription
-                        Name: LineItemDTO_TO_PersonSubscription
-                        Resource A: LineItemDTO
+                        Name: LineItem_TO_PersonSubscription
+                        Resource A: LineItem
                         Resource B: PersonSubscription
                         Forward ref: 
                             Column Name: subscriptionId
@@ -364,9 +376,9 @@ Model name: LineItemDTO
                             Super Relation: BalanceTransaction_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: BalanceTransaction_TO_LineItem
-                        Name: BalanceTransaction_TO_LineItemDTO
+                        Name: BalanceTransaction_TO_LineItem
                         Resource A: BalanceTransaction
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItemId
                             Column Type: LineItemDTO
@@ -387,9 +399,9 @@ Model name: LineItemDTO
                             Super Relation: ItemInstanceStockChange_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: ItemInstanceStockChange_TO_LineItem
-                        Name: ItemInstanceStockChange_TO_LineItemDTO
+                        Name: ItemInstanceStockChange_TO_LineItem
                         Resource A: ItemInstanceStockChange
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItem
                             Column Type: LineItemDTO
@@ -410,9 +422,9 @@ Model name: LineItemDTO
                             Super Relation: LineItem_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: LineItem_TO_LineItem
-                        Name: LineItemDTO_TO_LineItemDTO
-                        Resource A: LineItemDTO
-                        Resource B: LineItemDTO
+                        Name: LineItem_TO_LineItem
+                        Resource A: LineItem
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: parentItemId
                             Column Type: LineItemDTO
@@ -433,9 +445,9 @@ Model name: LineItemDTO
                             Super Relation: LineItemDiscountInstance_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: LineItemDiscountInstance_TO_LineItem
-                        Name: LineItemDiscountInstance_TO_LineItemDTO
+                        Name: LineItemDiscountInstance_TO_LineItem
                         Resource A: LineItemDiscountInstance
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItemId
                             Column Type: LineItemDTO
@@ -456,9 +468,9 @@ Model name: LineItemDTO
                             Super Relation: LineItemRefund_TO_LineItem
                         Type: ONE_TO_ONE
                         Base Name: LineItemRefund_TO_LineItem
-                        Name: LineItemRefund_TO_LineItemDTO
+                        Name: LineItemRefund_TO_LineItem
                         Resource A: LineItemRefund
-                        Resource B: LineItemDTO
+                        Resource B: LineItem
                         Forward ref: 
                             Column Name: lineItemId
                             Column Type: LineItemDTO

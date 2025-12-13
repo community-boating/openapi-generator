@@ -1,11 +1,15 @@
             Purchasable
 Model name: PurchaseStockedItemDTO
+                Resource Suffix: 
+                    Relation: LineItem_TO_PurchaseStockedItemDTO, Resource A: LineItemDTO, ResourceB: PurchaseStockedItemDTO, hasForward: , hasBackward: false
+                    Relation: LineItem_TO_PurchaseStockedItemDTO, Resource A: LineItem, ResourceB: PurchaseStockedItemDTO, hasForward: , hasBackward: true
                 Has Resource: PurchaseStockedItemDTO
-                    Relation Name: 
+                    Base Resource: PurchaseStockedItemDTO
                 MODEL META
                     hasDTO: true
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 
@@ -75,14 +79,14 @@ Model name: PurchaseStockedItemDTO
             Default Value: 
                     COL INFO
                     Relation:
-                            Sub Relation: LineItemDTO_TO_PurchaseStockedItemDTO
+                            Sub Relation: LineItem_TO_PurchaseStockedItemDTO
                         Type: ONE_TO_ONE
                         Base Name: LineItem_TO_PurchaseStockedItemDTO
                         Name: LineItem_TO_PurchaseStockedItemDTO
                         Resource A: LineItem
                         Resource B: PurchaseStockedItemDTO
                         Forward ref: 
-                            Column Name: purchaseStockedItemDTO
+                            Column Name: stockChange
                             Column Type: PurchaseStockedItemDTO
                             Is Array: false
                         Back ref: 

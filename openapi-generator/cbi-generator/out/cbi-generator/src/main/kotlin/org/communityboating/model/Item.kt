@@ -1,10 +1,22 @@
 Model name: Item
+                Resource Suffix: 
+                    Relation: Item_TO_ApClassType, Resource A: Item, ResourceB: ApClassType, hasForward: , hasBackward: 
+                    Relation: Item_TO_ApClassInstance, Resource A: Item, ResourceB: ApClassInstance, hasForward: , hasBackward: 
+                    Relation: Item_TO_MembershipType, Resource A: Item, ResourceB: MembershipType, hasForward: , hasBackward: 
+                    Relation: Item_TO_Product, Resource A: Item, ResourceB: Product, hasForward: , hasBackward: 
+                    Relation: Item_TO_Catalog, Resource A: Item, ResourceB: Catalog, hasForward: , hasBackward: 
+                    Relation: ItemCategory_TO_Item, Resource A: ItemCategory, ResourceB: Item, hasForward: , hasBackward: 
+                    Relation: ItemDiscount_TO_Item, Resource A: ItemDiscount, ResourceB: Item, hasForward: , hasBackward: 
+                    Relation: ItemInstance_TO_Item, Resource A: ItemInstance, ResourceB: Item, hasForward: , hasBackward: 
+                    Relation: ItemTax_TO_Item, Resource A: ItemTax, ResourceB: Item, hasForward: , hasBackward: 
+                    Relation: SubscriptionItem_TO_Item, Resource A: SubscriptionItem, ResourceB: Item, hasForward: , hasBackward: 
                 Has Resource: Item
-                    Relation Name: 
+                    Base Resource: Item
                 MODEL META
-                    hasDTO: true
+                    hasDTO: false
                     hasDAO: true
                     hasTable: true
+                    hasInterface: true
                     isResource: true
                     isBase: true
 

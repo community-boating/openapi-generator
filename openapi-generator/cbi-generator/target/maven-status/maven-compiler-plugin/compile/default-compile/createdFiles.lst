@@ -2,7 +2,6 @@ cbi\generator\RequiredFixer.class
 cbi\generator\RefNormalizer.class
 cbi\generator\relation\CBIRelationInfoOneToOne.class
 cbi\generator\relation\CBIRelationInfoOneToOneTyped.class
-cbi\generator\resource\CBIResourceInfoShared$HighestRelations.class
 cbi\generator\relation\CBIRelationInfoManyToMany.class
 cbi\generator\resource\CBIResourceInfoShared$TypeUnionResult.class
 cbi\generator\resource\CBIResourceInfoShared.class
