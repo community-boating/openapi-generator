@@ -317,22 +317,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
-  /member/compass-order/summary:
-    get:
-      tags:
-        -  CompassOrder
-      security:
-        - member: []
-      description: 'Returns the current order this person has open'
-      responses:
-        '200':
-          description: Successfully updated/inserted order
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/OrderWithDiscountsDTO'
-        '404':
-          description: Order doesn't exist
   /member/compass-order:
     get:
       tags:
@@ -346,7 +330,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderWithDiscountsDTO'
+                $ref: '#/components/schemas/OrderDTO'
         '404':
           description: Order doesn't exist
     post:
