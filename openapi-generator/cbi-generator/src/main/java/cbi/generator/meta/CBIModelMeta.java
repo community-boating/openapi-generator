@@ -13,6 +13,7 @@ import static cbi.generator.resource.CBIResourceInfo.compareProperty;
 public class CBIModelMeta extends MetaBase {
     public Boolean hasDTO;
     public Boolean hasDAO;
+    public Boolean hasMutable;
     public boolean hasTable;
     public boolean hasInterface;
     public Boolean isResource;
@@ -27,6 +28,7 @@ public class CBIModelMeta extends MetaBase {
         super(map);
         this.hasDTO = this.getBoolean("x-has-dto", null);
         this.hasDAO = this.getBoolean("x-has-dao", null);
+        this.hasMutable = this.getBoolean("x-has-mutable", null);
         this.hasTable = this.getBoolean("x-has-table", true);
         this.hasInterface = this.getBoolean("x-has-interface", true);
         this.isResource = this.getBoolean("x-is-resource", null);
@@ -125,6 +127,9 @@ public class CBIModelMeta extends MetaBase {
         }
         if(meta.hasDTO == null){
             meta.hasDTO = model.classname.endsWith("DTO");
+        }
+        if(meta.hasMutable == null){
+            meta.hasMutable = meta.hasDAO;
         }
         model.vendorExtensions.put("x-model-meta", meta);
         return meta;
