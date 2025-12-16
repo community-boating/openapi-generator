@@ -65,6 +65,7 @@ paths:
             application/json:
               schema:
                 $ref: './shared.yaml#/components/schemas/Boolean'
+  
   /member/personCreate:
     post:
       summary: Test
@@ -352,7 +353,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderWithDiscountsDTO'
+                $ref: '#/components/schemas/OrderDTO'
   /orders/{id}/poll:
     parameters:
         - in: path
@@ -1850,7 +1851,7 @@ components:
         instanceId:
           type: integer
           example: 117
-    PersonPublicDTO:
+    PersonPublicBaseDTO:
       type: object
       required: [temp, updatedOn]
       properties:
@@ -1881,6 +1882,8 @@ components:
           $ref: '#/components/schemas/AddressDTO'
         name:
           $ref: '#/components/schemas/PersonNameInfo'
+    PersonPublicDTO:
+      properties:
         relationTypeId:
           x-dto-column: TYPE_ID
           type: integer
@@ -1890,12 +1893,12 @@ components:
           x-column-parent-fk: A
           type: array
           items:
-            $ref: '#/components/schemas/PersonPublicDTO'
+            $ref: '#/components/schemas/PersonPublicBaseDTO'
         relationsB:
           x-column-parent-fk: B
           type: array
           items:
-            $ref: '#/components/schemas/PersonPublicDTO'
+            $ref: '#/components/schemas/PersonPublicBaseDTO'
     PhoneDTO:
       type: object
       properties:
