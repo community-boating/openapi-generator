@@ -86,7 +86,24 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/TestResponse'
+                $ref: '#/components/schemas/PersonPublicDTO'
+        '401':
+          description: Invalid credentials
+  /member/info:
+    post:
+      summary: Test
+      description: Tests Post.
+      security:
+        - member: []
+      tags:
+        - Member
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonPublicDTO'
         '401':
           description: Invalid credentials
   /member/test:
@@ -318,8 +335,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
-  /member/compass-order:
+  /member/compass-order/{id}:
     get:
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          description: The order id
       tags:
         -  CompassOrder
       security:
@@ -334,6 +360,7 @@ paths:
                 $ref: '#/components/schemas/OrderDTO'
         '404':
           description: Order doesn't exist
+  /member/compass-order:
     post:
       description: 'Updates or inserts order and subobjects into the database for further use in the order system'
       parameters: []
@@ -1882,23 +1909,26 @@ components:
           $ref: '#/components/schemas/AddressDTO'
         name:
           $ref: '#/components/schemas/PersonNameInfo'
-    PersonPublicDTO:
+    PersonPublicRelatedDTO:
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicBaseDTO'
       properties:
         relationTypeId:
           x-dto-column: TYPE_ID
-          type: integer
-        relationType:
-          $ref: './shared.yaml#/components/schemas/PersonRelationType'
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PersonRelationType'
+    PersonPublicDTO:
+      properties:
         relationsA:
           x-column-parent-fk: A
           type: array
           items:
-            $ref: '#/components/schemas/PersonPublicBaseDTO'
+            $ref: '#/components/schemas/PersonPublicRelatedDTO'
         relationsB:
           x-column-parent-fk: B
           type: array
           items:
-            $ref: '#/components/schemas/PersonPublicBaseDTO'
+            $ref: '#/components/schemas/PersonPublicRelatedDTO'
     PhoneDTO:
       type: object
       properties:
