@@ -2,11 +2,14 @@ package cbi.generator.relation;
 
 import cbi.generator.CBIColumnInfo;
 import cbi.generator.enums.CBIRelationType;
+import cbi.generator.resource.CBIResourceInfo;
 import cbi.generator.resource.CBIResourceInfoShared;
+
+import java.util.ArrayList;
 
 public class CBIRelationInfoNormal extends CBIRelationInfo {
     //Resource B
-    public CBIResourceInfoShared resourceB;
+    public CBIResourceInfo resourceB;
     public boolean forwardOverride;
     public boolean backwardOverride;
     CBIRelationInfoNormal(CBIRelationType type) {
@@ -27,35 +30,41 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
 
     @Override
     public void syncColumnsToModel() {
-        //boolean isRequired = (forwardRef != null && forwardRef.isRequired) || (backRef != null && backRef.isRequired);
-        if(forwardRef == null) {
-            forwardRef = new CBIColumnInfo(resourceA, null);
-        }
-        //forwardRef.isRequired = isRequired;
-        forwardRef.columnName = meta.forwardRef;
-        forwardRef.columnType = resourceB.name;
-        if(!forwardOverride) {
-            if (!Boolean.FALSE.equals(meta.hasForward)) {
-                forwardRef.addToModel();
-                forwardRef.relation = this;
-            }else{
-                forwardRef.removeFromModel();
+        for(CBIColumnInfo forwardRef: new ArrayList<>(forwardRefs)) {
+            //boolean isRequired = (forwardRef != null && forwardRef.isRequired) || (backRef != null && backRef.isRequired);
+            if (forwardRef == null) {
+                forwardRef = new CBIColumnInfo(resourceA, null);
+                forwardRefs.add(forwardRef);
+            }
+            //forwardRef.isRequired = isRequired;
+            forwardRef.columnName = meta.forwardRef;
+            forwardRef.columnType = resourceB.name;
+            if (!forwardOverride) {
+                if (!Boolean.FALSE.equals(meta.hasForward)) {
+                    forwardRef.addToModel();
+                    forwardRef.relation = this;
+                } else {
+                    forwardRef.removeFromModel();
+                }
             }
         }
-        if(backRef == null) {
-            backRef = new CBIColumnInfo(resourceB, null);
-            if(type == CBIRelationType.MANY_TO_MANY || type == CBIRelationType.ONE_TO_MANY){
-                backRef.isArray = true;
+        for(CBIColumnInfo backRef: new ArrayList<>(backRefs)) {
+            if (backRef == null) {
+                backRef = new CBIColumnInfo(resourceB, null);
+                if (type == CBIRelationType.MANY_TO_MANY || type == CBIRelationType.ONE_TO_MANY) {
+                    backRef.isArray = true;
+                }
+                backRefs.add(backRef);
             }
-        }
-        backRef.columnName = meta.backwardRef;
-        backRef.columnType = resourceA.name;
-        if(!backwardOverride) {
-            if (!Boolean.FALSE.equals(meta.hasBackward)) {
-                backRef.addToModel();
-                backRef.relation = this;
-            }else {
-                backRef.removeFromModel();
+            backRef.columnName = meta.backwardRef;
+            backRef.columnType = resourceA.name;
+            if (!backwardOverride) {
+                if (!Boolean.FALSE.equals(meta.hasBackward)) {
+                    backRef.addToModel();
+                    backRef.relation = this;
+                } else {
+                    backRef.removeFromModel();
+                }
             }
         }
 
@@ -63,6 +72,6 @@ public class CBIRelationInfoNormal extends CBIRelationInfo {
 
     @Override
     public String toString() {
-        return "RelationName: " + relationName + "\nResource A: " + resourceA.name + "\nResource B: " + resourceB.name + "\nForward ref: (" + forwardRef + ")\nBack ref: (" + backRef + ")";
+        return "RelationName: " + relationName + "\nResource A: " + resourceA.name + "\nResource B: " + resourceB.name;
     }
 }

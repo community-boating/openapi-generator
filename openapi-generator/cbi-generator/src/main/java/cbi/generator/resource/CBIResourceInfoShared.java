@@ -20,6 +20,7 @@ public abstract class CBIResourceInfoShared {
     //ArrayList<CodegenModel> generated = new ArrayList<>();
     //ArrayList<CodegenModel> schema = new ArrayList<>();
     public CodegenModel model;
+    public ArrayList<String> modelGroups;
     public ArrayList<CBIRelationInfo> relations = new ArrayList<>();
 
     public String getNameTable() {

@@ -168,8 +168,8 @@ public class CbiGeneratorGenerator extends DefaultCodegen implements CodegenConf
       }
     }
     for(CBIRelationInfo relation: relations) {
-      if(relation.isBase())
-        relation.mergeAndUpdateMetas();
+      //if(relation.isBase())
+      relation.mergeAndUpdateMetas();
     }
     for(CBIRelationInfo relation: relations) {
       if(relation instanceof CBIRelationInfoNormal) {

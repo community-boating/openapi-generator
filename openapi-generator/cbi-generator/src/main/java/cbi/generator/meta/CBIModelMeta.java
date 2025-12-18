@@ -20,6 +20,9 @@ public class CBIModelMeta extends MetaBase {
     public boolean isBase;
     public String nameSQL;
     public String nameSuffix;
+    public ArrayList<String> groups;
+    public Boolean hasWriteOnly;
+    public Boolean hasReadOnly;
     public ArrayList<String> varsIncluded;
     public ArrayList<String> varsExcluded;
     public ArrayList<String> relationsIncluded;
@@ -33,8 +36,11 @@ public class CBIModelMeta extends MetaBase {
         this.hasInterface = this.getBoolean("x-has-interface", true);
         this.isResource = this.getBoolean("x-is-resource", null);
         //this.isBase = this.getBoolean("x-is-base", null);
+        this.groups = this.getStringArray("x-groups");
         this.nameSuffix = this.getString("x-name-suffix", null);
         this.nameSQL = this.getString("x-name-sql", null);
+        this.hasWriteOnly = this.getBoolean("x-has-write-only", null);
+        this.hasReadOnly = this.getBoolean("x-has-read-only", null);
         this.varsIncluded = this.getStringArray("x-vars-included");
         this.varsExcluded = this.getStringArray("x-vars-excluded");
         this.relationsIncluded = this.getStringArray("x-relations-included");
@@ -66,6 +72,8 @@ public class CBIModelMeta extends MetaBase {
 
     public static int hasVar(CodegenModel model, String varName) {
         CBIModelMeta meta = CBIModelMeta.getOrAdd(model);
+
+
         int has = meta.hasVar(varName);
         if(has != 0)
             return has;
@@ -75,6 +83,17 @@ public class CBIModelMeta extends MetaBase {
             has = hasVar(parent, varName);
             if(has != 0)
                 return has;
+        }
+        if(Boolean.FALSE.equals(meta.hasReadOnly) || Boolean.FALSE.equals(meta.hasWriteOnly)) {
+            CodegenProperty property = model.allVars.stream().filter(a -> a.name.equals(varName)).findFirst().orElse(null);
+            if(property != null) {
+                if (Boolean.FALSE.equals(meta.hasReadOnly) && property.isReadOnly){
+                    return -1;
+                }
+                if (Boolean.FALSE.equals(meta.hasWriteOnly) && property.isWriteOnly){
+                    return -1;
+                }
+            }
         }
         return 0;
     }

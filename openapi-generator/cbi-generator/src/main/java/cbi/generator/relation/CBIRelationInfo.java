@@ -7,6 +7,7 @@ import cbi.generator.meta.CBIRelationMeta;
 import cbi.generator.resource.CBIResourceInfo;
 import cbi.generator.resource.CBIResourceInfoShared;
 import cbi.generator.resource.CBIResourceInfoChild;
+import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 
@@ -14,14 +15,15 @@ public abstract class CBIRelationInfo {
     public String relationName;
     public CBIRelationType type;
     //Resource A
-    public CBIResourceInfoShared resourceA;
+    public CBIResourceInfo resourceA;
     //Forward ref property A -> B
-    public CBIColumnInfo forwardRef;
+    public ArrayList<CBIColumnInfo> forwardRefs = new ArrayList<>();
     //Back ref property B -> A
-    public CBIColumnInfo backRef;
+    public ArrayList<CBIColumnInfo> backRefs = new ArrayList<>();
     public CBIRelationMeta meta;
-    public CBIRelationInfo superRelation;
-    public ArrayList<CBIRelationInfo> subRelations = new ArrayList<>();
+    public ArrayList<CBIRelationMeta> potentialMetas = new ArrayList<>();
+    //public CBIRelationInfo superRelation;
+    //public ArrayList<CBIRelationInfo> subRelations = new ArrayList<>();
     public CBIRelationInfo(CBIRelationType type) {
         this.type = type;
     }
@@ -43,38 +45,30 @@ public abstract class CBIRelationInfo {
         return false;
     }
 
-    void updateSuperRelation(CBIRelationInfo parent) {
-        this.superRelation = parent;
-        //this.meta.forwardRef = parent.meta.forwardRef;
-        //this.meta.backwardRef = parent.meta.backwardRef;
-        //this.meta.hasForward = parent.meta.hasForward;
-        //this.meta.hasBackward = parent.meta.hasBackward;
-    }
-
     public void mergeAndUpdateMetas() {
         String relationName = meta.relationName;
         String forwardRef = meta.forwardRef;
         String backwardRef = meta.backwardRef;
-        for(CBIRelationInfo subRelation: this.subRelations) {
-            if(subRelation.meta.relationName != null) {
+        for(CBIRelationMeta subMeta: this.potentialMetas) {
+            if(subMeta.relationName != null) {
                 if (relationName == null) {
-                    relationName = subRelation.meta.relationName;
-                } else if (!relationName.equals(subRelation.meta.relationName)) {
-                    throw new RuntimeException("Multiple names found for relation: " + relationName + ", " + subRelation.meta.relationName);
+                    relationName = subMeta.relationName;
+                } else if (!relationName.equals(subMeta.relationName)) {
+                    throw new RuntimeException("Multiple names found for relation: " + relationName + ", " + subMeta.relationName);
                 }
             }
-            if(subRelation.meta.forwardRef != null) {
+            if(subMeta.forwardRef != null) {
                 if (forwardRef == null) {
-                    forwardRef = subRelation.meta.forwardRef;
-                } else if (!forwardRef.equals(subRelation.meta.forwardRef)) {
-                    throw new RuntimeException("Multiple forward refs found: " + forwardRef + ", " + subRelation.meta.forwardRef);
+                    forwardRef = subMeta.forwardRef;
+                } else if (!forwardRef.equals(subMeta.forwardRef)) {
+                    throw new RuntimeException("Multiple forward refs found: " + forwardRef + ", " + subMeta.forwardRef);
                 }
             }
-            if(subRelation.meta.backwardRef != null) {
+            if(subMeta.backwardRef != null) {
                 if (backwardRef == null) {
-                    backwardRef = subRelation.meta.backwardRef;
-                } else if (!backwardRef.equals(subRelation.meta.backwardRef)) {
-                    throw new RuntimeException("Multiple backward refs found: " + backwardRef + ", " + subRelation.meta.backwardRef);
+                    backwardRef = subMeta.backwardRef;
+                } else if (!backwardRef.equals(subMeta.backwardRef)) {
+                    throw new RuntimeException("Multiple backward refs found: " + backwardRef + ", " + subMeta.backwardRef);
                 }
             }
         }
@@ -100,20 +94,20 @@ public abstract class CBIRelationInfo {
         }
         meta.forwardRef = forwardRef;
         meta.backwardRef = backwardRef;
-        for(CBIRelationInfo subRelation: this.subRelations){
-            subRelation.meta.relationName = relationName;
-            subRelation.relationName = relationName;
-            subRelation.meta.forwardRef = forwardRef;
-            subRelation.meta.backwardRef = backwardRef;
-        }
+        //for(CBIRelationInfo subRelation: this.subRelations){
+        //    subRelation.meta.relationName = relationName;
+        //    subRelation.relationName = relationName;
+        //    subRelation.meta.forwardRef = forwardRef;
+        //    subRelation.meta.backwardRef = backwardRef;
+        //}
     }
 
-    public boolean isBase() {
-        return this.getBaseRelation().equals(this);
-    }
+    //public boolean isBase() {
+    //    return this.getBaseRelation().equals(this);
+    //}
 
-    public CBIRelationInfo getBaseRelation() {
-        if(superRelation != null)
+    /*public CBIRelationInfo getBaseRelation() {
+        //if(superRelation != null)
             return superRelation;
         return this;
     }
@@ -122,13 +116,13 @@ public abstract class CBIRelationInfo {
         if(superRelation != null)
             return superRelation.getRelationBaseName();
         return relationName;
-    }
+    }*/
 
     static CBIRelationInfoNormal findByResourceB(ArrayList<CBIRelationInfo> relations, CBIResourceInfoShared resourceB, CBIResourceInfoShared resourceA, String relationBaseName){
         for(CBIRelationInfo relation: relations) {
             if(relation instanceof CBIRelationInfoNormal) {
                 if(((CBIRelationInfoNormal) relation).resourceB == resourceB) {
-                    if(relation.getRelationBaseName() != null && relation.getRelationBaseName().equals(relationBaseName))
+                    if(relation.relationName != null && relation.relationName.equals(relationBaseName))
                         return (CBIRelationInfoNormal) relation;
                     if(relation.resourceA.getBaseResource() == resourceA.getBaseResource())
                         return (CBIRelationInfoNormal) relation;
@@ -141,7 +135,7 @@ public abstract class CBIRelationInfo {
     static CBIRelationInfoNormal findByResourceA(ArrayList<CBIRelationInfo> relations, CBIResourceInfoShared resourceA, CBIResourceInfoShared resourceB, String relationBaseName){
         for(CBIRelationInfo relation: relations) {
             if(relation instanceof CBIRelationInfoNormal) {
-                String baseName = relation.getRelationBaseName();
+                String baseName = relation.relationName;
                 if(relation.resourceA == resourceA) {
                     if(baseName != null && baseName.equals(relationBaseName))
                         return (CBIRelationInfoNormal) relation;
@@ -165,12 +159,12 @@ public abstract class CBIRelationInfo {
 
     public abstract void syncColumnsToModel();
 
-    public static CBIRelationInfoNormal findOrAddBaseRelation(ArrayList<CBIRelationInfo> relations, CBIRelationInfo potentialChild){
+    /*public static CBIRelationInfoNormal findOrAddBaseRelation(ArrayList<CBIRelationInfo> relations, CBIRelationInfo potentialChild){
         if(potentialChild instanceof CBIRelationInfoNormal){
             CBIResourceInfoShared resourceA = potentialChild.resourceA;
             CBIResourceInfoShared resourceB = ((CBIRelationInfoNormal) potentialChild).resourceB;
-            if(!(resourceA instanceof CBIResourceInfoChild) && !(resourceB instanceof CBIResourceInfoChild))
-                return null;
+            //if(!(resourceA instanceof CBIResourceInfoChild) && !(resourceB instanceof CBIResourceInfoChild))
+            //    return null;
             if(resourceA instanceof CBIResourceInfoChild)
                 resourceA = ((CBIResourceInfoChild) resourceA).base;
             if(resourceB instanceof CBIResourceInfoChild)
@@ -189,9 +183,9 @@ public abstract class CBIRelationInfo {
             return existing;
         }
         return null;
-    }
+    }*/
 
-    static void findOrAddChildRelation(ArrayList<CBIRelationInfo> relations, CBIResourceInfoShared childResourceA, CBIResourceInfoShared childResourceB, CBIRelationInfo potentialParent, boolean doRecurse) {
+    /*static void findOrAddChildRelation(ArrayList<CBIRelationInfo> relations, CBIResourceInfoShared childResourceA, CBIResourceInfoShared childResourceB, CBIRelationInfo potentialParent, boolean doRecurse) {
         String relationNameBase = potentialParent.getRelationBaseName();
         CBIRelationInfoNormal existingExact = CBIRelationInfo.findByResources(relations, childResourceA, childResourceB);
 
@@ -257,7 +251,7 @@ public abstract class CBIRelationInfo {
                     newRelation.parentRelation = existingA;
                 //existingA.childRelations.add(newRelation);
                 //childResourceA.relations.add(newRelation);
-            }*/
+            }
         }
         if(hasRelationB) {
             //if(!hasB) {
@@ -284,11 +278,11 @@ public abstract class CBIRelationInfo {
                     newRelation.parentRelation = existingB;
                 //existingB.childRelations.add(newRelation);
                 //childResourceB.relations.add(newRelation);
-            }*/
+            }
         }
-    }
+    }*/
 
-    public static void findOrAddChildRelations(ArrayList<CBIRelationInfo> relations, CBIRelationInfo potentialParent){
+    /*public static void findOrAddChildRelations(ArrayList<CBIRelationInfo> relations, CBIRelationInfo potentialParent){
         if(potentialParent instanceof CBIRelationInfoNormal){
             CBIResourceInfoShared resourceA = potentialParent.resourceA;
             CBIResourceInfoShared resourceB = ((CBIRelationInfoNormal) potentialParent).resourceB;
@@ -304,13 +298,15 @@ public abstract class CBIRelationInfo {
                 }
             }
         }
-    }
+    }*/
 
     public void updateColumns() {
-        if(this.forwardRef != null)
+        this.forwardRefs.forEach(forwardRef -> {
             forwardRef.relation = this;
-        if(this.backRef != null)
+        });
+        this.backRefs.forEach(backRef -> {
             backRef.relation = this;
+        });
     }
 
     public static ArrayList<CBIRelationInfo> findAllRelations(ArrayList<CBIResourceInfoShared> resources) {
@@ -368,26 +364,28 @@ public abstract class CBIRelationInfo {
                         }
                         if(relationInfo != null) {
                             relations.add(relationInfo);
-                            findOrAddBaseRelation(relations, relationInfo);
+                            //findOrAddBaseRelation(relations, relationInfo);
                         }
                     }
-                    if(relationInfo != null) {
+                    /*if(relationInfo != null) {
                         if (!Boolean.TRUE.equals(relationMeta.isBackref)) {
-                            relationInfo.forwardRef = column;
+                            relationInfo.forwardRefs.add(column);
                         } else {
-                            relationInfo.backRef = column;
+                            relationInfo.backRefs.add(column);
                         }
                         relationInfo.updateColumns();
-                    }
+                    }*/
                 }
             }
         }
-        for(CBIRelationInfo relationInfo: new ArrayList<>(relations)) {
-            findOrAddChildRelations(relations, relationInfo);
-        }
+        //for(CBIRelationInfo relationInfo: new ArrayList<>(relations)) {
+            //findOrAddChildRelations(relations, relationInfo);
+        //}
         return relations;
     }
     static CBIRelationInfoNormal makeRelationInfo(CBIResourceInfoShared resourceA, CBIResourceInfoShared resourceB, CBIRelationMeta meta, boolean add, boolean swapBack) {
+        CBIResourceInfo resourceABase = resourceA.getBaseResource();
+        CBIResourceInfo resourceBBase = resourceB.getBaseResource();
         CBIRelationInfoNormal relationInfo = null;
         if(meta.relationType == CBIRelationType.ONE_TO_ONE) {
             relationInfo = new CBIRelationInfoOneToOne();
@@ -401,16 +399,16 @@ public abstract class CBIRelationInfo {
         if(relationInfo != null) {
             relationInfo.meta = meta;
             if(add) {
-                resourceA.relations.add(relationInfo);
-                resourceB.relations.add(relationInfo);
+                resourceABase.relations.add(relationInfo);
+                resourceBBase.relations.add(relationInfo);
             }
             //relationInfo.relationName = meta.relationName;
             if(Boolean.TRUE.equals(meta.isBackref) && swapBack) {
-                relationInfo.resourceA = resourceB;
-                relationInfo.resourceB = resourceA;
+                relationInfo.resourceA = resourceBBase;
+                relationInfo.resourceB = resourceABase;
             }else{
-                relationInfo.resourceA = resourceA;
-                relationInfo.resourceB = resourceB;
+                relationInfo.resourceA = resourceABase;
+                relationInfo.resourceB = resourceBBase;
             }
         }
         return relationInfo;

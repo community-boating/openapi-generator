@@ -3,6 +3,7 @@ package cbi.generator.relation;
 import cbi.generator.CBIColumnInfo;
 import cbi.generator.enums.CBIRelationType;
 import cbi.generator.meta.CBIRelationMeta;
+import cbi.generator.resource.CBIResourceInfo;
 import cbi.generator.resource.CBIResourceInfoShared;
 import org.openapitools.codegen.CodegenDiscriminator;
 import org.openapitools.codegen.CodegenModel;
@@ -27,7 +28,7 @@ public class CBIRelationInfoOneToOneTyped extends CBIRelationInfo {
         this.parent.vendorExtensions.put("x-cbi-relation-one-to-one-typed", this);
     }
     public boolean isOneToOneTyped = true;
-    static CBIRelationInfoOneToOneTyped makeRelationInfoOneToOneTyped(CBIResourceInfoShared resourceA, List<CBIResourceInfoShared> resourceBs, CBIRelationMeta meta, boolean add, boolean swapBack) {
+    static CBIRelationInfoOneToOneTyped makeRelationInfoOneToOneTyped(CBIResourceInfo resourceA, List<CBIResourceInfo> resourceBs, CBIRelationMeta meta, boolean add, boolean swapBack) {
         meta.isBackref = true;
         CBIRelationInfoOneToOneTyped relationInfo = new CBIRelationInfoOneToOneTyped(resourceBs.get(0).model.parentModel);
         Optional<CBIColumnInfo> typeColumn = resourceA.columns.stream().filter((a) -> a.columnName.equalsIgnoreCase(relationInfo.discriminator.getPropertyName())).findAny();
