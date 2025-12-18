@@ -134,22 +134,18 @@ components:
         - 'CELL'
         - 'MOBILE'
     PersonRelationType:
-      oneOf:
-        - description: Organization
-          type: object
-          properties:
-            size:
-              type: integer
-              const: 4
-            label:
-              type: string
-              const: "Organization"
-        - description: ParentToChild
-          type: object
-          properties:
-            size:
-              type: integer
-              const: 2
-            label:
-              type: string
-              const: "ParentToChild"
+      type: integer
+      x-enum-varnames:
+        - ORGANIZATION
+        - PARENT_LINKED
+        - SPOUSE
+        - SIBLING
+        - PARENT_UNLINKED
+        - EMPLOYER
+      enum:
+        - 4
+        - 2
+        - 3
+        - 5
+        - 6
+        - 7
