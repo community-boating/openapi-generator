@@ -89,7 +89,7 @@ paths:
                 $ref: '#/components/schemas/PersonPublicDTO'
         '401':
           description: Invalid credentials
-  /member/info:
+  /member/auth/info:
     get:
       summary: Test
       description: Tests Post.
