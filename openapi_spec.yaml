@@ -360,6 +360,22 @@ paths:
                 $ref: '#/components/schemas/OrderDTO'
         '404':
           description: Order doesn't exist
+  /member/compass-order/open:
+    get:
+      tags:
+        -  CompassOrder
+      security:
+        - member: []
+      description: 'Returns the current order this person has open'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+        '404':
+          description: Order doesn't exist
   /member/compass-order:
     post:
       description: 'Updates or inserts order and subobjects into the database for further use in the order system'
