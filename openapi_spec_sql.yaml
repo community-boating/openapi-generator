@@ -566,7 +566,7 @@ components:
       type: object
       required: [phoneId, personId, assignId]
       properties:
-        assignId:
+        id:
           type: integer
           format: int64
         isPrimary:
@@ -588,7 +588,7 @@ components:
       type: object
       required: [assignId, number]
       properties:
-        assignId:
+        id:
           type: integer
           format: int64
         number:
@@ -605,7 +605,7 @@ components:
       type: object
       required: [personId, addressId, assignId]
       properties:
-        assignId:
+        id:
           type: integer
           format: int64
         startActive:
