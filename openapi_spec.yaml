@@ -1934,17 +1934,19 @@ components:
           allOf:
             - $ref: './shared.yaml#/components/schemas/PersonRelationType'
     PersonPublicDTO:
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicBaseDTO'
       properties:
         relationsA:
           x-column-parent-fk: A
           type: array
           items:
             $ref: '#/components/schemas/PersonPublicRelatedDTO'
-        relationsB:
-          x-column-parent-fk: B
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonPublicRelatedDTO'
+        #relationsB:
+        #  x-column-parent-fk: B
+        #  type: array
+        #  items:
+        #    $ref: '#/components/schemas/PersonPublicRelatedDTO'
     PhoneDTO:
       type: object
       properties:
