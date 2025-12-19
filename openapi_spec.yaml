@@ -1913,14 +1913,10 @@ components:
           type: string
           maxLength: 1
           minLength: 1
-        phonePrimary:
-          x-dto-column-prefix: PHONE_PRIMARY
-          allOf:
-            - $ref: '#/components/schemas/PhoneDTO'
-        phoneSecondary:
-          x-dto-column-prefix: PHONE_ALTERNATE
-          allOf:
-            - $ref: '#/components/schemas/PhoneDTO'
+        phones:
+          type: array
+          items:
+            $ref: '#/components/schemas/PhoneDTO'
         address: 
           $ref: '#/components/schemas/AddressDTO'
         name:
@@ -1949,13 +1945,25 @@ components:
     PhoneDTO:
       type: object
       properties:
+        assignId:
+          type: integer
+          format: int64
         number:
           x-dto-column: ""
           type: string
           maxLength: 100
           pattern: ^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$
+        name:
+          type: string
+          maxLength: 100
         type:
           $ref: './shared.yaml#/components/schemas/PhoneType'
+        isPrimary:
+          type: boolean
+        isVerified:
+          type: boolean
+        isBad:
+          type: boolean
     PersonNameInfo:
       type: object
       properties:
@@ -1998,6 +2006,10 @@ components:
           type: string
           format: date-time
         isPrimary:
+          type: boolean
+        isVerified:
+          type: boolean
+        isBad:
           type: boolean
         name:
           type: string
