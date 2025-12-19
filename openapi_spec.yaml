@@ -1917,8 +1917,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PhoneDTO'
-        address: 
-          $ref: '#/components/schemas/AddressDTO'
+        addresses: 
+          type: array
+          items:
+            $ref: '#/components/schemas/AddressDTO'
         name:
           $ref: '#/components/schemas/PersonNameInfo'
     PersonPublicRelatedDTO:
@@ -1949,7 +1951,6 @@ components:
           type: integer
           format: int64
         number:
-          x-dto-column: ""
           type: string
           maxLength: 100
           pattern: ^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$
@@ -1964,6 +1965,12 @@ components:
           type: boolean
         isBad:
           type: boolean
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
     PersonNameInfo:
       type: object
       properties:
