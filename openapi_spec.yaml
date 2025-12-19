@@ -1895,55 +1895,56 @@ components:
           type: integer
           example: 117
     PersonPublicBaseDTO:
-      type: object
-      required: [temp, updatedOn]
-      properties:
-        personId:
-          readOnly: true
-          type: integer
-        stripeCustomerId:
-          readOnly: true
-          type: string
-        email:
-          type: string
-          maxLength: 100
-          pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
-        updatedOn:
-          readOnly: true
-          type: string
-          format: date-time
-        temp:
-          type: string
-          maxLength: 1
-          minLength: 1
-        phones:
-          type: array
-          items:
-            $ref: '#/components/schemas/PhoneDTO'
-        addresses: 
-          type: array
-          items:
-            $ref: '#/components/schemas/AddressDTO'
       allOf:
         - $ref: '#/components/schemas/PersonNameInfo'
+        - type: object
+          required: [temp, updatedOn]
+          properties:
+            personId:
+              readOnly: true
+              type: integer
+            stripeCustomerId:
+              readOnly: true
+              type: string
+            email:
+              type: string
+              maxLength: 100
+              pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+            updatedOn:
+              readOnly: true
+              type: string
+              format: date-time
+            temp:
+              type: string
+              maxLength: 1
+              minLength: 1
+            phones:
+              type: array
+              items:
+                $ref: '#/components/schemas/PhoneDTO'
+            addresses: 
+              type: array
+              items:
+                $ref: '#/components/schemas/AddressDTO'
     PersonPublicRelatedDTO:
       allOf:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
-      properties:
-        relationTypeId:
-          x-dto-column: TYPE_ID
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PersonRelationType'
+        - type: object
+          properties:
+            relationTypeId:
+              x-dto-column: TYPE_ID
+              allOf:
+                - $ref: './shared.yaml#/components/schemas/PersonRelationType'
     PersonPublicDTO:
-      type: object
-      properties:
-        relationsA:
-          x-column-parent-fk: A
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonPublicRelatedDTO'
       allOf:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
+        - type: object
+          properties:
+            relationsA:
+              x-column-parent-fk: A
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonPublicRelatedDTO'
         #relationsB:
         #  x-column-parent-fk: B
         #  type: array
