@@ -1926,8 +1926,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AddressDTO'
-        name:
-          $ref: '#/components/schemas/PersonNameInfo'
     PersonPublicRelatedDTO:
       allOf:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
