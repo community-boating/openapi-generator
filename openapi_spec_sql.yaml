@@ -564,7 +564,7 @@ components:
           format: int64
     PersonPhone:
       type: object
-      required: [phoneId, personId, assignId]
+      required: [phoneId, personId]
       properties:
         id:
           type: integer
@@ -586,7 +586,7 @@ components:
           $ref: '#/components/schemas/Phone'
     Phone:
       type: object
-      required: [assignId, number]
+      required: [number]
       properties:
         id:
           type: integer
@@ -603,7 +603,7 @@ components:
           type: boolean
     PersonAddress:
       type: object
-      required: [personId, addressId, assignId]
+      required: [personId, addressId]
       properties:
         id:
           type: integer
