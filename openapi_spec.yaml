@@ -1926,22 +1926,21 @@ components:
         name:
           $ref: '#/components/schemas/PersonNameInfo'
     PersonPublicRelatedDTO:
-      allOf:
-        - $ref: '#/components/schemas/PersonPublicBaseDTO'
       properties:
         relationTypeId:
           x-dto-column: TYPE_ID
           allOf:
             - $ref: './shared.yaml#/components/schemas/PersonRelationType'
     PersonPublicDTO:
-      allOf:
-        - $ref: '#/components/schemas/PersonPublicBaseDTO'
+      type: object
       properties:
         relationsA:
           x-column-parent-fk: A
           type: array
           items:
             $ref: '#/components/schemas/PersonPublicRelatedDTO'
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicBaseDTO'
         #relationsB:
         #  x-column-parent-fk: B
         #  type: array
