@@ -1927,6 +1927,8 @@ components:
         name:
           $ref: '#/components/schemas/PersonNameInfo'
     PersonPublicRelatedDTO:
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicBaseDTO'
       properties:
         relationTypeId:
           x-dto-column: TYPE_ID
