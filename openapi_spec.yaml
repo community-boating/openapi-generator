@@ -1952,7 +1952,7 @@ components:
     PhoneDTO:
       type: object
       properties:
-        id:
+        assignId:
           type: integer
           format: int64
         number:
@@ -2008,7 +2008,7 @@ components:
     AddressDTO:
       type: object
       properties:
-        id:
+        assignId:
           type: integer
           format: int64
         startActive:
