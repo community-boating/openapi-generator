@@ -1931,7 +1931,7 @@ components:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
       properties:
         relationTypeId:
-          x-dto-column: RELATION_TYPE
+          x-dto-column: TYPE_ID
           allOf:
             - $ref: './shared.yaml#/components/schemas/PersonRelationType'
     PersonPublicDTO:
