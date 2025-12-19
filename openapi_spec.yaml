@@ -1896,8 +1896,6 @@ components:
           example: 117
     PersonPublicBaseDTO:
       type: object
-      allOf:
-        - $ref: '#/components/schemas/PersonNameInfo'
       required: [temp, updatedOn]
       properties:
         personId:
@@ -1926,6 +1924,8 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/AddressDTO'
+      allOf:
+        - $ref: '#/components/schemas/PersonNameInfo'
     PersonPublicRelatedDTO:
       allOf:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
