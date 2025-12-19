@@ -1909,8 +1909,16 @@ components:
             adminHold:
               type: string
               maxLength: 1
+              minLength: 1
             personType:
               $ref: './shared.yaml#/components/schemas/PersonType'
+            dob:
+              type: string
+              format: date
+            dobVerified:
+              type: string
+              maxLength: 1
+              minLength: 1
             #memberships:
             #  type: array
             #  items:
