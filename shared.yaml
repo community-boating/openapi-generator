@@ -149,3 +149,25 @@ components:
         - 5
         - 6
         - 7
+    PersonType:
+      type: integer
+      x-enum-varnames:
+        - JP_INSTRUCTOR
+        - ADULT_GUEST
+        - ORGANIZATION_CONTACT
+        - FRIEND
+        - JUNIOR_PARENT
+        - ADULT_MEMBER
+        - JUNION_MEMBER
+        - UAP_MEMBER
+        - ORGANIZATION
+      enum:
+        - 1000
+        - 181
+        - 21
+        - 22
+        - 41
+        - 1
+        - 2
+        - 3
+        - 4

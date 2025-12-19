@@ -1625,7 +1625,7 @@ components:
         voidCloseId:
           readOnly: true
           type: integer
-    PurchaseMembershipDTO:
+    MembershipDTO:
       required: [membershipTypeId, personId]
       properties:
         assignId:
@@ -1661,6 +1661,9 @@ components:
         voidCloseId:
           readOnly: true
           type: integer
+    PurchaseMembershipDTO:
+      allOf:
+        - $ref: '#/components/schemas/MembershipDTO'
     PurchaseDonationDTO:
       required: [fundId,initiativeId, state]
       properties:
@@ -1903,6 +1906,15 @@ components:
             personId:
               readOnly: true
               type: integer
+            adminHold:
+              type: string
+              maxLength: 1
+            personType:
+              $ref: './shared.yaml#/components/schemas/PersonType'
+            #memberships:
+            #  type: array
+            #  items:
+            #    $ref: '#/components/schemas/MembershipDTO'
             stripeCustomerId:
               readOnly: true
               type: string
@@ -1945,6 +1957,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonPublicRelatedDTO'
+            currentMemberships:
+              type: array
+              items:
+                $ref: '#/components/schemas/MembershipDTO'
         #relationsB:
         #  x-column-parent-fk: B
         #  type: array
