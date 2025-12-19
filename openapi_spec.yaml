@@ -1901,6 +1901,9 @@ components:
         personId:
           readOnly: true
           type: integer
+        stripeCustomerId:
+          readOnly: true
+          type: string
         email:
           type: string
           maxLength: 100
