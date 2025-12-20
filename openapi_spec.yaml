@@ -1921,7 +1921,7 @@ components:
               $ref: './shared.yaml#/components/schemas/PersonType'
             dob:
               type: string
-              format: date
+              format: date-time
             dobVerified:
               type: string
               maxLength: 1
