@@ -66,7 +66,7 @@ paths:
               schema:
                 $ref: './shared.yaml#/components/schemas/Boolean'
   
-  /member/personCreate:
+  /member/info:
     post:
       summary: Test
       description: Tests Post.
@@ -89,7 +89,6 @@ paths:
                 $ref: '#/components/schemas/PersonPublicDTO'
         '401':
           description: Invalid credentials
-  /member/auth/info:
     get:
       summary: Test
       description: Tests Post.
@@ -1973,10 +1972,12 @@ components:
               items:
                 $ref: '#/components/schemas/PersonPublicRelatedDTO'
             currentMemberships:
+              readOnly: true
               type: array
               items:
                 $ref: '#/components/schemas/MembershipDTO'
             currentCards:
+              readOnly: true
               type: array
               items:
                 $ref: '#/components/schemas/CardDTO'
