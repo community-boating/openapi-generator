@@ -1967,6 +1967,14 @@ components:
             bTitleOverride:
               type: string
               maxLength: 100
+            aTitle:
+              readOnly: true
+              type: string
+              maxLength: 500
+            bTitle:
+              readOnly: true
+              type: string
+              maxLength: 500
             relationTypeId:
               x-dto-column: TYPE_ID
               allOf:
