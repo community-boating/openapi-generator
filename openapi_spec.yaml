@@ -1961,6 +1961,12 @@ components:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
         - type: object
           properties:
+            aTitleOverride:
+              type: string
+              maxLength: 100
+            bTitleOverride:
+              type: string
+              maxLength: 100
             relationTypeId:
               x-dto-column: TYPE_ID
               allOf:
