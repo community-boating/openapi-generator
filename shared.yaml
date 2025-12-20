@@ -158,7 +158,7 @@ components:
         - FRIEND
         - JUNIOR_PARENT
         - ADULT_MEMBER
-        - JUNION_MEMBER
+        - JUNIOR_MEMBER
         - UAP_MEMBER
         - ORGANIZATION
       enum:
