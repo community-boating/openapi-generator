@@ -165,6 +165,7 @@ components:
         - JUNIOR_MEMBER
         - UAP_MEMBER
         - ORGANIZATION
+        - EMERGENCY_CONTACT
       enum:
         - 1000
         - 181
@@ -175,3 +176,4 @@ components:
         - 2
         - 3
         - 4
+        - 2000
