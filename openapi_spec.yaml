@@ -1917,11 +1917,14 @@ components:
               maxLength: 1
               minLength: 1
             personType:
-              $ref: './shared.yaml#/components/schemas/PersonType'
+              readOnly: true
+              allOf:
+                - $ref: './shared.yaml#/components/schemas/PersonType'
             dob:
               type: string
               format: date-time
             dobVerified:
+              readOnly: true
               type: string
               maxLength: 1
               minLength: 1
@@ -2005,8 +2008,10 @@ components:
         isPrimary:
           type: boolean
         isVerified:
+          readOnly: true
           type: boolean
         isBad:
+          readOnly: true
           type: boolean
         startActive:
           type: string
@@ -2058,8 +2063,10 @@ components:
         isPrimary:
           type: boolean
         isVerified:
+          readOnly: true
           type: boolean
         isBad:
+          readOnly: true
           type: boolean
         name:
           type: string
