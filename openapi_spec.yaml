@@ -1920,6 +1920,15 @@ components:
               readOnly: true
               allOf:
                 - $ref: './shared.yaml#/components/schemas/PersonTypeEnum'
+            allergies:
+              type: string
+              maxLength: 1000
+            medications:
+              type: string
+              maxLength: 1000
+            specialNeeds:
+              type: string
+              maxLength: 1000
             dob:
               type: string
               format: date-time
@@ -1952,7 +1961,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PhoneDTO'
-            addresses: 
+            addresses:
               type: array
               items:
                 $ref: '#/components/schemas/AddressDTO'
