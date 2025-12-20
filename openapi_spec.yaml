@@ -1712,6 +1712,9 @@ components:
     CardDTO:
       required: [cardNum]
       properties:
+        issueDate:
+          type: string
+          format: date-time
         personId:
           type: integer
         assignId:
