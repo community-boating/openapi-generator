@@ -1956,6 +1956,16 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/AddressDTO'
+            currentMemberships:
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/MembershipDTO'
+            currentCards:
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/CardDTO'
     PersonPublicRelatedDTO:
       allOf:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
@@ -1989,16 +1999,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonPublicRelatedDTO'
-            currentMemberships:
-              readOnly: true
-              type: array
-              items:
-                $ref: '#/components/schemas/MembershipDTO'
-            currentCards:
-              readOnly: true
-              type: array
-              items:
-                $ref: '#/components/schemas/CardDTO'
         #relationsB:
         #  x-column-parent-fk: B
         #  type: array
