@@ -1919,7 +1919,7 @@ components:
             personType:
               readOnly: true
               allOf:
-                - $ref: './shared.yaml#/components/schemas/PersonType'
+                - $ref: './shared.yaml#/components/schemas/PersonTypeEnum'
             dob:
               type: string
               format: date-time
