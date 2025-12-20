@@ -1709,7 +1709,7 @@ components:
         voidCloseId:
           readOnly: true
           type: integer
-    PurchaseCardDTO:
+    CardDTO:
       required: [cardNum]
       properties:
         personId:
@@ -1728,6 +1728,10 @@ components:
         voidCloseId:
           readOnly: true
           type: integer
+    PurchaseCardDTO:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CardDTO'
     PurchaseGiftCardDTO:
       properties:
         assignId:
@@ -1969,6 +1973,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/MembershipDTO'
+            currentCards:
+              type: array
+              items:
+                $ref: '#/components/schemas/CardDTO'
         #relationsB:
         #  x-column-parent-fk: B
         #  type: array
