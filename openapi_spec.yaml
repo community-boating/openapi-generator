@@ -1941,6 +1941,7 @@ components:
               type: string
               format: date-time
             temp:
+              readOnly: true
               type: string
               maxLength: 1
               minLength: 1
