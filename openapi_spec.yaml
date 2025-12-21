@@ -1929,6 +1929,48 @@ components:
             specialNeeds:
               type: string
               maxLength: 1000
+            gender:
+              type: string
+              maxLength: 100
+            occupation:
+              type: string
+              maxLength: 100
+            #citizenship:
+            #  type: string
+            #  maxLength: 100
+            ethnicity:
+              type: string
+              maxLength: 100
+            language:
+              type: string
+              maxLength: 100
+            matchingGifts:
+              type: string
+              maxLength: 1
+              minLength: 1
+            organization:
+              type: string
+              maxLength: 100
+            student:
+              type: string
+              maxLength: 1
+              minLength: 1
+            school:
+              type: string
+              maxLength: 100
+            military:
+              type: string
+              maxLength: 50
+            reducedLunch:
+              type: string
+              maxLength: 1
+              minLength: 1
+            previousMember:
+              type: string
+              maxLength: 1
+              minLength: 1
+            swimProof:
+              $ref: './shared.yaml#/components/schemas/SwimProof'
             dob:
               type: string
               format: date-time
