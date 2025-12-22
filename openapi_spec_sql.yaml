@@ -660,6 +660,18 @@ components:
           type: string
           maxLength: 15
 
+    PersonReferralSource:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        referralSource:
+          type: string
+          maxLength: 100
+        personId:
+          $ref: '#/components/schemas/Person'
+
     MembershipType:
       x-already-exists: true
       required: [id]

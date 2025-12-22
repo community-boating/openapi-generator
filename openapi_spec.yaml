@@ -1969,6 +1969,10 @@ components:
               type: string
               maxLength: 1
               minLength: 1
+            referrals:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonReferralSourceDTO'
             swimProof:
               $ref: './shared.yaml#/components/schemas/SwimProof'
             dob:
@@ -2084,6 +2088,15 @@ components:
         endActive:
           type: string
           format: date-time
+    PersonReferralSourceDTO:
+      type: object
+      properties:
+        assignId:
+          type: integer
+          format: int64
+        referralSource:
+          type: string
+          maxLength: 100
     PersonNameInfo:
       type: object
       properties:
