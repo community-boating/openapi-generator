@@ -2109,8 +2109,8 @@ components:
           x-dto-column: NAME_FIRST
           type: string
           maxLength: 100
-        middleInitial:
-          x-dto-column: NAME_MIDDLE_INITIAL
+        middle:
+          x-dto-column: NAME_MIDDLE
           type: string
           maxLength: 5
         last:
