@@ -2112,7 +2112,7 @@ components:
         middle:
           x-dto-column: NAME_MIDDLE
           type: string
-          maxLength: 5
+          maxLength: 100
         last:
           x-dto-column: NAME_LAST
           type: string
