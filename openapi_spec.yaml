@@ -2021,7 +2021,7 @@ components:
             emergencyContacts:
               type: array
               items:
-                $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
+                $ref: '#/components/schemas/PersonPublicRelatedDTO'
     PersonPublicRelatedDTO:
       allOf:
         - $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
