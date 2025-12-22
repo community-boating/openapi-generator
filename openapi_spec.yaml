@@ -2161,12 +2161,12 @@ components:
           type: string
           maxLength: 200
         state:
-          $ref: './shared.yaml#/components/schemas/USState'
+          $ref: './shared.yaml#/components/schemas/USStateCode'
         city:
           type: string
           maxLength: 50
         country:
-          $ref: './shared.yaml#/components/schemas/Country'
+          $ref: './shared.yaml#/components/schemas/CountryCode'
         zip:
           type: string
           maxLength: 15
