@@ -1972,7 +1972,7 @@ components:
             referrals:
               type: array
               items:
-                $ref: '#/components/schemas/PersonReferralSourceDTO'
+                $ref: '#/components/schemas/PersonReferralDTO'
             swimProof:
               $ref: './shared.yaml#/components/schemas/SwimProof'
             dob:
@@ -2088,8 +2088,9 @@ components:
         endActive:
           type: string
           format: date-time
-    PersonReferralSourceDTO:
+    PersonReferralDTO:
       type: object
+      required: [referralSource]
       properties:
         assignId:
           type: integer

@@ -660,8 +660,9 @@ components:
           type: string
           maxLength: 15
 
-    PersonReferralSource:
+    PersonReferral:
       type: object
+      required: [id, referralSource, personId]
       properties:
         id:
           type: integer
