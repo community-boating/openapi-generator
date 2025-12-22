@@ -2068,7 +2068,7 @@ components:
               x-column-parent-fk: A
               type: array
               items:
-                $ref: '#/components/schemas/PersonPublicRelatedDTO'
+                $ref: '#/components/schemas/PersonPublicInternal'
     PersonPublicParentDTO:
       allOf:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
