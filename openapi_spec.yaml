@@ -1912,10 +1912,9 @@ components:
             personId:
               readOnly: true
               type: integer
-            adminHold:
-              type: string
-              maxLength: 1
-              minLength: 1
+            allowSignouts:
+              readOnly: true
+              type: boolean
             personType:
               readOnly: true
               allOf:
@@ -1952,9 +1951,7 @@ components:
               type: string
               maxLength: 100
             student:
-              type: string
-              maxLength: 1
-              minLength: 1
+              type: boolean
             school:
               type: string
               maxLength: 100
@@ -1962,13 +1959,9 @@ components:
               type: string
               maxLength: 50
             reducedLunch:
-              type: string
-              maxLength: 1
-              minLength: 1
+              type: boolean
             previousMember:
-              type: string
-              maxLength: 1
-              minLength: 1
+              type: boolean
             referrals:
               type: array
               items:
@@ -1980,9 +1973,7 @@ components:
               format: date-time
             dobVerified:
               readOnly: true
-              type: string
-              maxLength: 1
-              minLength: 1
+              type: boolean
             #memberships:
             #  type: array
             #  items:
