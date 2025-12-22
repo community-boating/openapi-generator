@@ -2022,6 +2022,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonPublicRelatedDTO'
+            purchaseRecipients:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonPublicRelatedDTO'
     PersonPublicRelatedDTO:
       allOf:
         - $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
