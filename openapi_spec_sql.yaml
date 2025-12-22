@@ -669,6 +669,21 @@ components:
           maxLength: 100
         personId:
           $ref: '#/components/schemas/Person'
+    
+    PersonLanguage:
+      type: object
+      required: [id, language, personId]
+      properties:
+        id:
+          type: integer
+          format: int64
+        language:
+          type: string
+          maxLength: 100
+        isPrimary:
+          type: boolean
+        personId:
+          $ref: '#/components/schemas/Person'
 
     MembershipType:
       x-already-exists: true

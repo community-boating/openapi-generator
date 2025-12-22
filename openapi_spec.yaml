@@ -1940,9 +1940,6 @@ components:
             ethnicity:
               type: string
               maxLength: 100
-            language:
-              type: string
-              maxLength: 100
             matchingGifts:
               type: string
               maxLength: 1
@@ -1966,6 +1963,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonReferralDTO'
+            languages:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonLanguageDTO'
             swimProof:
               $ref: './shared.yaml#/components/schemas/SwimProof'
             dob:
@@ -2089,6 +2090,18 @@ components:
         referralSource:
           type: string
           maxLength: 100
+    PersonLanguageDTO:
+      type: object
+      required: [language]
+      properties:
+        assignId:
+          type: integer
+          format: int64
+        language:
+          type: string
+          maxLength: 100
+        isPrimary:
+          type: boolean
     PersonNameInfo:
       type: object
       properties:
