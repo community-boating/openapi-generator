@@ -1957,7 +1957,7 @@ components:
               maxLength: 50
             reducedLunch:
               type: boolean
-            prevMember:
+            previousMember:
               type: boolean
             referrals:
               type: array
