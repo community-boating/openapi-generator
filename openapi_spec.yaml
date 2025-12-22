@@ -2051,7 +2051,7 @@ components:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
     PersonPublicInternal:
       allOf:
-        - $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
+        - $ref: '#/components/schemas/PersonPublicRelatedDTO'
         - type: object
           properties:
             memberships:
@@ -2069,6 +2069,22 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonPublicInternal'
+    PersonPublicInternalR:
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
+        - $ref: '#/components/schemas/PersonPublicRelatedDTO'
+        - type: object
+          properties:
+            memberships:
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/MembershipDTO'
+            cards:
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/CardDTO'
     PersonPublicParentDTO:
       allOf:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
