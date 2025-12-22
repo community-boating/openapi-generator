@@ -79,14 +79,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonPublicDTO'
+              $ref: '#/components/schemas/PersonPublicParentDTO'
       responses:
         '200':
           description: Successful login
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonPublicDTO'
+                $ref: '#/components/schemas/PersonPublicParentDTO'
         '401':
           description: Invalid credentials
     get:
@@ -102,7 +102,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonPublicDTO'
+                $ref: '#/components/schemas/PersonPublicParentDTO'
         '401':
           description: Invalid credentials
   /member/test:
@@ -1903,7 +1903,7 @@ components:
         instanceId:
           type: integer
           example: 117
-    PersonPublicBaseDTO:
+    PersonPublicBaseSingularDTO:
       allOf:
         - $ref: '#/components/schemas/PersonNameInfo'
         - type: object
@@ -1959,16 +1959,8 @@ components:
               type: boolean
             previousMember:
               type: boolean
-            referrals:
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonReferralDTO'
-            languages:
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonLanguageDTO'
             swimProof:
-              $ref: './shared.yaml#/components/schemas/SwimProof'
+              $ref: './shared.yaml#/components/schemas/SwimProof' 
             dob:
               type: string
               format: date-time
@@ -2003,6 +1995,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/AddressDTO'
+    PersonPublicBaseDTO:
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
+        - type: object
+          properties:
             currentMemberships:
               readOnly: true
               type: array
@@ -2013,9 +2010,21 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CardDTO'
+            referrals:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonReferralDTO'
+            languages:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonLanguageDTO'
+            emergencyContacts:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
     PersonPublicRelatedDTO:
       allOf:
-        - $ref: '#/components/schemas/PersonPublicBaseDTO'
+        - $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
         - type: object
           properties:
             aTitleOverride:
@@ -2036,13 +2045,36 @@ components:
               x-dto-column: TYPE_ID
               allOf:
                 - $ref: './shared.yaml#/components/schemas/PersonRelationType'
-    PersonPublicDTO:
+    PersonPublicChildDTO:
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicRelatedDTO'
+        - $ref: '#/components/schemas/PersonPublicBaseDTO'
+    PersonPublicInternal:
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
+        - type: object
+          properties:
+            memberships:
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/MembershipDTO'
+            cards:
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/CardDTO'
+            relationsA:
+              x-column-parent-fk: A
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonPublicRelatedDTO'
+    PersonPublicParentDTO:
       allOf:
         - $ref: '#/components/schemas/PersonPublicBaseDTO'
         - type: object
           properties:
-            relationsA:
-              x-column-parent-fk: A
+            children:
               type: array
               items:
                 $ref: '#/components/schemas/PersonPublicRelatedDTO'
