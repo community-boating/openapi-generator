@@ -605,6 +605,21 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripeConstantsDTO'
+  /staff/personNew/test:
+    get:
+      tags:
+        - Member
+      security:
+        - staff: []
+      description: 'Test new person dto'
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDTO'
+
   /staff/payment:
     post:
       security:
@@ -1625,42 +1640,11 @@ components:
           readOnly: true
           type: integer
     MembershipDTO:
-      required: [membershipTypeId, personId]
-      properties:
-        assignId:
-          nullable: false
-          type: integer
-        membershipTypeId:
-          nullable: false
-          type: integer
-        personId:
-          nullable: false
-          type: integer
-        startDate:
-          nullable: true
-          type: string
-          format: date
-        purchaseDate:
-          nullable: true
-          readOnly: true
-          type: string
-          format: date
-        expirationDate:
-          nullable: true
-          readOnly: true
-          type: string
-          format: date
-        price:
-          readOnly: true
-          type: integer
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PurchasableState'
-        voidCloseId:
-          readOnly: true
-          type: integer
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Membership'
     PurchaseMembershipDTO:
+      x-has-dto: true
       allOf:
         - $ref: '#/components/schemas/MembershipDTO'
     PurchaseDonationDTO:
@@ -1709,28 +1693,11 @@ components:
           readOnly: true
           type: integer
     CardDTO:
-      required: [cardNum]
-      properties:
-        issueDate:
-          type: string
-          format: date-time
-        personId:
-          type: integer
-        assignId:
-          type: integer
-        cardNum:
-          type: string
-        active:
-          readOnly: true
-          type: boolean
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PurchasableState'
-        voidCloseId:
-          readOnly: true
-          type: integer
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Card'
     PurchaseCardDTO:
+      x-has-dto: true
       type: object
       allOf:
         - $ref: '#/components/schemas/CardDTO'
@@ -1903,90 +1870,12 @@ components:
         instanceId:
           type: integer
           example: 117
-    PersonPublicBaseSingularDTO:
+    PersonPublicDTO:
+      x-has-dto: true
       allOf:
-        - $ref: '#/components/schemas/PersonNameInfo'
+        - $ref: './shared.yaml#/components/schemas/PersonBase'
         - type: object
-          required: [temp, updatedOn]
           properties:
-            personId:
-              readOnly: true
-              type: integer
-            allowSignouts:
-              readOnly: true
-              type: boolean
-            personType:
-              readOnly: true
-              allOf:
-                - $ref: './shared.yaml#/components/schemas/PersonTypeEnum'
-            allergies:
-              type: string
-              maxLength: 1000
-            medications:
-              type: string
-              maxLength: 1000
-            specialNeeds:
-              type: string
-              maxLength: 1000
-            gender:
-              type: string
-              maxLength: 100
-            occupation:
-              type: string
-              maxLength: 100
-            #citizenship:
-            #  type: string
-            #  maxLength: 100
-            ethnicity:
-              type: string
-              maxLength: 100
-            matchingGifts:
-              type: string
-              maxLength: 1
-              minLength: 1
-            organization:
-              type: string
-              maxLength: 100
-            student:
-              type: boolean
-            school:
-              type: string
-              maxLength: 100
-            military:
-              type: string
-              maxLength: 50
-            reducedLunch:
-              type: boolean
-            previousMember:
-              type: boolean
-            swimProof:
-              $ref: './shared.yaml#/components/schemas/SwimProof' 
-            dob:
-              type: string
-              format: date-time
-            dobVerified:
-              readOnly: true
-              type: boolean
-            #memberships:
-            #  type: array
-            #  items:
-            #    $ref: '#/components/schemas/MembershipDTO'
-            stripeCustomerId:
-              readOnly: true
-              type: string
-            email:
-              type: string
-              maxLength: 100
-              pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
-            updatedOn:
-              readOnly: true
-              type: string
-              format: date-time
-            temp:
-              readOnly: true
-              type: string
-              maxLength: 1
-              minLength: 1
             phones:
               type: array
               items:
@@ -1995,9 +1884,39 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/AddressDTO'
-    PersonPublicBaseDTO:
+    PersonDTO:
+      x-has-dto: true
       allOf:
-        - $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
+        - $ref: './shared.yaml#/components/schemas/Person'
+        - $ref: '#/components/schemas/PersonPublicDTO'
+        - type: object
+          properties:
+            cards:
+              type: array
+              x-base-type: false
+              items:
+                $ref: '#/components/schemas/CardDTO'
+            memberships:
+              type: array
+              x-base-type: MembershipDTO
+              items:
+                $ref: '#/components/schemas/MembershipDTO'
+            relationsA:
+              x-column-parent-fk: a
+              x-base-type: false
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRelationDTO'
+            relationsB:
+              x-column-parent-fk: b
+              x-base-type: false
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRelationDTO'
+    PersonPublicChildDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicDTO'
         - type: object
           properties:
             currentMemberships:
@@ -2010,88 +1929,18 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CardDTO'
-            referrals:
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonReferralDTO'
-            languages:
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonLanguageDTO'
             emergencyContacts:
               type: array
               items:
-                $ref: '#/components/schemas/PersonPublicRelatedDTO'
+                $ref: '#/components/schemas/PersonPublicDTO'
             purchaseRecipients:
               type: array
               items:
-                $ref: '#/components/schemas/PersonPublicRelatedDTO'
-    PersonPublicRelatedDTO:
-      allOf:
-        - $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
-        - type: object
-          properties:
-            aTitleOverride:
-              type: string
-              maxLength: 100
-            bTitleOverride:
-              type: string
-              maxLength: 100
-            aTitle:
-              readOnly: true
-              type: string
-              maxLength: 500
-            bTitle:
-              readOnly: true
-              type: string
-              maxLength: 500
-            relationTypeId:
-              x-dto-column: TYPE_ID
-              allOf:
-                - $ref: './shared.yaml#/components/schemas/PersonRelationType'
-    PersonPublicChildDTO:
-      allOf:
-        - $ref: '#/components/schemas/PersonPublicRelatedDTO'
-        - $ref: '#/components/schemas/PersonPublicBaseDTO'
-    PersonPublicInternal:
-      allOf:
-        - $ref: '#/components/schemas/PersonPublicRelatedDTO'
-        - type: object
-          properties:
-            memberships:
-              readOnly: true
-              type: array
-              items:
-                $ref: '#/components/schemas/MembershipDTO'
-            cards:
-              readOnly: true
-              type: array
-              items:
-                $ref: '#/components/schemas/CardDTO'
-            relationsA:
-              x-column-parent-fk: A
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonPublicInternal'
-    PersonPublicInternalR:
-      allOf:
-        - $ref: '#/components/schemas/PersonPublicBaseSingularDTO'
-        - $ref: '#/components/schemas/PersonPublicRelatedDTO'
-        - type: object
-          properties:
-            memberships:
-              readOnly: true
-              type: array
-              items:
-                $ref: '#/components/schemas/MembershipDTO'
-            cards:
-              readOnly: true
-              type: array
-              items:
-                $ref: '#/components/schemas/CardDTO'
+                $ref: '#/components/schemas/PersonPublicDTO'
     PersonPublicParentDTO:
+      x-has-dto: true
       allOf:
-        - $ref: '#/components/schemas/PersonPublicBaseDTO'
+        - $ref: '#/components/schemas/PersonPublicChildDTO'
         - type: object
           properties:
             children:
@@ -2103,129 +1952,42 @@ components:
         #  type: array
         #  items:
         #    $ref: '#/components/schemas/PersonPublicRelatedDTO'
+        #DE
+    PersonRelationDTO:
+      x-has-dto: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRelation'
+        - $ref: '#/components/schemas/PersonDTO'
+        - type: object
+          properties:
+            a:
+              $ref: '#/components/schemas/PersonDTO'
+            b:
+              $ref: '#/components/schemas/PersonDTO'
     PhoneDTO:
-      type: object
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        number:
-          type: string
-          maxLength: 100
-          pattern: ^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$
-        name:
-          type: string
-          maxLength: 100
-        type:
-          $ref: './shared.yaml#/components/schemas/PhoneType'
-        isPrimary:
-          type: boolean
-        isVerified:
-          readOnly: true
-          type: boolean
-        isBad:
-          readOnly: true
-          type: boolean
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Phone'
+        - $ref: './shared.yaml#/components/schemas/PersonPhoneBase'
     PersonReferralDTO:
-      type: object
-      required: [referralSource]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        referralSource:
-          type: string
-          maxLength: 100
+      x-has-dto: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonReferral'
+        - type: object
     PersonLanguageDTO:
-      type: object
-      required: [language]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        language:
-          type: string
-          maxLength: 100
-        isPrimary:
-          type: boolean
-    PersonNameInfo:
-      type: object
-      properties:
-        prefix:
-          x-dto-column: NAME_PREFIX
-          type: string
-          maxLength: 50
-        first:
-          x-dto-column: NAME_FIRST
-          type: string
-          maxLength: 100
-        middle:
-          x-dto-column: NAME_MIDDLE
-          type: string
-          maxLength: 100
-        last:
-          x-dto-column: NAME_LAST
-          type: string
-          maxLength: 100
-        suffix:
-          x-dto-column: NAME_SUFFIX
-          type: string
-          maxLength: 50
-        preferred:
-          x-dto-column: NAME_PREFERRED
-          type: string
-          maxLength: 100
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonLanguage'
     TestChange:
       type: object
     AddressDTO:
-      type: object
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
-        isPrimary:
-          type: boolean
-        isVerified:
-          readOnly: true
-          type: boolean
-        isBad:
-          readOnly: true
-          type: boolean
-        name:
-          type: string
-          maxLength: 100
-        line1:
-          type: string
-          maxLength: 200
-          minLength: 1
-        line2:
-          type: string
-          maxLength: 200
-        line3:
-          type: string
-          maxLength: 200
-        state:
-          $ref: './shared.yaml#/components/schemas/USStateCode'
-        city:
-          type: string
-          maxLength: 50
-        country:
-          $ref: './shared.yaml#/components/schemas/CountryCode'
-        zip:
-          type: string
-          maxLength: 15
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Address'
+        - $ref: './shared.yaml#/components/schemas/PersonAddressBase'
     ValidationTestDTO:
       type: object
       properties:

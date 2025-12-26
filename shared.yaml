@@ -1037,3 +1037,398 @@ components:
         - 2
         - 3
         - 4
+
+    PersonNameInfo:
+      type: object
+      properties:
+        prefix:
+          x-dto-column: NAME_PREFIX
+          type: string
+          maxLength: 50
+        first:
+          x-dto-column: NAME_FIRST
+          type: string
+          maxLength: 100
+        middle:
+          x-dto-column: NAME_MIDDLE
+          type: string
+          maxLength: 100
+        last:
+          x-dto-column: NAME_LAST
+          type: string
+          maxLength: 100
+        suffix:
+          x-dto-column: NAME_SUFFIX
+          type: string
+          maxLength: 50
+        preferred:
+          x-dto-column: NAME_PREFERRED
+          type: string
+          maxLength: 100
+    PersonBase:
+      allOf:
+        - $ref: '#/components/schemas/PersonNameInfo'
+        - type: object
+          required: [ temp, updatedOn ]
+          properties:
+            personId:
+              x-col-primary: true
+              readOnly: true
+              type: integer
+            allowSignouts:
+              readOnly: true
+              type: boolean
+            personType:
+              readOnly: true
+              allOf:
+                - $ref: '#/components/schemas/PersonTypeEnum'
+            allergies:
+              type: string
+              maxLength: 1000
+            medications:
+              type: string
+              maxLength: 1000
+            specialNeeds:
+              type: string
+              maxLength: 1000
+            gender:
+              type: string
+              maxLength: 100
+            occupation:
+              type: string
+              maxLength: 100
+            #citizenship:
+            #  type: string
+            #  maxLength: 100
+            ethnicity:
+              type: string
+              maxLength: 100
+            matchingGifts:
+              type: string
+              maxLength: 1
+              minLength: 1
+            organization:
+              type: string
+              maxLength: 100
+            student:
+              type: boolean
+            school:
+              type: string
+              maxLength: 100
+            military:
+              type: string
+              maxLength: 50
+            reducedLunch:
+              type: boolean
+            previousMember:
+              type: boolean
+            swimProof:
+              $ref: '#/components/schemas/SwimProof'
+            dob:
+              type: string
+              format: date-time
+            dobVerified:
+              readOnly: true
+              type: boolean
+            referrals:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonReferral'
+            languages:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonLanguage'
+            #memberships:
+            #  type: array
+            #  items:
+            #    $ref: '#/components/schemas/MembershipDTO'
+            stripeCustomerId:
+              readOnly: true
+              type: string
+            email:
+              type: string
+              maxLength: 100
+              pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+            updatedOn:
+              readOnly: true
+              type: string
+              format: date-time
+            temp:
+              readOnly: true
+              type: string
+              maxLength: 1
+              minLength: 1
+            phones:
+              x-base-type: PhoneDTO
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonPhoneBase'
+            addresses:
+              x-base-type: AddressDTO
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonAddressBase'
+    PersonPhoneBase:
+      type: object
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      properties:
+        isPrimary:
+          type: boolean
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
+        name:
+          type: string
+          maxLength: 100
+    PersonRelationBase:
+      type: object
+      x-has-dto: false
+      x-has-dao: false
+      x-has-interface: true
+      properties:
+        relationId:
+          type: integer
+          x-col-primary: true
+        aTitleOverride:
+          type: string
+          maxLength: 100
+        bTitleOverride:
+          type: string
+          maxLength: 100
+        relationTypeId:
+          x-dto-column: TYPE_ID
+          allOf:
+            - $ref: '#/components/schemas/PersonRelationType'
+    PersonRelation:
+      required: [a, b]
+      x-has-dto: false
+      x-has-dao: false
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/PersonRelationBase'
+        - type: object
+          properties:
+            a:
+              x-base-type: PersonDTO
+              allOf:
+                - $ref: '#/components/schemas/Person'
+            b:
+              x-base-type: PersonDTO
+              allOf:
+                - $ref: '#/components/schemas/Person'
+    #PersonRelated:
+    #  allOf:
+    #    - $ref: '#/components/schemas/PersonProperties'
+    #    - $ref: '#/components/schemas/PersonRelation'
+    #    - type: object
+    #      properties:
+    #        aTitle:
+    #          readOnly: true
+    #          type: string
+    #          maxLength: 500
+    #        bTitle:
+    #          readOnly: true
+    #          type: string
+    #          maxLength: 500
+    Person:
+      x-has-dao: false
+      x-has-dto: false
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/PersonBase'
+        - type: object
+          properties:
+            memberships:
+              x-base-type: MembershipDTO
+              type: array
+              items:
+                $ref: '#/components/schemas/Membership'
+            cards:
+              x-base-type: CardDTO
+              type: array
+              items:
+                $ref: '#/components/schemas/Card'
+            relationsA:
+              x-base-type: PersonRelationDTO
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRelation'
+            relationsB:
+              x-base-type: PersonRelationDTO
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRelation'
+    PersonAddressBase:
+      type: object
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      properties:
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
+        name:
+          type: string
+          maxLength: 100
+        isPrimary:
+          type: boolean
+    Address:
+      type: object
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ line1, state, country, zip ]
+      properties:
+        assignId:
+          x-col-primary: true
+          type: integer
+          format: int64
+        isVerified:
+          type: boolean
+        isBad:
+          type: boolean
+        line1:
+          type: string
+          maxLength: 200
+          minLength: 1
+        line2:
+          x-dto-column: ADDR_2
+          type: string
+          maxLength: 200
+        line3:
+          x-dto-column: ADDR_3
+          type: string
+          maxLength: 200
+        state:
+          $ref: '#/components/schemas/USStateCode'
+        city:
+          type: string
+          maxLength: 50
+        country:
+          $ref: '#/components/schemas/CountryCode'
+        zip:
+          type: string
+          maxLength: 15
+    Membership:
+      required: [ membershipTypeId, personId ]
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      properties:
+        assignId:
+          x-col-primary: true
+          type: integer
+        membershipTypeId:
+          nullable: false
+          type: integer
+        personId:
+          $ref: '#/components/schemas/Person'
+        startDate:
+          nullable: true
+          type: string
+          format: date
+        purchaseDate:
+          nullable: true
+          readOnly: true
+          type: string
+          format: date
+        expirationDate:
+          nullable: true
+          readOnly: true
+          type: string
+          format: date
+        price:
+          readOnly: true
+          type: integer
+        purchasableState:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/PurchasableState'
+        voidCloseId:
+          readOnly: true
+          type: integer
+    Card:
+      x-no-dto: true
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ cardNum ]
+      properties:
+        issueDate:
+          type: string
+          format: date-time
+        personId:
+          $ref: '#/components/schemas/Person'
+        assignId:
+          x-col-primary: true
+          type: integer
+        cardNum:
+          type: string
+        active:
+          readOnly: true
+          type: boolean
+        purchasableState:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/PurchasableState'
+        voidCloseId:
+          readOnly: true
+          type: integer
+    Phone:
+      type: object
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ number ]
+      properties:
+        assignId:
+          x-col-primary: true
+          type: integer
+          format: int64
+        number:
+          type: string
+          maxLength: 100
+          pattern: ^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$
+        type:
+          $ref: '#/components/schemas/PhoneType'
+        isVerified:
+          type: boolean
+        isBad:
+          type: boolean
+    PersonLanguage:
+      type: object
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      properties:
+        assignId:
+          x-col-primary: true
+          type: integer
+          format: int64
+        language:
+          type: string
+          maxLength: 100
+        isPrimary:
+          type: boolean
+    PersonReferral:
+      type: object
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [assignId]
+      properties:
+        assignId:
+          x-col-primary: true
+          type: integer
+          format: int64
+        referralSource:
+          type: string
+          maxLength: 100

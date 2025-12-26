@@ -143,7 +143,7 @@ components:
         endActive:
           type: string
           format: date-time
-    
+
     ItemInstanceStockChange:
       required: [itemInstanceId, changeAmount, stockChangeType]
       properties:
@@ -261,7 +261,7 @@ components:
           type: boolean
         catalogId:
           $ref: '#/components/schemas/Catalog'
-    
+
     OrderTax:
       required: [id, taxId, orderNew]
       properties:
@@ -320,9 +320,10 @@ components:
 
     OrderNew:
       type: object
-      required: [orderId, status, version]
+      required: [assignId, status, version]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         orderSource:
@@ -349,7 +350,7 @@ components:
         orderStatus:
           $ref: './shared.yaml#/components/schemas/OrderStateNew'
         personId:
-          $ref: '#/components/schemas/Person'
+          $ref: '#/components/schemas/PersonDAO'
         deleted:
           type: boolean
 
@@ -373,12 +374,14 @@ components:
         discountId:
           $ref: '#/components/schemas/Discount'
     PaymentSource:
+      required: [assignId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         personId:
-          $ref: '#/components/schemas/Person'
+          $ref: '#/components/schemas/PersonDAO'
         paymentType:
           $ref: './shared.yaml#/components/schemas/PaymentType'
         stripePaymentSource:
@@ -389,7 +392,7 @@ components:
         active:
           type: boolean
 
-        
+
     OrderPayment:
       required: [id, orderId, paymentType, paymentSource, paymentAmountCents, paymentStatus]
       properties:
@@ -459,7 +462,7 @@ components:
         balanceType:
           $ref: './shared.yaml#/components/schemas/BalanceType'
         balanceOwner:
-          $ref: '#/components/schemas/Person'
+          $ref: '#/components/schemas/PersonDAO'
 
     StripeTransaction:
       required: [id, stripePaymentIntent, transactionAmountCents]
@@ -526,7 +529,7 @@ components:
           type: integer
           format: int64
         personId:
-          $ref: '#/components/schemas/Person'
+          $ref: '#/components/schemas/PersonDAO'
         subscriptionId:
           $ref: '#/components/schemas/Subscription'
         billingDate:
@@ -537,6 +540,7 @@ components:
           maxLength: 50
 
     Subscription:
+
       required: [id, name, billingCycle]
       properties:
         id:
@@ -562,128 +566,97 @@ components:
         cyclePriceOverrideCents:
           type: integer
           format: int64
-    PersonPhone:
-      type: object
-      required: [phoneId, personId]
-      properties:
-        id:
-          type: integer
-          format: int64
-        isPrimary:
-          type: boolean
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
-        name:
-          type: string
-          maxLength: 100
-        personId:
-          $ref: '#/components/schemas/Person'
-        phoneId:
-          $ref: '#/components/schemas/Phone'
-    Phone:
-      type: object
-      required: [number]
-      properties:
-        id:
-          type: integer
-          format: int64
-        number:
-          type: string
-          maxLength: 100
-          pattern: ^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$
-        type:
-          $ref: './shared.yaml#/components/schemas/PhoneType'
-        isVerified:
-          type: boolean
-        isBad:
-          type: boolean
-    PersonAddress:
-      type: object
-      required: [personId, addressId]
-      properties:
-        id:
-          type: integer
-          format: int64
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
-        name:
-          type: string
-          maxLength: 100
-        isPrimary:
-          type: boolean
-        addressId:
-          $ref: '#/components/schemas/Address'
-        personId:
-          $ref: '#/components/schemas/Person'
-    Address:
-      type: object
-      required: [id, line1, state, country, zip]
-      properties:
-        id:
-          type: integer
-          format: int64
-        isVerified:
-          type: boolean
-        isBad:
-          type: boolean
-        line1:
-          type: string
-          maxLength: 200
-          minLength: 1
-        line2:
-          x-dto-column: ADDR_2
-          type: string
-          maxLength: 200
-        line3:
-          x-dto-column: ADDR_3
-          type: string
-          maxLength: 200
-        state:
-          $ref: './shared.yaml#/components/schemas/USStateCode'
-        city:
-          type: string
-          maxLength: 50
-        country:
-          $ref: './shared.yaml#/components/schemas/CountryCode'
-        zip:
-          type: string
-          maxLength: 15
 
-    PersonReferral:
+    PersonPhoneDAO:
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonPhoneBase'
+        - type: object
+          properties:
+            assignId:
+              x-table-name: person_phone
+              x-col-primary: true
+              type: integer
+              format: int64
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            phoneId:
+              $ref: '#/components/schemas/PhoneDAO'
+    PhoneDAO:
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Phone'
+        - type: object
+          properties:
+            assignId:
+              x-table-name: phone
+              x-col-primary: true
+              type: integer
+              format: in64
+    PersonAddressDAO:
+      x-has-interface: true
+      x-has-dao: true
+      x-has-dto: false
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonAddressBase'
+        - type: object
+          properties:
+            assignId:
+              x-table-name: person_address
+              x-col-primary: true
+              type: integer
+              format: int64
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            addressId:
+              $ref: '#/components/schemas/AddressDAO'
+    AddressDAO:
       type: object
-      required: [id, referralSource, personId]
-      properties:
-        id:
-          type: integer
-          format: int64
-        referralSource:
-          type: string
-          maxLength: 100
-        personId:
-          $ref: '#/components/schemas/Person'
-    
-    PersonLanguage:
-      type: object
-      required: [id, language, personId]
-      properties:
-        id:
-          type: integer
-          format: int64
-        language:
-          type: string
-          maxLength: 100
-        isPrimary:
-          type: boolean
-        personId:
-          $ref: '#/components/schemas/Person'
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Address'
+        - type: object
+          properties:
+            assignId:
+              x-table-name: address
+              x-col-primary: true
+              type: integer
+              format: int64
+
+    PersonReferralDAO:
+      x-has-dao: true
+      required: [personId, assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonReferral'
+        - type: object
+          properties:
+            assignId:
+              x-table-name: person_referral
+              x-col-primary: true
+              type: integer
+              format: int64
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+
+
+    PersonLanguageDAO:
+      x-has-dao: true
+      required: [personId, assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonLanguage'
+        - type: object
+          properties:
+            assignId:
+              x-table-name: person_language
+              x-col-primary: true
+              type: integer
+              format: int64
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
 
     MembershipType:
       x-already-exists: true
@@ -691,13 +664,102 @@ components:
       properties:
         id:
           type: integer
+    #Person:
+    #  x-already-exists: true
+    #  required: [id]
+    #  properties:
+    #    id:
+    #      type: integer
 
-    Person:
-      x-already-exists: true
-      required: [id]
-      properties:
-        id:
-          type: integer
+    PersonDAO:
+      x-has-dao: true
+      required: [personId, relationsA, relationsB]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Person'
+        - type: object
+          properties:
+            personId:
+              x-table-name: person
+              x-col-primary: true
+              nullable: false
+              type: integer
+            relationsA:
+              x-column-parent-fk: a
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRelationDAO'
+            relationsB:
+              x-column-parent-fk: b
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRelationDAO'
+            memberships:
+              type: array
+              items:
+                $ref: '#/components/schemas/MembershipDAO'
+            cards:
+              x-optional-ref: true
+              type: array
+              items:
+                $ref: '#/components/schemas/CardDAO'
+            referrals:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonReferralDAO'
+            languages:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonLanguageDAO'
+            addresses:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonAddressDAO'
+            phones:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonPhoneDAO'
+
+    MembershipDAO:
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Membership'
+        - type: object
+          properties:
+            membershipId:
+              x-table-name: persons_memberships
+              x-col-primary: true
+              type: integer
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+    CardDAO:
+      x-has-dao: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Card'
+        - type: object
+          properties:
+            cardId:
+              x-table-name: persons_cards
+              x-col-primary: true
+              type: integer
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+    PersonRelationDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRelation'
+        - type: object
+          required: [a, b, relationId]
+          properties:
+            relationId:
+              type: integer
+              x-col-primary: true
+              x-table-name: person_relationships
+            a:
+              $ref: '#/components/schemas/PersonDAO'
+            b:
+              $ref: '#/components/schemas/PersonDAO'
 
     DiscountInstance:
       x-already-exists: true
