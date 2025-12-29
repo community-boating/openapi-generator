@@ -791,7 +791,7 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonRelation'
         - type: object
-          required: [a, b, relationId]
+          required: [A, B, relationId]
           properties:
             relationId:
               type: integer
