@@ -1643,6 +1643,10 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/Membership'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDTO'
     PurchaseMembershipDTO:
       x-has-dto: true
       allOf:
@@ -1696,6 +1700,10 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/Card'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDTO'
     PurchaseCardDTO:
       x-has-dto: true
       type: object
@@ -1913,7 +1921,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelationDTO'
-    PersonPublicChildDTO:
+    PersonPublicChildAndParentDTO:
       x-has-dto: true
       allOf:
         - $ref: '#/components/schemas/PersonPublicDTO'
@@ -1932,15 +1940,20 @@ components:
             emergencyContacts:
               type: array
               items:
-                $ref: '#/components/schemas/PersonPublicDTO'
+                $ref: '#/components/schemas/PersonPublicRelatedDTO'
             purchaseRecipients:
               type: array
               items:
-                $ref: '#/components/schemas/PersonPublicDTO'
+                $ref: '#/components/schemas/PersonPublicRelatedDTO'
+    PersonPublicChildDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicChildAndParentDTO'
+        - $ref: '#/components/schemas/PersonPublicRelatedDTO'
     PersonPublicParentDTO:
       x-has-dto: true
       allOf:
-        - $ref: '#/components/schemas/PersonPublicChildDTO'
+        - $ref: '#/components/schemas/PersonPublicChildAndParentDTO'
         - type: object
           properties:
             children:
@@ -1953,6 +1966,21 @@ components:
         #  items:
         #    $ref: '#/components/schemas/PersonPublicRelatedDTO'
         #DE
+    PersonPublicRelatedDTO:
+      x-has-dto: true
+      x-sub-variable: b
+      x-sub-type: PersonRelationInterfaceI
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicDTO'
+        - $ref: './shared.yaml#/components/schemas/PersonRelationBase'
+        - type: object
+          properties:
+            aTitle:
+              readOnly: true
+              type: string
+            bTitle:
+              readOnly: true
+              type: string
     PersonRelationDTO:
       x-has-dto: true
       required: [ assignId ]
@@ -1965,9 +1993,17 @@ components:
               $ref: '#/components/schemas/PersonDTO'
             b:
               $ref: '#/components/schemas/PersonDTO'
+            aTitle:
+              readOnly: true
+              type: string
+            bTitle:
+              readOnly: true
+              type: string
     PhoneDTO:
       x-has-dto: true
       x-has-dao: false
+      x-sub-variable: phoneId
+      x-sub-type: PersonPhoneDAO
       allOf:
         - $ref: './shared.yaml#/components/schemas/Phone'
         - $ref: './shared.yaml#/components/schemas/PersonPhoneBase'
@@ -1985,6 +2021,8 @@ components:
       type: object
     AddressDTO:
       x-has-dto: true
+      x-sub-variable: addressId
+      x-sub-type: PersonAddressDAO
       allOf:
         - $ref: './shared.yaml#/components/schemas/Address'
         - $ref: './shared.yaml#/components/schemas/PersonAddressBase'

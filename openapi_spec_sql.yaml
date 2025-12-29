@@ -8,9 +8,10 @@ components:
   securitySchemes: {}
   schemas:
     Catalog:
-      required: [id]
+      required: [assignId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         startActive:
@@ -23,9 +24,10 @@ components:
           type: string
           maxLength: 200
     Product:
-      required: [id, productName, productDescription, active, catalogId]
+      required: [assignId, productName, productDescription, active, catalogId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         productName:
@@ -40,9 +42,11 @@ components:
           $ref: '#/components/schemas/Catalog'
 
     Item:
-      required: [id, type]
+      x-no-commit: true
+      required: [assignId, type]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         itemType:
@@ -87,9 +91,11 @@ components:
           $ref: '#/components/schemas/Catalog'
 
     DiscountCategory:
-      required: [id, discountId]
+      x-no-commit: true
+      required: [assignId, discountId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         discountId:
@@ -99,9 +105,10 @@ components:
 
 
     ItemCategory:
-      required: [id, item, categoryId]
+      required: [assignId, item, categoryId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         item:
@@ -110,9 +117,10 @@ components:
           $ref: '#/components/schemas/Category'
 
     Category:
-      required: [id, categoryName, description, catalogId]
+      required: [assignId, categoryName, description, catalogId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         categoryName:
@@ -127,9 +135,10 @@ components:
           $ref: '#/components/schemas/Catalog'
 
     ItemInstance:
-      required: [id, itemId]
+      required: [assignId, itemId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         itemId:
@@ -145,9 +154,10 @@ components:
           format: date-time
 
     ItemInstanceStockChange:
-      required: [itemInstanceId, changeAmount, stockChangeType]
+      required: [assignId, itemInstanceId, changeAmount, stockChangeType]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         itemInstanceId:
@@ -162,9 +172,10 @@ components:
           $ref: './shared.yaml#/components/schemas/PurchasableState'
 
     LineItem:
-      required: [id, orderId, itemInstanceId, itemPriceCents]
+      required: [assignId, orderId, itemInstanceId, itemPriceCents]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         referenceId:
@@ -194,8 +205,10 @@ components:
           type: boolean
 
     LineItemRefund:
+      required: [assignId, lineItemId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         lineItemId:
@@ -217,9 +230,10 @@ components:
         revokeDuring:
           type: boolean
     LineItemRefundTax:
-      required: [taxId]
+      required: [taxId, assignId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         lineItemRefundId:
@@ -229,9 +243,10 @@ components:
           format: int64
 
     ItemTax:
-      required: [id, itemId, taxId]
+      required: [assignId, itemId, taxId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         itemId:
@@ -240,9 +255,10 @@ components:
           $ref: '#/components/schemas/Tax'
 
     Tax:
-      required: [id, taxName, taxRate, taxMinValueCents, catalogId]
+      required: [assignId, taxName, taxRate, taxMinValueCents, catalogId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         taxName:
@@ -263,9 +279,10 @@ components:
           $ref: '#/components/schemas/Catalog'
 
     OrderTax:
-      required: [id, taxId, orderNew]
+      required: [assignId, taxId, orderNew]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         taxId:
@@ -289,9 +306,11 @@ components:
           maxLength: 200
 
     LineItemDiscountInstance:
-      required: [id, lineItemId, discountInstanceId, discountType]
+      x-no-commit: true
+      required: [assignId, lineItemId, discountInstanceId, discountType]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         lineItemId:
@@ -355,9 +374,11 @@ components:
           type: boolean
 
     ItemDiscount:
-      required: [id, itemId, discountId]
+      x-no-commit: true
+      required: [assignId, itemId, discountId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         itemId:
@@ -394,9 +415,10 @@ components:
 
 
     OrderPayment:
-      required: [id, orderId, paymentType, paymentSource, paymentAmountCents, paymentStatus]
+      required: [assignId, orderId, paymentType, paymentSource, paymentAmountCents, paymentStatus]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         orderId:
@@ -428,9 +450,10 @@ components:
           format: date-time
 
     BalanceTransaction:
-      required: [id, balanceId, transactionAmountCents]
+      required: [assignId, balanceId, transactionAmountCents]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         balanceId:
@@ -448,9 +471,10 @@ components:
           $ref: '#/components/schemas/LineItem'
 
     Balance:
-      required: [id, balanceCents, balanceType]
+      required: [assignId, balanceCents, balanceType]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         balanceAccountNumber:
@@ -465,9 +489,10 @@ components:
           $ref: '#/components/schemas/PersonDAO'
 
     StripeTransaction:
-      required: [id, stripePaymentIntent, transactionAmountCents]
+      required: [assignId, stripePaymentIntent, transactionAmountCents]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         transactionType:
@@ -482,9 +507,11 @@ components:
           $ref: '#/components/schemas/OrderPayment'
 
     CashTransaction:
-      required: [id, cashDrawerId, transactionAmountCents]
+      x-no-commit: true
+      required: [assignId, cashDrawerId, transactionAmountCents]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         cashDrawerId:
@@ -498,9 +525,10 @@ components:
           $ref: '#/components/schemas/CashDrawersChange'
 
     CashDrawersChange:
-      required: [id, changeType, changeAmountCents]
+      required: [assignId, changeType, changeAmountCents]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
         changeType:
           type: string
@@ -510,22 +538,23 @@ components:
           format: int64
     ApClassType:
       x-already-exists: true
-      required: [id]
+      required: [assignId]
       properties:
         id:
           type: integer
 
     ApClassInstance:
       x-already-exists: true
-      required: [id]
+      required: [assignId]
       properties:
         id:
           type: integer
 
     PersonSubscription:
-      required: [id, personId, subscriptionId, billingCycle]
+      required: [assignId, personId, subscriptionId, billingCycle]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         personId:
@@ -541,9 +570,10 @@ components:
 
     Subscription:
 
-      required: [id, name, billingCycle]
+      required: [assignId, name, billingCycle]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         name:
@@ -554,9 +584,10 @@ components:
           maxLength: 50
 
     SubscriptionItem:
-      required: [id, subscriptionId, itemId]
+      required: [assignId, subscriptionId, itemId]
       properties:
-        id:
+        assignId:
+          x-col-primary: true
           type: integer
           format: int64
         subscriptionId:
@@ -569,12 +600,13 @@ components:
 
     PersonPhoneDAO:
       x-has-dao: true
-      required: [assignId]
+      required: [personPhoneAssignId, personId, phoneId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonPhoneBase'
         - type: object
           properties:
-            assignId:
+            personPhoneAssignId:
+              x-dto-column: assign_id
               x-table-name: person_phone
               x-col-primary: true
               type: integer
@@ -594,17 +626,18 @@ components:
               x-table-name: phone
               x-col-primary: true
               type: integer
-              format: in64
+              format: int64
     PersonAddressDAO:
       x-has-interface: true
       x-has-dao: true
       x-has-dto: false
-      required: [assignId]
+      required: [personAddressAssignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonAddressBase'
         - type: object
           properties:
-            assignId:
+            personAddressAssignId:
+              x-dto-column: assign_id
               x-table-name: person_address
               x-col-primary: true
               type: integer
@@ -660,13 +693,13 @@ components:
 
     MembershipType:
       x-already-exists: true
-      required: [id]
+      required: [assignId]
       properties:
         id:
           type: integer
     #Person:
     #  x-already-exists: true
-    #  required: [id]
+    #  required: [assignId]
     #  properties:
     #    id:
     #      type: integer
@@ -684,44 +717,52 @@ components:
               nullable: false
               type: integer
             relationsA:
+              x-parent-variable: b
               x-column-parent-fk: a
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelationDAO'
             relationsB:
+              x-parent-variable: a
               x-column-parent-fk: b
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelationDAO'
             memberships:
+              x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/MembershipDAO'
             cards:
               x-optional-ref: true
+              x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/CardDAO'
             referrals:
               type: array
+              x-parent-variable: personId
               items:
                 $ref: '#/components/schemas/PersonReferralDAO'
             languages:
+              x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/PersonLanguageDAO'
             addresses:
+              x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/PersonAddressDAO'
             phones:
+              x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/PersonPhoneDAO'
 
     MembershipDAO:
       x-has-dao: true
-      required: [assignId]
+      required: [membershipId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/Membership'
         - type: object
@@ -734,7 +775,7 @@ components:
               $ref: '#/components/schemas/PersonDAO'
     CardDAO:
       x-has-dao: true
-      required: [ assignId ]
+      required: [ cardId ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/Card'
         - type: object
@@ -763,14 +804,14 @@ components:
 
     DiscountInstance:
       x-already-exists: true
-      required: [id]
+      required: [assignId]
       properties:
         id:
           type: integer
 
     Discount:
       x-already-exists: true
-      required: [id]
+      required: [assignId]
       properties:
         id:
           type: integer
