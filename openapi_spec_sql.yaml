@@ -775,12 +775,12 @@ components:
               $ref: '#/components/schemas/PersonDAO'
     CardDAO:
       x-has-dao: true
-      required: [ cardId ]
+      required: [ assignId ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/Card'
         - type: object
           properties:
-            cardId:
+            assignId:
               x-table-name: persons_cards
               x-col-primary: true
               type: integer

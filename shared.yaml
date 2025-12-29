@@ -1377,7 +1377,7 @@ components:
       x-has-dao: false
       required: [ cardNum, assignId ]
       properties:
-        cardId:
+        assignId:
           x-col-primary: true
           type: integer
         issueDate:
