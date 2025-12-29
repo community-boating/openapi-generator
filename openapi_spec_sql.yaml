@@ -798,9 +798,13 @@ components:
               x-col-primary: true
               x-table-name: person_relationships
             A:
-              $ref: '#/components/schemas/PersonDAO'
+              x-dto-column: A
+              allOf:
+                - $ref: '#/components/schemas/PersonDAO'
             B:
-              $ref: '#/components/schemas/PersonDAO'
+              x-dto-column: B
+              allOf:
+                - $ref: '#/components/schemas/PersonDAO'
 
     DiscountInstance:
       x-already-exists: true
