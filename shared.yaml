@@ -1228,7 +1228,7 @@ components:
           allOf:
             - $ref: '#/components/schemas/PersonRelationType'
     PersonRelation:
-      required: [a, b]
+      required: [A, B]
       x-has-dto: false
       x-has-dao: false
       x-has-interface: true

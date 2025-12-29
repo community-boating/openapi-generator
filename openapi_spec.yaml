@@ -1972,7 +1972,7 @@ components:
         #DE
     PersonPublicRelatedDTO:
       x-has-dto: true
-      x-sub-variable: b
+      x-sub-variable: B
       x-sub-type: PersonRelationInterfaceI
       allOf:
         - $ref: '#/components/schemas/PersonPublicDTO'
