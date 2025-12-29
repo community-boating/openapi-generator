@@ -1070,19 +1070,26 @@ components:
           x-dto-column: NAME_PREFERRED
           type: string
           maxLength: 100
+    PersonIdOnly:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        personId:
+          x-col-primary: true
+          readOnly: true
+          type: integer
     PersonBase:
       x-has-interface: true
       x-has-dto: false
       x-hsa-dao: false
       allOf:
         - $ref: '#/components/schemas/PersonNameInfo'
+        - $ref: '#/components/schemas/PersonIdOnly'
         - type: object
           required: [ temp, updatedOn ]
           properties:
-            personId:
-              x-col-primary: true
-              readOnly: true
-              type: integer
             allowSignouts:
               readOnly: true
               type: boolean
@@ -1338,25 +1345,23 @@ components:
       x-has-dto: false
       x-has-dao: false
       properties:
+        personId:
+          $ref: '#/components/schemas/PersonIdOnly'
         assignId:
           x-col-primary: true
           type: integer
         membershipTypeId:
-          nullable: false
           type: integer
         #personId:
         #  $ref: '#/components/schemas/Person'
         startDate:
-          nullable: true
           type: string
           format: date
         purchaseDate:
-          nullable: true
           readOnly: true
           type: string
           format: date
         expirationDate:
-          nullable: true
           readOnly: true
           type: string
           format: date
@@ -1375,8 +1380,10 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [ cardNum, assignId ]
+      required: [ cardNum, personId ]
       properties:
+        personId:
+          $ref: '#/components/schemas/PersonIdOnly'
         assignId:
           x-col-primary: true
           type: integer
