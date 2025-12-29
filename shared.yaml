@@ -1344,8 +1344,8 @@ components:
         membershipTypeId:
           nullable: false
           type: integer
-        personId:
-          $ref: '#/components/schemas/Person'
+        #personId:
+        #  $ref: '#/components/schemas/Person'
         startDate:
           nullable: true
           type: string
@@ -1383,8 +1383,8 @@ components:
         issueDate:
           type: string
           format: date-time
-        personId:
-          $ref: '#/components/schemas/Person'
+        #personId:
+        #  $ref: '#/components/schemas/Person'
         cardNum:
           type: string
         active:

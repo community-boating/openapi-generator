@@ -1643,10 +1643,10 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/Membership'
-        - type: object
-          properties:
-            personId:
-              $ref: '#/components/schemas/PersonDTO'
+        #- type: object
+        #  properties:
+        #    personId:
+        #      $ref: '#/components/schemas/PersonDTO'
     PurchaseMembershipDTO:
       x-has-dto: true
       allOf:
@@ -1700,10 +1700,10 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/Card'
-        - type: object
-          properties:
-            personId:
-              $ref: '#/components/schemas/PersonDTO'
+        #- type: object
+        #  properties:
+        #    personId:
+        #      $ref: '#/components/schemas/PersonDTO'
     PurchaseCardDTO:
       x-has-dto: true
       type: object
