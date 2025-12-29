@@ -1087,6 +1087,7 @@ components:
               readOnly: true
               type: boolean
             personType:
+              x-enum-type: integer
               readOnly: true
               allOf:
                 - $ref: '#/components/schemas/PersonTypeEnum'
@@ -1131,7 +1132,9 @@ components:
             previousMember:
               type: boolean
             swimProof:
-              $ref: '#/components/schemas/SwimProof'
+              x-enum-type: integer
+              allOf:
+                - $ref: '#/components/schemas/SwimProof'
             dob:
               type: string
               format: date-time
@@ -1213,6 +1216,7 @@ components:
           type: string
           maxLength: 100
         relationTypeId:
+          x-enum-type: integer
           x-dto-column: TYPE_ID
           allOf:
             - $ref: '#/components/schemas/PersonRelationType'
