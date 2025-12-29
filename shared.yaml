@@ -475,6 +475,7 @@ components:
         - ZAMBIA
         - ZIMBABWE
       enum:
+        - US
         - AF
         - AL
         - DZ
@@ -671,6 +672,7 @@ components:
     Country:
       type: string
       enum:
+        - UNITED_STATES
         - AFGHANISTAN
         - ALBANIA
         - ALGERIA
