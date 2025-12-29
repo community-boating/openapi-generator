@@ -1338,7 +1338,7 @@ components:
       x-has-dto: false
       x-has-dao: false
       properties:
-        membershipId:
+        assignId:
           x-col-primary: true
           type: integer
         membershipTypeId:

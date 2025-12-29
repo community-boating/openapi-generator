@@ -762,12 +762,12 @@ components:
 
     MembershipDAO:
       x-has-dao: true
-      required: [membershipId]
+      required: [assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/Membership'
         - type: object
           properties:
-            membershipId:
+            assignId:
               x-table-name: persons_memberships
               x-col-primary: true
               type: integer
