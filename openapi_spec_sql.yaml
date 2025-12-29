@@ -717,14 +717,14 @@ components:
               nullable: false
               type: integer
             relationsA:
-              x-parent-variable: b
-              x-column-parent-fk: a
+              x-parent-variable: B
+              x-column-parent-fk: A
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelationDAO'
             relationsB:
-              x-parent-variable: a
-              x-column-parent-fk: b
+              x-parent-variable: A
+              x-column-parent-fk: B
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelationDAO'
@@ -797,9 +797,9 @@ components:
               type: integer
               x-col-primary: true
               x-table-name: person_relationships
-            a:
+            A:
               $ref: '#/components/schemas/PersonDAO'
-            b:
+            B:
               $ref: '#/components/schemas/PersonDAO'
 
     DiscountInstance:

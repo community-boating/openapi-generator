@@ -1236,10 +1236,10 @@ components:
         - $ref: '#/components/schemas/PersonRelationBase'
         - type: object
           properties:
-            a:
+            A:
               allOf:
                 - $ref: '#/components/schemas/Person'
-            b:
+            B:
               allOf:
                 - $ref: '#/components/schemas/Person'
     #PersonRelated:

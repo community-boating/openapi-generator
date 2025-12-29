@@ -1914,13 +1914,13 @@ components:
               items:
                 $ref: '#/components/schemas/MembershipDTO'
             relationsA:
-              x-column-parent-fk: a
+              x-column-parent-fk: A
               x-base-type: false
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelationDTO'
             relationsB:
-              x-column-parent-fk: b
+              x-column-parent-fk: B
               x-base-type: false
               type: array
               items:
@@ -1993,9 +1993,9 @@ components:
         - $ref: '#/components/schemas/PersonDTO'
         - type: object
           properties:
-            a:
+            A:
               $ref: '#/components/schemas/PersonDTO'
-            b:
+            B:
               $ref: '#/components/schemas/PersonDTO'
             aTitle:
               readOnly: true
