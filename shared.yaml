@@ -281,6 +281,7 @@ components:
     CountryCode:
       type: string
       x-enum-varnames:
+        - UNITED_STATES
         - AFGHANISTAN
         - ALBANIA
         - ALGERIA
