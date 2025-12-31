@@ -1479,6 +1479,7 @@ components:
       x-has-dto: false
       x-has-dao: false
       type: object
+      required: [personId]
       properties:
         personId:
           x-col-primary: true
@@ -1884,8 +1885,6 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      allOf:
-        - $ref: '#/components/schemas/WithPersonIdOnlyOptional'
       type: object
       required: [personId]
       properties:
