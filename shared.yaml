@@ -1710,7 +1710,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [ line1, state, country, zip ]
+      required: [ line1, country, zip ]
       properties:
         assignId:
           x-col-primary: true

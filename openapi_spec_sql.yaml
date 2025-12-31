@@ -600,6 +600,8 @@ components:
 
     PersonPhoneDAO:
       x-has-dao: true
+      x-sub-type: Phone
+      x-sub-variable: phoneId
       required: [personPhoneAssignId, personId, phoneId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonPhoneBase'
@@ -631,6 +633,8 @@ components:
       x-has-interface: true
       x-has-dao: true
       x-has-dto: false
+      x-sub-type: Address
+      x-sub-variable: addressId
       required: [personAddressAssignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonAddressBase'
@@ -645,7 +649,8 @@ components:
             personId:
               $ref: '#/components/schemas/PersonDAO'
             addressId:
-              $ref: '#/components/schemas/AddressDAO'
+              allOf:
+                - $ref: '#/components/schemas/AddressDAO'
     AddressDAO:
       type: object
       x-has-dao: true
