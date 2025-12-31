@@ -1275,10 +1275,12 @@ components:
               items:
                 $ref: '#/components/schemas/Card'
             relationsA:
+              x-parent-variable: B
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelation'
             relationsB:
+              x-parent-variable: A
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelation'
