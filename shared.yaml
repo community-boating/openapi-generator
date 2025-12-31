@@ -1870,12 +1870,24 @@ components:
         voidCloseId:
           readOnly: true
           type: integer
-    WithPersonIdOnly:
+    WithPersonIdOnlyOptional:
       x-no-dto: true
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       type: object
+      properties:
+        personId:
+          $ref: '#/components/schemas/PersonIdOnly'
+    WithPersonIdOnly:
+      x-no-dto: true
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/WithPersonIdOnlyOptional'
+      type: object
+      required: [personId]
       properties:
         personId:
           $ref: '#/components/schemas/PersonIdOnly'
@@ -1886,7 +1898,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/DonationBase'
-        - $ref: '#/components/schemas/WithPersonIdOnly'
+        - $ref: '#/components/schemas/WithPersonIdOnlyOptional'
     Phone:
       type: object
       x-has-interface: true
