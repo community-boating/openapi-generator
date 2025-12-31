@@ -1434,6 +1434,16 @@ components:
         - 3
         - 4
 
+    Deletable:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        isDeleted:
+          type: boolean
+          default: false
+
     PersonNameInfo:
       x-has-interface: true
       x-has-dto: false
@@ -1740,15 +1750,13 @@ components:
         zip:
           type: string
           maxLength: 15
-    Membership:
-      required: [ membershipTypeId, personId ]
+    MembershipBase:
+      required: [ membershipTypeId ]
       x-has-interface: true
       x-no-dto: true
       x-has-dto: false
       x-has-dao: false
       properties:
-        personId:
-          $ref: '#/components/schemas/PersonIdOnly'
         assignId:
           x-col-primary: true
           type: integer
@@ -1777,7 +1785,15 @@ components:
         voidCloseId:
           readOnly: true
           type: integer
-    Card:
+    Membership:
+      x-has-interface: true
+      x-no-dto: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/MembershipBase'
+        - $ref: '#/components/schemas/WithPersonIdOnly'
+    CardBase:
       x-no-dto: true
       x-has-interface: true
       x-has-dto: false
@@ -1806,6 +1822,69 @@ components:
         voidCloseId:
           readOnly: true
           type: integer
+    Card:
+      allOf:
+        - $ref: '#/components/schemas/CardBase'
+        - $ref: '#/components/schemas/WithPersonIdOnly'
+    DonationBase:
+      x-no-dto: true
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        donationId:
+          x-col-primary: true
+          type: integer
+        fundId:
+          type: integer
+        donationDate:
+          type: string
+          format: date-time
+        description:
+          type: string
+          maxLength: 500
+        restriction:
+          type: string
+          maxLength: 500
+        initiativeId:
+          type: integer
+        inMemoryOf:
+          type: string
+        isMatch:
+          type: boolean
+        inKind:
+          type: boolean
+        skipAck:
+          type: boolean
+        amount:
+          readOnly: true
+          type: number
+          format: double
+        purchasableState:
+          readOnly: true
+          allOf:
+            - $ref: './shared.yaml#/components/schemas/PurchasableState'
+        voidCloseId:
+          readOnly: true
+          type: integer
+    WithPersonIdOnly:
+      x-no-dto: true
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        personId:
+          $ref: '#/components/schemas/PersonIdOnly'
+    Donation:
+      x-no-dto: true
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/DonationBase'
+        - $ref: '#/components/schemas/WithPersonIdOnly'
     Phone:
       type: object
       x-has-interface: true

@@ -691,6 +691,23 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderPaymentDTO'
+  /member/donations:
+    get:
+      x-is-paginated: true
+      security:
+        - member: []
+      description: 'Returns a list of donations'
+      tags:
+        - Member
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DonationDTO'
   /stripe/paymentTest:
     post:
       security:
@@ -1646,60 +1663,38 @@ components:
         - type: object
           properties:
             personId:
-              $ref: '#/components/schemas/PersonIdOnlyDTO'
+              $ref: '#/components/schemas/PersonNameDTO'
     PurchaseMembershipDTO:
       x-has-dto: true
       allOf:
-        - $ref: '#/components/schemas/MembershipDTO'
+        - $ref: './shared.yaml#/components/schemas/MembershipBase'
+        - type: object
+          properties:
+            personId:
+              type: integer
+    DonationDTO:
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Donation'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonNameDTO'
     PurchaseDonationDTO:
       required: [fundId,initiativeId, state]
-      properties:
-        donationId:
-          nullable: false
-          type: integer
-        fundId:
-          type: integer
-        donationDate:
-          type: string
-          format: date-time
-        description:
-          type: string
-          maxLength: 500
-        restriction:
-          type: string
-          maxLength: 500
-        initiativeId:
-          type: integer
-        inMemoryOf:
-          nullable: true
-          type: string
-        isMatch:
-          nullable: true
-          type: boolean
-        inKind:
-          nullable: true
-          type: boolean
-        skipAck:
-          nullable: true
-          type: boolean
-        personId:
-          nullable: false
-          type: integer
-        amount:
-          readOnly: true
-          type: number
-          format: double
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PurchasableState'
-        voidCloseId:
-          readOnly: true
-          type: integer
+      allOf: 
+        - $ref: './shared.yaml#/components/schemas/DonationBase'
+        - type: object
+          properties:
+            personId:
+              type: integer
     PersonIdOnlyDTO:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonIdOnly'
+    PersonNameDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
     CardDTO:
       x-has-dto: true
       allOf:
@@ -1707,12 +1702,16 @@ components:
         - type: object
           properties:
             personId:
-              $ref: '#/components/schemas/PersonIdOnlyDTO'
+              $ref: '#/components/schemas/PersonNameDTO'
     PurchaseCardDTO:
       x-has-dto: true
       type: object
       allOf:
-        - $ref: '#/components/schemas/CardDTO'
+        - $ref: './shared.yaml#/components/schemas/CardBase'
+        - type: object
+          properties:
+            personId:
+              type: integer
     PurchaseGiftCardDTO:
       properties:
         assignId:
@@ -1977,6 +1976,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/PersonPublicDTO'
         - $ref: './shared.yaml#/components/schemas/PersonRelationBase'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
           properties:
             aTitle:
@@ -1991,6 +1991,7 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonRelation'
         - $ref: '#/components/schemas/PersonDTO'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
           properties:
             A:
@@ -2011,16 +2012,18 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/Phone'
         - $ref: './shared.yaml#/components/schemas/PersonPhoneBase'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
     PersonReferralDTO:
       x-has-dto: true
       required: [assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonReferral'
-        - type: object
+        - $ref: './shared.yaml#/components/schemas/Deletable'
     PersonLanguageDTO:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonLanguage'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
     TestChange:
       type: object
     AddressDTO:
@@ -2030,6 +2033,7 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/Address'
         - $ref: './shared.yaml#/components/schemas/PersonAddressBase'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
     ValidationTestDTO:
       type: object
       properties:

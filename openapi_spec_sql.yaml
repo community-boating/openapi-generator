@@ -708,7 +708,22 @@ components:
     #  properties:
     #    id:
     #      type: integer
-
+    DonationDAO:
+      x-has-dao: true
+      required: [donationId, fundId, initiativeId, state]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Donation'
+        - type: object
+          properties:
+            donationId:
+              type: integer
+              x-col-primary: true
+              x-table-name: donations
+              x-auto-increment: DONATIONS_SEQ
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            lineItem:
+              $ref: '#/components/schemas/LineItem'
     PersonDAO:
       x-has-dao: true
       required: [personId, relationsA, relationsB]
@@ -812,6 +827,8 @@ components:
               x-dto-column: B
               allOf:
                 - $ref: '#/components/schemas/PersonDAO'
+    
+
 
     DiscountInstance:
       x-already-exists: true
