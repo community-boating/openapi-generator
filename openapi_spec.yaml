@@ -166,7 +166,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BalanceDTO'
-  /staff/balances: 
+  /staff/balances:
+    x-is-paginated: true
     get:
       summary: Gets a list of balances
       security:
@@ -692,13 +693,14 @@ paths:
               schema:
                 $ref: '#/components/schemas/OrderPaymentDTO'
   /member/donations:
+    x-is-paginated: true
     get:
-      x-is-paginated: true
       security:
         - member: []
       description: 'Returns a list of donations'
       tags:
         - Member
+      x-is-paginated: true
       responses:
         '200':
           description: Returns payment intent
