@@ -1823,6 +1823,7 @@ components:
           readOnly: true
           type: integer
     Card:
+      required: [cardNum, personId]
       allOf:
         - $ref: '#/components/schemas/CardBase'
         - $ref: '#/components/schemas/WithPersonIdOnly'
