@@ -1801,8 +1801,6 @@ components:
       x-has-dao: false
       required: [ cardNum, personId ]
       properties:
-        personId:
-          $ref: '#/components/schemas/PersonIdOnly'
         assignId:
           x-col-primary: true
           type: integer
