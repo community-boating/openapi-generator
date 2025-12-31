@@ -1892,6 +1892,8 @@ components:
         - $ref: './shared.yaml#/components/schemas/PersonBase'
         - type: object
           properties:
+            isLocked:
+              type: boolean
             phones:
               type: array
               items:
@@ -1900,11 +1902,23 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/AddressDTO'
+            referrals:
+              x-parent-variable: personId
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonReferralDTO'
+            languages:
+              x-parent-variable: personId
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonLanguageDTO'
+
     PersonDTO:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/Person'
         - $ref: '#/components/schemas/PersonPublicDTO'
+        - $ref: './shared.yaml#/components/schemas/Tracked'
         - type: object
           properties:
             cards:

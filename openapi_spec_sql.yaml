@@ -605,6 +605,7 @@ components:
       required: [personPhoneAssignId, personId, phoneId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonPhoneBase'
+        - $ref: './shared.yaml#/components/schemas/Tracked'
         - type: object
           properties:
             personPhoneAssignId:
@@ -622,6 +623,7 @@ components:
       required: [assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/Phone'
+        - $ref: './shared.yaml#/components/schemas/Tracked'
         - type: object
           properties:
             assignId:
@@ -629,6 +631,10 @@ components:
               x-col-primary: true
               type: integer
               format: int64
+            persons:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonPhoneDAO'
     PersonAddressDAO:
       x-has-interface: true
       x-has-dao: true
@@ -638,6 +644,7 @@ components:
       required: [personAddressAssignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonAddressBase'
+        - $ref: './shared.yaml#/components/schemas/Tracked'
         - type: object
           properties:
             personAddressAssignId:
@@ -657,6 +664,7 @@ components:
       required: [assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/Address'
+        - $ref: './shared.yaml#/components/schemas/Tracked'
         - type: object
           properties:
             assignId:
@@ -664,12 +672,17 @@ components:
               x-col-primary: true
               type: integer
               format: int64
+            persons:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonAddressDAO'
 
     PersonReferralDAO:
       x-has-dao: true
       required: [personId, assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonReferral'
+        - $ref: './shared.yaml#/components/schemas/Tracked'
         - type: object
           properties:
             assignId:
@@ -686,6 +699,7 @@ components:
       required: [personId, assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonLanguage'
+        - $ref: './shared.yaml#/components/schemas/Tracked'
         - type: object
           properties:
             assignId:
@@ -729,6 +743,7 @@ components:
       required: [personId, relationsA, relationsB]
       allOf:
         - $ref: './shared.yaml#/components/schemas/Person'
+        - $ref: './shared.yaml#/components/schemas/Tracked'
         - type: object
           properties:
             personId:
@@ -743,6 +758,9 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelationDAO'
+            pwHash:
+              type: string
+              maxLength: 100
             relationsB:
               x-parent-variable: A
               x-column-parent-fk: B

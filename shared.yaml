@@ -1433,7 +1433,25 @@ components:
         - 2
         - 3
         - 4
-
+    Tracked:
+      x-has-interface: true
+      x-no-dao: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        updatedOn:
+          type: string
+          format: date-time
+        updatedBy:
+          type: string
+          maxLength: 500
+        createdOn:
+          type: string
+          format: date-time
+        createdBy:
+          type: string
+          maxLength: 500
     Deletable:
       x-has-interface: true
       x-has-dto: false
@@ -1493,7 +1511,7 @@ components:
         - $ref: '#/components/schemas/PersonNameInfo'
         - $ref: '#/components/schemas/PersonIdOnly'
         - type: object
-          required: [ temp, updatedOn ]
+          required: [ temp ]
           properties:
             allowSignouts:
               readOnly: true
@@ -1574,10 +1592,6 @@ components:
               type: string
               maxLength: 100
               pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
-            updatedOn:
-              readOnly: true
-              type: string
-              format: date-time
             temp:
               readOnly: true
               type: string
@@ -1685,12 +1699,12 @@ components:
               items:
                 $ref: '#/components/schemas/Card'
             relationsA:
-              x-parent-variable: B
+              x-parent-variable: A
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelation'
             relationsB:
-              x-parent-variable: A
+              x-parent-variable: B
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelation'
