@@ -1694,6 +1694,7 @@ components:
     PersonNameDTO:
       x-has-dto: true
       allOf:
+        - $ref: '#/components/schemas/PersonIdOnlyDTO'
         - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
     CardDTO:
       x-has-dto: true
