@@ -1150,10 +1150,12 @@ components:
               readOnly: true
               type: boolean
             referrals:
+              x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/PersonReferral'
             languages:
+              x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/PersonLanguage'
@@ -1178,10 +1180,12 @@ components:
               maxLength: 1
               minLength: 1
             phones:
+              x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/PersonPhoneBase'
             addresses:
+              x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/PersonAddressBase'
@@ -1266,10 +1270,12 @@ components:
         - type: object
           properties:
             memberships:
+              x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/Membership'
             cards:
+              x-parent-variable: personId
               x-base-type: CardDTO
               type: array
               items:
