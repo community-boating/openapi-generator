@@ -1681,6 +1681,7 @@ components:
             personId:
               $ref: '#/components/schemas/PersonNameDTO'
     PurchaseDonationDTO:
+      x-has-dto: true
       required: [fundId,initiativeId, state]
       allOf: 
         - $ref: './shared.yaml#/components/schemas/DonationBase'
