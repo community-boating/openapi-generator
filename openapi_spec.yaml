@@ -1673,6 +1673,7 @@ components:
             personId:
               type: integer
     DonationDTO:
+      x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/Donation'
         - type: object
