@@ -714,6 +714,7 @@ components:
             personId:
               x-table-name: persons
               x-col-primary: true
+              x-auto-increment: PERSONS_SEQ
               nullable: false
               type: integer
             relationsA:
@@ -795,6 +796,7 @@ components:
           properties:
             relationId:
               type: integer
+              x-auto-increment: PERSON_RELATIONSHIPS_SEQ
               x-col-primary: true
               x-table-name: person_relationships
             A:
