@@ -1831,6 +1831,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
+      required: [fundId, initiativeId, state]
       type: object
       properties:
         donationId:
