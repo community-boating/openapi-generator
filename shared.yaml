@@ -1883,7 +1883,7 @@ components:
         voidCloseId:
           readOnly: true
           type: integer
-    WithPersonIdOnlyOptional:
+    WithPersonIdOnlyOpt:
       x-no-dto: true
       x-has-interface: true
       x-has-dto: false
@@ -1909,7 +1909,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/DonationBase'
-        - $ref: '#/components/schemas/WithPersonIdOnlyOptional'
+        - $ref: '#/components/schemas/WithPersonIdOnlyOpt'
     Phone:
       type: object
       x-has-interface: true
