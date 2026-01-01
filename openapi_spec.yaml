@@ -75,6 +75,7 @@ paths:
       tags:
         - Member
       requestBody:
+        x-use-tracked: true
         required: true
         content:
           application/json:
