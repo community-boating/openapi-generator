@@ -1549,6 +1549,9 @@ components:
             ethnicity:
               type: string
               maxLength: 100
+            language:
+              type: string
+              maxLength: 100
             matchingGifts:
               type: string
               maxLength: 1
@@ -1584,9 +1587,6 @@ components:
               maxLength: 10
               items:
                 $ref: '#/components/schemas/PersonReferral'
-            language:
-              type: string
-              maxLength: 100
             #memberships:
             #  type: array
             #  items:

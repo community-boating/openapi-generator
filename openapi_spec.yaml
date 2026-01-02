@@ -1924,11 +1924,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonReferralDTO'
-            languages:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonLanguageDTO'
 
     PersonDTO:
       x-has-dto: true
@@ -2068,11 +2063,6 @@ components:
       required: [assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonReferral'
-        - $ref: './shared.yaml#/components/schemas/Deletable'
-    PersonLanguageDTO:
-      x-has-dto: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonLanguage'
         - $ref: './shared.yaml#/components/schemas/Deletable'
     TestChange:
       type: object
