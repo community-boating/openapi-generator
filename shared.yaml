@@ -1574,11 +1574,13 @@ components:
             referrals:
               x-parent-variable: personId
               type: array
+              maxLength: 10
               items:
                 $ref: '#/components/schemas/PersonReferral'
             languages:
               x-parent-variable: personId
               type: array
+              maxLength: 25
               items:
                 $ref: '#/components/schemas/PersonLanguage'
             #memberships:
@@ -1598,11 +1600,13 @@ components:
               maxLength: 1
               minLength: 1
             phones:
+              maxLength: 5
               x-parent-variable: personId
               type: array
               items:
                 $ref: '#/components/schemas/PersonPhoneBase'
             addresses:
+              maxLength: 5
               x-parent-variable: personId
               type: array
               items:
