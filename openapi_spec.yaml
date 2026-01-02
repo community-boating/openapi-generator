@@ -571,7 +571,6 @@ paths:
                 $ref: '#/components/schemas/CatalogDTO'
     post:
       description: 'Updates the current catalog'
-      x-use-tracked: true
       x-one-of-permissions:
         - 
           scope: admin
@@ -581,6 +580,7 @@ paths:
       security:
         - staff: []
       requestBody:
+        x-use-tracked: true
         required: true
         content:
           application/json:
