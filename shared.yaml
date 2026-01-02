@@ -179,12 +179,14 @@ components:
         - 2000
     DummyEnum:
       type: string
-      anyOf:
-        - $ref: '#/components/schemas/ReferralSource'
-        - $ref: '#/components/schemas/Gender'
-        - $ref: '#/components/schemas/Ethnicity'
-        - $ref: '#/components/schemas/Language'
-        - $ref: '#/components/schemas/CountryPhoneCode'
+      properties:
+        dummyType:
+          anyOf:
+            - $ref: '#/components/schemas/ReferralSource'
+            - $ref: '#/components/schemas/Gender'
+            - $ref: '#/components/schemas/Ethnicity'
+            - $ref: '#/components/schemas/Language'
+            - $ref: '#/components/schemas/CountryPhoneCode'
     ReferralSource:
       type: string
       enum:
