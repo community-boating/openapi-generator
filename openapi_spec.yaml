@@ -1998,18 +1998,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonPublicChildDTO'
-            availableAddresses:
-              description: A list of all existing addresses this person can add assign either themselves or related persons.
-              readOnly: true
-              type: array
-              items:
-                $ref: '#/components/schemas/AddressDTO'
-            availablePhones:
-              description: A list of all existing phones this person can add assign either themselves or related persons.
-              readOnly: true
-              type: array
-              items:
-                $ref: '#/components/schemas/PhoneDTO'
     PersonPublicRelatedDTO:
       x-has-dto: true
       x-sub-variable: B
