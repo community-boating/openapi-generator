@@ -177,6 +177,13 @@ components:
         - 3
         - 4
         - 2000
+    DummyEnum:
+      type: string
+      anyOf:
+        - $ref: '#/components/schemas/Gender'
+        - $ref: '#/components/schemas/Ethnicity'
+        - $ref: '#/components/schemas/Language'
+        - $ref: '#/components/schemas/CountryPhoneCode'
     ReferralSource:
       type: string
       enum:
