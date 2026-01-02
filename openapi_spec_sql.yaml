@@ -693,23 +693,6 @@ components:
             personId:
               $ref: '#/components/schemas/PersonDAO'
 
-
-    PersonLanguageDAO:
-      x-has-dao: true
-      required: [personId, assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonLanguage'
-        - $ref: './shared.yaml#/components/schemas/Tracked'
-        - type: object
-          properties:
-            assignId:
-              x-table-name: person_language
-              x-col-primary: true
-              type: integer
-              format: int64
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-
     MembershipType:
       x-already-exists: true
       required: [assignId]
@@ -783,11 +766,6 @@ components:
               x-parent-variable: personId
               items:
                 $ref: '#/components/schemas/PersonReferralDAO'
-            languages:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonLanguageDAO'
             addresses:
               x-parent-variable: personId
               type: array

@@ -1584,12 +1584,9 @@ components:
               maxLength: 10
               items:
                 $ref: '#/components/schemas/PersonReferral'
-            languages:
-              x-parent-variable: personId
-              type: array
-              maxLength: 25
-              items:
-                $ref: '#/components/schemas/PersonLanguage'
+            language:
+              type: string
+              maxLength: 100
             #memberships:
             #  type: array
             #  items:
@@ -1940,21 +1937,6 @@ components:
         isVerified:
           type: boolean
         isBad:
-          type: boolean
-    PersonLanguage:
-      type: object
-      x-has-interface: true
-      x-has-dto: false
-      x-has-dao: false
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        language:
-          type: string
-          maxLength: 100
-        isPrimary:
           type: boolean
     PersonReferral:
       type: object
