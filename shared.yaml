@@ -180,6 +180,7 @@ components:
     DummyEnum:
       type: string
       anyOf:
+        - $ref: '#/components/schemas/ReferralSource'
         - $ref: '#/components/schemas/Gender'
         - $ref: '#/components/schemas/Ethnicity'
         - $ref: '#/components/schemas/Language'
@@ -213,7 +214,6 @@ components:
         - NATIVE_HAWAIIAN_OR_OTHER_PACIFIC_ISLANDER
         - WHITE
         - MIDDLE_EASTERN_OR_NORTH_AFRICAN
-        - OTHER
         - PREFER_NOT_TO_ANSWER
     Language:
       type: string
