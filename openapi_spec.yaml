@@ -914,7 +914,7 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemRef'
-        - $ref: './shared.yaml#/components/schemas/ItemBase'
+        - $ref: './shared.yaml#/components/schemas/ItemFull'
         - type: object
           properties:
             #classTypeId:
@@ -938,7 +938,7 @@ components:
     CatalogItemDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemFull'
+        - $ref: './shared.yaml#/components/schemas/ItemInternalFull'
         - type: object
           properties:
             #classTypeId:
@@ -955,18 +955,22 @@ components:
             #  type: integer
             #  format: int64
             itemInstances:
+              x-parent-variable: lineItemId
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemInstanceDTO'
             itemDiscounts:
+              x-parent-variable: lineItemId
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemDiscountDTO'
             itemTaxes:
+              x-parent-variable: lineItemId
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemTaxDTO'
             itemCategories:
+              x-parent-variable: lineItemId
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemCategoryDTO'

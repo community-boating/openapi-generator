@@ -3286,7 +3286,6 @@ components:
           type: string
           maxLength: 200
         itemSKU:
-          nullable: true
           type: string
           maxLength: 500
         minQuantity:
@@ -3322,6 +3321,7 @@ components:
             productId:
               $ref: '#/components/schemas/ProductRef'
             itemInstances:
+              x-parent-variable: lineItemId
               type: array
               items:
                 $ref: '#/components/schemas/ItemInstanceBase'
@@ -3335,14 +3335,17 @@ components:
         - type: object
           properties:
             itemDiscounts:
+              x-parent-variable: lineItemId
               type: array
               items:
                 $ref: '#/components/schemas/ItemDiscountBase'
             itemTaxes:
+              x-parent-variable: lineItemId
               type: array
               items:
                 $ref: '#/components/schemas/ItemTaxFull'
             itemCategories:
+              x-parent-variable: lineItemId
               type: array
               items:
                 $ref: '#/components/schemas/ItemCategoryFull'
