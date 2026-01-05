@@ -3246,7 +3246,8 @@ components:
             cashDrawerId:
               x-col-primary: true
               x-table-name: CASH_DRAWERS
-              type: integer
+              type: string
+              maxLength: 100
     CashDrawerFull:
       x-has-interface: true
       x-dao-interface: true
