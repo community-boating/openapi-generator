@@ -2555,7 +2555,7 @@ components:
       x-has-interface: true
       required: [ categoryId ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemCategoryRef'
+        - $ref: '#/components/schemas/ItemCategoryRef'
         - type: object
           properties:
             item:
@@ -2566,7 +2566,8 @@ components:
       x-has-interface: true
       required: [ item, categoryId ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemCategoryRef'
+        - $ref: '#/components/schemas/ItemCategoryRef'
+        - $ref: '#/components/schemas/ItemCategoryFull'
         - type: object
           properties:
             item:
