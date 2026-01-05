@@ -68,10 +68,25 @@ components:
             catalogId:
               $ref: '#/components/schemas/Catalog'
             itemInstances:
+              x-parent-variable: itemId
               type: array
               items:
                 $ref: '#/components/schemas/ItemInstance'
-
+            itemCategories:
+              x-parent-variable: item
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemCategory'
+            itemDiscounts:
+              x-parent-variable: itemId
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemDiscount'
+            itemTaxes:
+              x-parent-variable: itemId
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemTax'
     DiscountCategory:
       x-has-dao: true
       required: [assignId, discountId]

@@ -2553,6 +2553,17 @@ components:
         - $ref: '#/components/schemas/Deletable'
     ItemCategoryFull:
       x-has-interface: true
+      required: [ categoryId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemCategoryRef'
+        - type: object
+          properties:
+            item:
+              $ref: '#/components/schemas/ItemRef'
+            categoryId:
+              $ref: '#/components/schemas/CategoryRef'
+    ItemCategoryInternalFull:
+      x-has-interface: true
       required: [ item, categoryId ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemCategoryRef'
@@ -3321,10 +3332,15 @@ components:
             productId:
               $ref: '#/components/schemas/ProductRef'
             itemInstances:
-              x-parent-variable: lineItemId
+              x-parent-variable: itemId
               type: array
               items:
                 $ref: '#/components/schemas/ItemInstanceBase'
+            itemCategories:
+              x-parent-variable: item
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemCategoryFull'
     ItemInternalFull:
       x-has-interface: true
       x-has-dto: false
@@ -3335,20 +3351,15 @@ components:
         - type: object
           properties:
             itemDiscounts:
-              x-parent-variable: lineItemId
+              x-parent-variable: itemId
               type: array
               items:
                 $ref: '#/components/schemas/ItemDiscountBase'
             itemTaxes:
-              x-parent-variable: lineItemId
+              x-parent-variable: itemId
               type: array
               items:
                 $ref: '#/components/schemas/ItemTaxFull'
-            itemCategories:
-              x-parent-variable: lineItemId
-              type: array
-              items:
-                $ref: '#/components/schemas/ItemCategoryFull'
     ItemTaxRef:
       x-has-interface: true
       x-has-dto: true

@@ -934,6 +934,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemInstancePublicDTO'
+            itemCategories:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemCategoryPublicDTO'
 
     CatalogItemDTO:
       x-has-dto: true
@@ -955,22 +959,22 @@ components:
             #  type: integer
             #  format: int64
             itemInstances:
-              x-parent-variable: lineItemId
+              x-parent-variable: itemId
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemInstanceDTO'
             itemDiscounts:
-              x-parent-variable: lineItemId
+              x-parent-variable: itemId
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemDiscountDTO'
             itemTaxes:
-              x-parent-variable: lineItemId
+              x-parent-variable: itemId
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemTaxDTO'
             itemCategories:
-              x-parent-variable: lineItemId
+              x-parent-variable: item
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemCategoryDTO'
@@ -981,12 +985,16 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemTaxFull'
-
-    CatalogItemCategoryDTO:
+    CatalogItemCategoryPublicDTO:
       required: [categoryId]
       x-has-dto: true
       allOf:
         - $ref: "./shared.yaml#/components/schemas/ItemCategoryFull"
+    CatalogItemCategoryDTO:
+      required: [categoryId]
+      x-has-dto: true
+      allOf:
+        - $ref: "./shared.yaml#/components/schemas/ItemCategoryInternalFull"
     CatalogProductDTO:
       required: [productName, productDescription, active]
       x-has-dto: true
