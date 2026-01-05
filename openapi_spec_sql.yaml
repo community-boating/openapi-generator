@@ -8,595 +8,464 @@ components:
   securitySchemes: {}
   schemas:
     Catalog:
+      x-has-dao: true
       required: [assignId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
-        catalogName:
-          type: string
-          maxLength: 200
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CatalogInternalFull'
+        - type: object
+          properties:
+            items:
+              x-parent-variable: catalogId
+              #x-column-parent-fk: line
+              type: array
+              items:
+                $ref: '#/components/schemas/Item'
+            taxes:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/Tax'
+            categories:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/Category'
+            discounts:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/Discount'
+            products:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/Product'
     Product:
+      x-has-dao: true
       required: [assignId, productName, productDescription, active, catalogId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        productName:
-          type: string
-          maxLength: 200
-        productDescription:
-          type: string
-          maxLength: 500
-        active:
-          type: boolean
-        catalogId:
-          $ref: '#/components/schemas/Catalog'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ProductFull'
+        - type: object
+          properties:
+            catalogId:
+              $ref: '#/components/schemas/Catalog'
 
     Item:
-      x-no-commit: true
+      x-has-dao: true
       required: [assignId, type]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        itemType:
-          $ref: './shared.yaml#/components/schemas/ItemType'
-        classTypeId:
-          $ref: '#/components/schemas/ApClassType'
-        classInstanceId:
-          $ref: '#/components/schemas/ApClassInstance'
-        membershipTypeId:
-          $ref: '#/components/schemas/MembershipType'
-        productId:
-          $ref: '#/components/schemas/Product'
-        itemName:
-          type: string
-          maxLength: 200
-        itemDescription:
-          type: string
-          maxLength: 500
-        imageURL:
-          type: string
-          maxLength: 200
-        itemSKU:
-          nullable: true
-          type: string
-          maxLength: 500
-        minQuantity:
-          type: integer
-        maxQuantity:
-          type: integer
-        allowPriceOverride:
-          type: boolean
-        priceOverrideMin:
-          type: integer
-          format: int64
-        priceOverrideMax:
-          type: integer
-          format: int64
-        squareItemId:
-          type: string
-          maxLength: 200
-        catalogId:
-          $ref: '#/components/schemas/Catalog'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemFull'
+        - type: object
+          properties:
+            classTypeId:
+              $ref: '#/components/schemas/ApClassType'
+            classInstanceId:
+              $ref: '#/components/schemas/ApClassInstance'
+            membershipTypeId:
+              $ref: '#/components/schemas/MembershipType'
+            productId:
+              $ref: '#/components/schemas/Product'
+            catalogId:
+              $ref: '#/components/schemas/Catalog'
+            itemInstances:
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemInstance'
 
     DiscountCategory:
-      x-no-commit: true
+      x-has-dao: true
       required: [assignId, discountId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        discountId:
-          $ref: '#/components/schemas/Discount'
-        categoryId:
-          $ref: '#/components/schemas/Category'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountCategoryFull'
+        - type: object
+          properties:
+            discountId:
+              $ref: '#/components/schemas/Discount'
+            categoryId:
+              $ref: '#/components/schemas/Category'
 
 
     ItemCategory:
+      x-has-dao: true
       required: [assignId, item, categoryId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        item:
-          $ref: '#/components/schemas/Item'
-        categoryId:
-          $ref: '#/components/schemas/Category'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemCategoryFull'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              type: integer
+              format: int64
+            item:
+              $ref: '#/components/schemas/Item'
+            categoryId:
+              $ref: '#/components/schemas/Category'
 
     Category:
+      x-has-dao: true
       required: [assignId, categoryName, description, catalogId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        categoryName:
-          type: string
-          maxLength: 200
-        description:
-          type: string
-          maxLength: 500
-        categoryType:
-          $ref: './shared.yaml#/components/schemas/CategoryType'
-        catalogId:
-          $ref: '#/components/schemas/Catalog'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CategoryFull'
+        - type: object
+          properties:
+            catalogId:
+              $ref: '#/components/schemas/Catalog'
 
     ItemInstance:
+      x-has-dao: true
       required: [assignId, itemId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        itemId:
-          $ref: '#/components/schemas/Item'
-        priceCents:
-          type: integer
-          format: int64
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceFull'
+        - type: object
+          properties:
+            itemId:
+              $ref: '#/components/schemas/Item'
 
     ItemInstanceStockChange:
-      required: [assignId, itemInstanceId, changeAmount, stockChangeType]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        itemInstanceId:
-          $ref: '#/components/schemas/ItemInstance'
-        lineItem:
-          $ref: '#/components/schemas/LineItem'
-        changeAmount:
-          type: integer
-        stockChangeType:
-          $ref: './shared.yaml#/components/schemas/StockChangeType'
-        purchasableState:
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
+      x-has-dao: true
+      required: [itemInstanceId, changeAmount, stockChangeType]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceStockChangeFull'
+        - type: object
+          properties:
+            itemInstanceId:
+              $ref: '#/components/schemas/ItemInstance'
+            lineItemId:
+              $ref: '#/components/schemas/LineItem'
 
     LineItem:
-      required: [assignId, orderId, itemInstanceId, itemPriceCents]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        referenceId:
-          type: string
-          maxLength: 200
-        parentItemId:
-          $ref: '#/components/schemas/LineItem'
-        orderId:
-          $ref: '#/components/schemas/OrderNew'
-        itemInstanceId:
-          $ref: '#/components/schemas/ItemInstance'
-        subscriptionId:
-          $ref: '#/components/schemas/PersonSubscription'
-        amountBaseCents:
-          description: Base cost of a single unit of this line item (From catalog or amount specified, if allowed)
-          type: integer
-          format: int64
-        amountSpecifiedCents:
-          description: Specified cost of a single unit of this line item(For catalog items that support variable pricing)
-          type: integer
-          format: int64
-        amountPaidCents:
-          description: Amount of money successfully paid
-          type: integer
-          format: int64
-        deleted:
-          type: boolean
+      x-has-dao: true
+      required: [assignId, orderId, itemInstanceId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemFull'
+        - type: object
+          properties:
+            parentItemId:
+              $ref: '#/components/schemas/LineItem'
+            orderId:
+              $ref: '#/components/schemas/OrderNew'
+            itemInstanceId:
+              $ref: '#/components/schemas/ItemInstance'
+            subscriptionId:
+              $ref: '#/components/schemas/PersonSubscription'
+            classSignup:
+              nullable: true
+              $ref: '#/components/schemas/ClassSignup'
+            membership:
+              nullable: true
+              $ref: '#/components/schemas/MembershipDAO'
+            donation:
+              nullable: true
+              $ref: '#/components/schemas/DonationDAO'
+            card:
+              nullable: true
+              $ref: '#/components/schemas/CardDAO'
+            giftCard:
+              nullable: true
+              $ref: '#/components/schemas/BalanceTransaction'
+            guestPrivs:
+              nullable: true
+              $ref: '#/components/schemas/GuestPrivsDAO'
+            damageWaiver:
+              nullable: true
+              $ref: '#/components/schemas/DamageWaiver'
+            stockChange:
+              nullable: true
+              $ref: '#/components/schemas/ItemInstanceStockChange'
+            discounts:
+              x-parent-variable: lineItemId
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItemDiscountInstance'
+            refunds:
+              x-parent-variable: lineItemId
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItemRefund'
 
     LineItemRefund:
+      x-has-dao: true
       required: [assignId, lineItemId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        lineItemId:
-          $ref: '#/components/schemas/LineItem'
-        stockChangeId:
-          $ref: '#/components/schemas/ItemInstanceStockChange'
-        amountToRefundUnitCents:
-          type: integer
-          format: int64
-        amountRefundedCents:
-          type: integer
-          format: int64
-        refundQuantity:
-          type: integer
-        returnStock:
-          type: boolean
-        revokeAfter:
-          type: boolean
-        revokeDuring:
-          type: boolean
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemRefundInternalFull'
+        - type: object
+          properties:
+            lineItemId:
+              $ref: '#/components/schemas/LineItem'
+            stockChangeId:
+              $ref: '#/components/schemas/ItemInstanceStockChange'
+            taxes:
+              x-parent-variable: lineItemRefundId
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItemRefundTax'
     LineItemRefundTax:
-      required: [taxId, assignId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        lineItemRefundId:
-          $ref: '#/components/schemas/LineItemRefund'
-        taxId:
-          type: integer
-          format: int64
+      x-has-dao: true
+      required: [taxId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemRefundTaxInternalFull'
+        - type: object
+          properties:
+            lineItemRefundId:
+              $ref: '#/components/schemas/LineItemRefund'
+            taxId:
+              $ref: '#/components/schemas/OrderTax'
 
     ItemTax:
+      x-has-dao: true
       required: [assignId, itemId, taxId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        itemId:
-          $ref: '#/components/schemas/Item'
-        taxId:
-          $ref: '#/components/schemas/Tax'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemTaxFull'
+        - type: object
+          properties:
+            itemId:
+              $ref: '#/components/schemas/Item'
+            taxId:
+              $ref: '#/components/schemas/Tax'
 
     Tax:
+      x-has-dao: true
       required: [assignId, taxName, taxRate, taxMinValueCents, catalogId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        taxName:
-          type: string
-          maxLength: 200
-        taxCode:
-          type: string
-          maxLength: 500
-        taxRate:
-          type: string
-          maxLength: 200
-        taxMinValueCents:
-          type: integer
-          format: int64
-        taxBeforeDiscount:
-          type: boolean
-        catalogId:
-          $ref: '#/components/schemas/Catalog'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/TaxFull'
+        - type: object
+          properties:
+            catalogId:
+              $ref: '#/components/schemas/Catalog'
 
     OrderTax:
-      required: [assignId, taxId, orderNew]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        taxId:
-          $ref: '#/components/schemas/Tax'
-        order:
-          $ref: '#/components/schemas/OrderNew'
-        amountTotalCents:
-          type: integer
-          format: int64
-        amountPaidCents:
-          type: integer
-          format: int64
-        amountRefundedCents:
-          type: integer
-          format: int64
-        amountToRefundCents:
-          type: integer
-          format: int64
-        taxRateUsed:
-          type: string
-          maxLength: 200
+      x-has-dao: true
+      x-no-interface: true
+      required: [assignId, taxId, order]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderTaxFull'
+        - type: object
+          properties:
+            taxId:
+              $ref: '#/components/schemas/Tax'
+            orderId:
+              $ref: '#/components/schemas/OrderNew'
 
     LineItemDiscountInstance:
-      x-no-commit: true
+      x-has-dao: true
       required: [assignId, lineItemId, discountInstanceId, discountType]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        lineItemId:
-          $ref: '#/components/schemas/LineItem'
-        discountInstanceId:
-          $ref: '#/components/schemas/DiscountInstance'
-        isApplied:
-          type: boolean
-        discountType:
-          $ref: './shared.yaml#/components/schemas/DiscountType'
-        specifiedCents:
-          type: integer
-          format: int64
-        specifiedPercent:
-          type: string
-          format: int64
-        amountBaseCents:
-          type: integer
-          format: int64
-        amountTotalCents:
-          type: integer
-          format: int64
-        universalCode:
-          type: string
-          maxLength: 100
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemDiscountInstanceInternalFull'
+        - type: object
+          properties:
+            lineItemId:
+              $ref: '#/components/schemas/LineItem'
+            discountInstanceId:
+              $ref: '#/components/schemas/DiscountInstance'
 
     OrderNew:
-      type: object
-      required: [assignId, status, version]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        orderSource:
-          $ref: './shared.yaml#/components/schemas/OrderSource'
-        amountBaseCents:
-          type: integer
-          format: int64
-        amountDiscountsCents:
-          type: integer
-          format: int64
-        amountTaxesCents:
-          type: integer
-          format: int64
-        amountTotalCents:
-          type: integer
-          format: int64
-        amountPaidCents:
-          type: integer
-          format: int64
-        #itemCount:
-        #  type: integer
-        version:
-          type: integer
-        orderStatus:
-          $ref: './shared.yaml#/components/schemas/OrderStateNew'
-        personId:
-          $ref: '#/components/schemas/PersonDAO'
-        deleted:
-          type: boolean
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderFull'
+        - type: object
+          required: [assignId, status, version]
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            lineItems:
+              x-parent-variable: orderId
+              items:
+                $ref: '#/components/schemas/LineItem'
+            appliedTaxes:
+              x-parent-variable: orderId
+              items:
+                $ref: '#/components/schemas/OrderTax'
+            orderPayments:
+              x-parent-variable: orderId
+              items:
+                $ref: '#/components/schemas/OrderPayment'
 
     ItemDiscount:
-      x-no-commit: true
+      x-has-dao: true
       required: [assignId, itemId, discountId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        itemId:
-          $ref: '#/components/schemas/Item'
-        requiresParentEligibility:
-          type: boolean
-        discountType:
-          $ref: './shared.yaml#/components/schemas/DiscountType'
-        amountCents:
-          type: integer
-          format: int64
-        percent:
-          type: string
-        discountId:
-          $ref: '#/components/schemas/Discount'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemDiscountFull'
+        - type: object
+          properties:
+            itemId:
+              $ref: '#/components/schemas/Item'
+            discountId:
+              $ref: '#/components/schemas/Discount'
     PaymentSource:
-      required: [assignId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        personId:
-          $ref: '#/components/schemas/PersonDAO'
-        paymentType:
-          $ref: './shared.yaml#/components/schemas/PaymentType'
-        stripePaymentSource:
-          type: string
-          maxLength: 500
-        balanceSource:
-          $ref: '#/components/schemas/Balance'
-        active:
-          type: boolean
-
+      x-has-dao: true
+      required: [ assignId, orderId, paymentSource, paymentAmountCents, paymentStatus ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PaymentSourceFull'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            balanceSource:
+              $ref: '#/components/schemas/Balance'
 
     OrderPayment:
-      required: [assignId, orderId, paymentType, paymentSource, paymentAmountCents, paymentStatus]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        orderId:
-          $ref: '#/components/schemas/OrderNew'
-        paymentType:
-          $ref: './shared.yaml#/components/schemas/PaymentType'
-        paymentSource:
-          type: string
-          maxLength: 100
-        paymentServiceChangeCents:
-          type: integer
-          format: int64
-        paymentPaidCents:
-          type: integer
-          format: int64
-        paymentTotalCents:
-          type: integer
-          format: int64
-        paymentRefundedCents:
-          type: integer
-          format: int64
-        paymentToRefundCents:
-          type: integer
-          format: int64
-        paymentStatus:
-          $ref: './shared.yaml#/components/schemas/PaymentStatus'
-        paymentDueDate:
-          type: string
-          format: date-time
+      x-has-interface: true
+      x-no-interface: true
+      x-has-dao: true
+      required: [assignId, orderId, paymentSource, paymentAmountCents, paymentStatus]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderPaymentInternalFull'
+        - type: object
+          properties:
+            orderId:
+              $ref: '#/components/schemas/OrderNew'
+            paymentSource:
+              $ref: '#/components/schemas/PaymentSource'
+            stripeTransaction:
+              $ref: '#/components/schemas/StripeTransaction'
+            cashTransaction:
+              $ref: '#/components/schemas/CashTransaction'
+            balanceTransaction:
+              $ref: '#/components/schemas/BalanceTransaction'
 
     BalanceTransaction:
+      x-has-dao: true
       required: [assignId, balanceId, transactionAmountCents]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        balanceId:
-          $ref: '#/components/schemas/Balance'
-        balanceTransactionType:
-          $ref: './shared.yaml#/components/schemas/BalanceTransactionType'
-        paymentId:
-          $ref: '#/components/schemas/OrderPayment'
-        transactionAmountCents:
-          type: integer
-          format: int64
-        purchasableState:
-          $ref: './shared.yaml#/components/schemas/PurchasableState'
-        lineItemId:
-          $ref: '#/components/schemas/LineItem'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceTransactionInternalFull'
+        - type: object
+          properties:
+            balanceId:
+              $ref: '#/components/schemas/Balance'
+            paymentId:
+              $ref: '#/components/schemas/OrderPayment'
+            lineItemId:
+              x-backref-name: giftCard
+              allOf:
+                - $ref: '#/components/schemas/LineItem'
 
     Balance:
-      required: [assignId, balanceCents, balanceType]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        balanceAccountNumber:
-          type: string
-        balanceAccountToken:
-          type: string
-          maxLength: 64
-          minLength: 64
-        balanceType:
-          $ref: './shared.yaml#/components/schemas/BalanceType'
-        balanceOwner:
-          $ref: '#/components/schemas/PersonDAO'
+      x-has-dao: true
+      required: [assignId, personId, balanceCents, balanceType]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceInternal'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
 
     StripeTransaction:
+      x-has-dao: true
       required: [assignId, stripePaymentIntent, transactionAmountCents]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        transactionType:
-          $ref: './shared.yaml#/components/schemas/StripeTransactionType'
-        stripePaymentIntent:
-          type: string
-          maxLength: 500
-        transactionAmountCents:
-          type: integer
-          format: int64
-        paymentId:
-          $ref: '#/components/schemas/OrderPayment'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/StripeTransactionFull'
+        - type: object
+          properties:
+            payments:
+              type: array
+              x-parent-variable: stripeTransaction
+              items:
+                $ref: '#/components/schemas/OrderPayment'
 
     CashTransaction:
-      x-no-commit: true
+      x-has-dao: true
       required: [assignId, cashDrawerId, transactionAmountCents]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        cashDrawerId:
-          $ref: '#/components/schemas/CashDrawer'
-        transactionAmountCents:
-          type: integer
-          format: int64
-        paymentId:
-          $ref: '#/components/schemas/OrderPayment'
-        cashDrawerChangeId:
-          $ref: '#/components/schemas/CashDrawersChange'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CashTransactionInternalFull'
+        - type: object
+          properties:
+            paymentId:
+              $ref: '#/components/schemas/OrderPayment'
+            cashDrawerChangeId:
+              $ref: '#/components/schemas/CashDrawersChange'
 
     CashDrawersChange:
-      required: [assignId, changeType, changeAmountCents]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-        changeType:
-          type: string
-          maxLength: 50
-        changeAmountCents:
-          type: integer
-          format: int64
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CashDrawersChangeFull'
+        - type: object
+          properties:
+            cashDrawerId:
+              $ref: '#/components/schemas/CashDrawer'
     ApClassType:
-      x-already-exists: true
-      required: [assignId]
-      properties:
-        id:
-          type: integer
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ApClassTypeRef'
 
     ApClassInstance:
-      x-already-exists: true
-      required: [assignId]
-      properties:
-        id:
-          type: integer
-
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ApClassInstanceRef'
+    ClassSignup:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ClassSignupFull'
+        - type: object
+          properties:
+            signupId:
+              x-col-primary: true
+              x-table-name: AP_CLASS_SIGNUPS
+              type: integer
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            lineItemId:
+              x-backref-name: classSignup
+              allOf:
+                - $ref: '#/components/schemas/LineItem'
+            instanceId:
+              $ref: '#/components/schemas/ApClassInstance'
+    GuestPrivsDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/GuestPrivsFull'
+        - type: object
+          properties:
+            assignId:
+              x-table-name: guest_privs
+              x-col-primary: true
+              type: integer
+            membershipId:
+              $ref: '#/components/schemas/MembershipDAO'
+            lineItemId:
+              x-backref-name: guestPrivs
+              allOf:
+                - $ref: '#/components/schemas/LineItem'
+    DamageWaiver:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DamageWaiverFull'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            lineItemId:
+              x-backref-name: damageWaiver
+              allOf:
+                - $ref: '#/components/schemas/LineItem'
     PersonSubscription:
+      x-has-dao: true
       required: [assignId, personId, subscriptionId, billingCycle]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        personId:
-          $ref: '#/components/schemas/PersonDAO'
-        subscriptionId:
-          $ref: '#/components/schemas/Subscription'
-        billingDate:
-          type: string
-          format: date
-        billingCycle:
-          type: string
-          maxLength: 50
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonSubscriptionFull'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            subscriptionId:
+              $ref: '#/components/schemas/Subscription'
 
     Subscription:
-
+      x-has-dao: true
       required: [assignId, name, billingCycle]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        name:
-          type: string
-          maxLength: 200
-        billingCycle:
-          type: string
-          maxLength: 50
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/SubscriptionFull'
 
     SubscriptionItem:
+      x-has-dao: true
       required: [assignId, subscriptionId, itemId]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
-        subscriptionId:
-          $ref: '#/components/schemas/Subscription'
-        itemId:
-          $ref: '#/components/schemas/Item'
-        cyclePriceOverrideCents:
-          type: integer
-          format: int64
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/SubscriptionItemFull'
+        - type: object
+          properties:
+            subscriptionId:
+              $ref: '#/components/schemas/Subscription'
+            itemId:
+              $ref: '#/components/schemas/Item'
 
     PersonPhoneDAO:
       x-has-dao: true
@@ -604,8 +473,8 @@ components:
       x-sub-variable: phoneId
       required: [personPhoneAssignId, personId, phoneId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonPhoneBase'
-        - $ref: './shared.yaml#/components/schemas/Tracked'
+        - $ref: './shared.yaml#/components/schemas/PersonPhoneFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             personPhoneAssignId:
@@ -623,7 +492,7 @@ components:
       required: [assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/Phone'
-        - $ref: './shared.yaml#/components/schemas/Tracked'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             assignId:
@@ -641,10 +510,10 @@ components:
       x-has-dto: false
       x-sub-type: Address
       x-sub-variable: addressId
-      required: [personAddressAssignId]
+      required: [personAddressAssignId, line1, country, personId, addressId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonAddressBase'
-        - $ref: './shared.yaml#/components/schemas/Tracked'
+        - $ref: './shared.yaml#/components/schemas/PersonAddressFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             personAddressAssignId:
@@ -664,7 +533,7 @@ components:
       required: [assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/Address'
-        - $ref: './shared.yaml#/components/schemas/Tracked'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             assignId:
@@ -682,7 +551,7 @@ components:
       required: [personId, assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonReferral'
-        - $ref: './shared.yaml#/components/schemas/Tracked'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             assignId:
@@ -694,11 +563,9 @@ components:
               $ref: '#/components/schemas/PersonDAO'
 
     MembershipType:
-      x-already-exists: true
-      required: [assignId]
-      properties:
-        id:
-          type: integer
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/MembershipTypeRef'
     #Person:
     #  x-already-exists: true
     #  required: [assignId]
@@ -709,31 +576,27 @@ components:
       x-has-dao: true
       required: [donationId, fundId, initiativeId, state]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/Donation'
+        - $ref: './shared.yaml#/components/schemas/DonationFull'
         - type: object
           properties:
-            donationId:
-              type: integer
-              x-col-primary: true
-              x-table-name: donations
-              x-auto-increment: DONATIONS_SEQ
             personId:
               $ref: '#/components/schemas/PersonDAO'
-            lineItem:
-              $ref: '#/components/schemas/LineItem'
+            lineItemId:
+              x-backref-name: donation
+              allOf:
+                - $ref: '#/components/schemas/LineItem'
     PersonDAO:
       x-has-dao: true
       required: [personId, relationsA, relationsB]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/Person'
-        - $ref: './shared.yaml#/components/schemas/Tracked'
+        - $ref: './shared.yaml#/components/schemas/PersonInternalFull'
         - type: object
           properties:
-            personId:
+            assignId:
               x-table-name: persons
               x-col-primary: true
+              x-dto-column: PERSON_ID
               x-auto-increment: PERSONS_SEQ
-              nullable: false
               type: integer
             relationsA:
               x-parent-variable: B
@@ -781,28 +644,40 @@ components:
       x-has-dao: true
       required: [assignId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/Membership'
+        - $ref: './shared.yaml#/components/schemas/MembershipInternal'
         - type: object
           properties:
             assignId:
               x-table-name: persons_memberships
+              x-auto-increment: PERSONS_MEMBERSHIPS_SEQ
               x-col-primary: true
               type: integer
+            membershipTypeId:
+              $ref: "#/components/schemas/MembershipType"
             personId:
               $ref: '#/components/schemas/PersonDAO'
+            lineItemId:
+              x-backref-name: membership
+              allOf:
+                - $ref: '#/components/schemas/LineItem'
     CardDAO:
       x-has-dao: true
       required: [ assignId ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/Card'
+        - $ref: './shared.yaml#/components/schemas/CardFull'
         - type: object
           properties:
             assignId:
               x-table-name: persons_cards
+              x-auto-increment: PERSONS_CARDS_SEQ
               x-col-primary: true
               type: integer
             personId:
               $ref: '#/components/schemas/PersonDAO'
+            lineItemId:
+              x-backref-name: card
+              allOf:
+                - $ref: '#/components/schemas/LineItem'
     PersonRelationDAO:
       x-has-dao: true
       allOf:
@@ -823,26 +698,33 @@ components:
               x-dto-column: B
               allOf:
                 - $ref: '#/components/schemas/PersonDAO'
-    
+
 
 
     DiscountInstance:
-      x-already-exists: true
-      required: [assignId]
-      properties:
-        id:
-          type: integer
+      x-has-dao: true
+      required: [instanceId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountInstanceInternalFull'
 
     Discount:
-      x-already-exists: true
-      required: [assignId]
-      properties:
-        id:
-          type: integer
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountFull'
+        - type: object
+          properties:
+            catalogId:
+              $ref: '#/components/schemas/Catalog'
+            categories:
+              type: array
+              items:
+                $ref: '#/components/schemas/DiscountCategory'
+            instances:
+              type: array
+              items:
+                $ref: '#/components/schemas/DiscountInstance'
 
     CashDrawer:
-      x-already-exists: true
-      required: [cashDrawerId]
-      properties:
-        cashDrawerId:
-          type: integer
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CashDrawerFull'

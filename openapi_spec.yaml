@@ -8,22 +8,6 @@ servers:
   - url: https://api.example.com
 
 paths:
-  /paths/test:
-    get:
-      parameters:
-        - in: query
-          name: id # Note the name is the same as in the path
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-      responses:
-        '200':
-          description: User details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserTest'
   /paths/dummyEnum:
     get:
       parameters:
@@ -40,36 +24,6 @@ paths:
             application/json:
               schema:
                 $ref: './shared.yaml#/components/schemas/DummyEnum'
-  /users/me/{id}/{test}:
-    get:
-      summary: Get current user
-      description: Returns the details of the currently authenticated user.
-      security:
-        - staff: []
-      parameters:
-        - in: path
-          name: id # Note the name is the same as in the path
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-          description: The user ID
-        - in: path
-          name: test # Note the name is the same as in the path
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-          description: Test
-      responses:
-        '200':
-          description: User details
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/UserTest'
-        '401':
-          description: Unauthorized
   /member/getNoParams:
     get:
       summary: Test
@@ -120,27 +74,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PersonPublicParentDTO'
-        '401':
-          description: Invalid credentials
-  /member/test:
-    post:
-      summary: Test
-      description: Tests Post.
-      security:
-        - member: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/TestRequest'
-      responses:
-        '200':
-          description: Successful login
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/TestResponse'
         '401':
           description: Invalid credentials
   /staff/balance/{number}:
@@ -340,6 +273,7 @@ paths:
       tags:
         -  CompassOrder
       requestBody:
+        x-use-tracked: true
         required: true
         content:
           application/json:
@@ -377,6 +311,26 @@ paths:
                 $ref: '#/components/schemas/OrderDTO'
         '404':
           description: Order doesn't exist
+  /member/compass-order/proto:
+    post:
+      description: 'Returns an order with calculated values without creating anything in the database'
+      parameters: [ ]
+      tags:
+        - CompassOrder
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
   /member/compass-order/open:
     get:
       tags:
@@ -402,6 +356,7 @@ paths:
       tags:
         -  CompassOrder
       requestBody:
+        x-use-tracked: true
         required: true
         content:
           application/json:
@@ -556,7 +511,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CatalogDTO'
+                $ref: '#/components/schemas/CatalogPublicDTO'
   /staff/catalog:
     get:
       description: 'Gets the current catalog'
@@ -791,76 +746,49 @@ components:
         locale:
           type: string
         
-    CashTransaction:
-      required: [id, cashDrawerId, transactionAmountCents]
-      properties:
-        id:
-          type: integer
-          format: int64
-        cashDrawerId:
-          type: integer
-        transactionAmountCents:
-          type: integer
-          format: int64
-        cashDrawerChange:
-          $ref: '#/components/schemas/CashDrawersChangeDTO'
+    CashTransactionDTO:
+      x-has-dto: true
+      required: [cashDrawerId, transactionAmountCents]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CashTransactionFull'
+        - type: object
+          properties:
+            cashDrawerChangeId:
+              $ref: '#/components/schemas/CashDrawersChangeDTO'
     CashDrawersChangeDTO:
-      required: [id, changeType, changeAmountCents]
-      properties:
-        id:
-          type: integer
-        changeType:
-          type: string
-          maxLength: 50
-        changeAmountCents:
-          type: integer
-          format: int64
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CashDrawersChangeFull'
     BalanceTransactionDTO:
+      x-has-dto: true
       required: [id, balanceId, transactionAmountCents]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        balanceTransactionType:
-          $ref: './shared.yaml#/components/schemas/BalanceTransactionType'
-        paymentId:
-          type: integer
-          format: int64
-        transactionAmountCents:
-          type: integer
-          format: int64
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PurchasableState'
-        lineItemId:
-          type: integer
-          format: int64
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceTransactionFull'
+        #- type: properties
+        #  properties:
+        #    paymentId:
+        #      type: integer
+        #      format: int64
+        #    lineItemId:
+        #      type: integer
+        #      format: int64
     BalanceDTO:
+      x-has-dto: true
       required: [balanceCents, balanceType]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        balanceAccountNumber:
-          type: string
-        balanceAccountToken:
-          writeOnly: true
-          type: string
-          maxLength: 64
-          minLength: 64
-        balanceCents:
-          readOnly: true
-          type: integer
-          format: int64
-        balanceType:
-          $ref: './shared.yaml#/components/schemas/BalanceType'
-        balanceOwner:
-          type: integer
-        balanceTransactions:
-          type: array
-          items:
-            $ref: '#/components/schemas/BalanceTransactionDTO'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceFull'
+    BalanceInternalDTO:
+      x-has-dto: true
+      required: [ balanceCents, balanceType ]
+      allOf:
+        - $ref: '#/components/schemas/BalanceDTO'
+        - $ref: './shared.yaml#/components/schemas/BalanceInternal'
+        - type: object
+          properties:
+            balanceTransactions:
+              type: array
+              items:
+                $ref: '#/components/schemas/BalanceTransactionDTO'
     ClassSignupResponseDTO:
       type: object
       properties:
@@ -897,289 +825,183 @@ components:
           type: boolean
         ClassSignupOverrides:
           $ref: '#/components/schemas/ClassSignupOverrides'
+    CatalogPublicDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CatalogFull'
+        - type: object
+          properties:
+            items:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemPublicDTO'
     CatalogDTO:
+      x-has-dto: true
       type: object
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
-        catalogName:
-          type: string
-          maxLength: 200
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogItemDTO'
-        taxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogTaxDTO'
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogCategoryDTO'
-        discounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogDiscountDTO'
-        products:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogProductDTO'
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CatalogInternalFull'
+        - type: object
+          properties:
+            items:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDTO'
+            taxes:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogTaxDTO'
+            categories:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogCategoryDTO'
+            discounts:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountDTO'
+            products:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogProductDTO'
     CatalogTaxDTO:
-      required: [taxName, taxRate, taxMinValueCents]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        taxName:
-          type: string
-          maxLength: 200
-        taxCode:
-          type: string
-          maxLength: 500
-        taxRate:
-          type: string
-          maxLength: 200
-        taxBeforeDiscount:
-          type: boolean
-        taxMinValueCents:
-          type: integer
-          format: int64
+      x-has-dto: true
+      required: [ taxName, taxRate, taxMinValueCents ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/TaxFull'
     CatalogDiscountCategoryDTO:
-      required: [discountId]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        categoryId:
-          type: integer
-          format: int64
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountCategoryFull'
     CatalogCategoryDTO:
-      required: [categoryName, description]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        categoryName:
-          type: string
-          maxLength: 200
-        categoryType:
-          $ref: './shared.yaml#/components/schemas/CategoryType'
-        description:
-          type: string
-          maxLength: 500
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CategoryFull'
     CatalogDiscountDTO:
-      required: [discountName]
-      properties:
-        discountId:
-          type: integer
-        discountName:
-          type: string
-          maxLength: 100
-        categories:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogDiscountCategoryDTO'
-        instances:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountFull'
+        - type: object
+          properties:
+            categories:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountCategoryDTO'
+            instances:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
     CatalogDiscountInstanceDTO:
-      required: [discountType]
-      properties:
-        discountType:
-          $ref: './shared.yaml#/components/schemas/DiscountType'
-        instanceId:
-          type: integer
-        amountCents:
-          type: integer
-          format: int64
-        percent:
-          type: string
-        autoApply:
-          type: boolean
-        isGlobal:
-          type: boolean
-        isSpecial:
-          type: boolean
-        startActive:
-          type: string
-          format: date
-        universalCode:
-          writeOnly: true
-          type: string
-          maxLength: 200
-        endActive:
-          type: string
-          format: date
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountInstanceInternalFull'
+    CatalogItemInstancePublicDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceRef'
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceBase'
     CatalogItemInstanceDTO:
-      type: object
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        priceCents:
-          type: integer
-          format: int64
-          example: 12
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceFull'
+    CatalogItemPublicDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemRef'
+        - $ref: './shared.yaml#/components/schemas/ItemBase'
+        - type: object
+          properties:
+            #classTypeId:
+            #  nullable: true
+            #  type: integer
+            #classInstanceId:
+            #  nullable: true
+            #  type: integer
+            #membershipTypeId:
+            #  nullable: true
+            #  type: integer
+            #productId:
+            #  nullable: true
+            #  type: integer
+            #  format: int64
+            itemInstances:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemInstancePublicDTO'
+
     CatalogItemDTO:
-      required: [type]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        itemType:
-          nullable: false
-          $ref: './shared.yaml#/components/schemas/ItemType'
-        classTypeId:
-          nullable: true
-          type: integer
-        classInstanceId:
-          nullable: true
-          type: integer
-        membershipTypeId:
-          nullable: true
-          type: integer
-        productId:
-          nullable: true
-          type: integer
-          format: int64
-        itemName:
-          nullable: true
-          type: string
-          maxLength: 200
-        itemDescription:
-          nullable: true
-          type: string
-          maxLength: 500
-        imageURL:
-          nullable: true
-          type: string
-          maxLength: 200
-        itemSKU:
-          nullable: true
-          type: string
-          maxLength: 500
-        maxQuantity:
-          type: integer
-        minQuantity:
-          type: integer
-        allowPriceOverride:
-          type: boolean
-        priceOverrideMin:
-          type: integer
-          format: int64
-        priceOverrideMax:
-          type: integer
-          format: int64
-        squareItemId:
-          type: string
-          maxLength: 200
-        itemInstances:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogItemInstanceDTO'
-        itemDiscounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogItemDiscountDTO'
-        itemTaxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogItemTaxDTO'
-        itemCategories:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogItemCategoryDTO'
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemFull'
+        - type: object
+          properties:
+            #classTypeId:
+            #  nullable: true
+            #  type: integer
+            #classInstanceId:
+            #  nullable: true
+            #  type: integer
+            #membershipTypeId:
+            #  nullable: true
+            #  type: integer
+            #productId:
+            #  nullable: true
+            #  type: integer
+            #  format: int64
+            itemInstances:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemInstanceDTO'
+            itemDiscounts:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDiscountDTO'
+            itemTaxes:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemTaxDTO'
+            itemCategories:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemCategoryDTO'
     CatalogItemDiscountDTO:
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        discountType:
-          $ref: './shared.yaml#/components/schemas/DiscountType'
-        requiresParentEligibility:
-          type: boolean
-        amountCents:
-          type: integer
-          format: int64
-        percent:
-          type: string
-        discountId:
-          type: integer
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemDiscountFull'
     CatalogItemTaxDTO:
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        taxId:
-          type: integer
-          format: int64
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemTaxFull'
 
     CatalogItemCategoryDTO:
       required: [categoryId]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        categoryId:
-          type: integer
-          format: int64
+      x-has-dto: true
+      allOf:
+        - $ref: "./shared.yaml#/components/schemas/ItemCategoryFull"
     CatalogProductDTO:
       required: [productName, productDescription, active]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        productName:
-          type: string
-          maxLength: 200
-        productDescription:
-          type: string
-          maxLength: 500
-        active:
-          type: boolean
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ProductFull'
     CatalogSubscriptionDTO:
       required: [name, billingCycle]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        name:
-          type: string
-          maxLength: 200
-        billingCycle:
-          type: string
-          maxLength: 50
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/CatalogSubscriptionItemDTO'
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/SubscriptionFull'
+        - type: object
+          properties:
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogSubscriptionItemDTO'
     CatalogSubscriptionItemDTO:
-      required: [itemId]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        itemId:
-          type: integer
-          format: int64
-        cyclePriceOverrideCents:
-          type: integer
-          format: int64
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/SubscriptionItemFull'
     OrderWithDiscountsDTO:
       type: object
       properties:
@@ -1193,8 +1015,7 @@ components:
       type: object
       properties:
         lineItemId:
-          type: integer
-          format: int64
+          $ref: './shared.yaml#/components/schemas/LineItemRef'
         discountId:
           type: integer
         instanceId:
@@ -1210,476 +1031,191 @@ components:
           type: string
     OrderSummaryDTO:
       type: object
-      required: [lineItems, orderNum]
-      properties:
-        assignId:
-          nullable: true
-          type: integer
-          format: int64
-          example: 12
-        orderSource:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/OrderSource'
-        orderStatus:
-          $ref: './shared.yaml#/components/schemas/OrderStateNew'
-          readOnly: true
-        personId:
-          type: integer
-          example: 12
-        #itemCount:
-        #  type: integer
-        version:
-          type: integer
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderBase'
+        - $ref: './shared.yaml#/components/schemas/OrderCalculated'
     OrderDTO:
-      type: object
-      required: [lineItems, orderNum, version]
-      properties:
-        assignId:
-          nullable: true
-          type: integer
-          format: int64
-          example: 12
-        orderSource:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/OrderSource'
-        amountServiceChangeCents:
-          description: Total cost of service charges (Payment fees paid by customer, maybe we will add restock service fee?)
-          readOnly: true
-          type: integer
-          format: int64
-        amountBaseCents:
-          description: Total of all items before discounts
-          readOnly: true
-          type: integer
-          format: int64
-        amountDiscountsCents:
-          description: Total of all discounts applied
-          readOnly: true
-          type: integer
-          format: int64
-        amountTaxesCents:
-          description: Total of all taxes applied
-          readOnly: true
-          type: integer
-          format: int64
-        amountTotalCents:
-          description: Total of all items with discounts and taxes
-          readOnly: true
-          type: integer
-          format: int64
-        amountPendingCents:
-          description: Total of all pending payments
-          readOnly: true
-          type: integer
-          format: int64
-        amountRefundedCents:
-          description: Total of all refunded payments
-          readOnly: true
-          type: integer
-          format: int64
-        amountToRefundCents:
-          description: Total of all refunded items
-          readOnly: true
-          type: integer
-          format: int64
-        amountToPayCents:
-          description: Total of all non-refunded items
-          readOnly: true
-          type: integer
-          format: int64
-        amountPaidCents:
-          description: Total of all successful payments
-          readOnly: true
-          type: integer
-          format: int64
-        orderStatus:
-          $ref: './shared.yaml#/components/schemas/OrderStateNew'
-          readOnly: true
-        personId:
-          type: integer
-          example: 12
-        #itemCount:
-        #  type: integer
-        version:
-          type: integer
-        lineItems:
-          type: array
-          items:
-            $ref: '#/components/schemas/LineItemDTO'
-        appliedTaxes:
-          type: array
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/OrderTaxDTO'
-        orderPayments:
-          type: array
-          readOnly: true
-          items:
-            $ref: '#/components/schemas/OrderPaymentDTO'
-        deleted:
-          readOnly: true
-          type: boolean
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderFull'
+        - $ref: './shared.yaml#/components/schemas/OrderCalculated'
+        - type: object
+          required: [lineItems, orderNum, version]
+          properties:
+            #itemCount:
+            #  type: integer
+            lineItems:
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItemDTO'
+            appliedTaxes:
+              type: array
+              readOnly: true
+              items:
+                $ref: '#/components/schemas/OrderTaxDTO'
+            orderPayments:
+              type: array
+              readOnly: true
+              items:
+                $ref: '#/components/schemas/OrderPaymentDTO'
     CheckoutSessionDTO:
       type: object
       properties:
         checkoutSecret:
           type: string
+    PaymentSourceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PaymentSourceFull'
+      #  - type: object
+      #    properties:
+      #      balanceSource:
+      #        $ref: '#/components/schemas/BalanceRef'
+    OrderPaymentDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderPaymentFull'
+        - type: object
+          properties:
+            paymentSource:
+              $ref: '#/components/schemas/PaymentSourceDTO'
+            cashTransaction:
+              $ref: '#/components/schemas/CashTransactionDTO'
+            stripeTransaction:
+              nullable: true
+              $ref: '#/components/schemas/StripeTransactionDTO'
+            balanceTransaction:
+              nullable: true
+              $ref: '#/components/schemas/BalanceTransactionDTO'
     CreateOrderPaymentDTO:
       type: object
-      required: [orderId, payment]
+      required: [ orderId, payment ]
       properties:
         orderId:
-          type: integer
-          format: int64
+          $ref: './shared.yaml#/components/schemas/OrderRef'
         payment:
           $ref: '#/components/schemas/OrderPaymentDTO'
         saveCard:
           type: boolean
-    OrderPaymentDTO:
-      type: object
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        paymentType:
-          nullable: false
-          $ref: './shared.yaml#/components/schemas/PaymentType'
-        paymentSource:
-          type: string
-          maxLength: 100
-        paymentServiceChangeCents:
-          type: integer
-          format: int64
-        paymentPaidCents:
-          readOnly: true
-          type: integer
-          format: int64
-        paymentTotalCents:
-          type: integer
-          format: int64
-        paymentRefundedCents:
-          readOnly: true
-          type: integer
-          format: int64
-        paymentToRefundCents:
-          type: integer
-          format: int64
-        paymentStatus:
-          nullable: false
-          $ref: './shared.yaml#/components/schemas/PaymentStatus'
-        paymentDueDate:
-          nullable: true
-          type: string
-          format: date-time
-        stripeTransaction:
-          nullable: true
-          $ref: '#/components/schemas/StripeTransactionDTO'
-        BalanceTransaction:
-          nullable: true
-          $ref: '#/components/schemas/BalanceTransactionDTO'
-
     StripeTransactionDTO:
-      required: [id, stripePaymentIntent, transactionAmountCents]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        transactionType:
-          $ref: './shared.yaml#/components/schemas/StripeTransactionType'
-        stripePaymentIntent:
-          type: string
-          readOnly: true
-          maxLength: 500
-        stripePaymentSecret:
-          type: string
-          readOnly: true
-          maxLength: 500
-        transactionAmountCents:
-          readOnly: true
-          type: integer
-          format: int64
+      required: [stripePaymentIntent, transactionAmountCents]
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/StripeTransactionRef'
+        - $ref: './shared.yaml#/components/schemas/StripeTransactionBase'
     OrderTaxDTO:
-      type: object
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        taxId:
-          type: integer
-          format: int64
-        amountTotalCents:
-          readOnly: true
-          type: integer
-          format: int64
-        amountPaidCents:
-          readOnly: true
-          type: integer
-          format: int64
-        amountToRefundCents:
-          readOnly: true
-          type: integer
-          format: int64
-        amountRefundedCents:
-          readOnly: true
-          type: integer
-          format: int64
-        taxRateUsed:
-          readOnly: true
-          type: string
-          maxLength: 200
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderTaxFull'
+    LineItemDTORef:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemRef'
     LineItemDTO:
-      type: object
-      properties:
-        assignId:
-          nullable: false
-          type: integer
-          format: int64
-        referenceId:
-          type: string
-          maxLength: 200
-        parentItemId:
-          type: integer
-          format: int64
-        itemInstanceId:
-          type: integer
-          format: int64
-          nullable: false
-        subscriptionId:
-          nullable: true
-          type: integer
-          format: int64
-        amountBaseCents:
-          description: Base cost of a single unit of this line item (From catalog or amount specified, if allowed)
-          readOnly: true
-          type: integer
-          format: int64
-        amountSpecifiedCents:
-          description: Specified cost of a single unit of this line item(For catalog items that support variable pricing)
-          type: integer
-          format: int64
-        amountDiscountsBaseCents:
-          description: Total value (in cents) of all discounts applied to a single unit of this line item
-          readOnly: true
-          type: integer
-          format: int64
-        amountDiscountsTotalCents:
-          description: Total value (in cents) of all discounts applied to all units of this line item
-          readOnly: true
-          type: integer
-          format: int64
-        amountTotalCents:
-          description: Base price of line item times quantity minus value of all discounts (in cents)
-          readOnly: true
-          type: integer
-          format: int64
-        amountToRefundCents:
-          description: Amount of money to refund (in cents)
-          readOnly: true
-          type: integer
-          format: int64
-        amountRefundedCents:
-          description: Amount of money successfully refunded
-          readOnly: true
-          type: integer
-          format: int64
-        amountPaidCents:
-          description: Amount of money successfully paid
-          readOnly: true
-          type: integer
-          format: int64
-        classSignup:
-          nullable: true
-          $ref: '#/components/schemas/PurchaseClassSignupDTO'
-        membership:
-          nullable: true
-          $ref: '#/components/schemas/PurchaseMembershipDTO'
-        donation:
-          nullable: true
-          $ref: '#/components/schemas/PurchaseDonationDTO'
-        card:
-          nullable: true
-          $ref: '#/components/schemas/PurchaseCardDTO'
-        giftCard:
-          nullable: true
-          $ref: '#/components/schemas/PurchaseGiftCardDTO'
-        guestPrivs:
-          nullable: true
-          $ref: '#/components/schemas/PurchaseGuestPrivilegesDTO'
-        damageWaiver:
-          nullable: true
-          $ref: '#/components/schemas/PurchaseDamageWaiverDTO'
-        stockChange:
-          nullable: true
-          $ref: '#/components/schemas/PurchaseStockedItemDTO'
-        discounts:
-          type: array
-          items:
-            $ref: '#/components/schemas/LineItemDiscountDTO'
-        refunds:
-          type: array
-          items:
-            $ref: '#/components/schemas/LineItemRefundDTO'
-        deleted:
-          readOnly: true
-          type: boolean
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemFull'
+        - $ref: '#/components/schemas/LineItemDTORef'
+        - $ref: './shared.yaml#/components/schemas/LineItemCalculated'
+        - type: object
+          properties:
+            parentItemId:
+              $ref: '#/components/schemas/LineItemDTORef'
+            itemInstanceId:
+              $ref: './shared.yaml#/components/schemas/ItemInstanceRef'
+            #subscriptionId:
+            #  $ref: '#/components/schemas/SubscriptionDTORef'
+            classSignup:
+              nullable: true
+              $ref: '#/components/schemas/PurchaseClassSignupDTO'
+            membership:
+              nullable: true
+              $ref: '#/components/schemas/PurchaseMembershipDTO'
+            donation:
+              nullable: true
+              $ref: '#/components/schemas/PurchaseDonationDTO'
+            card:
+              nullable: true
+              $ref: '#/components/schemas/PurchaseCardDTO'
+            giftCard:
+              nullable: true
+              $ref: '#/components/schemas/PurchaseGiftCardDTO'
+            guestPrivs:
+              nullable: true
+              $ref: '#/components/schemas/PurchaseGuestPrivilegesDTO'
+            damageWaiver:
+              nullable: true
+              $ref: '#/components/schemas/PurchaseDamageWaiverDTO'
+            stockChange:
+              nullable: true
+              $ref: '#/components/schemas/PurchaseStockedItemDTO'
+            discounts:
+              x-parent-variable: lineItemId
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItemDiscountDTO'
+            refunds:
+              x-parent-variable: lineItemId
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItemRefundDTO'
     LineItemDiscountDTO:
-      properties:
-        assignId:
-          nullable: false
-          type: integer
-          format: int64
-        appliedCode:
-          type: string
-        isApplied:
-          type: boolean
-        discountInstanceId:
-          nullable: false
-          type: integer
-        discountType:
-          $ref: './shared.yaml#/components/schemas/DiscountType'
-        specifiedCents:
-          type: integer
-          format: int64
-        specifiedPercent:
-          type: string
-        amountBaseCents:
-          readOnly: true
-          type: integer
-          format: int64
-        amountTotalCents:
-          readOnly: true
-          type: integer
-          format: int64
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemDiscountInstanceFull'
+        - type: object
+          properties:
+            appliedCode:
+              type: string
+              maxLength: 100
+              readOnly: true
+
     LineItemRefundDTO:
-      properties:
-        id:
-          type: integer
-          format: int64
-        amountToRefundUnitCents:
-          type: integer
-          format: int64
-        amountToRefundTotalCents:
-          readOnly: true
-          type: integer
-          format: int64
-        amountRefundedCents:
-          readOnly: true
-          type: integer
-          format: int64
-        refundQuantity:
-          type: integer
-        restock:
-          readOnly: true
-          allOf:
-            - $ref: '#/components/schemas/PurchaseStockedItemDTO'
-        returnStock:
-          type: boolean
-        revokeAfter:
-          type: boolean
-        revokeDuring:
-          type: boolean
-        includeTaxes:
-          type: array
-          items:
-            $ref: '#/components/schemas/LineItemRefundTaxDTO'
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemRefundFull'
+        - type: object
+          properties:
+            restock:
+              readOnly: true
+              allOf:
+                - $ref: '#/components/schemas/PurchaseStockedItemDTO'
+            includeTaxes:
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItemRefundTaxDTO'
+            amountToRefundTotalCents:
+              readOnly: true
+              type: integer
+              format: int64
     LineItemRefundTaxDTO:
-      required: [taxId]
-      properties:
-        id:
-          type: integer
-          format: int64
-        taxId:
-          type: integer
-          format: int64
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemRefundTaxFull'
     #Maybe we split this into different dtos for different types (Purchase, Stock, Refund), idk (its all the same table)
     PurchaseStockedItemDTO:
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        itemInstanceId:
-          type: integer
-          format: int64
-        quantity:
-          type: integer
-        stockChangeType:
-          readOnly: true
-          $ref: './shared.yaml#/components/schemas/StockChangeType'
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PurchasableState'
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceStockChangeFull'
     PurchaseDamageWaiverDTO:
-      properties:
-        waiverId:
-          type: integer
-        personId:
-          type: integer
-        startDate:
-          type: string
-          format: date
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PurchasableState'
-        voidCloseId:
-          readOnly: true
-          type: integer
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DamageWaiverFull'
     PurchaseGuestPrivilegesDTO:
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        membershipId:
-          type: integer
-        startDate:
-          type: string
-          format: date
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PurchasableState'
-        voidCloseId:
-          readOnly: true
-          type: integer
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/GuestPrivsFull'
+
     PurchaseClassSignupDTO:
+      x-has-dto: true
       required: [instanceId, personId]
-      properties:
-        signupId:
-          nullable: false
-          type: integer
-        signupType:
-          readOnly: true
-          nullable: false
-          type: string
-          minLength: 1
-          maxLength: 1
-        instanceId:
-          readOnly: true
-          nullable: false
-          type: integer
-        price:
-          readOnly: true
-          type: integer
-        classTypeEnum:
-          nullable: false
-          $ref: './shared.yaml#/components/schemas/ClassTypeEnum'
-        personId:
-          nullable: false
-          type: integer
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PurchasableState'
-        voidCloseId:
-          readOnly: true
-          type: integer
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ClassSignupFull'
     MembershipDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/Membership'
+        - $ref: './shared.yaml#/components/schemas/MembershipFull'
         - type: object
           properties:
             personId:
@@ -1687,15 +1223,11 @@ components:
     PurchaseMembershipDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/MembershipBase'
-        - type: object
-          properties:
-            personId:
-              type: integer
+        - $ref: './shared.yaml#/components/schemas/MembershipFull'
     DonationDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/Donation'
+        - $ref: './shared.yaml#/components/schemas/DonationFull'
         - type: object
           properties:
             personId:
@@ -1703,16 +1235,16 @@ components:
     PurchaseDonationDTO:
       x-has-dto: true
       required: [fundId,initiativeId, state]
-      allOf: 
-        - $ref: './shared.yaml#/components/schemas/DonationBase'
-        - type: object
-          properties:
-            personId:
-              type: integer
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DonationFull'
+        #- type: object
+        #  properties:
+        #    personId:
+        #      type: integer
     PersonIdOnlyDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonIdOnly'
+        - $ref: './shared.yaml#/components/schemas/PersonRef'
     PersonNameDTO:
       x-has-dto: true
       allOf:
@@ -1721,7 +1253,7 @@ components:
     CardDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/Card'
+        - $ref: './shared.yaml#/components/schemas/CardFull'
         - type: object
           properties:
             personId:
@@ -1730,96 +1262,33 @@ components:
       x-has-dto: true
       type: object
       allOf:
-        - $ref: './shared.yaml#/components/schemas/CardBase'
+        - $ref: './shared.yaml#/components/schemas/CardFull'
         - type: object
           properties:
             personId:
-              type: integer
+              $ref: '#/components/schemas/PersonPublicDTO'
     PurchaseGiftCardDTO:
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        personId:
-          writeOnly: true
-          type: integer
-        cardNum:
-          writeOnly: true
-          type: string
-        isRecharge:
-          writeOnly: true
-          type: boolean
-        balance:
-          readOnly: true
-          allOf:
-            - $ref: '#/components/schemas/BalanceDTO'
-        balanceTransactionType:
-          readOnly: true
-          $ref: './shared.yaml#/components/schemas/BalanceTransactionType'
-        transactionAmountCents:
-          type: integer
-          format: int64
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PurchasableState'
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceTransactionFull'
+        - type: object
+          properties:
+            cardNum:
+              writeOnly: true
+              type: string
+            isRecharge:
+              writeOnly: true
+              type: boolean
+            balanceId:
+              readOnly: true
+              allOf:
+                - $ref: '#/components/schemas/BalanceDTO'
     
     PersonSubscriptionDTO:
+      x-has-dto: true
       required: [id, personId, subscriptionId, billingCycle]
-      properties:
-        assignId:
-          type: integer
-          format: int64
-        personId:
-          type: integer
-        subscriptionId:
-          type: integer
-          format: int64
-        billingDate:
-          type: string
-          format: date
-        billingCycle:
-          type: string
-          maxLength: 50
-
-    UserTest:
-      type: object
-      properties:
-        id:
-          type: integer
-          example: 1
-        username:
-          type: string
-          example: user@example.com
-        fullName:
-          type: string
-          example: John Doe
-    TestRequest:
-      type: object
-      properties:
-        derply:
-          type: integer
-          example: 1
-        capacity:
-          type: string
-        dateTestReq:
-          type: string
-          format: date
-        dateTimeTestReq:
-          type: string
-          format: date-time
-    TestResponse:
-      type: object
-      properties:
-        internalDiameter:
-          type: integer
-          example: 1
-        dateTest:
-          type: string
-          format: date
-        dateTimeTest:
-          type: string
-          format: date-time
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonSubscriptionFull'
     APEligibleClass:
       type: object
       properties:
@@ -1907,7 +1376,9 @@ components:
     PersonPublicDTO:
       x-has-dto: true
       allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRef'
         - $ref: './shared.yaml#/components/schemas/PersonBase'
+        - $ref: './shared.yaml#/components/schemas/PersonPublic'
         - type: object
           properties:
             isLocked:
@@ -1929,9 +1400,8 @@ components:
     PersonDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/Person'
+        - $ref: './shared.yaml#/components/schemas/PersonFull'
         - $ref: '#/components/schemas/PersonPublicDTO'
-        - $ref: './shared.yaml#/components/schemas/Tracked'
         - type: object
           properties:
             cards:
@@ -1998,6 +1468,18 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonPublicChildDTO'
+            availableAddresses:
+              description: A list of all existing addresses this person can add assign either themselves or related persons.
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/AddressDTO'
+            availablePhones:
+              description: A list of all existing phones this person can add assign either themselves or related persons.
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/PhoneDTO'
     PersonPublicRelatedDTO:
       x-has-dto: true
       x-sub-variable: B
@@ -2053,8 +1535,6 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonReferral'
         - $ref: './shared.yaml#/components/schemas/Deletable'
-    TestChange:
-      type: object
     AddressBaseDTO:
       x-has-dto: true
       allOf:

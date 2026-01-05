@@ -178,14 +178,16 @@ components:
         - 4
         - 2000
     DummyEnum:
-      type: object
+      type: string
       x-is-dummy: true
+      enum:
       allOf:
         - $ref: '#/components/schemas/ReferralSource'
         - $ref: '#/components/schemas/Gender'
         - $ref: '#/components/schemas/Ethnicity'
         - $ref: '#/components/schemas/Language'
         - $ref: '#/components/schemas/CountryPhoneCode'
+        - $ref: '#/components/schemas/ItemInstanceFull'
     ReferralSource:
       type: string
       enum:
@@ -1441,23 +1443,26 @@ components:
         - 2
         - 3
         - 4
-    Tracked:
+    DBHistory:
       x-has-interface: true
-      x-no-dao: true
       x-has-dto: false
       x-has-dao: false
       type: object
       properties:
         updatedOn:
+          readOnly: true
           type: string
           format: date-time
         updatedBy:
+          readOnly: true
           type: string
           maxLength: 500
         createdOn:
+          readOnly: true
           type: string
           format: date-time
         createdBy:
+          readOnly: true
           type: string
           maxLength: 500
     Deletable:
@@ -1467,9 +1472,75 @@ components:
       type: object
       properties:
         isDeleted:
+          x-no-db-var: true
           type: boolean
           default: false
-
+        isNew:
+          x-no-db-var: true
+          type: boolean
+          default: false
+    Purchasable:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        purchasableState:
+          readOnly: true
+          allOf:
+            - $ref: '#/components/schemas/PurchasableState'
+        voidCloseId:
+          readOnly: true
+          type: integer
+    LongIDResource:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [assignId]
+      properties:
+        assignId:
+          type: integer
+          format: int64
+          x-col-primary: true
+    IntegerIDResource:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [assignId]
+      properties:
+        assignId:
+          type: integer
+          x-col-primary: true
+    DateRangeActivated:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        startActive:
+          type: string
+          format: date-time
+        endActive:
+          type: string
+          format: date-time
+    DateRangeActivatedReadOnly:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/DateRangeActivated'
+        - type: object
+          properties:
+            startActive:
+              readOnly: true
+              type: string
+              format: date-time
+            endActive:
+              readOnly: true
+              type: string
+              format: date-time
     PersonNameInfo:
       x-has-interface: true
       x-has-dto: false
@@ -1500,24 +1571,26 @@ components:
           x-dto-column: NAME_PREFERRED
           type: string
           maxLength: 100
-    PersonIdOnly:
+    PersonRef:
       x-has-interface: true
-      x-has-dto: false
+      x-has-dto: true
       x-has-dao: false
       type: object
-      required: [personId]
+      required: [assignId]
+      allOf:
+        - $ref: '#/components/schemas/IntegerIDResource'
+        - $ref: '#/components/schemas/Deletable'
       properties:
-        personId:
-          x-col-primary: true
-          readOnly: true
+        assignId:
           type: integer
+          x-dto-column: PERSON_ID
+          x-col-primary: true
     PersonBase:
       x-has-interface: true
       x-has-dto: false
       x-hsa-dao: false
       allOf:
         - $ref: '#/components/schemas/PersonNameInfo'
-        - $ref: '#/components/schemas/PersonIdOnly'
         - type: object
           required: [ temp ]
           properties:
@@ -1583,12 +1656,6 @@ components:
             dobVerified:
               readOnly: true
               type: boolean
-            referrals:
-              x-parent-variable: personId
-              type: array
-              maxLength: 10
-              items:
-                $ref: '#/components/schemas/PersonReferral'
             #memberships:
             #  type: array
             #  items:
@@ -1605,76 +1672,165 @@ components:
               type: string
               maxLength: 1
               minLength: 1
-            phones:
-              maxLength: 5
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonPhoneBase'
-            addresses:
-              maxLength: 5
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonAddressBase'
-    PersonPhoneBase:
-      type: object
+    PersonPublic:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dto: false
+      x-has-dao: false
+      properties:
+        referrals:
+          x-parent-variable: personId
+          type: array
+          maxLength: 10
+          items:
+            $ref: '#/components/schemas/PersonReferral'
+        phones:
+          maxLength: 5
+          x-parent-variable: personId
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonPhoneBase'
+        addresses:
+          maxLength: 5
+          x-parent-variable: personId
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonAddressBase'
+    PersonMember:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       properties:
-        personPhoneAssignId:
-          x-dto-column: assign_id
-          x-table-name: person_phone
-          x-col-primary: true
-          type: integer
-          format: int64
-        isPrimary:
-          type: boolean
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
-        name:
-          type: string
-          maxLength: 100
+        memberships:
+          x-parent-variable: personId
+          type: array
+          items:
+            $ref: '#/components/schemas/MembershipBase'
+        cards:
+          x-parent-variable: personId
+          x-base-type: CardDTO
+          type: array
+          items:
+            $ref: '#/components/schemas/CardBase'
+    PersonInternal:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            relationsA:
+              x-parent-variable: A
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRelationBase'
+            relationsB:
+              x-parent-variable: B
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRelationBase'
+    PersonFull:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/PersonRef'
+        - $ref: '#/components/schemas/PersonBase'
+        - $ref: '#/components/schemas/PersonPublic'
+        - $ref: '#/components/schemas/PersonMember'
+    PersonInternalFull:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/PersonInternal'
+        - $ref: '#/components/schemas/PersonFull'
+    PersonPhoneRef:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dto: false
+      x-has-dao: false
+      required: [personPhoneAssignId]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            personPhoneAssignId:
+              x-dto-column: assign_id
+              x-table-name: person_phone
+              x-col-primary: true
+              type: integer
+              format: int64
+    PersonPhoneBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/PersonPhoneRef'
+        - $ref: '#/components/schemas/DateRangeActivated'
+        - type: object
+          properties:
+            isPrimary:
+              type: boolean
+            name:
+              type: string
+              maxLength: 100
+    PersonPhoneFull:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/PersonPhoneRef'
+        - $ref: '#/components/schemas/PersonPhoneBase'
+    PersonRelationRef:
+      type: object
+      required: [relationId]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            relationId:
+              type: integer
+              x-col-primary: true
     PersonRelationBase:
       type: object
       x-has-dto: false
       x-has-dao: false
       x-has-interface: true
-      properties:
-        relationId:
-          type: integer
-          x-col-primary: true
-        aTitleOverride:
-          type: string
-          maxLength: 100
-        bTitleOverride:
-          type: string
-          maxLength: 100
-        relationTypeId:
-          x-enum-type: integer
-          x-dto-column: TYPE_ID
-          allOf:
-            - $ref: '#/components/schemas/PersonRelationType'
+      allOf:
+        - $ref: '#/components/schemas/PersonRelationRef'
+        - type: object
+          properties:
+            aTitleOverride:
+              type: string
+              maxLength: 100
+            bTitleOverride:
+              type: string
+              maxLength: 100
+            relationTypeId:
+              x-enum-type: integer
+              x-dto-column: TYPE_ID
+              allOf:
+                - $ref: '#/components/schemas/PersonRelationType'
     PersonRelation:
       required: [A, B]
       x-has-dto: false
       x-has-dao: false
       x-has-interface: true
       allOf:
+        - $ref: '#/components/schemas/PersonRelationRef'
         - $ref: '#/components/schemas/PersonRelationBase'
         - type: object
           properties:
             A:
               allOf:
-                - $ref: '#/components/schemas/Person'
+                - $ref: '#/components/schemas/PersonBase'
             B:
               allOf:
-                - $ref: '#/components/schemas/Person'
+                - $ref: '#/components/schemas/PersonBase'
     #PersonRelated:
     #  allOf:
     #    - $ref: '#/components/schemas/PersonProperties'
@@ -1689,71 +1845,69 @@ components:
     #          readOnly: true
     #          type: string
     #          maxLength: 500
-    Person:
-      x-has-dao: false
-      x-has-dto: false
+    PersonAddressRef:
       x-has-interface: true
+      x-has-dto: false
+      x-dao-interface: false
+      x-has-dao: false
+      required: [personAddressAssignId]
       allOf:
-        - $ref: '#/components/schemas/PersonBase'
+        - $ref: '#/components/schemas/Deletable'
         - type: object
           properties:
-            memberships:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/Membership'
-            cards:
-              x-parent-variable: personId
-              x-base-type: CardDTO
-              type: array
-              items:
-                $ref: '#/components/schemas/Card'
-            relationsA:
-              x-parent-variable: A
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonRelation'
-            relationsB:
-              x-parent-variable: B
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonRelation'
+            personAddressAssignId:
+              x-dto-column: assign_id
+              x-col-primary: true
+              type: integer
+              format: int64
     PersonAddressBase:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/PersonAddressRef'
+        - $ref: '#/components/schemas/DateRangeActivated'
+        - type: object
+          properties:
+            startActive:
+              type: string
+              format: date-time
+            endActive:
+              type: string
+              format: date-time
+            name:
+              type: string
+              maxLength: 100
+            isPrimary:
+              type: boolean
+    PersonAddressFull:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ line1, country, personAddressAssignId ]
+      allOf:
+        - $ref: '#/components/schemas/PersonAddressRef'
+        - $ref: '#/components/schemas/PersonAddressBase'
+    AddressRef:
+      x-dao-interface: true
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    AddressBase:
       type: object
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
+      required: [ line1, country ]
       properties:
-        personAddressAssignId:
-          x-dto-column: assign_id
-          x-col-primary: true
-          type: integer
-          format: int64
-        startActive:
-          type: string
-          format: date-time
-        endActive:
-          type: string
-          format: date-time
-        name:
-          type: string
-          maxLength: 100
-        isPrimary:
-          type: boolean
-    Address:
-      type: object
-      x-has-interface: true
-      x-has-dto: false
-      x-has-dao: false
-      required: [ line1, country, zip ]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
         isVerified:
+          readOnly: true
           type: boolean
         isBad:
+          readOnly: true
           type: boolean
         line1:
           type: string
@@ -1775,162 +1929,316 @@ components:
         zip:
           type: string
           maxLength: 15
-    MembershipBase:
-      required: [ membershipTypeId ]
+    Address:
+      type: object
       x-has-interface: true
-      x-no-dto: true
-      x-has-dto: false
-      x-has-dao: false
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-        membershipTypeId:
-          type: integer
-        #personId:
-        #  $ref: '#/components/schemas/Person'
-        startDate:
-          type: string
-          format: date
-        purchaseDate:
-          readOnly: true
-          type: string
-          format: date
-        expirationDate:
-          readOnly: true
-          type: string
-          format: date
-        price:
-          readOnly: true
-          type: integer
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: '#/components/schemas/PurchasableState'
-        voidCloseId:
-          readOnly: true
-          type: integer
-    Membership:
-      x-has-interface: true
-      x-no-dto: true
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/AddressBase'
+        - $ref: '#/components/schemas/AddressRef'
+    ClassSignupRef:
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          required: [signupId]
+          properties:
+            signupId:
+              x-col-primary: true
+              type: integer
+    ClassSignupBase:
+      properties:
+        signupType:
+          readOnly: true
+          type: string
+          minLength: 1
+          maxLength: 1
+        price:
+          readOnly: true
+          type: integer
+        classTypeEnum:
+          $ref: '#/components/schemas/ClassTypeEnum'
+    ClassSignupFull:
+      required: [signupId, instanceId]
+      allOf:
+        - $ref: '#/components/schemas/ClassSignupRef'
+        - $ref: '#/components/schemas/ClassSignupBase'
+        - $ref: '#/components/schemas/Purchasable'
+        - $ref: '#/components/schemas/WithPersonRef'
+        - $ref: '#/components/schemas/WithLineItemRef'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/ApClassInstanceRef'
+    MembershipRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/IntegerIDResource'
+    MembershipBase:
+      required: [ membershipTypeId ]
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Purchasable'
+        - type: object
+          properties:
+            membershipTypeId:
+              $ref: '#/components/schemas/MembershipTypeRef'
+            startDate:
+              type: string
+              format: date
+            purchaseDate:
+              readOnly: true
+              type: string
+              format: date
+            expirationDate:
+              readOnly: true
+              type: string
+              format: date
+            temp:
+              readOnly: true
+              type: string
+              maxLength: 1
+              minLength: 1
+            price:
+              readOnly: true
+              type: integer
+    MembershipFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/MembershipRef'
         - $ref: '#/components/schemas/MembershipBase'
-        - $ref: '#/components/schemas/WithPersonIdOnly'
+        - $ref: '#/components/schemas/WithPersonRef'
+    MembershipInternal:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/MembershipFull'
+        - $ref: '#/components/schemas/WithLineItemRef'
+    GuestPrivsRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/IntegerIDResource'
+    GuestPrivsBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Purchasable'
+        - type: object
+          properties:
+            startDate:
+              type: string
+              format: date
+    GuestPrivsFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/GuestPrivsRef'
+        - $ref: '#/components/schemas/GuestPrivsBase'
+        - $ref: '#/components/schemas/WithLineItemRef'
+        - type: object
+          properties:
+            membershipId:
+              $ref: '#/components/schemas/MembershipRef'
+    DamageWaiverRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [waiverId]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            waiverId:
+              x-col-primary: true
+              x-table-name: DAMAGE_WAIVERS
+              type: integer
+    DamageWaiverBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Purchasable'
+        - type: object
+          properties:
+            startDate:
+              type: string
+              format: date
+    DamageWaiverFull:
+      allOf:
+        - $ref: '#/components/schemas/DamageWaiverRef'
+        - $ref: '#/components/schemas/DamageWaiverBase'
+        - $ref: '#/components/schemas/WithLineItemRef'
+        - $ref: '#/components/schemas/WithPersonRef'
+        - type: object
+          properties:
+            startDate:
+              type: string
+              format: date
+    CardRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/IntegerIDResource'
     CardBase:
-      x-no-dto: true
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       required: [ cardNum, personId ]
-      properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-        issueDate:
-          type: string
-          format: date-time
-        #personId:
-        #  $ref: '#/components/schemas/Person'
-        cardNum:
-          type: string
-        active:
-          readOnly: true
-          type: boolean
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: '#/components/schemas/PurchasableState'
-        voidCloseId:
-          readOnly: true
-          type: integer
-    Card:
+      allOf:
+        - $ref: '#/components/schemas/Purchasable'
+        - type: object
+          properties:
+            issueDate:
+              type: string
+              format: date-time
+            cardNum:
+              type: string
+              maxLength: 50
+            temp:
+              readOnly: true
+              type: string
+              maxLength: 1
+              minLength: 1
+            active:
+              readOnly: true
+              type: boolean
+    CardFull:
       required: [cardNum, personId]
       allOf:
+        - $ref: '#/components/schemas/CardRef'
         - $ref: '#/components/schemas/CardBase'
-        - $ref: '#/components/schemas/WithPersonIdOnly'
+        - $ref: '#/components/schemas/WithPersonRef'
+    DonationRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [donationId]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            donationId:
+              type: integer
+              x-col-primary: true
+              x-table-name: donations
+              x-auto-increment: DONATIONS_SEQ
     DonationBase:
-      x-no-dto: true
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       required: [fundId, initiativeId, state]
-      type: object
-      properties:
-        donationId:
-          x-col-primary: true
-          type: integer
-        fundId:
-          type: integer
-        donationDate:
-          type: string
-          format: date-time
-        description:
-          type: string
-          maxLength: 500
-        restriction:
-          type: string
-          maxLength: 500
-        initiativeId:
-          type: integer
-        inMemoryOf:
-          type: string
-        isMatch:
-          type: boolean
-        inKind:
-          type: boolean
-        skipAck:
-          type: boolean
-        amount:
-          readOnly: true
-          type: number
-          format: double
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: './shared.yaml#/components/schemas/PurchasableState'
-        voidCloseId:
-          readOnly: true
-          type: integer
-    WithPersonIdOnlyOpt:
-      x-no-dto: true
+      allOf:
+        - $ref: '#/components/schemas/Purchasable'
+        - type: object
+          properties:
+            fundId:
+              type: integer
+            donationDate:
+              type: string
+              format: date-time
+            description:
+              type: string
+              maxLength: 500
+            restriction:
+              type: string
+              maxLength: 200
+            initiativeId:
+              type: integer
+            inMemoryOf:
+              type: string
+              maxLength: 500
+            isMatch:
+              type: boolean
+            inKind:
+              type: boolean
+            skipAck:
+              type: boolean
+            amount:
+              readOnly: true
+              type: number
+              format: double
+    WithOptionalPersonRef:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       type: object
       properties:
         personId:
-          $ref: '#/components/schemas/PersonIdOnly'
-    WithPersonIdOnly:
-      x-no-dto: true
+          x-is-optional-ref: true
+          allOf:
+            - $ref: '#/components/schemas/PersonRef'
+    WithPersonRef:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       type: object
       required: [personId]
+      allOf:
+        - $ref: '#/components/schemas/WithOptionalPersonRef'
+        - type: object
+          properties:
+            personId:
+              x-is-optional-ref: false
+              allOf:
+                - $ref: '#/components/schemas/PersonRef'
+    WithLineItemRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      #required: [ lineItemId ]
+      properties: {}
+        #lineItemId:
+        #  x-backref-name:
+        #  allOf:
+        #    - $ref: '#/components/schemas/LineItemRef'
+    WithCatalogRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [ catalogId ]
       properties:
-        personId:
-          $ref: '#/components/schemas/PersonIdOnly'
-    Donation:
-      x-no-dto: true
+        catalogId:
+          $ref: '#/components/schemas/CatalogRef'
+    DonationFull:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/DonationRef'
         - $ref: '#/components/schemas/DonationBase'
-        - $ref: '#/components/schemas/WithPersonIdOnlyOpt'
-    Phone:
+        - $ref: '#/components/schemas/WithLineItemRef'
+        - $ref: '#/components/schemas/WithOptionalPersonRef'
+    PhoneRef:
+      x-dao-interface: true
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    PhoneBase:
       type: object
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       required: [ number ]
       properties:
-        assignId:
-          x-col-primary: true
-          type: integer
-          format: int64
         number:
           type: string
           maxLength: 100
@@ -1940,6 +2248,12 @@ components:
           type: boolean
         isBad:
           type: boolean
+    Phone:
+      x-dao-interface: false
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PhoneRef'
+        - $ref: '#/components/schemas/PhoneBase'
     PersonReferral:
       type: object
       x-has-interface: true
@@ -1954,3 +2268,1194 @@ components:
         referralSource:
           type: string
           maxLength: 100
+    LineItemDiscountInstanceRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    LineItemDiscountInstanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ discountType ]
+      properties:
+        isApplied:
+          type: boolean
+        discountType:
+          $ref: '#/components/schemas/DiscountType'
+        specifiedCents:
+          type: integer
+          format: int64
+        specifiedPercent:
+          type: string
+          maxLength: 50
+        amountBaseCents:
+          type: integer
+          format: int64
+        amountTotalCents:
+          type: integer
+          format: int64
+    LineItemDiscountInstanceFull:
+      allOf:
+        - $ref: '#/components/schemas/LineItemDiscountInstanceRef'
+        - $ref: '#/components/schemas/LineItemDiscountInstanceBase'
+        - type: object
+          properties:
+            discountInstanceId:
+              $ref: '#/components/schemas/DiscountInstanceRef'
+    LineItemDiscountInstanceInternalFull:
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/LineItemDiscountInstanceFull'
+        - type: object
+          properties:
+            lineItemId:
+              $ref: '#/components/schemas/LineItemRef'
+
+    ItemDiscountRef:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    ItemDiscountBase:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dao: false
+      required: [ itemId, discountId ]
+      properties:
+        requiresParentEligibility:
+          type: boolean
+        discountType:
+          $ref: '#/components/schemas/DiscountType'
+        amountCents:
+          type: integer
+          format: int64
+        percent:
+          type: string
+          maxLength: 50
+    ItemDiscountFull:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dao: false
+      required: [ itemId, discountId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemDiscountRef'
+        - $ref: './shared.yaml#/components/schemas/ItemDiscountBase'
+        - type: object
+          properties:
+            itemId:
+              $ref: '#/components/schemas/ItemRef'
+            discountId:
+              $ref: '#/components/schemas/DiscountRef'
+    OrderRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    OrderBase:
+      required: [ status, version ]
+      type: object
+      properties:
+        orderSource:
+          $ref: '#/components/schemas/OrderSource'
+        amountBaseCents:
+          description: Total of all items before discounts
+          readOnly: true
+          type: integer
+          format: int64
+        amountDiscountsCents:
+          description: Total of all discounts applied
+          readOnly: true
+          type: integer
+          format: int64
+        amountTaxesCents:
+          description: Total of all taxes applied
+          readOnly: true
+          type: integer
+          format: int64
+        amountTotalCents:
+          description: Total of all items with discounts and taxes
+          readOnly: true
+          type: integer
+          format: int64
+        amountPaidCents:
+          description: Total of all successful payments
+          readOnly: true
+          type: integer
+          format: int64
+        version:
+          type: integer
+        orderStatus:
+          $ref: '#/components/schemas/OrderStateNew'
+    OrderCalculated:
+      type: object
+      properties:
+        amountServiceChangeCents:
+          description: Total cost of service charges (Payment fees paid by customer, maybe we will add restock service fee?)
+          readOnly: true
+          type: integer
+          format: int64
+        amountPendingCents:
+          description: Total of all pending payments
+          readOnly: true
+          type: integer
+          format: int64
+        amountRefundedCents:
+          description: Total of all refunded payments
+          readOnly: true
+          type: integer
+          format: int64
+        amountToRefundCents:
+          description: Total of all refunded items
+          readOnly: true
+          type: integer
+          format: int64
+        amountToPayCents:
+          description: Total of all non-refunded items
+          readOnly: true
+          type: integer
+          format: int64
+    OrderFull:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/OrderRef'
+        - $ref: '#/components/schemas/OrderBase'
+        - $ref: '#/components/schemas/WithOptionalPersonRef'
+        - type: object
+          properties:
+            lineItems:
+              x-parent-variable: orderId
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItemRef'
+            appliedTaxes:
+              x-parent-variable: orderId
+              type: array
+              readOnly: true
+              items:
+                $ref: '#/components/schemas/OrderTaxBase'
+            orderPayments:
+              x-parent-variable: orderId
+              type: array
+              readOnly: true
+              items:
+                $ref: '#/components/schemas/OrderPaymentBase'
+    LineItemRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            referenceId:
+              x-col-secondary: true
+              type: string
+              maxLength: 200
+    LineItemBase:
+      type: object
+      required: [amountBaseCents]
+      properties:
+        amountBaseCents:
+          description: Base cost of a single unit of this line item (From catalog or amount specified, if allowed)
+          type: integer
+          format: int64
+        amountSpecifiedCents:
+          description: Specified cost of a single unit of this line item(For catalog items that support variable pricing)
+          type: integer
+          format: int64
+        amountPaidCents:
+          description: Amount of money successfully paid
+          type: integer
+          format: int64
+    LineItemCalculated:
+      type: object
+      properties:
+        amountDiscountsBaseCents:
+          description: Total value (in cents) of all discounts applied to a single unit of this line item
+          readOnly: true
+          type: integer
+          format: int64
+        amountDiscountsTotalCents:
+          description: Total value (in cents) of all discounts applied to all units of this line item
+          readOnly: true
+          type: integer
+          format: int64
+        amountTotalCents:
+          description: Base price of line item times quantity minus value of all discounts (in cents)
+          readOnly: true
+          type: integer
+          format: int64
+        amountToRefundCents:
+          description: Amount of money to refund (in cents)
+          readOnly: true
+          type: integer
+          format: int64
+        amountRefundedCents:
+          description: Amount of money successfully refunded
+          readOnly: true
+          type: integer
+          format: int64
+    LineItemFull:
+      required: [ itemInstanceId, orderId ]
+      allOf:
+        - $ref: '#/components/schemas/LineItemBase'
+        - $ref: '#/components/schemas/LineItemRef'
+        - type: object
+          properties:
+            parentItemId:
+              $ref: '#/components/schemas/LineItemRef'
+            orderId:
+              $ref: '#/components/schemas/OrderRef'
+            itemInstanceId:
+              $ref: '#/components/schemas/ItemInstanceRef'
+            subscriptionId:
+              $ref: '#/components/schemas/PersonSubscriptionRef'
+            classSignup:
+              $ref: '#/components/schemas/ClassSignupRef'
+            membership:
+              $ref: '#/components/schemas/MembershipRef'
+            donation:
+              $ref: '#/components/schemas/DonationRef'
+            card:
+              $ref: '#/components/schemas/CardRef'
+            giftCard:
+              $ref: '#/components/schemas/BalanceTransactionRef'
+            guestPrivs:
+              $ref: '#/components/schemas/GuestPrivsRef'
+            damageWaiver:
+              $ref: '#/components/schemas/DamageWaiverRef'
+            stockChange:
+              $ref: '#/components/schemas/ItemInstanceStockChangeBase'
+            discounts:
+              type: array
+              x-parent-variable: lineItemId
+              items:
+                $ref: '#/components/schemas/LineItemDiscountInstanceBase'
+            refunds:
+              type: array
+              x-parent-variable: lineItemId
+              items:
+                $ref: '#/components/schemas/LineItemRefundBase'
+    ItemCategoryRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    ItemCategoryFull:
+      x-has-interface: true
+      required: [ item, categoryId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemCategoryRef'
+        - type: object
+          properties:
+            item:
+              $ref: '#/components/schemas/ItemRef'
+            categoryId:
+              $ref: '#/components/schemas/CategoryRef'
+    LineItemRefundRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    LineItemRefundBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      properties:
+        amountToRefundUnitCents:
+          type: integer
+          format: int64
+        amountRefundedCents:
+          type: integer
+          format: int64
+        refundQuantity:
+          type: integer
+        returnStock:
+          type: boolean
+        revokeAfter:
+          type: boolean
+        revokeDuring:
+          type: boolean
+    LineItemRefundFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ lineItemId ]
+      allOf:
+        - $ref: '#/components/schemas/LineItemRefundRef'
+        - $ref: '#/components/schemas/LineItemRefundBase'
+    LineItemRefundInternalFull:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dao: false
+      required: [ lineItemId ]
+      allOf:
+        - $ref: '#/components/schemas/LineItemRefundFull'
+        - type: object
+          properties:
+            stockChangeId:
+              $ref: '#/components/schemas/ItemInstanceStockChangeRef'
+            lineItemId:
+              $ref: "#/components/schemas/LineItemRef"
+    LineItemRefundTaxRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    LineItemRefundTaxBase:
+      type: object
+      properties: {}
+
+    LineItemRefundTaxFull:
+      allOf:
+        - $ref: '#/components/schemas/LineItemRefundTaxRef'
+        - $ref: '#/components/schemas/LineItemRefundTaxBase'
+        - type: object
+          properties:
+            taxId:
+              $ref: '#/components/schemas/OrderTaxRef'
+    LineItemRefundTaxInternalFull:
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/LineItemRefundTaxFull'
+        - type: object
+          properties:
+            lineItemRefundId:
+              $ref: '#/components/schemas/LineItemRefundRef'
+    PersonSubscriptionRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    PersonSubscriptionBase:
+      required: [ billingCycle ]
+      allOf:
+        - $ref: '#/components/schemas/PersonSubscriptionRef'
+        - type: object
+          properties:
+            billingDate:
+              type: string
+              format: date
+            billingCycle:
+              type: string
+              maxLength: 50
+    PersonSubscriptionFull:
+      required: [ personId, subscriptionId, billingCycle ]
+      allOf:
+        - $ref: '#/components/schemas/PersonSubscriptionRef'
+        - $ref: '#/components/schemas/PersonSubscriptionBase'
+        - $ref: '#/components/schemas/WithPersonRef'
+    SubscriptionRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    SubscriptionBase:
+      required: [ assignId, name, billingCycle ]
+      properties:
+        name:
+          type: string
+          maxLength: 200
+        billingCycle:
+          type: string
+          maxLength: 50
+    SubscriptionFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ subscriptionId, itemId ]
+      allOf:
+        - $ref: '#/components/schemas/SubscriptionRef'
+        - $ref: '#/components/schemas/SubscriptionBase'
+    SubscriptionItemRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    SubscriptionItemBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      properties:
+        cyclePriceOverrideCents:
+          type: integer
+          format: int64
+    SubscriptionItemFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ subscriptionId, itemId ]
+      allOf:
+        - $ref: '#/components/schemas/SubscriptionItemRef'
+        - $ref: '#/components/schemas/SubscriptionItemBase'
+        - type: object
+          properties:
+            subscriptionId:
+              $ref: '#/components/schemas/SubscriptionBase'
+            itemId:
+              $ref: '#/components/schemas/ItemBase'
+    TaxRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    TaxBase:
+      required: [ taxName, taxRate, taxMinValueCents ]
+      properties:
+        taxName:
+          type: string
+          maxLength: 200
+        taxCode:
+          type: string
+          maxLength: 500
+        taxRate:
+          type: string
+          maxLength: 200
+        taxMinValueCents:
+          type: integer
+          format: int64
+        taxBeforeDiscount:
+          type: boolean
+    TaxFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/TaxRef'
+        - $ref: '#/components/schemas/TaxBase'
+        - $ref: '#/components/schemas/WithCatalogRef'
+    OrderTaxRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    OrderTaxBase:
+      type: object
+      properties:
+        amountTotalCents:
+          type: integer
+          format: int64
+        amountPaidCents:
+          type: integer
+          format: int64
+        amountRefundedCents:
+          type: integer
+          format: int64
+        amountToRefundCents:
+          type: integer
+          format: int64
+        taxRateUsed:
+          type: string
+          maxLength: 200
+    OrderTaxFull:
+      required: [taxId, orderId]
+      allOf:
+        - $ref: '#/components/schemas/OrderTaxRef'
+        - $ref: '#/components/schemas/OrderTaxBase'
+        - type: object
+          properties:
+            taxId:
+              $ref: '#/components/schemas/TaxRef'
+            orderId:
+              $ref: '#/components/schemas/OrderBase'
+    BalanceTransactionRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    BalanceTransactionBase:
+      required: [ transactionAmountCents ]
+      allOf:
+        - $ref: '#/components/schemas/Purchasable'
+        - type: object
+          properties:
+            balanceTransactionType:
+              $ref: '#/components/schemas/BalanceTransactionType'
+            transactionAmountCents:
+              type: integer
+              format: int64
+    BalanceTransactionFull:
+      required: [ balanceId, transactionAmountCents ]
+      allOf:
+        - $ref: '#/components/schemas/BalanceTransactionRef'
+        - $ref: '#/components/schemas/BalanceTransactionBase'
+        - type: object
+          properties:
+            balanceId:
+              $ref: '#/components/schemas/BalanceRef'
+    BalanceTransactionInternalFull:
+      x-dao-interface: true
+      required: [ balanceId, transactionAmountCents ]
+      allOf:
+        - $ref: '#/components/schemas/BalanceTransactionFull'
+        - $ref: '#/components/schemas/WithLineItemRef'
+        - type: object
+          properties:
+            paymentId:
+              $ref: '#/components/schemas/OrderPaymentBase'
+
+    BalanceRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    BalanceBase:
+      required: [ balanceType ]
+      allOf:
+        - $ref: '#/components/schemas/BalanceRef'
+        - type: object
+          properties:
+            balanceAccountNumber:
+              type: string
+              maxLength: 200
+            balanceType:
+              $ref: '#/components/schemas/BalanceType'
+    BalanceFull:
+      required: [ balanceCents, balanceType ]
+      allOf:
+        - $ref: '#/components/schemas/BalanceBase'
+        - $ref: "#/components/schemas/WithOptionalPersonRef"
+    BalanceInternal:
+      required: [ balanceCents, balanceType ]
+      allOf:
+        - $ref: '#/components/schemas/BalanceFull'
+        - type: object
+          properties:
+            balanceAccountToken:
+              type: string
+              maxLength: 64
+              minLength: 64
+    StripeTransactionRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    StripeTransactionBase:
+      required: [ stripePaymentIntent, transactionAmountCents ]
+      properties:
+        transactionType:
+          $ref: '#/components/schemas/StripeTransactionType'
+        stripePaymentIntent:
+          type: string
+          maxLength: 500
+        stripePaymentSecret:
+          type: string
+          maxLength: 500
+        transactionAmountCents:
+          type: integer
+          format: int64
+    StripeTransactionFull:
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/StripeTransactionRef'
+        - $ref: '#/components/schemas/StripeTransactionBase'
+        - type: object
+          properties:
+            payments:
+              type: array
+              x-parent-variable: stripeTransaction
+              items:
+                $ref: '#/components/schemas/OrderPaymentBase'
+    DiscountInstanceRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [instanceId]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            instanceId:
+              x-col-primary: true
+              type: integer
+    DiscountInstanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/DateRangeActivated'
+        - type: object
+          properties:
+            discountType:
+              $ref: '#/components/schemas/DiscountType'
+            amountCents:
+              type: integer
+              format: int64
+            percent:
+              type: string
+            autoApply:
+              type: boolean
+            isGlobal:
+              type: boolean
+            isSpecial:
+              type: boolean
+    DiscountInstanceFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/DiscountInstanceRef'
+        - $ref: '#/components/schemas/DiscountInstanceBase'
+        - $ref: '#/components/schemas/DateRangeActivated'
+    DiscountInstanceInternalFull:
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/DiscountInstanceFull'
+        - type: object
+          properties:
+            universalCode:
+              writeOnly: true
+              type: string
+              maxLength: 200
+    DiscountRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/IntegerIDResource'
+        - type: object
+          properties:
+            assignId:
+              x-table-name: DISCOUNTS
+              x-dto-column: DISCOUNT_ID
+              x-col-primary: true
+              type: integer
+    DiscountBase:
+      required: [discountName]
+      properties:
+        discountName:
+          type: string
+          maxLength: 100
+    DiscountFull:
+      allOf:
+        - $ref: '#/components/schemas/DiscountRef'
+        - $ref: '#/components/schemas/DiscountBase'
+        - type: object
+          properties:
+            catalogId:
+              $ref: '#/components/schemas/CatalogRef'
+            categories:
+              type: array
+              items:
+                $ref: '#/components/schemas/DiscountCategoryRef'
+            instances:
+              type: array
+              items:
+                $ref: '#/components/schemas/DiscountInstanceRef'
+    DiscountCategoryRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    DiscountCategoryFull:
+      allOf:
+        - $ref: '#/components/schemas/DiscountCategoryRef'
+        - type: object
+          properties:
+            discountId:
+              $ref: '#/components/schemas/DiscountRef'
+            categoryId:
+              $ref: '#/components/schemas/CategoryRef'
+    CashTransactionRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    CashTransactionBase:
+      required: [ cashDrawerId, transactionAmountCents ]
+      properties:
+        transactionAmountCents:
+          type: integer
+          format: int64
+
+    CashTransactionFull:
+      required: [cashDrawerId, transactionAmountCents]
+      allOf:
+        - $ref: '#/components/schemas/CashTransactionRef'
+        - $ref: '#/components/schemas/CashTransactionBase'
+        - type: object
+          properties:
+            cashDrawerChangeId:
+              $ref: '#/components/schemas/CashDrawersChangeRef'
+    CashTransactionInternalFull:
+      x-dao-interface: true
+      required: [ cashDrawerId, transactionAmountCents ]
+      allOf:
+        - $ref: '#/components/schemas/CashTransactionFull'
+        - type: object
+          properties:
+            paymentId:
+              $ref: '#/components/schemas/OrderPaymentRef'
+    CashDrawersChangeRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    CashDrawersChangeBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ changeType, changeAmountCents ]
+      properties:
+        changeType:
+          type: string
+          maxLength: 50
+        changeAmountCents:
+          type: integer
+          format: int64
+    CashDrawersChangeFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ changeType, changeAmountCents ]
+      allOf:
+        - $ref: '#/components/schemas/CashDrawersChangeRef'
+        - $ref: '#/components/schemas/CashDrawersChangeBase'
+        - type: object
+          properties:
+            cashDrawerId:
+              $ref: "#/components/schemas/CashDrawerRef"
+    OrderPaymentRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    OrderPaymentBase:
+      type: object
+      required: [ paymentType, paymentStatus, paymentAmountCents ]
+      properties:
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+        paymentServiceChangeCents:
+          type: integer
+          format: int64
+        paymentPaidCents:
+          type: integer
+          format: int64
+        paymentTotalCents:
+          type: integer
+          format: int64
+        paymentRefundedCents:
+          type: integer
+          format: int64
+        paymentToRefundCents:
+          type: integer
+          format: int64
+        paymentStatus:
+          $ref: '#/components/schemas/PaymentStatus'
+        paymentDueDate:
+          type: string
+          format: date-time
+    OrderPaymentFull:
+      required: [ paymentSource, orderId ]
+      allOf:
+        - $ref: '#/components/schemas/OrderPaymentRef'
+        - $ref: '#/components/schemas/OrderPaymentBase'
+        - type: object
+          properties:
+            paymentSource:
+              $ref: '#/components/schemas/PaymentSourceRef'
+            stripeTransaction:
+              $ref: '#/components/schemas/StripeTransactionRef'
+            cashTransaction:
+              $ref: '#/components/schemas/CashTransactionRef'
+            balanceTransaction:
+              $ref: '#/components/schemas/BalanceTransactionRef'
+
+    OrderPaymentInternalFull:
+      x-dao-interface: true
+      required: [ paymentSource, orderId ]
+      allOf:
+        - $ref: '#/components/schemas/OrderPaymentFull'
+        - type: object
+          properties:
+            orderId:
+              $ref: '#/components/schemas/OrderBase'
+    PaymentSourceRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    PaymentSourceBase:
+      allOf:
+        - $ref: '#/components/schemas/DateRangeActivated'
+        - type: object
+          properties:
+            paymentType:
+              $ref: '#/components/schemas/PaymentType'
+            stripePaymentSource:
+              readOnly: true
+              type: string
+              maxLength: 500
+    PaymentSourceFull:
+      required: [ paymentSource, orderId ]
+      allOf:
+        - $ref: '#/components/schemas/PaymentSourceRef'
+        - $ref: '#/components/schemas/PaymentSourceBase'
+        - $ref: '#/components/schemas/WithPersonRef'
+        - type: object
+          properties:
+            balanceSource:
+              $ref: '#/components/schemas/BalanceRef'
+    ItemInstanceStockChangeRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    ItemInstanceStockChangeBase:
+      required: [ changeAmount, stockChangeType ]
+      allOf:
+        - $ref: '#/components/schemas/Purchasable'
+        - type: object
+          properties:
+            changeAmount:
+              type: integer
+            stockChangeType:
+              $ref: '#/components/schemas/StockChangeType'
+    ItemInstanceStockChangeFull:
+      required: [ itemInstanceId, changeAmount, stockChangeType ]
+      allOf:
+        - $ref: '#/components/schemas/ItemInstanceStockChangeRef'
+        - $ref: '#/components/schemas/ItemInstanceStockChangeBase'
+        - type: object
+          properties:
+            itemInstanceId:
+              $ref: '#/components/schemas/ItemInstanceRef'
+            lineItemId:
+              $ref: '#/components/schemas/LineItemRef'
+    CatalogRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    CatalogBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/DateRangeActivated'
+        - $ref: '#/components/schemas/CatalogRef'
+        - type: object
+          properties:
+            catalogName:
+              type: string
+              maxLength: 200
+    CatalogFull:
+      allOf:
+        - $ref: '#/components/schemas/CatalogBase'
+        - type: object
+          properties:
+            items:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemBase'
+    CatalogInternalFull:
+      x-dao-interface: false
+      allOf:
+        - $ref: '#/components/schemas/CatalogFull'
+        - type: object
+          properties:
+            taxes:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/TaxBase'
+            categories:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CategoryBase'
+            discounts:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/DiscountBase'
+            products:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/ProductBase'
+    CashDrawerRef:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dao: false
+      x-has-dto: true
+      required: [cashDrawerId]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            cashDrawerId:
+              x-col-primary: true
+              x-table-name: CASH_DRAWERS
+              type: integer
+    CashDrawerFull:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dao: false
+      x-has-dto: false
+      allOf:
+        - $ref: '#/components/schemas/CashDrawerRef'
+    ProductRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    ProductBase:
+      required: [ productName, productDescription, active ]
+      properties:
+        productName:
+          type: string
+          maxLength: 200
+        productDescription:
+          type: string
+          maxLength: 500
+        active:
+          type: boolean
+    ProductFull:
+      allOf:
+        - $ref: '#/components/schemas/ProductRef'
+        - $ref: '#/components/schemas/ProductBase'
+        - $ref: '#/components/schemas/WithCatalogRef'
+    ItemRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    ItemBase:
+      properties:
+        itemType:
+          $ref: '#/components/schemas/ItemType'
+        itemName:
+          type: string
+          maxLength: 200
+        itemDescription:
+          type: string
+          maxLength: 500
+        imageURL:
+          type: string
+          maxLength: 200
+        itemSKU:
+          nullable: true
+          type: string
+          maxLength: 500
+        minQuantity:
+          type: integer
+        maxQuantity:
+          type: integer
+        allowPriceOverride:
+          type: boolean
+        priceOverrideMin:
+          type: integer
+          format: int64
+        priceOverrideMax:
+          type: integer
+          format: int64
+        squareItemId:
+          type: string
+          maxLength: 200
+    ItemFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/ItemRef'
+        - $ref: '#/components/schemas/ItemBase'
+        - type: object
+          properties:
+            classTypeId:
+              $ref: '#/components/schemas/ApClassTypeRef'
+            classInstanceId:
+              $ref: '#/components/schemas/ApClassInstanceRef'
+            membershipTypeId:
+              $ref: '#/components/schemas/MembershipTypeRef'
+            productId:
+              $ref: '#/components/schemas/ProductRef'
+            itemInstances:
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemInstanceBase'
+    ItemInternalFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/ItemFull'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            itemDiscounts:
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemDiscountBase'
+            itemTaxes:
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemTaxFull'
+            itemCategories:
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemCategoryFull'
+    ItemTaxRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    ItemTaxFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/ItemTaxRef'
+        - type: object
+          properties:
+            itemId:
+              $ref: '#/components/schemas/ItemRef'
+            taxId:
+              $ref: '#/components/schemas/TaxRef'
+    CategoryRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    CategoryBase:
+      required: [ categoryName, description ]
+      allOf:
+        - type: object
+          properties:
+            categoryName:
+              type: string
+              maxLength: 200
+            description:
+              type: string
+              maxLength: 500
+            categoryType:
+              $ref: '#/components/schemas/CategoryType'
+    CategoryFull:
+      required: [ categoryName, description, catalogId ]
+      allOf:
+        - $ref: '#/components/schemas/CategoryRef'
+        - $ref: '#/components/schemas/CategoryBase'
+        - $ref: '#/components/schemas/WithCatalogRef'
+        - $ref: '#/components/schemas/DBHistory'
+    ItemInstanceRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
+    ItemInstanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/ItemInstanceRef'
+        - $ref: '#/components/schemas/DateRangeActivated'
+        - type: object
+          properties:
+            priceCents:
+              type: integer
+              format: int64
+    ItemInstanceFull:
+      required: [itemId]
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-no-interface: true
+      allOf:
+        - $ref: '#/components/schemas/ItemInstanceBase'
+        - type: object
+          properties:
+            itemId:
+              $ref: '#/components/schemas/ItemRef'
+
+    MembershipTypeRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          x-table-name: MEMBERSHIP_TYPES
+          x-dto-column: MEMBERSHIP_TYPE_ID
+          type: integer
+
+    ApClassTypeRef:
+      x-has-interface: true
+      #x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          x-table-name: AP_CLASS_TYPES
+          x-dto-column: TYPE_ID
+          type: integer
+
+    ApClassInstanceRef:
+      x-has-interface: true
+      #x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          x-table-name: AP_CLASS_INSTANCES
+          x-dto-column: INSTANCE_ID
+          type: integer
