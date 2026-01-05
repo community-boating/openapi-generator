@@ -653,7 +653,7 @@ paths:
       tags:
         - Payment
       requestBody:
-        x-use-tracked:
+        x-use-tracked: true
         required: true
         content:
           application/json:
