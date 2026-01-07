@@ -180,7 +180,6 @@ components:
     DummyEnum:
       type: string
       x-is-dummy: true
-      enum:
       allOf:
         - $ref: '#/components/schemas/ReferralSource'
         - $ref: '#/components/schemas/Gender'
@@ -2504,7 +2503,7 @@ components:
           type: integer
           format: int64
     LineItemFull:
-      required: [ itemInstanceId, orderId ]
+      required: [ itemInstanceId ]
       allOf:
         - $ref: '#/components/schemas/LineItemBase'
         - $ref: '#/components/schemas/LineItemRef'
@@ -2512,8 +2511,6 @@ components:
           properties:
             parentItemId:
               $ref: '#/components/schemas/LineItemRef'
-            orderId:
-              $ref: '#/components/schemas/OrderRef'
             itemInstanceId:
               $ref: '#/components/schemas/ItemInstanceRef'
             subscriptionId:
@@ -2544,6 +2541,14 @@ components:
               x-parent-variable: lineItemId
               items:
                 $ref: '#/components/schemas/LineItemRefundBase'
+    LineItemInternalFull:
+      required: [ itemInstanceId, orderId ]
+      allOf:
+        - $ref: '#/components/schemas/LineItemFull'
+        - type: object
+          properties:
+            orderId:
+              $ref: '#/components/schemas/OrderRef'
     ItemCategoryRef:
       x-has-interface: true
       x-has-dto: true

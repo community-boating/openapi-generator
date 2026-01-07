@@ -152,7 +152,7 @@ components:
       x-has-dao: true
       required: [assignId, orderId, itemInstanceId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/LineItemFull'
+        - $ref: './shared.yaml#/components/schemas/LineItemInternalFull'
         - type: object
           properties:
             parentItemId:

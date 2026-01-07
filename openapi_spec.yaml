@@ -1052,6 +1052,7 @@ components:
         - $ref: './shared.yaml#/components/schemas/OrderCalculated'
     OrderDTO:
       x-has-dto: true
+      x-dao-type: OrderNew
       allOf:
         - $ref: './shared.yaml#/components/schemas/OrderFull'
         - $ref: './shared.yaml#/components/schemas/OrderCalculated'
@@ -1125,6 +1126,7 @@ components:
         - $ref: './shared.yaml#/components/schemas/OrderTaxFull'
     LineItemDTORef:
       x-has-dto: true
+      x-dao-type: LineItem
       allOf:
         - $ref: './shared.yaml#/components/schemas/LineItemRef'
     LineItemDTO:
