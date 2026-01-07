@@ -517,6 +517,8 @@ paths:
       description: 'Gets the current catalog'
       tags:
         - Catalog
+      security:
+        - staff: []
       responses:
         '200':
           description: Successfully gets the catalog
