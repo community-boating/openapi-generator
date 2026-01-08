@@ -1578,12 +1578,12 @@ components:
       required: [assignId]
       allOf:
         - $ref: '#/components/schemas/IntegerIDResource'
-        - $ref: '#/components/schemas/Deletable'
-      properties:
-        assignId:
-          type: integer
-          x-dto-column: PERSON_ID
-          x-col-primary: true
+        - type: object
+          properties:
+            assignId:
+              type: integer
+              x-dto-column: PERSON_ID
+              x-col-primary: true
     PersonBase:
       x-has-interface: true
       x-has-dto: false
@@ -1594,6 +1594,7 @@ components:
           required: [ temp ]
           properties:
             allowSignouts:
+              x-boolean-char: Y
               readOnly: true
               type: boolean
             personType:
@@ -1644,6 +1645,8 @@ components:
             reducedLunch:
               type: boolean
             previousMember:
+              x-boolean-char: Y
+              readOnly: true
               type: boolean
             swimProof:
               x-enum-type: integer
@@ -1653,6 +1656,7 @@ components:
               type: string
               format: date-time
             dobVerified:
+              x-boolean-char: Y
               readOnly: true
               type: boolean
             #memberships:
@@ -1735,6 +1739,7 @@ components:
       x-dao-interface: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/PersonRef'
         - $ref: '#/components/schemas/PersonBase'
         - $ref: '#/components/schemas/PersonPublic'
@@ -1753,7 +1758,6 @@ components:
       x-has-dao: false
       required: [personPhoneAssignId]
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - type: object
           properties:
             personPhoneAssignId:
@@ -1782,13 +1786,13 @@ components:
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/PersonPhoneRef'
         - $ref: '#/components/schemas/PersonPhoneBase'
     PersonRelationRef:
       type: object
       required: [relationId]
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - type: object
           properties:
             relationId:
@@ -1820,6 +1824,7 @@ components:
       x-has-dao: false
       x-has-interface: true
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/PersonRelationRef'
         - $ref: '#/components/schemas/PersonRelationBase'
         - type: object
@@ -1851,7 +1856,6 @@ components:
       x-has-dao: false
       required: [personAddressAssignId]
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - type: object
           properties:
             personAddressAssignId:
@@ -1887,6 +1891,7 @@ components:
       x-has-dao: false
       required: [ line1, country, personAddressAssignId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/PersonAddressRef'
         - $ref: '#/components/schemas/PersonAddressBase'
     AddressRef:
@@ -1894,7 +1899,6 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     AddressBase:
       type: object
       x-has-interface: true
@@ -1934,11 +1938,11 @@ components:
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/AddressBase'
         - $ref: '#/components/schemas/AddressRef'
     ClassSignupRef:
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - type: object
           required: [signupId]
           properties:
@@ -1958,23 +1962,45 @@ components:
         classTypeEnum:
           $ref: '#/components/schemas/ClassTypeEnum'
     ClassSignupFull:
-      required: [signupId, instanceId]
+      required: [signupId, instanceId, personId]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ClassSignupRef'
         - $ref: '#/components/schemas/ClassSignupBase'
         - $ref: '#/components/schemas/Purchasable'
         - $ref: '#/components/schemas/WithPersonRef'
-        - $ref: '#/components/schemas/WithLineItemRef'
         - type: object
           properties:
             instanceId:
               $ref: '#/components/schemas/ApClassInstanceRef'
+    ClassSignupInternalFull:
+      allOf:
+        - $ref: '#/components/schemas/ClassSignupFull'
+        - $ref: '#/components/schemas/WithLineItemRef'
+    JpClassSignupRef:
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          x-dto-column: SIGNUP_ID
+          x-table-name: JP_CLASS_SIGNUPS
+          x-auto-increment: JP_CLASS_SIGNUPS_SEQ
+          type: integer
+    JpClassSignupFull:
+      required: [ assignId, instanceId, personId ]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/JpClassSignupRef'
+        - $ref: '#/components/schemas/WithPersonRef'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/JpClassInstanceRef'
     MembershipRef:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/IntegerIDResource'
     MembershipBase:
       required: [ membershipTypeId ]
@@ -2010,7 +2036,9 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
+      required: [membershipTypeId, personId]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/MembershipRef'
         - $ref: '#/components/schemas/MembershipBase'
         - $ref: '#/components/schemas/WithPersonRef'
@@ -2019,15 +2047,21 @@ components:
       x-dao-interface: true
       x-has-dto: false
       x-has-dao: false
+      required: [membershipTypeId, personId, assignId]
       allOf:
         - $ref: '#/components/schemas/MembershipFull'
         - $ref: '#/components/schemas/WithLineItemRef'
+        - type: object
+          properties:
+            guestPrivs:
+              x-backref-name: membershipId
+              allOf:
+                - $ref: '#/components/schemas/GuestPrivsRef'
     GuestPrivsRef:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/IntegerIDResource'
     GuestPrivsBase:
       x-has-interface: true
@@ -2045,20 +2079,27 @@ components:
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/GuestPrivsRef'
         - $ref: '#/components/schemas/GuestPrivsBase'
-        - $ref: '#/components/schemas/WithLineItemRef'
         - type: object
           properties:
             membershipId:
               $ref: '#/components/schemas/MembershipRef'
+    GuestPrivsInternalFull:
+      x-dao-interface: true
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/GuestPrivsFull'
+        - $ref: '#/components/schemas/WithLineItemRef'
     DamageWaiverRef:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       required: [waiverId]
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - type: object
           properties:
             waiverId:
@@ -2078,21 +2119,21 @@ components:
               format: date
     DamageWaiverFull:
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/DamageWaiverRef'
         - $ref: '#/components/schemas/DamageWaiverBase'
-        - $ref: '#/components/schemas/WithLineItemRef'
         - $ref: '#/components/schemas/WithPersonRef'
-        - type: object
-          properties:
-            startDate:
-              type: string
-              format: date
+    DamageWaiverInternalFull:
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/DamageWaiverFull'
+        - $ref: '#/components/schemas/WithLineItemRef'
+
     CardRef:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/IntegerIDResource'
     CardBase:
       x-has-interface: true
@@ -2120,16 +2161,22 @@ components:
     CardFull:
       required: [cardNum, personId]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/CardRef'
         - $ref: '#/components/schemas/CardBase'
         - $ref: '#/components/schemas/WithPersonRef'
+    CardInternalFull:
+      x-dao-interface: true
+      required: [ cardNum, personId ]
+      allOf:
+        - $ref: '#/components/schemas/CardFull'
+        - $ref: '#/components/schemas/WithLineItemRef'
     DonationRef:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       required: [donationId]
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - type: object
           properties:
             donationId:
@@ -2147,7 +2194,7 @@ components:
         - type: object
           properties:
             fundId:
-              type: integer
+              $ref: '#/components/schemas/DonationFundRef'
             donationDate:
               type: string
               format: date-time
@@ -2158,7 +2205,7 @@ components:
               type: string
               maxLength: 200
             initiativeId:
-              type: integer
+              $ref: '#/components/schemas/DonationInitiativeRef'
             inMemoryOf:
               type: string
               maxLength: 500
@@ -2202,11 +2249,11 @@ components:
       x-has-dao: false
       type: object
       #required: [ lineItemId ]
-      properties: {}
-        #lineItemId:
-        #  x-backref-name:
-        #  allOf:
-        #    - $ref: '#/components/schemas/LineItemRef'
+      properties:
+        lineItemId:
+          x-backref-name: lineItemId
+          allOf:
+            - $ref: '#/components/schemas/LineItemRef'
     WithCatalogRef:
       x-has-interface: true
       x-has-dto: false
@@ -2221,16 +2268,22 @@ components:
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/DonationRef'
         - $ref: '#/components/schemas/DonationBase'
-        - $ref: '#/components/schemas/WithLineItemRef'
         - $ref: '#/components/schemas/WithOptionalPersonRef'
+    DonationInternalFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/DonationFull'
+        - $ref: '#/components/schemas/WithLineItemRef'
     PhoneRef:
       x-dao-interface: true
       type: object
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     PhoneBase:
       type: object
       x-has-interface: true
@@ -2252,6 +2305,7 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/PhoneRef'
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/PhoneBase'
     PersonReferral:
       type: object
@@ -2273,7 +2327,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     LineItemDiscountInstanceBase:
       x-has-interface: true
       x-has-dto: false
@@ -2298,6 +2351,7 @@ components:
           format: int64
     LineItemDiscountInstanceFull:
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/LineItemDiscountInstanceRef'
         - $ref: '#/components/schemas/LineItemDiscountInstanceBase'
         - type: object
@@ -2319,7 +2373,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     ItemDiscountBase:
       x-has-interface: true
       x-dao-interface: true
@@ -2342,6 +2395,7 @@ components:
       x-has-dao: false
       required: [ itemId, discountId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: './shared.yaml#/components/schemas/ItemDiscountRef'
         - $ref: './shared.yaml#/components/schemas/ItemDiscountBase'
         - type: object
@@ -2356,7 +2410,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     OrderBase:
       required: [ status, version ]
       type: object
@@ -2423,6 +2476,7 @@ components:
     OrderFull:
       type: object
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/OrderRef'
         - $ref: '#/components/schemas/OrderBase'
         - $ref: '#/components/schemas/WithOptionalPersonRef'
@@ -2451,7 +2505,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
         - type: object
           properties:
             referenceId:
@@ -2505,6 +2558,7 @@ components:
     LineItemFull:
       required: [ itemInstanceId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/LineItemBase'
         - $ref: '#/components/schemas/LineItemRef'
         - type: object
@@ -2541,25 +2595,38 @@ components:
               x-parent-variable: lineItemId
               items:
                 $ref: '#/components/schemas/LineItemRefundBase'
-    LineItemInternalFull:
+    LineItemOrderRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      x-dao-interface: true
       required: [ itemInstanceId, orderId ]
       allOf:
-        - $ref: '#/components/schemas/LineItemFull'
+        - $ref: '#/components/schemas/LineItemRef'
         - type: object
           properties:
             orderId:
               $ref: '#/components/schemas/OrderRef'
+    LineItemInternalFull:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      x-dao-interface: true
+      required: [ itemInstanceId, orderId ]
+      allOf:
+        - $ref: '#/components/schemas/LineItemFull'
+        - $ref: '#/components/schemas/LineItemOrderRef'
     ItemCategoryRef:
       x-has-interface: true
       x-has-dto: true
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     ItemCategoryFull:
       x-has-interface: true
       required: [ categoryId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ItemCategoryRef'
         - type: object
           properties:
@@ -2585,7 +2652,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     LineItemRefundBase:
       x-has-interface: true
       x-has-dto: false
@@ -2611,6 +2677,7 @@ components:
       x-has-dao: false
       required: [ lineItemId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/LineItemRefundRef'
         - $ref: '#/components/schemas/LineItemRefundBase'
     LineItemRefundInternalFull:
@@ -2632,13 +2699,13 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     LineItemRefundTaxBase:
       type: object
       properties: {}
 
     LineItemRefundTaxFull:
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/LineItemRefundTaxRef'
         - $ref: '#/components/schemas/LineItemRefundTaxBase'
         - type: object
@@ -2659,7 +2726,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     PersonSubscriptionBase:
       required: [ billingCycle ]
       allOf:
@@ -2675,6 +2741,7 @@ components:
     PersonSubscriptionFull:
       required: [ personId, subscriptionId, billingCycle ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/PersonSubscriptionRef'
         - $ref: '#/components/schemas/PersonSubscriptionBase'
         - $ref: '#/components/schemas/WithPersonRef'
@@ -2684,7 +2751,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     SubscriptionBase:
       required: [ assignId, name, billingCycle ]
       properties:
@@ -2700,6 +2766,7 @@ components:
       x-has-dao: false
       required: [ subscriptionId, itemId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/SubscriptionRef'
         - $ref: '#/components/schemas/SubscriptionBase'
     SubscriptionItemRef:
@@ -2708,7 +2775,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     SubscriptionItemBase:
       x-has-interface: true
       x-has-dto: false
@@ -2723,6 +2789,7 @@ components:
       x-has-dao: false
       required: [ subscriptionId, itemId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/SubscriptionItemRef'
         - $ref: '#/components/schemas/SubscriptionItemBase'
         - type: object
@@ -2737,7 +2804,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     TaxBase:
       required: [ taxName, taxRate, taxMinValueCents ]
       properties:
@@ -2760,6 +2826,7 @@ components:
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/TaxRef'
         - $ref: '#/components/schemas/TaxBase'
         - $ref: '#/components/schemas/WithCatalogRef'
@@ -2769,7 +2836,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     OrderTaxBase:
       type: object
       properties:
@@ -2791,6 +2857,7 @@ components:
     OrderTaxFull:
       required: [taxId, orderId]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/OrderTaxRef'
         - $ref: '#/components/schemas/OrderTaxBase'
         - type: object
@@ -2805,7 +2872,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     BalanceTransactionBase:
       required: [ transactionAmountCents ]
       allOf:
@@ -2820,6 +2886,7 @@ components:
     BalanceTransactionFull:
       required: [ balanceId, transactionAmountCents ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/BalanceTransactionRef'
         - $ref: '#/components/schemas/BalanceTransactionBase'
         - type: object
@@ -2843,7 +2910,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     BalanceBase:
       required: [ balanceType ]
       allOf:
@@ -2858,6 +2924,7 @@ components:
     BalanceFull:
       required: [ balanceCents, balanceType ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/BalanceBase'
         - $ref: "#/components/schemas/WithOptionalPersonRef"
     BalanceInternal:
@@ -2876,7 +2943,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     StripeTransactionBase:
       required: [ stripePaymentIntent, transactionAmountCents ]
       properties:
@@ -2894,6 +2960,7 @@ components:
     StripeTransactionFull:
       x-dao-interface: true
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/StripeTransactionRef'
         - $ref: '#/components/schemas/StripeTransactionBase'
         - type: object
@@ -2909,11 +2976,13 @@ components:
       x-has-dao: false
       required: [instanceId]
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - type: object
           properties:
             instanceId:
               x-col-primary: true
+              x-table-name: DISCOUNT_INSTANCES
+              x-dto-column: INSTANCE_ID
+              x-auto-increment: DISCOUNT_INSTANCES_SEQ
               type: integer
     DiscountInstanceBase:
       x-has-interface: true
@@ -2941,6 +3010,7 @@ components:
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/DiscountInstanceRef'
         - $ref: '#/components/schemas/DiscountInstanceBase'
         - $ref: '#/components/schemas/DateRangeActivated'
@@ -2954,18 +3024,20 @@ components:
               writeOnly: true
               type: string
               maxLength: 200
+            discountId:
+              $ref: '#/components/schemas/DiscountRef'
     DiscountRef:
       x-has-interface: true
       x-has-dto: true
       x-has-dao: false
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/IntegerIDResource'
         - type: object
           properties:
             assignId:
               x-table-name: DISCOUNTS
               x-dto-column: DISCOUNT_ID
+              x-auto-increment: DISCOUNTS_SEQ
               x-col-primary: true
               type: integer
     DiscountBase:
@@ -2976,6 +3048,7 @@ components:
           maxLength: 100
     DiscountFull:
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/DiscountRef'
         - $ref: '#/components/schemas/DiscountBase'
         - type: object
@@ -2983,10 +3056,12 @@ components:
             catalogId:
               $ref: '#/components/schemas/CatalogRef'
             categories:
+              x-parent-variable: discountId
               type: array
               items:
                 $ref: '#/components/schemas/DiscountCategoryRef'
             instances:
+              x-parent-variable: discountId
               type: array
               items:
                 $ref: '#/components/schemas/DiscountInstanceRef'
@@ -2996,9 +3071,9 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     DiscountCategoryFull:
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/DiscountCategoryRef'
         - type: object
           properties:
@@ -3012,7 +3087,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     CashTransactionBase:
       required: [ cashDrawerId, transactionAmountCents ]
       properties:
@@ -3023,6 +3097,7 @@ components:
     CashTransactionFull:
       required: [cashDrawerId, transactionAmountCents]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/CashTransactionRef'
         - $ref: '#/components/schemas/CashTransactionBase'
         - type: object
@@ -3044,7 +3119,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     CashDrawersChangeBase:
       x-has-interface: true
       x-has-dto: false
@@ -3063,6 +3137,7 @@ components:
       x-has-dao: false
       required: [ changeType, changeAmountCents ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/CashDrawersChangeRef'
         - $ref: '#/components/schemas/CashDrawersChangeBase'
         - type: object
@@ -3075,7 +3150,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     OrderPaymentBase:
       type: object
       required: [ paymentType, paymentStatus, paymentAmountCents ]
@@ -3105,6 +3179,7 @@ components:
     OrderPaymentFull:
       required: [ paymentSource, orderId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/OrderPaymentRef'
         - $ref: '#/components/schemas/OrderPaymentBase'
         - type: object
@@ -3133,7 +3208,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     PaymentSourceBase:
       allOf:
         - $ref: '#/components/schemas/DateRangeActivated'
@@ -3148,6 +3222,7 @@ components:
     PaymentSourceFull:
       required: [ paymentSource, orderId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/PaymentSourceRef'
         - $ref: '#/components/schemas/PaymentSourceBase'
         - $ref: '#/components/schemas/WithPersonRef'
@@ -3161,7 +3236,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     ItemInstanceStockChangeBase:
       required: [ changeAmount, stockChangeType ]
       allOf:
@@ -3175,6 +3249,7 @@ components:
     ItemInstanceStockChangeFull:
       required: [ itemInstanceId, changeAmount, stockChangeType ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ItemInstanceStockChangeRef'
         - $ref: '#/components/schemas/ItemInstanceStockChangeBase'
         - type: object
@@ -3189,7 +3264,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     CatalogBase:
       x-has-interface: true
       x-has-dto: false
@@ -3204,6 +3278,7 @@ components:
               maxLength: 200
     CatalogFull:
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/CatalogBase'
         - type: object
           properties:
@@ -3245,7 +3320,6 @@ components:
       x-has-dto: true
       required: [cashDrawerId]
       allOf:
-        - $ref: '#/components/schemas/Deletable'
         - type: object
           properties:
             cashDrawerId:
@@ -3259,6 +3333,7 @@ components:
       x-has-dao: false
       x-has-dto: false
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/CashDrawerRef'
     ProductRef:
       x-has-interface: true
@@ -3266,7 +3341,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     ProductBase:
       required: [ productName, productDescription, active ]
       properties:
@@ -3280,6 +3354,7 @@ components:
           type: boolean
     ProductFull:
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ProductRef'
         - $ref: '#/components/schemas/ProductBase'
         - $ref: '#/components/schemas/WithCatalogRef'
@@ -3289,7 +3364,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     ItemBase:
       properties:
         itemType:
@@ -3326,6 +3400,7 @@ components:
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ItemRef'
         - $ref: '#/components/schemas/ItemBase'
         - type: object
@@ -3373,12 +3448,12 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     ItemTaxFull:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ItemTaxRef'
         - type: object
           properties:
@@ -3392,7 +3467,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     CategoryBase:
       required: [ categoryName, description ]
       allOf:
@@ -3409,6 +3483,7 @@ components:
     CategoryFull:
       required: [ categoryName, description, catalogId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/CategoryRef'
         - $ref: '#/components/schemas/CategoryBase'
         - $ref: '#/components/schemas/WithCatalogRef'
@@ -3419,7 +3494,6 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/Deletable'
     ItemInstanceBase:
       x-has-interface: true
       x-has-dto: false
@@ -3439,11 +3513,93 @@ components:
       x-has-dao: false
       x-no-interface: true
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ItemInstanceBase'
         - type: object
           properties:
             itemId:
               $ref: '#/components/schemas/ItemRef'
+
+    DonationFundRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          x-table-name: DONATION_FUNDS
+          x-dto-column: FUND_ID
+          x-auto-increment: DONATION_FUNDS_ID_SEQ
+          type: integer
+    DonationFundBase:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        fundName:
+          type: string
+          maxLength: 100
+        active:
+          x-boolean-char: Y
+          type: boolean
+        displayOrder:
+          type: integer
+        letterText:
+          type: string
+          maxLength: 500
+        showInCheckout:
+          x-boolean-char: Y
+          type: boolean
+        isEndowment:
+          x-boolean-char: Y
+          type: boolean
+        portalDescription:
+          type: string
+          maxLength: 2000
+    DonationFundFull:
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DonationFundRef'
+        - $ref: '#/components/schemas/DonationFundBase'
+    DonationInitiativeRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          x-table-name: DONATION_INITIATIVES
+          x-dto-column: INITIATIVE_ID
+          x-auto-increment: DONATION_INITIATIVES_SEQ
+          type: integer
+    DonationInitiativeBase:
+      type: object
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        initiativeName:
+          type: string
+          maxLength: 200
+        active:
+          x-boolean-char: Y
+          type: boolean
+        displayOrder:
+          type: integer
+        isGoalPublic:
+          type: boolean
+        goalAmount:
+          type: integer
+          format: int64
+    DonationInitiativeFull:
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DonationInitiativeRef'
+        - $ref: '#/components/schemas/DonationInitiativeBase'
 
     MembershipTypeRef:
       x-has-interface: true
@@ -3455,6 +3611,7 @@ components:
           x-col-primary: true
           x-table-name: MEMBERSHIP_TYPES
           x-dto-column: MEMBERSHIP_TYPE_ID
+          x-auto-increment: MEMBERSHIP_TYPES_SEQ
           type: integer
 
     ApClassTypeRef:
@@ -3479,4 +3636,18 @@ components:
           x-col-primary: true
           x-table-name: AP_CLASS_INSTANCES
           x-dto-column: INSTANCE_ID
+          x-auto-increment: AP_CLASS_INSTANCES_SEQ
+          type: integer
+
+    JpClassInstanceRef:
+      x-has-interface: true
+      #x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          x-table-name: AP_CLASS_INSTANCES
+          x-dto-column: INSTANCE_ID
+          x-auto-increment: JP_CLASS_INSTANCES_SEQ
           type: integer

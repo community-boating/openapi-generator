@@ -216,31 +216,6 @@ paths:
           description: Invalid credentials
         '403' :
           description: Invalid permissions
-
-  /ap-class/enroll/{id}: #EVAN TEST CODE; AUDIT THOROUGHLY
-    post:
-      parameters:
-        - in: path
-          name: id # Note the name is the same as in the path
-          required: true
-          schema:
-            type: integer
-            minimum: 1
-          description: The class id
-      #x-serve-example: true
-      summary: Enroll person into class
-      description: Posts person_id and class_instance_id
-      security:
-        - member: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/APClassEnroll'
-      responses:
-        '202':
-          description: TEST OK
   /staff/compass-order/{id}:
     get:
       description: 'Gets an existing order by id'
@@ -550,25 +525,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CatalogDTO'
-  /classes/signup:
-    post:
-      description: 'Signs up for a class'
-      security:
-          - staff: []
-          - member: []
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/ClassSignupRequestDTO'
-      responses:
-        '200':
-          description: Successfully returns the updated catalog
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ClassSignupResponseDTO'
   /stripe/constants:
     get:
       description: 'Returns stripe constants'
@@ -675,7 +631,7 @@ paths:
         - member: []
       description: 'Returns a list of donations'
       tags:
-        - Member
+        - DonationPublic
       x-is-paginated: true
       responses:
         '200':
@@ -686,6 +642,76 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/DonationDTO'
+  /member/donation/options:
+    get:
+      security:
+        - member: [ ]
+      description: 'Returns donation funds and initiatives'
+      tags:
+        - DonationPublic
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DonationOptionsDTO'
+  /member/class/signups:
+    x-is-paginated: true
+    get:
+      security:
+        - member: [ ]
+      description: 'Returns a list of ap class signups'
+      tags:
+        - ClassPublic
+      x-is-paginated: true
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassSignupDTO'
+  /member/class/jp-signups:
+    x-is-paginated: true
+    get:
+      security:
+        - member: [ ]
+      description: 'Returns a list of jp class signups'
+      tags:
+        - ClassPublic
+      x-is-paginated: true
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JpClassSignupDTO'
+  /member/classes/signup:
+    post:
+      description: 'Signs up for a class'
+      tags:
+        - ClassPublic
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassSignupRequestDTO'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassSignupResponseDTO'
   /stripe/paymentTest:
     post:
       security:
@@ -796,16 +822,18 @@ components:
       type: object
       properties:
         classSignup:
-          $ref: '#/components/schemas/PurchaseClassSignupDTO'
+          $ref: '#/components/schemas/ClassSignupDTO'
+        jpClassSignup:
+          $ref: '#/components/schemas/JpClassSignupDTO'
         errors:
           type: string
     ClassSignupRequestDTO:
       type: object
       properties:
         classSignup:
-          $ref: '#/components/schemas/PurchaseClassSignupDTO'
-        overrides:
-          $ref: '#/components/schemas/ClassSignupOverrides'
+          $ref: '#/components/schemas/CreateClassSignupDTO'
+        jpClassSignup:
+          $ref: '#/components/schemas/CreateJpClassSignupDTO'
     ClassSignupOverrides:
       type: object
       properties:
@@ -892,10 +920,12 @@ components:
         - type: object
           properties:
             categories:
+              x-parent-variable: discountId
               type: array
               items:
                 $ref: '#/components/schemas/CatalogDiscountCategoryDTO'
             instances:
+              x-parent-variable: discountId
               type: array
               items:
                 $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
@@ -1129,6 +1159,10 @@ components:
       x-dao-type: LineItem
       allOf:
         - $ref: './shared.yaml#/components/schemas/LineItemRef'
+    LineItemOrderRef:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemRef'
     LineItemDTO:
       x-has-dto: true
       allOf:
@@ -1223,7 +1257,32 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/GuestPrivsFull'
-
+    JpClassSignupDTO:
+      x-has-dto: true
+      required: [ instanceId, personId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassSignupFull'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonNameDTO'
+    CreateClassSignupDTO:
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ClassSignupFull'
+    CreateJpClassSignupDTO:
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassSignupFull'
+    ClassSignupDTO:
+      x-has-dto: true
+      required: [ instanceId, personId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ClassSignupInternalFull'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonNameDTO'
+            lineItemId:
+              $ref: './shared.yaml#/components/schemas/LineItemOrderRef'
     PurchaseClassSignupDTO:
       x-has-dto: true
       required: [instanceId, personId]
@@ -1232,11 +1291,13 @@ components:
     MembershipDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/MembershipFull'
+        - $ref: './shared.yaml#/components/schemas/MembershipInternal'
         - type: object
           properties:
             personId:
               $ref: '#/components/schemas/PersonNameDTO'
+            lineItemId:
+              $ref: './shared.yaml#/components/schemas/LineItemOrderRef'
     PurchaseMembershipDTO:
       x-has-dto: true
       allOf:
@@ -1244,11 +1305,13 @@ components:
     DonationDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/DonationFull'
+        - $ref: './shared.yaml#/components/schemas/DonationInternalFull'
         - type: object
           properties:
             personId:
               $ref: '#/components/schemas/PersonNameDTO'
+            lineItemId:
+              $ref: './shared.yaml#/components/schemas/LineItemOrderRef'
     PurchaseDonationDTO:
       x-has-dto: true
       required: [fundId,initiativeId, state]
@@ -1380,16 +1443,7 @@ components:
           example: Joe L.
         location:
           type: string
-          example: Dockhouse 
-    APClassEnroll:
-      type: object
-      properties:
-        personId:
-          type: integer
-          example: 192535
-        instanceId:
-          type: integer
-          example: 117
+          example: Dockhouse
     PersonPublicDTO:
       x-has-dto: true
       allOf:
@@ -1566,3 +1620,22 @@ components:
         testC:
           type: string
           pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+    DonationFundDTO:
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DonationFundFull'
+    DonationInitiativeDTO:
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DonationInitiativeFull'
+    DonationOptionsDTO:
+      type: object
+      properties:
+        donationFunds:
+          type: array
+          items:
+            $ref: '#/components/schemas/DonationFundDTO'
+        donationInitiatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/DonationInitiativeDTO'

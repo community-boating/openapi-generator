@@ -409,12 +409,14 @@ components:
     ClassSignup:
       x-has-dao: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ClassSignupFull'
+        - $ref: './shared.yaml#/components/schemas/ClassSignupInternalFull'
         - type: object
           properties:
             signupId:
               x-col-primary: true
+              x-dto-column: SIGNUP_ID
               x-table-name: AP_CLASS_SIGNUPS
+              x-auto-increment: AP_CLASS_SIGNUPS_SEQ
               type: integer
             personId:
               $ref: '#/components/schemas/PersonDAO'
@@ -427,7 +429,7 @@ components:
     GuestPrivsDAO:
       x-has-dao: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/GuestPrivsFull'
+        - $ref: './shared.yaml#/components/schemas/GuestPrivsInternalFull'
         - type: object
           properties:
             assignId:
@@ -443,7 +445,7 @@ components:
     DamageWaiver:
       x-has-dao: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/DamageWaiverFull'
+        - $ref: './shared.yaml#/components/schemas/DamageWaiverInternalFull'
         - type: object
           properties:
             personId:
@@ -591,15 +593,29 @@ components:
       x-has-dao: true
       required: [donationId, fundId, initiativeId, state]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/DonationFull'
+        - $ref: './shared.yaml#/components/schemas/DonationInternalFull'
         - type: object
           properties:
+            fundId:
+              $ref: '#/components/schemas/DonationFundDAO'
+            initiativeId:
+              $ref: '#/components/schemas/DonationInitiativeDAO'
             personId:
               $ref: '#/components/schemas/PersonDAO'
             lineItemId:
               x-backref-name: donation
               allOf:
                 - $ref: '#/components/schemas/LineItem'
+    DonationFundDAO:
+      x-has-dao: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DonationFundFull'
+    DonationInitiativeDAO:
+      x-has-dao: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DonationInitiativeFull'
     PersonDAO:
       x-has-dao: true
       required: [personId, relationsA, relationsB]
@@ -675,11 +691,15 @@ components:
               x-backref-name: membership
               allOf:
                 - $ref: '#/components/schemas/LineItem'
+            guestPrivs:
+              x-backref-name: membershipId
+              allOf:
+                - $ref: '#/components/schemas/GuestPrivsDAO'
     CardDAO:
       x-has-dao: true
       required: [ assignId ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/CardFull'
+        - $ref: './shared.yaml#/components/schemas/CardInternalFull'
         - type: object
           properties:
             assignId:
@@ -721,6 +741,10 @@ components:
       required: [instanceId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/DiscountInstanceInternalFull'
+        - type: object
+          properties:
+            discountId:
+              $ref: '#/components/schemas/Discount'
 
     Discount:
       x-has-dao: true
@@ -731,10 +755,12 @@ components:
             catalogId:
               $ref: '#/components/schemas/Catalog'
             categories:
+              x-parent-variable: discountId
               type: array
               items:
                 $ref: '#/components/schemas/DiscountCategory'
             instances:
+              x-parent-variable: discountId
               type: array
               items:
                 $ref: '#/components/schemas/DiscountInstance'
