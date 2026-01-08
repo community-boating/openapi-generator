@@ -1635,6 +1635,7 @@ components:
               type: string
               maxLength: 100
             student:
+              x-boolean-char: Y
               type: boolean
             school:
               type: string
@@ -2210,10 +2211,13 @@ components:
               type: string
               maxLength: 500
             isMatch:
+              x-boolean-char: Y
               type: boolean
             inKind:
+              x-boolean-char: Y
               type: boolean
             skipAck:
+              x-boolean-char: Y
               type: boolean
             amount:
               readOnly: true
