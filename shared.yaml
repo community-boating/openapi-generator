@@ -1644,6 +1644,7 @@ components:
               type: string
               maxLength: 50
             reducedLunch:
+              x-boolean-char: Y
               type: boolean
             previousMember:
               x-boolean-char: Y
@@ -2157,6 +2158,7 @@ components:
               maxLength: 1
               minLength: 1
             active:
+              x-boolean-char: Y
               readOnly: true
               type: boolean
     CardFull:
@@ -3006,6 +3008,7 @@ components:
             autoApply:
               type: boolean
             isGlobal:
+              x-boolean-char: Y
               type: boolean
             isSpecial:
               type: boolean
