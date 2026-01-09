@@ -301,11 +301,14 @@ paths:
               $ref: '#/components/schemas/OrderDTO'
       responses:
         '200':
+          x-use-tracked: true
           description: Successfully updated/inserted order
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderDTO'
+                x-use-tracked: true
+                allOf:
+                  - $ref: '#/components/schemas/OrderDTO'
   /member/compass-order/open:
     get:
       tags:
