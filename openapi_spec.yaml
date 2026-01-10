@@ -1151,8 +1151,7 @@ components:
       required: [stripePaymentIntent, transactionAmountCents]
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/StripeTransactionRef'
-        - $ref: './shared.yaml#/components/schemas/StripeTransactionBase'
+        - $ref: './shared.yaml#/components/schemas/StripeTransactionFull'
     OrderTaxDTO:
       x-has-dto: true
       allOf:
@@ -1160,10 +1159,6 @@ components:
     LineItemDTORef:
       x-has-dto: true
       x-dao-type: LineItem
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/LineItemRef'
-    LineItemOrderRef:
-      x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/LineItemRef'
     LineItemDTO:

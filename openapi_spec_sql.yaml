@@ -12,6 +12,7 @@ components:
       required: [assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/CatalogInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             items:
@@ -45,6 +46,7 @@ components:
       required: [assignId, productName, productDescription, active, catalogId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ProductFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             catalogId:
@@ -55,6 +57,7 @@ components:
       required: [assignId, type]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             classTypeId:
@@ -92,6 +95,7 @@ components:
       required: [assignId, discountId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/DiscountCategoryFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             discountId:
@@ -105,6 +109,7 @@ components:
       required: [assignId, item, categoryId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemCategoryFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             assignId:
@@ -121,6 +126,7 @@ components:
       required: [assignId, categoryName, description, catalogId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/CategoryFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             catalogId:
@@ -131,6 +137,7 @@ components:
       required: [assignId, itemId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemInstanceFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             itemId:
@@ -141,6 +148,7 @@ components:
       required: [itemInstanceId, changeAmount, stockChangeType]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemInstanceStockChangeFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             itemInstanceId:
@@ -153,6 +161,7 @@ components:
       required: [assignId, orderId, itemInstanceId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/LineItemInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             parentItemId:
@@ -203,6 +212,7 @@ components:
       required: [assignId, lineItemId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/LineItemRefundInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             lineItemId:
@@ -219,6 +229,7 @@ components:
       required: [taxId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/LineItemRefundTaxInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             lineItemRefundId:
@@ -231,6 +242,7 @@ components:
       required: [assignId, itemId, taxId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemTaxFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             itemId:
@@ -243,6 +255,7 @@ components:
       required: [assignId, taxName, taxRate, taxMinValueCents, catalogId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/TaxFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             catalogId:
@@ -254,6 +267,7 @@ components:
       required: [assignId, taxId, order]
       allOf:
         - $ref: './shared.yaml#/components/schemas/OrderTaxFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             taxId:
@@ -266,6 +280,7 @@ components:
       required: [assignId, lineItemId, discountInstanceId, discountType]
       allOf:
         - $ref: './shared.yaml#/components/schemas/LineItemDiscountInstanceInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             lineItemId:
@@ -277,6 +292,7 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/OrderFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           required: [assignId, status, version]
           properties:
@@ -300,6 +316,7 @@ components:
       required: [assignId, itemId, discountId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemDiscountFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             itemId:
@@ -311,6 +328,7 @@ components:
       required: [ assignId, orderId, paymentSource, paymentAmountCents, paymentStatus ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PaymentSourceFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             personId:
@@ -325,6 +343,7 @@ components:
       required: [assignId, orderId, paymentSource, paymentAmountCents, paymentStatus]
       allOf:
         - $ref: './shared.yaml#/components/schemas/OrderPaymentInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             orderId:
@@ -343,6 +362,7 @@ components:
       required: [assignId, balanceId, transactionAmountCents]
       allOf:
         - $ref: './shared.yaml#/components/schemas/BalanceTransactionInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             balanceId:
@@ -359,6 +379,7 @@ components:
       required: [assignId, personId, balanceCents, balanceType]
       allOf:
         - $ref: './shared.yaml#/components/schemas/BalanceInternal'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             personId:
@@ -368,7 +389,8 @@ components:
       x-has-dao: true
       required: [assignId, stripePaymentIntent, transactionAmountCents]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/StripeTransactionFull'
+        - $ref: './shared.yaml#/components/schemas/StripeTransactionInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             payments:
@@ -382,6 +404,7 @@ components:
       required: [assignId, cashDrawerId, transactionAmountCents]
       allOf:
         - $ref: './shared.yaml#/components/schemas/CashTransactionInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             paymentId:
@@ -393,6 +416,7 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/CashDrawersChangeFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             cashDrawerId:
@@ -401,15 +425,18 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/ApClassTypeRef'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
 
     ApClassInstance:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/ApClassInstanceRef'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
     ClassSignup:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/ClassSignupInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             signupId:
@@ -430,6 +457,7 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/GuestPrivsInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             assignId:
@@ -446,6 +474,7 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/DamageWaiverInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             personId:
@@ -459,6 +488,7 @@ components:
       required: [assignId, personId, subscriptionId, billingCycle]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonSubscriptionFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             personId:
@@ -471,12 +501,14 @@ components:
       required: [assignId, name, billingCycle]
       allOf:
         - $ref: './shared.yaml#/components/schemas/SubscriptionFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
 
     SubscriptionItem:
       x-has-dao: true
       required: [assignId, subscriptionId, itemId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/SubscriptionItemFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             subscriptionId:
@@ -583,6 +615,7 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/MembershipTypeRef'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
     #Person:
     #  x-already-exists: true
     #  required: [assignId]
@@ -594,6 +627,7 @@ components:
       required: [donationId, fundId, initiativeId, state]
       allOf:
         - $ref: './shared.yaml#/components/schemas/DonationInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             fundId:
@@ -611,16 +645,19 @@ components:
       type: object
       allOf:
         - $ref: './shared.yaml#/components/schemas/DonationFundFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
     DonationInitiativeDAO:
       x-has-dao: true
       type: object
       allOf:
         - $ref: './shared.yaml#/components/schemas/DonationInitiativeFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
     PersonDAO:
       x-has-dao: true
       required: [personId, relationsA, relationsB]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             assignId:
@@ -676,6 +713,7 @@ components:
       required: [assignId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/MembershipInternal'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             assignId:
@@ -700,6 +738,7 @@ components:
       required: [ assignId ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/CardInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             assignId:
@@ -717,6 +756,7 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonRelation'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           required: [A, B, relationId]
           properties:
@@ -741,6 +781,7 @@ components:
       required: [instanceId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/DiscountInstanceInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             discountId:
@@ -750,6 +791,7 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/DiscountFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             catalogId:
@@ -769,3 +811,4 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/CashDrawerFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'

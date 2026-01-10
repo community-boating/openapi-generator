@@ -2605,7 +2605,7 @@ components:
       x-has-interface: true
       x-has-dto: true
       x-has-dao: false
-      x-dao-interface: true
+      x-dao-interface: false
       required: [ itemInstanceId, orderId ]
       allOf:
         - $ref: '#/components/schemas/LineItemRef'
@@ -2969,6 +2969,10 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/StripeTransactionRef'
         - $ref: '#/components/schemas/StripeTransactionBase'
+    StripeTransactionInternalFull:
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/StripeTransactionFull'
         - type: object
           properties:
             payments:
