@@ -100,6 +100,7 @@ components:
       type: string
       enum:
         - 'PENDING'
+        - 'CANCELLED'
         - 'SUCCESSFUL'
         - 'FAILED'
         - 'REFUNDED'
