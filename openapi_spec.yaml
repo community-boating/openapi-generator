@@ -1348,6 +1348,7 @@ components:
           type: integer
         householdIncome:
           type: integer
+          format: int64
     PersonIdOnlyDTO:
       x-has-dto: true
       allOf:
