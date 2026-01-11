@@ -76,6 +76,21 @@ paths:
                 $ref: '#/components/schemas/PersonPublicParentDTO'
         '401':
           description: Invalid credentials
+  /member/eii:
+    get:
+      summary: Gets EII
+      description: Returns current EII response.
+      security:
+        - member: [ ]
+      tags:
+        - Member
+      responses:
+        '200':
+          description: Current EII Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentEIIResponseDTO'
   /member/eii/submit:
     post:
       summary: EII Submit
@@ -1349,6 +1364,14 @@ components:
         householdIncome:
           type: integer
           format: int64
+    CurrentEIIResponseDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/EIIResponseDTO'
+        - type: object
+          properties:
+            computedPrice:
+              type: integer
     PersonIdOnlyDTO:
       x-has-dto: true
       allOf:
