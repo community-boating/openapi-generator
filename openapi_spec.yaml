@@ -76,6 +76,23 @@ paths:
                 $ref: '#/components/schemas/PersonPublicParentDTO'
         '401':
           description: Invalid credentials
+  /member/eii/submit:
+    post:
+      summary: EII Submit
+      description: Submits an EII response scholarship purposes.
+      security:
+        - member: [ ]
+      tags:
+        - Member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EIIResponseDTO'
+      responses:
+        '200':
+          description: Successfully submitted EII response
   /staff/balance/{number}:
     get:
       security:
@@ -1319,6 +1336,18 @@ components:
         #  properties:
         #    personId:
         #      type: integer
+    EIIResponseDTO:
+      x-has-dto: true
+      required: [workingAdults, nonWorkingAdults, children, householdIncome]
+      properties:
+        workingAdults:
+          type: integer
+        nonWorkingAdults:
+          type: integer
+        children:
+          type: integer
+        householdIncome:
+          type: integer
     PersonIdOnlyDTO:
       x-has-dto: true
       allOf:
