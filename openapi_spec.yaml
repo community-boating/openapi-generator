@@ -31,7 +31,7 @@ paths:
       responses:
         '200':
           description: All good
-          content: 
+          content:
             application/json:
               schema:
                 $ref: './shared.yaml#/components/schemas/Boolean'
@@ -381,14 +381,14 @@ paths:
                 $ref: '#/components/schemas/OrderDTO'
   /orders/{id}/poll:
     parameters:
-        - in: path
-          name: id # Note the name is the same as in the path
-          required: true
-          schema:
-            type: integer
-            format: int64
-            minimum: 1
-          description: The order ID
+      - in: path
+        name: id # Note the name is the same as in the path
+        required: true
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+        description: The order ID
     post:
       description: 'Polls order'
       tags:
@@ -433,7 +433,7 @@ paths:
     post:
       description: 'Syncs the current catalog with prices from the db'
       x-one-of-permissions:
-        - 
+        -
           scope: admin
           type: ADMIN
       tags:
@@ -487,7 +487,7 @@ paths:
             format: int64
       description: 'Updates the quantity of a specified item'
       x-one-of-permissions:
-        - 
+        -
           scope: admin
           type: ADMIN
       tags:
@@ -539,7 +539,7 @@ paths:
     post:
       description: 'Updates the current catalog'
       x-one-of-permissions:
-        - 
+        -
           scope: admin
           type: ADMIN
       tags:
@@ -809,7 +809,7 @@ components:
           type: string
         locale:
           type: string
-        
+
     CashTransactionDTO:
       x-has-dto: true
       required: [cashDrawerId, transactionAmountCents]
@@ -948,6 +948,17 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/CategoryFull'
+    CatalogDiscountPublicDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountFull'
+        - type: object
+          properties:
+            instances:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountInstancePublicDTO'
     CatalogDiscountDTO:
       x-has-dto: true
       allOf:
@@ -964,6 +975,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
+    CatalogDiscountInstancePublicDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountInstanceFull'
     CatalogDiscountInstanceDTO:
       x-has-dto: true
       allOf:
@@ -1452,7 +1467,7 @@ components:
           example: Joe L.
         location:
           type: string
-          example: Dockhouse 
+          example: Dockhouse
         booleanEnumTest:
           $ref: './shared.yaml#/components/schemas/Boolean'
           example: 'T'
