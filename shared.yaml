@@ -2376,13 +2376,13 @@ components:
 
     ItemDiscountRef:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
     ItemDiscountBase:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dao: false
       required: [ itemId, discountId ]
       properties:
@@ -2398,7 +2398,7 @@ components:
           maxLength: 50
     ItemDiscountFull:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dao: false
       required: [ itemId, discountId ]
       allOf:
