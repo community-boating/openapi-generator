@@ -134,6 +134,13 @@ components:
         - 'HOME'
         - 'CELL'
         - 'MOBILE'
+    ClassSignupEligibilityStatus:
+      type: string
+      enum:
+        - 'INELIGIBLE'
+        - 'ELIGIBLE'
+        - 'ENROLLED'
+        - 'WAITLISTED'
     PersonRelationType:
       type: integer
       x-enum-varnames:
@@ -188,6 +195,7 @@ components:
         - $ref: '#/components/schemas/Language'
         - $ref: '#/components/schemas/CountryPhoneCode'
         - $ref: '#/components/schemas/ItemInstanceFull'
+        - $ref: '#/components/schemas/ClassSignupEligibilityStatus'
     ReferralSource:
       type: string
       enum:
