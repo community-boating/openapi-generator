@@ -3299,6 +3299,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ItemBase'
+            discounts:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/DiscountBase'
     CatalogInternalFull:
       x-dao-interface: false
       allOf:
@@ -3315,11 +3320,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CategoryBase'
-            discounts:
-              x-parent-variable: catalogId
-              type: array
-              items:
-                $ref: '#/components/schemas/DiscountBase'
             products:
               x-parent-variable: catalogId
               type: array

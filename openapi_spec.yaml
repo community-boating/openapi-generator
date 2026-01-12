@@ -903,6 +903,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemPublicDTO'
+            discounts:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountPublicDTO'
     CatalogDTO:
       x-has-dto: true
       type: object
