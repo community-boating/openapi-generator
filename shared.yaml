@@ -60,6 +60,7 @@ components:
       enum:
         - 'OPEN'
         - 'PROCESSED'
+        - 'CANCELLED'
         - 'PROCESSING'
         - 'REFUNDING'
         - 'REFUNDED'
@@ -1451,6 +1452,12 @@ components:
         - 2
         - 3
         - 4
+    ReportMetaType:
+      type: string
+      enum:
+        - 'ERROR'
+        - 'WARNING'
+        - 'INFO'
     DBHistory:
       x-has-interface: true
       x-has-dto: false

@@ -560,6 +560,64 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CatalogDTO'
+  /staff/reports/orders:
+    get:
+      description: 'Gets order reports'
+      parameters:
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: orderStatus
+          schema:
+            $ref: "./shared.yaml#/components/schemas/OrderStateNew"
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the order reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderReportsDTO'
+  /staff/reports/stripe-payments:
+    get:
+      description: 'Gets stripe payment reports'
+      parameters:
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: orderStatus
+          schema:
+            $ref: "./shared.yaml#/components/schemas/PaymentStatus"
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the order reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripePaymentReportsDTO'
   /stripe/constants:
     get:
       description: 'Returns stripe constants'
@@ -1710,3 +1768,139 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DonationInitiativeDTO'
+    ReportMetaEntryDTO:
+      x-has-dto: true
+      type: object
+      required: [key, message]
+      properties:
+        key:
+          type: string
+        message:
+          type: string
+    ReportMetaDTO:
+      x-has-dto: true
+      type: object
+      required: [title, status, entries]
+      properties:
+        title:
+          type: string
+        status:
+          $ref: "./shared.yaml#/components/schemas/ReportMetaType"
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/ReportMetaEntryDTO'
+    WithSubMeta:
+      x-has-dto: true
+      type: object
+      properties:
+        meta:
+          type: array
+          items:
+            $ref: "#/components/schemas/ReportMetaDTO"
+    OrderPaymentReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "./shared.yaml#/components/schemas/OrderPaymentBase"
+        - $ref: "./shared.yaml#/components/schemas/OrderPaymentRef"
+    ItemDiscountReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "./shared.yaml#/components/schemas/ItemDiscountBase"
+    OrderItemReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "./shared.yaml#/components/schemas/LineItemBase"
+        - $ref: "./shared.yaml#/components/schemas/LineItemRef"
+        - type: object
+          properties:
+            discountReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemDiscountReportDTO'
+    OrderReportBase:
+      x-has-dto: true
+      type: object
+      properties:
+        totalAmountPaidLineItems:
+          type: integer
+          format: int64
+        totalAmountBaseLineItems:
+          type: integer
+          format: int64
+        totalAmountTotalLineItems:
+          type: integer
+          format: int64
+        totalAmountDiscountLineItems:
+          type: integer
+          format: int64
+        totalAmountPaymentsPaid:
+          type: integer
+          format: int64
+        totalAmountStripePaymentsPaid:
+          type: integer
+          format: int64
+    OrderReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: '#/components/schemas/OrderReportBase'
+        - $ref: "./shared.yaml#/components/schemas/OrderBase"
+        - $ref: "./shared.yaml#/components/schemas/OrderRef"
+        - type: object
+          properties:
+            itemReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderItemReportDTO'
+            paymentReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderPaymentReportDTO'
+    OrderReportsDTO:
+      x-has-dto: true
+      type: object
+      required: [orderReports]
+      allOf:
+        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: '#/components/schemas/OrderReportBase'
+        - type: object
+          properties:
+            orderReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderReportDTO'
+            totalTotalAmountFromOrders:
+              type: integer
+              format: int64
+            totalBaseAmountFromOrders:
+              type: integer
+              format: int64
+            totalPaidAmountFromOrders:
+              type: integer
+              format: int64
+    StripePaymentReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "./shared.yaml#/components/schemas/StripeTransactionBase"
+    StripePaymentReportsDTO:
+      x-has-dto: true
+      type: object
+      required: [ orderReports ]
+      allOf:
+        - $ref: "#/components/schemas/WithSubMeta"
+        - type: object
+          properties:
+            paymentReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/StripePaymentReportDTO'
