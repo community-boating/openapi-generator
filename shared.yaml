@@ -89,6 +89,14 @@ components:
       enum:
         - 'JP'
         - 'AP'
+    CashDrawerChangeType:
+      type: string
+      enum:
+        - 'ADD_CASH'
+        - 'REMOVE_CASH'
+        - 'PURCHASE'
+        - 'REFUND'
+        - 'COUNT'
     PurchasableState:
       type: string
       enum:
@@ -3155,8 +3163,7 @@ components:
       required: [ changeType, changeAmountCents ]
       properties:
         changeType:
-          type: string
-          maxLength: 50
+          $ref: '#/components/schemas/CashDrawerChangeType'
         changeAmountCents:
           type: integer
           format: int64
