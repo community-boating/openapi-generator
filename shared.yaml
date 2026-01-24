@@ -3507,6 +3507,8 @@ components:
             description:
               type: string
               maxLength: 500
+            hidden:
+              type: boolean
             categoryType:
               $ref: '#/components/schemas/CategoryType'
     CategoryFull:

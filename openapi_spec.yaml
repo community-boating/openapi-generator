@@ -630,10 +630,17 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripeConstantsDTO'
-  /staff/personNew/test:
+  /staff/personsNew/{id}:
     get:
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
       tags:
-        - Member
+        - PersonNew
       security:
         - staff: []
       description: 'Test new person dto'
@@ -643,7 +650,35 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonDTO'
+                $ref: '#/components/schemas/PersonWithRelationsDTO'
+    post:
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      tags:
+        - PersonNew
+      security:
+        - staff: [ ]
+      description: 'Updates person'
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonWithRelationsDTO'
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonWithRelationsDTO'
+
 
   /staff/payment:
     post:
@@ -1596,12 +1631,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonReferralDTO'
-
     PersonDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonFull'
-        - $ref: '#/components/schemas/PersonPublicDTO'
+        - $ref: './shared.yaml#/components/schemas/PersonInternalFull'
+        - $ref: '#/components/schemas/PersonPublicChildAndParentDTO'
         - type: object
           properties:
             cards:
@@ -1614,6 +1648,12 @@ components:
               x-base-type: MembershipDTO
               items:
                 $ref: '#/components/schemas/MembershipDTO'
+    PersonWithRelationsDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonDTO'
+        - type: object
+          properties:
             relationsA:
               x-column-parent-fk: A
               x-base-type: false
@@ -1689,7 +1729,7 @@ components:
       required: [ assignId ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonRelation'
-        - $ref: '#/components/schemas/PersonDTO'
+        #- $ref: '#/components/schemas/PersonDTO'
         - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
           properties:
