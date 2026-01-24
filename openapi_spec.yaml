@@ -1277,11 +1277,11 @@ components:
             cashTransaction:
               $ref: '#/components/schemas/CashTransactionDTO'
             stripeTransaction:
-              nullable: true
               $ref: '#/components/schemas/StripeTransactionDTO'
             balanceTransaction:
-              nullable: true
               $ref: '#/components/schemas/BalanceTransactionDTO'
+            checkTransaction:
+              $ref: '#/components/schemas/CheckTransactionDTO'
     CreateOrderPaymentDTO:
       type: object
       required: [ orderId, payment ]
@@ -1297,6 +1297,10 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/StripeTransactionFull'
+    CheckTransactionDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CheckTransactionFull'
     OrderTaxDTO:
       x-has-dto: true
       allOf:

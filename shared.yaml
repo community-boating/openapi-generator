@@ -3228,6 +3228,38 @@ components:
               $ref: '#/components/schemas/CashTransactionRef'
             balanceTransaction:
               $ref: '#/components/schemas/BalanceTransactionRef'
+            checkTransaction:
+              $ref: '#/components/schemas/CheckTransactionRef'
+    CheckTransactionRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+    CheckTransactionBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ checkNumber, checkAmount ]
+      properties:
+        checkNumber:
+          type: string
+          maxLength: 200
+        memo:
+          type: string
+          maxLength: 500
+        checkAmount:
+          type: integer
+          format: int64
+    CheckTransactionFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ changeType, changeAmountCents ]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/CheckTransactionRef'
+        - $ref: '#/components/schemas/CheckTransactionBase'
 
     OrderPaymentInternalFull:
       x-dao-interface: true
