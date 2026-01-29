@@ -1536,6 +1536,17 @@ components:
         assignId:
           type: integer
           x-col-primary: true
+    TempID:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        tempID:
+          type: string
+          maxLength: 200
+          x-col-secondary: true
+          x-no-db-var: true
     DateRangeActivated:
       x-has-interface: true
       x-has-dto: false
@@ -1641,9 +1652,9 @@ components:
             occupation:
               type: string
               maxLength: 100
-            #citizenship:
-            #  type: string
-            #  maxLength: 100
+            citizenship:
+              type: string
+              maxLength: 100
             ethnicity:
               type: string
               maxLength: 100
@@ -2030,6 +2041,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/IntegerIDResource'
+        - $ref: '#/components/schemas/TempID'
     MembershipBase:
       required: [ membershipTypeId ]
       x-has-interface: true
@@ -2133,6 +2145,7 @@ components:
             waiverId:
               x-col-primary: true
               x-table-name: DAMAGE_WAIVERS
+              x-auto-increment: DAMAGE_WAIVERS_SEQ
               type: integer
     DamageWaiverBase:
       x-has-interface: true

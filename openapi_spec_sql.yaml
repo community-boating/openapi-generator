@@ -659,12 +659,354 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/DonationInitiativeFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
+    PersonLegacy:
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+        migrationStatus:
+          type: string
+          maxLength: 10
+          nullable: true
+
+        nameFirst:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        nameMiddle:
+          type: string
+          maxLength: 5
+          nullable: true
+
+        nameLast:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        namePrefix:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        nameSuffix:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        namePreferred:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        parentEmail:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        addr1:
+          type: string
+          maxLength: 200
+          nullable: true
+          x-dto-column: ADDR_1
+
+        addr2:
+          type: string
+          maxLength: 200
+          nullable: true
+          x-dto-column: ADDR_2
+
+        addr3:
+          type: string
+          maxLength: 200
+          nullable: true
+          x-dto-column: ADDR_3
+
+        city:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        state:
+          type: string
+          maxLength: 50
+          nullable: true
+          x-dto-column: STATE
+
+        zip:
+          type: string
+          maxLength: 15
+          nullable: true
+
+        country:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        phonePrimary:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        phonePrimaryType:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        phoneAlternate:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        phoneAlternateType:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        emerg1Name:
+          type: string
+          maxLength: 200
+          nullable: true
+
+        emerg1Relation:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        emerg1PhonePrimary:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        emerg1PhonePrimaryType:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        emerg1PhoneAlternate:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        emerg1PhoneAlternateType:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        emerg2Name:
+          type: string
+          maxLength: 200
+          nullable: true
+
+        emerg2Relation:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        emerg2PhonePrimary:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        emerg2PhonePrimaryType:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        emerg2PhoneAlternate:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        emerg2PhoneAlternateType:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        ethnicityOther:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        pwHashScheme:
+          type: string
+          maxLength: 20
+          nullable: true
+
+        languageOther:
+          type: string
+          maxLength: 200
+          nullable: true
+
+        incomeLevel:
+          type: integer
+          format: int32
+          nullable: true
+
+        incomeAmt:
+          type: integer
+          format: int32
+          nullable: true
+
+        incomeAmtRaw:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        badMail:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        deceased:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        doNotCall:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        doNotEmail:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        doNotMail:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        employer:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        referralSource:
+          type: string
+          maxLength: 200
+          nullable: true
+
+        badPhone:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        badEmail:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        referralOther:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        jpAgeOverride:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        sendAlert:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        ignoreJpMinAge:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        uapInterestedLessons:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        uapInterestedRides:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        entityType:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        jpTeamId:
+          type: integer
+          format: int32
+          nullable: true
+
+        guestPortalReg:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        signoutBlockReason:
+          type: string
+          nullable: true
+
+        campFair:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        dataUnconfirmed:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        protopersonCookie:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        protoState:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        veteranEligible:
+          type: string
+          maxLength: 1
+          nullable: true
+
+        sailingExp:
+          type: string
+          maxLength: 100
+          nullable: true
+
+        orgContact:
+          type: string
+          maxLength: 200
+          nullable: true
+
+        memberComment:
+          type: string
+          nullable: true
+
+        slackUserId:
+          type: string
+          maxLength: 20
+          nullable: true
+
+        squareCustomerId:
+          type: string
+          maxLength: 50
+          nullable: true
+
+        defaultCardId:
+          type: string
+          maxLength: 50
+          nullable: true
     PersonDAO:
       x-has-dao: true
       required: [personId, relationsA, relationsB]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonInternalFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: '#/components/schemas/PersonLegacy'
         - type: object
           properties:
             assignId:
