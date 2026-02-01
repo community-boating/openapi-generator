@@ -1495,10 +1495,12 @@ components:
       type: object
       properties:
         isDeleted:
+          x-is-deleted: true
           x-no-db-var: true
           type: boolean
           default: false
         isNew:
+          x-is-new: true
           x-no-db-var: true
           type: boolean
           default: false
