@@ -1285,10 +1285,12 @@ components:
               $ref: '#/components/schemas/CheckTransactionDTO'
     CreateOrderPaymentDTO:
       type: object
-      required: [ orderId, payment ]
+      required: [ orderId ]
       properties:
         orderId:
           $ref: './shared.yaml#/components/schemas/OrderRef'
+        isFree:
+          type: boolean
         payment:
           $ref: '#/components/schemas/OrderPaymentDTO'
         saveCard:
