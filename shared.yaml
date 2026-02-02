@@ -3396,12 +3396,25 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ProductBase'
+    CashDrawerBase:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dao: false
+      x-has-dto: true
+      required: [ cashDrawerName ]
+      properties:
+        cashDrawerName:
+          type: string
+          maxLength: 100
+        cashDrawerPrinterIp:
+          type: string
+          maxLength: 100
     CashDrawerRef:
       x-has-interface: true
       x-dao-interface: false
       x-has-dao: false
       x-has-dto: true
-      required: [cashDrawerId]
+      required: [ cashDrawerId ]
       allOf:
         - type: object
           properties:
@@ -3417,6 +3430,7 @@ components:
       x-has-dto: false
       allOf:
         - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/CashDrawerBase'
         - $ref: '#/components/schemas/CashDrawerRef'
     ProductRef:
       x-has-interface: true

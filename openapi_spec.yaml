@@ -700,7 +700,28 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderPaymentDTO'
+                $ref: '#/components/schemas/CreateOrderPaymentResponseDTO'
+  /staff/checkout-session/{id}:
+    get:
+      security:
+        - staff: [ ]
+      tags:
+        - Payment
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      description: 'Creates a checkout session'
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutSessionDTO'
   /member/checkout-session:
     get:
       security:
@@ -917,6 +938,10 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/CashDrawersChangeFull'
+    CashDrawerDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CashDrawerFull'
     BalanceTransactionDTO:
       x-has-dto: true
       required: [id, balanceId, transactionAmountCents]
@@ -1289,11 +1314,16 @@ components:
       properties:
         orderId:
           $ref: './shared.yaml#/components/schemas/OrderRef'
-        isFree:
-          type: boolean
         payment:
           $ref: '#/components/schemas/OrderPaymentDTO'
         saveCard:
+          type: boolean
+    CreateOrderPaymentResponseDTO:
+      type: object
+      properties:
+        payment:
+          $ref: '#/components/schemas/OrderPaymentDTO'
+        isFree:
           type: boolean
     StripeTransactionDTO:
       required: [stripePaymentIntent, transactionAmountCents]
