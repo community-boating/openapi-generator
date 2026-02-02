@@ -688,6 +688,7 @@ paths:
       tags:
         - Payment
       requestBody:
+        x-use-tracked: true
         required: true
         content:
           application/json:
