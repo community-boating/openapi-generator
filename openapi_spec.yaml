@@ -678,8 +678,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PersonWithRelationsDTO'
-  
-  
+
+
   /staff/cash-drawers:
     get:
       security:

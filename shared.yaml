@@ -3175,11 +3175,14 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [ changeType, changeAmountCents ]
+      required: [ changeType, amountCents ]
       properties:
         changeType:
           $ref: '#/components/schemas/CashDrawerChangeType'
-        changeAmountCents:
+        amountCents:
+          type: integer
+          format: int64
+        amountTendered:
           type: integer
           format: int64
     CashDrawersChangeFull:
