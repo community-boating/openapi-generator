@@ -1339,6 +1339,8 @@ components:
       properties:
         payment:
           $ref: '#/components/schemas/OrderPaymentDTO'
+        isComplete:
+          type: boolean
         isFree:
           type: boolean
     StripeTransactionDTO:
