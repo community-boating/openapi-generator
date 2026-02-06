@@ -194,10 +194,29 @@ components:
         - 3
         - 4
         - 2000
+    AccessControl:
+      type: integer
+      x-enum-varnames:
+        - READ
+        - WRITE
+        - DELETE
+        - READ_WRITE
+        - READ_DELETE
+        - WRITE_DELETE
+        - READ_WRITE_DELETE
+      enum:
+        - 1
+        - 2
+        - 4
+        - 3
+        - 5
+        - 6
+        - 7
     DummyEnum:
       type: string
       x-is-dummy: true
       allOf:
+        - $ref: '#/components/schemas/AccessControl'
         - $ref: '#/components/schemas/ReferralSource'
         - $ref: '#/components/schemas/Gender'
         - $ref: '#/components/schemas/Ethnicity'
@@ -1549,6 +1568,18 @@ components:
           maxLength: 200
           x-col-secondary: true
           x-no-db-var: true
+    WithAccessControl:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        accessControl:
+          readOnly: true
+          x-enum-type: integer
+          allOf:
+            - $ref: '#/components/schemas/AccessControl'
     DateRangeActivated:
       x-has-interface: true
       x-has-dto: false
@@ -3156,6 +3187,8 @@ components:
           properties:
             cashDrawerChangeId:
               $ref: '#/components/schemas/CashDrawersChangeRef'
+            cashDrawerId:
+              $ref: '#/components/schemas/CashDrawerRef'
     CashTransactionInternalFull:
       x-dao-interface: true
       required: [ cashDrawerId, transactionAmountCents ]

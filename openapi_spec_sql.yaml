@@ -418,6 +418,8 @@ components:
               $ref: '#/components/schemas/OrderPayment'
             cashDrawerChangeId:
               $ref: '#/components/schemas/CashDrawersChange'
+            cashDrawerId:
+              $ref: '#/components/schemas/CashDrawer'
 
     CashDrawersChange:
       x-has-dao: true
@@ -529,6 +531,7 @@ components:
       x-sub-variable: phoneId
       required: [personPhoneAssignId, personId, phoneId]
       allOf:
+        - $ref: './shared.yaml#/components/schemas/WithAccessControl'
         - $ref: './shared.yaml#/components/schemas/PersonPhoneFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
@@ -568,6 +571,7 @@ components:
       x-sub-variable: addressId
       required: [personAddressAssignId, line1, country, personId, addressId]
       allOf:
+        - $ref: './shared.yaml#/components/schemas/WithAccessControl'
         - $ref: './shared.yaml#/components/schemas/PersonAddressFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
@@ -1104,6 +1108,7 @@ components:
     PersonRelationDAO:
       x-has-dao: true
       allOf:
+        - $ref: './shared.yaml#/components/schemas/WithAccessControl'
         - $ref: './shared.yaml#/components/schemas/PersonRelation'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
