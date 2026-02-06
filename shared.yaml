@@ -3187,8 +3187,6 @@ components:
           properties:
             cashDrawerChangeId:
               $ref: '#/components/schemas/CashDrawersChangeRef'
-            cashDrawerId:
-              $ref: '#/components/schemas/CashDrawerRef'
     CashTransactionInternalFull:
       x-dao-interface: true
       required: [ cashDrawerId, transactionAmountCents ]

@@ -418,8 +418,6 @@ components:
               $ref: '#/components/schemas/OrderPayment'
             cashDrawerChangeId:
               $ref: '#/components/schemas/CashDrawersChange'
-            cashDrawerId:
-              $ref: '#/components/schemas/CashDrawer'
 
     CashDrawersChange:
       x-has-dao: true
