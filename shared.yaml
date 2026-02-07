@@ -3035,6 +3035,8 @@ components:
         transactionAmountCents:
           type: integer
           format: int64
+        offSession:
+          type: boolean
     StripeTransactionFull:
       x-dao-interface: true
       allOf:
