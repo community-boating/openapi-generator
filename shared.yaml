@@ -3244,6 +3244,9 @@ components:
       properties:
         paymentType:
           $ref: '#/components/schemas/PaymentType'
+        paymentRecordId:
+          type: string
+          maxLength: 200
         paymentServiceChangeCents:
           type: integer
           format: int64
