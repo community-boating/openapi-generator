@@ -117,6 +117,7 @@ components:
     PaymentType:
       type: string
       enum:
+        - 'BANK_TRANSFER'
         - 'CHECK'
         - 'OTHER'
         - 'CASH'
@@ -3279,38 +3280,41 @@ components:
               $ref: '#/components/schemas/CashTransactionRef'
             balanceTransaction:
               $ref: '#/components/schemas/BalanceTransactionRef'
-            checkTransaction:
-              $ref: '#/components/schemas/CheckTransactionRef'
-    CheckTransactionRef:
+            transactionOther:
+              $ref: '#/components/schemas/TransactionOtherRef'
+    #Rename this to transactions-other
+    TransactionOtherRef:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-    CheckTransactionBase:
+    TransactionOtherBase:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       required: [ checkNumber, checkAmount ]
       properties:
-        checkNumber:
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+        transactionInfo:
           type: string
           maxLength: 200
-        memo:
+        transactionExtra:
           type: string
           maxLength: 500
-        checkAmount:
+        transactionAmount:
           type: integer
           format: int64
-    CheckTransactionFull:
+    TransactionOtherFull:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       required: [ changeType, changeAmountCents ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
-        - $ref: '#/components/schemas/CheckTransactionRef'
-        - $ref: '#/components/schemas/CheckTransactionBase'
+        - $ref: '#/components/schemas/TransactionOtherRef'
+        - $ref: '#/components/schemas/TransactionOtherBase'
 
     OrderPaymentInternalFull:
       x-dao-interface: true

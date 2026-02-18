@@ -356,8 +356,8 @@ components:
               $ref: '#/components/schemas/CashTransaction'
             balanceTransaction:
               $ref: '#/components/schemas/BalanceTransaction'
-            checkTransaction:
-              $ref: '#/components/schemas/CheckTransaction'
+            transactionOther:
+              $ref: '#/components/schemas/TransactionOther'
 
     BalanceTransaction:
       x-has-dao: true
@@ -375,11 +375,11 @@ components:
               x-backref-name: giftCard
               allOf:
                 - $ref: '#/components/schemas/LineItem'
-    CheckTransaction:
+    TransactionOther:
       x-has-dao: true
       required: [ assignId, checkNumber, checkAmount ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/CheckTransactionFull'
+        - $ref: './shared.yaml#/components/schemas/TransactionOtherFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
     Balance:
       x-has-dao: true
