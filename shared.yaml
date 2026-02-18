@@ -3293,10 +3293,12 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [ checkNumber, checkAmount ]
       properties:
         paymentType:
           $ref: '#/components/schemas/PaymentType'
+        paymentTypeOther:
+          type: string
+          maxLength: 100
         transactionInfo:
           type: string
           maxLength: 200
