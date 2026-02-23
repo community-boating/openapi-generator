@@ -359,6 +359,13 @@ components:
             transactionOther:
               $ref: '#/components/schemas/TransactionOther'
 
+    CustomPaymentMethodMapping:
+      x-has-dao: true
+      required: [assignId, paymentType, customPaymentMethodId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CustomPaymentMethodMappingBase'
+        - $ref: './shared.yaml#/components/schemas/LongIDResource'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
     BalanceTransaction:
       x-has-dao: true
       required: [assignId, balanceId, transactionAmountCents]

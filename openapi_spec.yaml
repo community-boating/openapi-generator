@@ -1352,6 +1352,10 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/TransactionOtherFull'
+    CustomPaymentMethodMappingDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CustomPaymentMethodMappingBase'
     OrderTaxDTO:
       x-has-dto: true
       allOf:
