@@ -1639,6 +1639,10 @@ components:
           x-dto-column: NAME_PREFERRED
           type: string
           maxLength: 100
+        organization:
+          x-dto-column: ORGANIZATION
+          type: string
+          maxLength: 100
     PersonRef:
       x-has-interface: true
       x-has-dto: true
@@ -3500,6 +3504,18 @@ components:
         - $ref: '#/components/schemas/ProductRef'
         - $ref: '#/components/schemas/ProductBase'
         - $ref: '#/components/schemas/WithCatalogRef'
+    CustomPaymentMethodMappingBase:
+      type: object
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [paymentType, customPaymentMethodId]
+      properties:
+        paymentType:
+          $ref: '#/components/schemas/PaymentType'
+        customPaymentMethodId:
+          type: string
+          maxLength: 200
     ItemRef:
       x-has-interface: true
       x-has-dto: true
