@@ -1867,54 +1867,48 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DonationInitiativeDTO'
-    ReportMetaEntryDTO:
-      x-has-dto: true
-      type: object
-      required: [key, message]
-      properties:
-        key:
-          type: string
-        message:
-          type: string
     ReportMetaDTO:
       x-has-dto: true
       type: object
-      required: [title, status, entries]
-      properties:
-        title:
-          type: string
-        status:
-          $ref: "./shared.yaml#/components/schemas/ReportMetaType"
-        items:
-          type: array
-          items:
-            $ref: '#/components/schemas/ReportMetaEntryDTO'
-    WithSubMeta:
+      required: [ key, title ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ReportMetaFull'
+    ReportDTO:
       x-has-dto: true
       type: object
-      properties:
-        meta:
-          type: array
-          items:
-            $ref: "#/components/schemas/ReportMetaDTO"
+      required: [ reportKey, reportId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ReportFull'
+        - type: object
+          properties:
+            childReports:
+              type: array
+              x-parent-variable: parentReport
+              items:
+                $ref: '#/components/schemas/ReportDTO'
+            meta:
+              type: array
+              x-parent-variable: report
+              items:
+                $ref: '#/components/schemas/ReportMetaDTO'
     OrderPaymentReportDTO:
       x-has-dto: true
       type: object
       allOf:
-        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "#/components/schemas/ReportDTO"
         - $ref: "./shared.yaml#/components/schemas/OrderPaymentBase"
         - $ref: "./shared.yaml#/components/schemas/OrderPaymentRef"
     ItemDiscountReportDTO:
       x-has-dto: true
       type: object
       allOf:
-        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "#/components/schemas/ReportDTO"
         - $ref: "./shared.yaml#/components/schemas/ItemDiscountBase"
     OrderItemReportDTO:
       x-has-dto: true
       type: object
       allOf:
-        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "#/components/schemas/ReportDTO"
         - $ref: "./shared.yaml#/components/schemas/LineItemBase"
         - $ref: "./shared.yaml#/components/schemas/LineItemRef"
         - type: object
@@ -1949,7 +1943,7 @@ components:
       x-has-dto: true
       type: object
       allOf:
-        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "#/components/schemas/ReportDTO"
         - $ref: '#/components/schemas/OrderReportBase'
         - $ref: "./shared.yaml#/components/schemas/OrderBase"
         - $ref: "./shared.yaml#/components/schemas/OrderRef"
@@ -1968,7 +1962,7 @@ components:
       type: object
       required: [orderReports]
       allOf:
-        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "#/components/schemas/ReportDTO"
         - $ref: '#/components/schemas/OrderReportBase'
         - type: object
           properties:
@@ -1989,14 +1983,14 @@ components:
       x-has-dto: true
       type: object
       allOf:
-        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "#/components/schemas/ReportDTO"
         - $ref: "./shared.yaml#/components/schemas/StripeTransactionBase"
     StripePaymentReportsDTO:
       x-has-dto: true
       type: object
       required: [ orderReports ]
       allOf:
-        - $ref: "#/components/schemas/WithSubMeta"
+        - $ref: "#/components/schemas/ReportDTO"
         - type: object
           properties:
             paymentReports:

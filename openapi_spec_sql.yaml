@@ -366,6 +366,36 @@ components:
         - $ref: './shared.yaml#/components/schemas/CustomPaymentMethodMappingBase'
         - $ref: './shared.yaml#/components/schemas/LongIDResource'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
+    ReportMetaDAO:
+      x-has-dao: true
+      type: object
+      required: [ key, title ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ReportMetaFull'
+        - type: object
+          properties:
+            report:
+              $ref: '#/components/schemas/ReportDAO'
+    ReportDAO:
+      x-has-dao: true
+      type: object
+      required: [ reportKey, reportId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ReportFull'
+        - type: object
+          properties:
+            childReports:
+              type: array
+              x-parent-variable: parentReport
+              items:
+                $ref: '#/components/schemas/ReportDAO'
+            meta:
+              type: array
+              x-parent-variable: report
+              items:
+                $ref: '#/components/schemas/ReportMetaDAO'
+            parentReport:
+              $ref: '#/components/schemas/ReportDAO'
     BalanceTransaction:
       x-has-dao: true
       required: [assignId, balanceId, transactionAmountCents]
