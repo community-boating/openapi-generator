@@ -2651,12 +2651,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/LineItemRef'
-            appliedTaxes:
-              x-parent-variable: orderId
-              type: array
-              readOnly: true
-              items:
-                $ref: '#/components/schemas/OrderTaxBase'
             orderPayments:
               x-parent-variable: orderId
               type: array
@@ -2701,6 +2695,16 @@ components:
           format: int64
         amountDiscountsTotalCents:
           description: Total value (in cents) of all discounts applied to all units of this line item
+          readOnly: true
+          type: integer
+          format: int64
+        amountTaxesBaseCents:
+          description: Total value (in cents) of all taxes applied to a single unit of this line item
+          readOnly: true
+          type: integer
+          format: int64
+        amountTaxesTotalCents:
+          description: Total value (in cents) of all taxes applied to all units of this line item
           readOnly: true
           type: integer
           format: int64
@@ -2749,6 +2753,12 @@ components:
               $ref: '#/components/schemas/DamageWaiverRef'
             stockChange:
               $ref: '#/components/schemas/ItemInstanceStockChangeBase'
+            appliedTaxes:
+              x-parent-variable: lineItemId
+              type: array
+              readOnly: true
+              items:
+                $ref: '#/components/schemas/LineItemTaxBase'
             discounts:
               type: array
               x-parent-variable: lineItemId
@@ -2875,7 +2885,7 @@ components:
         - type: object
           properties:
             taxId:
-              $ref: '#/components/schemas/OrderTaxRef'
+              $ref: '#/components/schemas/LineItemTaxRef'
     LineItemRefundTaxInternalFull:
       x-dao-interface: true
       allOf:
@@ -2994,15 +3004,21 @@ components:
         - $ref: '#/components/schemas/TaxRef'
         - $ref: '#/components/schemas/TaxBase'
         - $ref: '#/components/schemas/WithCatalogRef'
-    OrderTaxRef:
+    LineItemTaxRef:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-    OrderTaxBase:
+    LineItemTaxBase:
       type: object
       properties:
+        unitAmountTaxableCents:
+          type: integer
+          format: int64
+        amountBaseCents:
+          type: integer
+          format: int64
         amountTotalCents:
           type: integer
           format: int64
@@ -3018,18 +3034,18 @@ components:
         taxRateUsed:
           type: string
           maxLength: 200
-    OrderTaxFull:
-      required: [taxId, orderId]
+    LineItemTaxFull:
+      required: [taxId, lineItemId]
       allOf:
         - $ref: '#/components/schemas/Deletable'
-        - $ref: '#/components/schemas/OrderTaxRef'
-        - $ref: '#/components/schemas/OrderTaxBase'
+        - $ref: '#/components/schemas/LineItemTaxRef'
+        - $ref: '#/components/schemas/LineItemTaxBase'
         - type: object
           properties:
             taxId:
               $ref: '#/components/schemas/TaxRef'
-            orderId:
-              $ref: '#/components/schemas/OrderBase'
+            lineItemId:
+              $ref: '#/components/schemas/LineItemBase'
     BalanceTransactionRef:
       x-has-interface: true
       x-has-dto: false

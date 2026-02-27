@@ -196,6 +196,11 @@ components:
             stockChange:
               nullable: true
               $ref: '#/components/schemas/ItemInstanceStockChange'
+            appliedTaxes:
+              x-parent-variable: lineItemId
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItemTax'
             discounts:
               x-parent-variable: lineItemId
               type: array
@@ -235,7 +240,7 @@ components:
             lineItemRefundId:
               $ref: '#/components/schemas/LineItemRefund'
             taxId:
-              $ref: '#/components/schemas/OrderTax'
+              $ref: '#/components/schemas/LineItemTax'
 
     ItemTax:
       x-has-dao: true
@@ -261,19 +266,19 @@ components:
             catalogId:
               $ref: '#/components/schemas/Catalog'
 
-    OrderTax:
+    LineItemTax:
       x-has-dao: true
       x-no-interface: true
-      required: [assignId, taxId, order]
+      required: [assignId, taxId, lineItemId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/OrderTaxFull'
+        - $ref: './shared.yaml#/components/schemas/LineItemTaxFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             taxId:
               $ref: '#/components/schemas/Tax'
-            orderId:
-              $ref: '#/components/schemas/OrderNew'
+            lineItemId:
+              $ref: '#/components/schemas/LineItem'
 
     LineItemDiscountInstance:
       x-has-dao: true
@@ -302,10 +307,6 @@ components:
               x-parent-variable: orderId
               items:
                 $ref: '#/components/schemas/LineItem'
-            appliedTaxes:
-              x-parent-variable: orderId
-              items:
-                $ref: '#/components/schemas/OrderTax'
             orderPayments:
               x-parent-variable: orderId
               items:

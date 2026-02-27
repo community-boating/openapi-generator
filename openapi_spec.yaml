@@ -560,6 +560,35 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CatalogDTO'
+  /staff/reports/catalog/items:
+    get:
+      description: 'Gets catalog item reports'
+      parameters:
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: itemType
+          schema:
+            $ref: "./shared.yaml#/components/schemas/ItemType"
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the catalog item reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogItemReportsDTO'
   /staff/reports/orders:
     get:
       description: 'Gets order reports'
@@ -1285,11 +1314,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/LineItemDTO'
-            appliedTaxes:
-              type: array
-              readOnly: true
-              items:
-                $ref: '#/components/schemas/OrderTaxDTO'
             orderPayments:
               type: array
               readOnly: true
@@ -1356,10 +1380,10 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/CustomPaymentMethodMappingBase'
-    OrderTaxDTO:
+    LineItemTaxDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/OrderTaxFull'
+        - $ref: './shared.yaml#/components/schemas/LineItemTaxFull'
     LineItemDTORef:
       x-has-dto: true
       x-dao-type: LineItem
@@ -1403,6 +1427,12 @@ components:
             stockChange:
               nullable: true
               $ref: '#/components/schemas/PurchaseStockedItemDTO'
+            appliedTaxes:
+              x-parent-variable: lineItemId
+              type: array
+              readOnly: true
+              items:
+                $ref: '#/components/schemas/LineItemTaxDTO'
             discounts:
               x-parent-variable: lineItemId
               type: array
@@ -1939,6 +1969,61 @@ components:
         totalAmountStripePaymentsPaid:
           type: integer
           format: int64
+    CatalogBaseReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ReportDTO"
+        - type: object
+          properties:
+            totalSold:
+              type: integer
+            totalBase:
+              type: integer
+              format: int64
+            totalPaid:
+              type: integer
+              format: int64
+            totalDiscounts:
+              type: integer
+              format: int64
+            totalTaxes:
+              type: integer
+              format: int64
+    CatalogItemInstanceReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CatalogBaseReportDTO"
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceRef'
+        - type: object
+          properties:
+            instanceBasePrice:
+              type: integer
+              format: int64
+    CatalogItemReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CatalogBaseReportDTO"
+        - $ref: './shared.yaml#/components/schemas/ItemRef'
+        - type: object
+          properties:
+            itemInstanceReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemInstanceReportDTO'
+    CatalogItemReportsDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CatalogBaseReportDTO'
+        - type: object
+          properties:
+            itemReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemReportDTO'
     OrderReportDTO:
       x-has-dto: true
       type: object
