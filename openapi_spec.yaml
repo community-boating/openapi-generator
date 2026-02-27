@@ -1990,25 +1990,39 @@ components:
             totalTaxes:
               type: integer
               format: int64
+    CatalogItemInstanceReportItemInstanceDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceRef'
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceBase'
     CatalogItemInstanceReportDTO:
       x-has-dto: true
       type: object
       allOf:
         - $ref: "#/components/schemas/CatalogBaseReportDTO"
-        - $ref: './shared.yaml#/components/schemas/ItemInstanceRef'
         - type: object
           properties:
+            itemInstance:
+              $ref: '#/components/schemas/CatalogItemInstanceReportItemInstanceDTO'
             instanceBasePrice:
               type: integer
               format: int64
+    CatalogItemReportItemDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemRef'
+        - $ref: './shared.yaml#/components/schemas/ItemBase'
     CatalogItemReportDTO:
       x-has-dto: true
       type: object
       allOf:
         - $ref: "#/components/schemas/CatalogBaseReportDTO"
-        - $ref: './shared.yaml#/components/schemas/ItemRef'
         - type: object
           properties:
+            item:
+              $ref: '#/components/schemas/CatalogItemReportItemDTO'
             itemInstanceReports:
               type: array
               items:
