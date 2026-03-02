@@ -711,7 +711,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PersonWithRelationsDTO'
-
+  /staff/sendToReader:
+    post:
+      security:
+        - staff: [ ]
+      description: 'Returns card readers'
+      tags:
+        - Stripe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendToReaderDTO'
+      responses:
+        '200':
+          description: Successfully sends to card reader
   /staff/readers:
     get:
       security:
@@ -1006,8 +1021,17 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/CashDrawerFull'
+    SendToReaderDTO:
+      x-has-dto: true
+      required: [readerId, paymentIntentId]
+      properties:
+        readerId:
+          type: string
+        paymentIntentId:
+          type: string
     CardReaderDTO:
       x-has-dto: true
+      required: [readerId]
       properties:
         readerId:
           type: string
