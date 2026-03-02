@@ -711,11 +711,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PersonWithRelationsDTO'
+  /staff/capturePaymentIntent:
+    post:
+      security:
+        - staff: [ ]
+      description: 'Captures payment intent'
+      tags:
+        - Stripe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CapturePaymentIntentDTO'
+      responses:
+        '200':
+          description: Successfully sends to card reader
+  /staff/cancelReaderActivity:
+    post:
+      security:
+        - staff: [ ]
+      description: 'Captures payment intent'
+      tags:
+        - Stripe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelReaderActivityDTO'
+      responses:
+        '200':
+          description: Successfully sends to card reader
   /staff/sendToReader:
     post:
       security:
         - staff: [ ]
-      description: 'Returns card readers'
+      description: 'Sends payment intent to card reader'
       tags:
         - Stripe
       requestBody:
@@ -1021,6 +1053,18 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/CashDrawerFull'
+    CancelReaderActivityDTO:
+      x-has-dto: true
+      required: [ readerId ]
+      properties:
+        readerId:
+          type: string
+    CapturePaymentIntentDTO:
+      x-has-dto: true
+      required: [ paymentIntentId ]
+      properties:
+        paymentIntentId:
+          type: string
     SendToReaderDTO:
       x-has-dto: true
       required: [readerId, paymentIntentId]
