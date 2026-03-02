@@ -2708,8 +2708,13 @@ components:
           readOnly: true
           type: integer
           format: int64
+        amountTotalRawCents:
+          description: Total value (in cents) of a single unit times quantity
+          readOnly: true
+          type: integer
+          format: int64
         amountTotalCents:
-          description: Base price of line item times quantity minus value of all discounts (in cents)
+          description: Total value (in cents) of line item, including quantity, discounts and taxes
           readOnly: true
           type: integer
           format: int64
