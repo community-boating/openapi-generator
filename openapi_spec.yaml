@@ -712,7 +712,22 @@ paths:
               schema:
                 $ref: '#/components/schemas/PersonWithRelationsDTO'
 
-
+  /staff/readers:
+    get:
+      security:
+        - staff: [ ]
+      description: 'Returns card readers'
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: Returns card readers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CardReaderDTO'
   /staff/cash-drawers:
     get:
       security:
@@ -991,6 +1006,15 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/CashDrawerFull'
+    CardReaderDTO:
+      x-has-dto: true
+      properties:
+        readerId:
+          type: string
+        label:
+          type: string
+        status:
+          type: string
     BalanceTransactionDTO:
       x-has-dto: true
       required: [id, balanceId, transactionAmountCents]
