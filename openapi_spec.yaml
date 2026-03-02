@@ -718,7 +718,7 @@ paths:
         - staff: [ ]
       description: 'Returns card readers'
       tags:
-        - Payment
+        - Stripe
       responses:
         '200':
           description: Returns card readers
