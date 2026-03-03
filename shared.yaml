@@ -1533,7 +1533,7 @@ components:
           x-no-db-var: true
           type: boolean
           default: false
-    Purchasable:
+    PurchasableWithoutClose:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
@@ -1543,9 +1543,17 @@ components:
           readOnly: true
           allOf:
             - $ref: '#/components/schemas/PurchasableState'
-        voidCloseId:
-          readOnly: true
-          type: integer
+    Purchasable:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/PurchasableWithoutClose'
+        - type: object
+          properties:
+            voidCloseId:
+              readOnly: true
+              type: integer
     LongIDResource:
       x-has-interface: true
       x-has-dto: false
