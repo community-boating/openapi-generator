@@ -3493,8 +3493,6 @@ components:
           properties:
             itemInstanceId:
               $ref: '#/components/schemas/ItemInstanceRef'
-            lineItemId:
-              $ref: '#/components/schemas/LineItemRef'
     CatalogRef:
       x-has-interface: true
       x-has-dto: false

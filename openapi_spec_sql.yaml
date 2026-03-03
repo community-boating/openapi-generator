@@ -153,8 +153,6 @@ components:
           properties:
             itemInstanceId:
               $ref: '#/components/schemas/ItemInstance'
-            lineItemId:
-              $ref: '#/components/schemas/LineItem'
 
     LineItem:
       x-has-dao: true
