@@ -3385,7 +3385,7 @@ components:
           type: string
           format: date-time
     OrderPaymentFull:
-      required: [ paymentSource, orderId ]
+      required: [ orderId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/OrderPaymentRef'
@@ -3440,7 +3440,7 @@ components:
 
     OrderPaymentInternalFull:
       x-dao-interface: true
-      required: [ paymentSource, orderId ]
+      required: [ orderId ]
       allOf:
         - $ref: '#/components/schemas/OrderPaymentFull'
         - type: object
