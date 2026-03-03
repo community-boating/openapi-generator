@@ -3068,7 +3068,7 @@ components:
     BalanceTransactionBase:
       required: [ transactionAmountCents ]
       allOf:
-        - $ref: '#/components/schemas/Purchasable'
+        - $ref: '#/components/schemas/PurchasableWithoutClose'
         - type: object
           properties:
             balanceTransactionType:
@@ -3484,7 +3484,7 @@ components:
     ItemInstanceStockChangeBase:
       required: [ changeAmount, stockChangeType ]
       allOf:
-        - $ref: '#/components/schemas/Purchasable'
+        - $ref: '#/components/schemas/PurchasableWithoutClose'
         - type: object
           properties:
             changeAmount:
