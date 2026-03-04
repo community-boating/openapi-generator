@@ -3109,6 +3109,9 @@ components:
         - $ref: '#/components/schemas/BalanceRef'
         - type: object
           properties:
+            balanceExpirationDate:
+              type: string
+              format: date-time
             balanceAccountNumber:
               type: string
               maxLength: 200
