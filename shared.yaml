@@ -3130,7 +3130,7 @@ components:
             balanceType:
               $ref: '#/components/schemas/BalanceType'
     BalanceFull:
-      required: [ balanceCents, balanceType ]
+      required: [ balanceType ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/BalanceBase'

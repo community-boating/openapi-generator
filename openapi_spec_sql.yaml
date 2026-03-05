@@ -430,7 +430,7 @@ components:
               $ref: '#/components/schemas/PersonDAO'
     Balance:
       x-has-dao: true
-      required: [assignId, personId, balanceCents, balanceType]
+      required: [assignId, personId, balanceType]
       allOf:
         - $ref: './shared.yaml#/components/schemas/BalanceFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
