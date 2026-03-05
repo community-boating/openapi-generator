@@ -2737,6 +2737,8 @@ components:
           readOnly: true
           type: integer
           format: int64
+        currentPersonName:
+          $ref: '#/components/schemas/PersonNameInfo'
     LineItemFull:
       required: [ itemInstanceId ]
       allOf:
