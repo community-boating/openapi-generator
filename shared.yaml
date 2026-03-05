@@ -3130,6 +3130,9 @@ components:
         - $ref: '#/components/schemas/BalanceFull'
         - type: object
           properties:
+            balanceMinimumCents:
+              type: integer
+              format: int64
             balanceAccountToken:
               type: string
               maxLength: 64
