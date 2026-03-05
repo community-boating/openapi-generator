@@ -3144,10 +3144,6 @@ components:
             balanceMinimumCents:
               type: integer
               format: int64
-            balanceAccountToken:
-              type: string
-              maxLength: 64
-              minLength: 64
     StripeTransactionRef:
       x-has-interface: true
       x-has-dto: false
