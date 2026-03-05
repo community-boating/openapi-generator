@@ -1444,16 +1444,27 @@ components:
               $ref: '#/components/schemas/BalanceTransactionDTO'
             transactionOther:
               $ref: '#/components/schemas/TransactionOtherDTO'
+    CreateBalanceTransactionDTO:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BalanceTransactionDTO'
+        - type: object
+          properties:
+            accountNumber:
+              type: string
     CreateOrderPaymentDTO:
       type: object
       required: [ orderId ]
-      properties:
-        orderId:
-          $ref: './shared.yaml#/components/schemas/OrderRef'
-        payment:
-          $ref: '#/components/schemas/OrderPaymentDTO'
-        saveCard:
-          type: boolean
+      allOf:
+        - $ref: '#/components/schemas/OrderPaymentDTO'
+        - type: object
+          properties:
+            orderId:
+              $ref: './shared.yaml#/components/schemas/OrderRef'
+            balanceTransaction:
+              $ref: '#/components/schemas/CreateBalanceTransactionDTO'
+            saveCard:
+              type: boolean
     CreateOrderPaymentResponseDTO:
       type: object
       properties:

@@ -339,7 +339,7 @@ components:
       x-has-interface: true
       x-no-interface: true
       x-has-dao: true
-      required: [assignId, orderId, paymentSource, paymentAmountCents, paymentStatus]
+      required: [assignId, orderId, paymentAmountCents, paymentStatus]
       allOf:
         - $ref: './shared.yaml#/components/schemas/OrderPaymentInternalFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
@@ -427,7 +427,21 @@ components:
           properties:
             personId:
               $ref: '#/components/schemas/PersonDAO'
-
+    BalanceLookupCooldown:
+      x-has-dao: true
+      required: [assignId, personId, searchAttempt]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LongIDResource'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            searchAttempt:
+              type: string
+              maxLength: 500
+            balanceMatch:
+              $ref: '#/components/schemas/Balance'
     StripeTransaction:
       x-has-dao: true
       required: [assignId, stripePaymentIntent, transactionAmountCents]
