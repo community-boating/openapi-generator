@@ -432,12 +432,15 @@ components:
       x-has-dao: true
       required: [assignId, personId, balanceCents, balanceType]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/BalanceInternal'
+        - $ref: './shared.yaml#/components/schemas/BalanceFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
+            personBalances:
+              x-parent-variable: balanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonBalance'
     BalanceLookupCooldown:
       x-has-dao: true
       required: [assignId, personId, searchAttempt]

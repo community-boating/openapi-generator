@@ -3134,12 +3134,13 @@ components:
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/BalanceBase'
-    BalanceInternal:
-      required: [ balanceCents, balanceType ]
-      allOf:
-        - $ref: '#/components/schemas/BalanceFull'
         - type: object
           properties:
+            personBalances:
+              x-parent-variable: balanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonBalanceFull'
             balanceMinimumCents:
               type: integer
               format: int64

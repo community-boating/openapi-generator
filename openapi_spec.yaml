@@ -1106,21 +1106,20 @@ components:
               $ref: '#/components/schemas/BalanceDTO'
     BalanceDTO:
       x-has-dto: true
-      required: [balanceCents, balanceType]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/BalanceFull'
-    BalanceInternalDTO:
-      x-has-dto: true
       required: [ balanceCents, balanceType ]
       allOf:
-        - $ref: '#/components/schemas/BalanceDTO'
-        - $ref: './shared.yaml#/components/schemas/BalanceInternal'
+        - $ref: './shared.yaml#/components/schemas/BalanceFull'
         - type: object
           properties:
             balanceTransactions:
               type: array
               items:
                 $ref: '#/components/schemas/BalanceTransactionDTO'
+            personBalances:
+              x-parent-variable: balanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonBalanceDTO'
     ClassSignupResponseDTO:
       type: object
       properties:
