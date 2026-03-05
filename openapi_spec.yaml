@@ -1111,6 +1111,9 @@ components:
         - $ref: './shared.yaml#/components/schemas/BalanceFull'
         - type: object
           properties:
+            balanceAmountCurrent:
+              type: integer
+              format: int64
             balanceTransactions:
               type: array
               items:
