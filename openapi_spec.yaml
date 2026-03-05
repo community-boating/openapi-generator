@@ -1096,6 +1096,14 @@ components:
         #    lineItemId:
         #      type: integer
         #      format: int64
+    PersonBalanceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonBalanceFull'
+        - type: object
+          properties:
+            balanceId:
+              $ref: '#/components/schemas/BalanceDTO'
     BalanceDTO:
       x-has-dto: true
       required: [balanceCents, balanceType]

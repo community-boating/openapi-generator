@@ -3097,7 +3097,18 @@ components:
           properties:
             paymentId:
               $ref: '#/components/schemas/OrderPaymentBase'
-
+    PersonBalanceFull:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [ assignId, balanceId, personId ]
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/WithPersonRef'
+        - type: object
+          properties:
+            balanceId:
+              $ref: '#/components/schemas/BalanceRef'
     BalanceRef:
       x-has-interface: true
       x-has-dto: true
@@ -3123,7 +3134,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/BalanceBase'
-        - $ref: "#/components/schemas/WithOptionalPersonRef"
     BalanceInternal:
       required: [ balanceCents, balanceType ]
       allOf:
