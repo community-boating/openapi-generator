@@ -108,6 +108,7 @@ components:
     PaymentStatus:
       type: string
       enum:
+        - 'CAPTURED'
         - 'PENDING'
         - 'CANCELLED'
         - 'SUCCESSFUL'
