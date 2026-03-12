@@ -1982,6 +1982,11 @@ components:
       type: object
       allOf:
         - $ref: './shared.yaml#/components/schemas/DonationInitiativeFull'
+        - type: object
+          properties:
+            contributionsCurrent:
+              type: integer
+              format: int64
     DonationOptionsDTO:
       type: object
       properties:

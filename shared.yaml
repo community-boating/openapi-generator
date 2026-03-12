@@ -3863,7 +3863,7 @@ components:
           type: integer
         isGoalPublic:
           type: boolean
-        goalAmount:
+        contributionsGoal:
           type: integer
           format: int64
     DonationInitiativeFull:
