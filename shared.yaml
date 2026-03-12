@@ -3852,6 +3852,9 @@ components:
         portalDescription:
           type: string
           maxLength: 2000
+        imageURL:
+          type: string
+          maxLength: 200
     DonationFundFull:
       allOf:
         - $ref: '#/components/schemas/Deletable'
@@ -3891,6 +3894,9 @@ components:
         contributionsGoal:
           type: integer
           format: int64
+        imageURL:
+          type: string
+          maxLength: 200
     DonationInitiativeFull:
       allOf:
         - $ref: '#/components/schemas/Deletable'
