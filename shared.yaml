@@ -3843,7 +3843,26 @@ components:
           properties:
             itemId:
               $ref: '#/components/schemas/ItemRef'
-
+    DonationPurposeBase:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      type: object
+      properties:
+        active:
+          x-boolean-char: Y
+          type: boolean
+        displayOrder:
+          type: integer
+        showInCheckout:
+          x-boolean-char: Y
+          type: boolean
+        portalDescription:
+          type: string
+          maxLength: 2000
+        imageURL:
+          type: string
+          maxLength: 200
     DonationFundRef:
       x-has-interface: true
       x-has-dto: true
@@ -3861,30 +3880,19 @@ components:
       x-has-dto: true
       x-has-dao: false
       required: [ assignId ]
-      properties:
-        fundName:
-          type: string
-          maxLength: 100
-        active:
-          x-boolean-char: Y
-          type: boolean
-        displayOrder:
-          type: integer
-        letterText:
-          type: string
-          maxLength: 500
-        showInCheckout:
-          x-boolean-char: Y
-          type: boolean
-        isEndowment:
-          x-boolean-char: Y
-          type: boolean
-        portalDescription:
-          type: string
-          maxLength: 2000
-        imageURL:
-          type: string
-          maxLength: 200
+      allOf:
+        - $ref: '#/components/schemas/DonationPurposeBase'
+        - type: object
+          properties:
+            fundName:
+              type: string
+              maxLength: 100
+            letterText:
+              type: string
+              maxLength: 500
+            isEndowment:
+              x-boolean-char: Y
+              type: boolean
     DonationFundFull:
       allOf:
         - $ref: '#/components/schemas/Deletable'
@@ -3908,32 +3916,22 @@ components:
       x-has-dto: true
       x-has-dao: false
       required: [ assignId ]
-      properties:
-        initiativeName:
-          type: string
-          maxLength: 200
-        active:
-          x-boolean-char: Y
-          type: boolean
-        displayOrder:
-          type: integer
-        isFeatured:
-          type: boolean
-        isGoalPublic:
-          type: boolean
-        showInCheckout:
-          type: boolean
-        contributionsGoal:
-          type: integer
-          format: int64
-        portalDescription:
-          type: string
-          maxLength: 2000
-        imageURL:
-          type: string
-          maxLength: 200
-        targetFund:
-          $ref: '#/components/schemas/DonationFundRef'
+      allOf:
+        - $ref: '#/components/schemas/DonationPurposeBase'
+        - type: object
+          properties:
+            initiativeName:
+              type: string
+              maxLength: 200
+            isFeatured:
+              type: boolean
+            isGoalPublic:
+              type: boolean
+            contributionsGoal:
+              type: integer
+              format: int64
+            targetFund:
+              $ref: '#/components/schemas/DonationFundRef'
     DonationInitiativeFull:
       allOf:
         - $ref: '#/components/schemas/Deletable'
