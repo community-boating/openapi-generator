@@ -3579,6 +3579,36 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ProductBase'
+    PrinterRef:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dao: false
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+    PrinterBase:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dao: false
+      x-has-dto: true
+      properties:
+        printerMAC:
+          type: string
+          maxLength: 100
+        printerUser:
+          type: string
+          maxLength: 100
+        printerName:
+          type: string
+          maxLength: 100
+    PrinterFull:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dao: false
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PrinterRef'
+        - $ref: '#/components/schemas/PrinterBase'
     CashDrawerBase:
       x-has-interface: true
       x-dao-interface: false
@@ -3897,6 +3927,8 @@ components:
         imageURL:
           type: string
           maxLength: 200
+        targetFund:
+          $ref: '#/components/schemas/DonationFundRef'
     DonationInitiativeFull:
       allOf:
         - $ref: '#/components/schemas/Deletable'
