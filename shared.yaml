@@ -3884,6 +3884,8 @@ components:
           type: boolean
         displayOrder:
           type: integer
+        isFeatured:
+          type: boolean
         isGoalPublic:
           type: boolean
         contributionsGoal:

@@ -905,8 +905,6 @@ paths:
                   $ref: '#/components/schemas/DonationDTO'
   /member/donation/options:
     get:
-      security:
-        - member: [ ]
       description: 'Returns donation funds and initiatives'
       tags:
         - Donation
