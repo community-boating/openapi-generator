@@ -417,45 +417,17 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/TransactionOtherFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
-    PersonBalance:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonBalanceFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            balanceId:
-              $ref: '#/components/schemas/Balance'
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
     Balance:
       x-has-dao: true
-      required: [assignId, personId, balanceType]
+      required: [assignId, personId, balanceCents, balanceType]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/BalanceFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            personBalances:
-              x-parent-variable: balanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonBalance'
-    BalanceLookupCooldown:
-      x-has-dao: true
-      required: [assignId, personId, searchAttempt]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/LongIDResource'
+        - $ref: './shared.yaml#/components/schemas/BalanceInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             personId:
               $ref: '#/components/schemas/PersonDAO'
-            searchAttempt:
-              type: string
-              maxLength: 500
-            balanceMatch:
-              $ref: '#/components/schemas/Balance'
+
     StripeTransaction:
       x-has-dao: true
       required: [assignId, stripePaymentIntent, transactionAmountCents]

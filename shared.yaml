@@ -108,7 +108,6 @@ components:
     PaymentStatus:
       type: string
       enum:
-        - 'CAPTURED'
         - 'PENDING'
         - 'CANCELLED'
         - 'SUCCESSFUL'
@@ -2737,8 +2736,6 @@ components:
           readOnly: true
           type: integer
           format: int64
-        currentPersonName:
-          $ref: '#/components/schemas/PersonNameInfo'
     LineItemFull:
       required: [ itemInstanceId ]
       allOf:
@@ -3099,18 +3096,7 @@ components:
           properties:
             paymentId:
               $ref: '#/components/schemas/OrderPaymentBase'
-    PersonBalanceFull:
-      x-has-interface: true
-      x-has-dto: true
-      x-has-dao: false
-      required: [ assignId, balanceId, personId ]
-      allOf:
-        - $ref: '#/components/schemas/LongIDResource'
-        - $ref: '#/components/schemas/WithPersonRef'
-        - type: object
-          properties:
-            balanceId:
-              $ref: '#/components/schemas/BalanceRef'
+
     BalanceRef:
       x-has-interface: true
       x-has-dto: true
@@ -3123,29 +3109,27 @@ components:
         - $ref: '#/components/schemas/BalanceRef'
         - type: object
           properties:
-            balanceExpirationDate:
-              type: string
-              format: date-time
             balanceAccountNumber:
               type: string
               maxLength: 200
             balanceType:
               $ref: '#/components/schemas/BalanceType'
     BalanceFull:
-      required: [ balanceType ]
+      required: [ balanceCents, balanceType ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/BalanceBase'
+        - $ref: "#/components/schemas/WithOptionalPersonRef"
+    BalanceInternal:
+      required: [ balanceCents, balanceType ]
+      allOf:
+        - $ref: '#/components/schemas/BalanceFull'
         - type: object
           properties:
-            personBalances:
-              x-parent-variable: balanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonBalanceFull'
-            balanceMinimumCents:
-              type: integer
-              format: int64
+            balanceAccountToken:
+              type: string
+              maxLength: 64
+              minLength: 64
     StripeTransactionRef:
       x-has-interface: true
       x-has-dto: false
