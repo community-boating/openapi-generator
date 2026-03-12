@@ -3921,9 +3921,14 @@ components:
           type: boolean
         isGoalPublic:
           type: boolean
+        showInCheckout:
+          type: boolean
         contributionsGoal:
           type: integer
           format: int64
+        portalDescription:
+          type: string
+          maxLength: 2000
         imageURL:
           type: string
           maxLength: 200
