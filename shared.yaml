@@ -3932,6 +3932,7 @@ components:
               format: int64
             targetFund:
               $ref: '#/components/schemas/DonationFundRef'
+
     DonationInitiativeFull:
       allOf:
         - $ref: '#/components/schemas/Deletable'
