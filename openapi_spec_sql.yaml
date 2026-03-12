@@ -727,6 +727,21 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/DonationInitiativeFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            targetFund:
+              $ref: '#/components/schemas/DonationFundDAO'
+    PrinterDAO:
+      x-has-dao: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PrinterFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            printerPasswordHash:
+              type: string
+              maxLength: 200
     PersonLegacy:
       x-has-dao: false
       x-dao-interface: true

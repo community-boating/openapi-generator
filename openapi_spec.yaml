@@ -1691,6 +1691,22 @@ components:
           properties:
             computedPrice:
               type: integer
+    PrinterDTO:
+      x-has-dao: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PrinterFull'
+    EditPrinterDTO:
+      x-has-dao: true
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PrinterDTO'
+        - type: object
+          properties:
+            printerPassword:
+              readOnly: true
+              type: string
+              maxLength: 200
     PersonIdOnlyDTO:
       x-has-dto: true
       allOf:
