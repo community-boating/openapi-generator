@@ -892,7 +892,7 @@ paths:
         - member: []
       description: 'Returns a list of donations'
       tags:
-        - DonationPublic
+        - Donation
       x-is-paginated: true
       responses:
         '200':
@@ -1096,23 +1096,33 @@ components:
         #    lineItemId:
         #      type: integer
         #      format: int64
-    BalanceDTO:
+    PersonBalanceDTO:
       x-has-dto: true
-      required: [balanceCents, balanceType]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/BalanceFull'
-    BalanceInternalDTO:
+        - $ref: './shared.yaml#/components/schemas/PersonBalanceBase'
+        - type: object
+          properties:
+            balanceId:
+              $ref: '#/components/schemas/BalanceDTO'
+    BalanceDTO:
       x-has-dto: true
       required: [ balanceCents, balanceType ]
       allOf:
-        - $ref: '#/components/schemas/BalanceDTO'
-        - $ref: './shared.yaml#/components/schemas/BalanceInternal'
+        - $ref: './shared.yaml#/components/schemas/BalanceFull'
         - type: object
           properties:
+            balanceAmountCurrent:
+              type: integer
+              format: int64
             balanceTransactions:
               type: array
               items:
                 $ref: '#/components/schemas/BalanceTransactionDTO'
+            personBalances:
+              x-parent-variable: balanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonBalanceDTO'
     ClassSignupResponseDTO:
       type: object
       properties:
@@ -1444,16 +1454,27 @@ components:
               $ref: '#/components/schemas/BalanceTransactionDTO'
             transactionOther:
               $ref: '#/components/schemas/TransactionOtherDTO'
+    CreateBalanceTransactionDTO:
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/BalanceTransactionDTO'
+        - type: object
+          properties:
+            accountNumber:
+              type: string
     CreateOrderPaymentDTO:
       type: object
       required: [ orderId ]
-      properties:
-        orderId:
-          $ref: './shared.yaml#/components/schemas/OrderRef'
-        payment:
-          $ref: '#/components/schemas/OrderPaymentDTO'
-        saveCard:
-          type: boolean
+      allOf:
+        - $ref: '#/components/schemas/OrderPaymentDTO'
+        - type: object
+          properties:
+            orderId:
+              $ref: './shared.yaml#/components/schemas/OrderRef'
+            balanceTransaction:
+              $ref: '#/components/schemas/CreateBalanceTransactionDTO'
+            saveCard:
+              type: boolean
     CreateOrderPaymentResponseDTO:
       type: object
       properties:
@@ -1493,6 +1514,8 @@ components:
         - $ref: './shared.yaml#/components/schemas/LineItemCalculated'
         - type: object
           properties:
+            personId:
+              $ref: '#/components/schemas/PersonNameDTO'
             parentItemId:
               $ref: '#/components/schemas/LineItemDTORef'
             itemInstanceId:
