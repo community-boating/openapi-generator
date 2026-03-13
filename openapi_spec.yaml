@@ -51,7 +51,7 @@ paths:
             application/json:
               schema:
                 $ref: './shared.yaml#/components/schemas/Boolean'
-  
+
   /member/info:
     post:
       summary: Test
@@ -525,7 +525,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ItemStockDTO'
-  
+
   /catalog:
     get:
       description: 'Gets the current catalog'
@@ -890,9 +890,7 @@ paths:
         content:
           application/json:
             schema:
-              type: array
-              items:
-                $ref: '#/components/schemas/CashDrawerDTO'
+              $ref: '#/components/schemas/EditCashDrawersDTO'
       responses:
         '200':
           description: Returns cash drawers
@@ -1875,6 +1873,14 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EditPrinterDTO'
+    EditCashDrawersDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        cashDrawersEdited:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashDrawerDTO'
     PersonIdOnlyDTO:
       x-has-dto: true
       allOf:
@@ -1917,7 +1923,7 @@ components:
               readOnly: true
               allOf:
                 - $ref: '#/components/schemas/BalanceDTO'
-    
+
     PersonSubscriptionDTO:
       x-has-dto: true
       required: [id, personId, subscriptionId, billingCycle]
