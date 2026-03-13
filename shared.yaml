@@ -3661,6 +3661,10 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/CashDrawerBase'
         - $ref: '#/components/schemas/CashDrawerRef'
+        - type: object
+          properties:
+            printer:
+              $ref: '#/components/schemas/PrinterRef'
     ProductRef:
       x-has-interface: true
       x-has-dto: true
