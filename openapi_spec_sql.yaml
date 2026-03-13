@@ -735,13 +735,8 @@ components:
       x-has-dao: true
       type: object
       allOf:
-        - $ref: './shared.yaml#/components/schemas/PrinterFull'
+        - $ref: './shared.yaml#/components/schemas/PrinterInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            printerPasswordHash:
-              type: string
-              maxLength: 200
     PersonLegacy:
       x-has-dao: false
       x-dao-interface: true

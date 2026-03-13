@@ -3584,17 +3584,20 @@ components:
       x-dao-interface: false
       x-has-dao: false
       x-has-dto: true
-      allOf:
-        - $ref: '#/components/schemas/LongIDResource'
+      type: object
+      required: [printerMAC]
+      properties:
+        printerMAC:
+          x-col-primary: true
+          x-commit-col-primary: true
+          type: string
+          maxLength: 200
     PrinterBase:
       x-has-interface: true
       x-dao-interface: false
       x-has-dao: false
       x-has-dto: true
       properties:
-        printerMAC:
-          type: string
-          maxLength: 100
         printerUser:
           type: string
           maxLength: 100
@@ -3609,6 +3612,19 @@ components:
       allOf:
         - $ref: '#/components/schemas/PrinterRef'
         - $ref: '#/components/schemas/PrinterBase'
+        - $ref: '#/components/schemas/Deletable'
+    PrinterInternal:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dao: false
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PrinterFull'
+        - type: object
+          properties:
+            printerPasswordHash:
+              type: string
+              maxLength: 200
     CashDrawerBase:
       x-has-interface: true
       x-dao-interface: false

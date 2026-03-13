@@ -24,6 +24,22 @@ paths:
             application/json:
               schema:
                 $ref: './shared.yaml#/components/schemas/DummyEnum'
+  /paths/dummyDto:
+    get:
+      parameters:
+        - in: query
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DummyDTO'
   /member/getNoParams:
     get:
       summary: Test
@@ -759,6 +775,77 @@ paths:
       responses:
         '200':
           description: Successfully sends to card reader
+  /staff/printOrderReceipt:
+    post:
+      security:
+        - staff: [ ]
+      description: 'Prints order receipt'
+      tags:
+        - Printer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrintOrderReceiptDTO'
+      responses:
+        '200':
+          description: Successfully printed receipt
+  /staff/printTest/{mac}:
+    post:
+      security:
+        - staff: [ ]
+      description: 'Sends payment intent to card reader'
+      tags:
+        - Printer
+      parameters:
+        - in: path
+          name: mac # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            maxLength: 200
+      responses:
+        '200':
+          description: Successfully printed test
+  /staff/printers:
+    get:
+      security:
+        - staff: [ ]
+      description: 'Returns printers'
+      tags:
+        - Printer
+      responses:
+        '200':
+          description: Printers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrinterDTO'
+    post:
+      security:
+        - staff: [ ]
+      description: 'Updates printers'
+      tags:
+        - Printer
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditPrintersDTO'
+      responses:
+        '200':
+          description: Updated Printers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrinterDTO'
   /staff/readers:
     get:
       security:
@@ -782,6 +869,30 @@ paths:
       description: 'Returns cash drawers'
       tags:
         - Payment
+      responses:
+        '200':
+          description: Returns cash drawers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CashDrawerDTO'
+    post:
+      security:
+        - staff: [ ]
+      description: 'Updated cash drawers'
+      tags:
+        - Payment
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: '#/components/schemas/CashDrawerDTO'
       responses:
         '200':
           description: Returns cash drawers
@@ -1063,6 +1174,14 @@ components:
       properties:
         paymentIntentId:
           type: string
+    PrintOrderReceiptDTO:
+      x-has-dto: true
+      required: [ printerId, orderId ]
+      properties:
+        printerId:
+          $ref: './shared.yaml#/components/schemas/PrinterRef'
+        orderId:
+          $ref: './shared.yaml#/components/schemas/OrderRef'
     SendToReaderDTO:
       x-has-dto: true
       required: [readerId, paymentIntentId]
@@ -1691,22 +1810,71 @@ components:
           properties:
             computedPrice:
               type: integer
-    PrinterDTO:
-      x-has-dao: true
+    PrinterStatusDTO:
+      x-has-dto: true
       type: object
+      required: [statusCode, online, paperOut, coverOpen, drawerOpen]
+      properties:
+        statusCode:
+          type: integer
+        online:
+          type: boolean
+          default: false
+        paperOut:
+          type: boolean
+          default: false
+        coverOpen:
+          type: boolean
+          default: false
+        drawerOpen:
+          type: boolean
+          default: false
+    PrinterComputed:
+      x-has-dto: true
+      type: object
+      properties:
+        printerStatus:
+          $ref: '#/components/schemas/PrinterStatusDTO'
+        ip:
+          type: string
+          maxLength: 100
+        model:
+          type: string
+          maxLength: 100
+    PrinterInternalDTO:
+      x-has-dto: true
+      type: object
+      required: [printerMAC]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PrinterInternal'
+        - $ref: '#/components/schemas/PrinterComputed'
+    PrinterDTO:
+      x-has-dto: true
+      type: object
+      required: [ printerMAC ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PrinterFull'
+        - $ref: '#/components/schemas/PrinterComputed'
     EditPrinterDTO:
-      x-has-dao: true
+      x-has-dto: true
       type: object
+      required: [printerMAC]
       allOf:
-        - $ref: '#/components/schemas/PrinterDTO'
+        - $ref: './shared.yaml#/components/schemas/PrinterFull'
         - type: object
           properties:
             printerPassword:
               readOnly: true
               type: string
               maxLength: 200
+    EditPrintersDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        printersEdited:
+          type: array
+          items:
+            $ref: '#/components/schemas/EditPrinterDTO'
     PersonIdOnlyDTO:
       x-has-dto: true
       allOf:
@@ -2234,3 +2402,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/StripePaymentReportDTO'
+    DummyDTO:
+      x-has-dto: true
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/PrinterInternalDTO'
