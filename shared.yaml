@@ -3613,6 +3613,12 @@ components:
         - $ref: '#/components/schemas/PrinterRef'
         - $ref: '#/components/schemas/PrinterBase'
         - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            cashDrawer:
+              x-backref-name: printer
+              allOf:
+                - $ref: '#/components/schemas/CashDrawerRef'
     PrinterInternal:
       x-has-interface: true
       x-dao-interface: false

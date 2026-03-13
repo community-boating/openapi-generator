@@ -737,6 +737,12 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/PrinterInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+        - properties:
+            cashDrawer:
+              x-backref-name: printer
+              allOf:
+                - $ref: '#/components/schemas/CashDrawerRef'
     PersonLegacy:
       x-has-dao: false
       x-dao-interface: true
