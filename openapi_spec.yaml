@@ -1831,6 +1831,8 @@ components:
       x-has-dto: true
       type: object
       properties:
+        printerHasPassword:
+          type: boolean
         printerStatus:
           $ref: '#/components/schemas/PrinterStatusDTO'
         ip:
