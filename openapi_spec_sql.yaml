@@ -742,7 +742,7 @@ components:
             cashDrawer:
               x-backref-name: printer
               allOf:
-                - $ref: '#/components/schemas/CashDrawerRef'
+                - $ref: '#/components/schemas/CashDrawer'
     PersonLegacy:
       x-has-dao: false
       x-dao-interface: true
