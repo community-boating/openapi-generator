@@ -1861,6 +1861,7 @@ components:
       required: [printerMAC]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PrinterFull'
+        - $ref: '#/components/schemas/PrinterComputed'
         - type: object
           properties:
             printerPassword:
