@@ -162,8 +162,6 @@ components:
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
             parentItemId:
               $ref: '#/components/schemas/LineItem'
             orderId:

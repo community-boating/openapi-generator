@@ -1629,8 +1629,6 @@ components:
         - $ref: './shared.yaml#/components/schemas/LineItemCalculated'
         - type: object
           properties:
-            personId:
-              $ref: '#/components/schemas/PersonNameDTO'
             parentItemId:
               $ref: '#/components/schemas/LineItemDTORef'
             itemInstanceId:
