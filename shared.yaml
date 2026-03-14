@@ -1672,6 +1672,12 @@ components:
           x-dto-column: ORGANIZATION
           type: string
           maxLength: 100
+    PersonNameInfoAndRef:
+      x-has-interface: true
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/PersonRef'
+        - $ref: '#/components/schemas/PersonNameInfo'
     ReportMetaFull:
       x-has-interface: true
       x-has-dto: false
@@ -2697,6 +2703,8 @@ components:
     LineItemCalculated:
       type: object
       properties:
+        personInfo:
+          $ref: '#/components/schemas/PersonNameInfoAndRef'
         amountDiscountsBaseCents:
           description: Total value (in cents) of all discounts applied to a single unit of this line item
           readOnly: true
@@ -2743,7 +2751,6 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/LineItemBase'
         - $ref: '#/components/schemas/LineItemRef'
-        - $ref: '#/components/schemas/WithOptionalPersonRef'
         - type: object
           properties:
             parentItemId:
