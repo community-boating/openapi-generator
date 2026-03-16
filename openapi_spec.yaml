@@ -775,13 +775,13 @@ paths:
       responses:
         '200':
           description: Successfully sends to card reader
-  /staff/printOrderReceipt:
+  /staff/order/printReceipt:
     post:
       security:
         - staff: [ ]
       description: 'Prints order receipt'
       tags:
-        - Printer
+        - CompassOrder
       requestBody:
         required: true
         content:
