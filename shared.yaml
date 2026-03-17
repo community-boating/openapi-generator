@@ -59,10 +59,9 @@ components:
       type: string
       enum:
         - 'OPEN'
+        - 'PAYING'
         - 'PROCESSED'
-        - 'CAPTURED'
         - 'CANCELLED'
-        - 'PROCESSING'
         - 'REFUNDING'
         - 'REFUNDED'
         - 'PARTIALLY_REFUNDED'
