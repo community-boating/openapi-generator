@@ -2747,6 +2747,8 @@ components:
           readOnly: true
           type: integer
           format: int64
+        displayOrder:
+          type: integer
     LineItemFull:
       required: [ itemInstanceId ]
       allOf:
@@ -4040,6 +4042,7 @@ components:
           x-auto-increment: USERS_ID_SEQ
     UserBase:
       x-has-interface: true
+      x-dao-interface: true
       #x-has-dto: true
       x-has-dao: false
       type: object
@@ -4128,6 +4131,7 @@ components:
         - active
     UserFull:
       x-has-interface: true
+      x-dao-interface: true
       #x-has-dto: true
       x-has-dao: false
       type: object
