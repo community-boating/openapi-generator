@@ -4,7 +4,7 @@ info:
   version: 1.0.0
   description: Shared
 
-paths: {}
+paths: { }
 
 components:
   schemas:
@@ -1560,7 +1560,7 @@ components:
       x-has-dto: false
       x-has-dao: false
       type: object
-      required: [assignId]
+      required: [ assignId ]
       properties:
         assignId:
           type: integer
@@ -1571,7 +1571,7 @@ components:
       x-has-dto: false
       x-has-dao: false
       type: object
-      required: [assignId]
+      required: [ assignId ]
       properties:
         assignId:
           type: integer
@@ -1744,7 +1744,7 @@ components:
       x-has-dto: true
       x-has-dao: false
       type: object
-      required: [assignId]
+      required: [ assignId ]
       allOf:
         - $ref: '#/components/schemas/IntegerIDResource'
         - type: object
@@ -1927,7 +1927,7 @@ components:
       x-dao-interface: false
       x-has-dto: false
       x-has-dao: false
-      required: [personPhoneAssignId]
+      required: [ personPhoneAssignId ]
       allOf:
         - type: object
           properties:
@@ -1962,7 +1962,7 @@ components:
         - $ref: '#/components/schemas/PersonPhoneBase'
     PersonRelationRef:
       type: object
-      required: [relationId]
+      required: [ relationId ]
       allOf:
         - type: object
           properties:
@@ -1992,7 +1992,7 @@ components:
               allOf:
                 - $ref: '#/components/schemas/PersonRelationType'
     PersonRelation:
-      required: [A, B]
+      required: [ A, B ]
       x-has-dto: false
       x-has-dao: false
       x-has-interface: true
@@ -2027,7 +2027,7 @@ components:
       x-has-dto: false
       x-dao-interface: false
       x-has-dao: false
-      required: [personAddressAssignId]
+      required: [ personAddressAssignId ]
       allOf:
         - type: object
           properties:
@@ -2117,7 +2117,7 @@ components:
     ClassSignupRef:
       allOf:
         - type: object
-          required: [signupId]
+          required: [ signupId ]
           properties:
             signupId:
               x-col-primary: true
@@ -2135,7 +2135,7 @@ components:
         classTypeEnum:
           $ref: '#/components/schemas/ClassTypeEnum'
     ClassSignupFull:
-      required: [signupId, instanceId, personId]
+      required: [ signupId, instanceId, personId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ClassSignupRef'
@@ -2210,7 +2210,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [membershipTypeId, personId]
+      required: [ membershipTypeId, personId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/MembershipRef'
@@ -2221,7 +2221,7 @@ components:
       x-dao-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [membershipTypeId, personId, assignId]
+      required: [ membershipTypeId, personId, assignId ]
       allOf:
         - $ref: '#/components/schemas/MembershipFull'
         - $ref: '#/components/schemas/WithLineItemRef'
@@ -2272,7 +2272,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [waiverId]
+      required: [ waiverId ]
       allOf:
         - type: object
           properties:
@@ -2335,7 +2335,7 @@ components:
               readOnly: true
               type: boolean
     CardFull:
-      required: [cardNum, personId]
+      required: [ cardNum, personId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/CardRef'
@@ -2351,7 +2351,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [donationId]
+      required: [ donationId ]
       allOf:
         - type: object
           properties:
@@ -2364,7 +2364,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [fundId, initiativeId, state]
+      required: [ fundId, initiativeId, state ]
       allOf:
         - $ref: '#/components/schemas/Purchasable'
         - type: object
@@ -2413,7 +2413,7 @@ components:
       x-has-dto: false
       x-has-dao: false
       type: object
-      required: [personId]
+      required: [ personId ]
       allOf:
         - $ref: '#/components/schemas/WithOptionalPersonRef'
         - type: object
@@ -2491,7 +2491,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [assignId]
+      required: [ assignId ]
       properties:
         assignId:
           x-col-primary: true
@@ -2595,8 +2595,8 @@ components:
       properties:
         orderSource:
           $ref: '#/components/schemas/OrderSource'
-        amountBaseCents:
-          description: Total of all items before discounts
+        amountSubtotalCents:
+          description: Total of all items before discounts and taxes
           readOnly: true
           type: integer
           format: int64
@@ -2686,7 +2686,7 @@ components:
               maxLength: 200
     LineItemBase:
       type: object
-      required: [amountBaseCents]
+      required: [ amountBaseCents ]
       properties:
         amountBaseCents:
           description: Base cost of a single unit of this line item (From catalog or amount specified, if allowed)
@@ -2698,6 +2698,16 @@ components:
           format: int64
         amountPaidCents:
           description: Amount of money successfully paid
+          type: integer
+          format: int64
+        amountSubtotalCents:
+          description: Total value (in cents) of a single unit times quantity (excluding discounts and taxes)
+          readOnly: true
+          type: integer
+          format: int64
+        amountTotalCents:
+          description: Total value (in cents) of a single unit times quantity (including discounts and taxes)
+          readOnly: true
           type: integer
           format: int64
     LineItemCalculated:
@@ -2722,16 +2732,6 @@ components:
           format: int64
         amountTaxesTotalCents:
           description: Total value (in cents) of all taxes applied to all units of this line item
-          readOnly: true
-          type: integer
-          format: int64
-        amountTotalRawCents:
-          description: Total value (in cents) of a single unit times quantity
-          readOnly: true
-          type: integer
-          format: int64
-        amountTotalCents:
-          description: Total value (in cents) of line item, including quantity, discounts and taxes
           readOnly: true
           type: integer
           format: int64
@@ -2897,7 +2897,7 @@ components:
         - $ref: '#/components/schemas/LongIDResource'
     LineItemRefundTaxBase:
       type: object
-      properties: {}
+      properties: { }
 
     LineItemRefundTaxFull:
       allOf:
@@ -3057,7 +3057,7 @@ components:
           type: string
           maxLength: 200
     LineItemTaxFull:
-      required: [taxId, lineItemId]
+      required: [ taxId, lineItemId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/LineItemTaxRef'
@@ -3203,7 +3203,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      required: [instanceId]
+      required: [ instanceId ]
       allOf:
         - type: object
           properties:
@@ -3271,7 +3271,7 @@ components:
               x-col-primary: true
               type: integer
     DiscountBase:
-      required: [discountName]
+      required: [ discountName ]
       properties:
         discountName:
           type: string
@@ -3325,7 +3325,7 @@ components:
           format: int64
 
     CashTransactionFull:
-      required: [cashDrawerId, transactionAmountCents]
+      required: [ cashDrawerId, transactionAmountCents ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/CashTransactionRef'
@@ -3592,7 +3592,7 @@ components:
       x-has-dao: false
       x-has-dto: true
       type: object
-      required: [printerMAC]
+      required: [ printerMAC ]
       properties:
         printerMAC:
           x-col-primary: true
@@ -3706,7 +3706,7 @@ components:
       x-has-interface: true
       x-has-dto: true
       x-has-dao: false
-      required: [paymentType, customPaymentMethodId]
+      required: [ paymentType, customPaymentMethodId ]
       properties:
         paymentType:
           $ref: '#/components/schemas/PaymentType'
@@ -3864,7 +3864,7 @@ components:
               type: integer
               format: int64
     ItemInstanceFull:
-      required: [itemId]
+      required: [ itemId ]
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
