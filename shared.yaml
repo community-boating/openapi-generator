@@ -60,6 +60,7 @@ components:
       enum:
         - 'OPEN'
         - 'PROCESSED'
+        - 'CAPTURED'
         - 'CANCELLED'
         - 'PROCESSING'
         - 'REFUNDING'
@@ -2629,6 +2630,11 @@ components:
       properties:
         amountServiceChangeCents:
           description: Total cost of service charges (Payment fees paid by customer, maybe we will add restock service fee?)
+          readOnly: true
+          type: integer
+          format: int64
+        amountCapturedCents:
+          description: Total of all captured payments
           readOnly: true
           type: integer
           format: int64
