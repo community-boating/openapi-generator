@@ -1595,8 +1595,8 @@ components:
       properties:
         payment:
           $ref: '#/components/schemas/OrderPaymentDTO'
-        isComplete:
-          type: boolean
+        orderState:
+          $ref: './shared.yaml#/components/schemas/OrderStateNew'
         isFree:
           type: boolean
     StripeTransactionDTO:
