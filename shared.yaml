@@ -102,6 +102,7 @@ components:
       enum:
         - 'PROTO'
         - 'ACTIVE'
+        - 'VOIDED'
         - 'REVOKED'
         - 'REVOKED_REFUNDED'
         - 'REVOKED_REFUNDED_PARTIALLY'
