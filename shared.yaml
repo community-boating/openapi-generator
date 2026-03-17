@@ -2672,6 +2672,8 @@ components:
               readOnly: true
               items:
                 $ref: '#/components/schemas/OrderPaymentBase'
+            user:
+              $ref: '#/components/schemas/UserRef'
     LineItemRef:
       x-has-interface: true
       x-has-dto: false
@@ -4022,3 +4024,113 @@ components:
           x-dto-column: INSTANCE_ID
           x-auto-increment: JP_CLASS_INSTANCES_SEQ
           type: integer
+    UserRef:
+      x-has-interface: true
+      #x-has-dto: true
+      x-has-dao: false
+      type: object
+      required: [assignId]
+      properties:
+        assignId:
+          type: integer
+          description: Auto-incremented user ID
+          x-col-primary: true
+          x-dto-column: USER_ID
+          x-table-name: USERS
+          x-auto-increment: USERS_ID_SEQ
+    UserBase:
+      x-has-interface: true
+      #x-has-dto: true
+      x-has-dao: false
+      type: object
+      properties:
+        userName:
+          type: string
+          maxLength: 50
+          description: Unique username
+
+        pwHash:
+          type: string
+          maxLength: 500
+
+        email:
+          type: string
+          maxLength: 100
+          description: Unique email address
+
+        createdOn:
+          type: string
+          format: date
+
+        createdBy:
+          type: string
+          maxLength: 500
+
+        updatedOn:
+          type: string
+          format: date
+
+        updatedBy:
+          type: string
+          maxLength: 500
+
+        locked:
+          type: string
+          maxLength: 1
+
+        pwChangeReqd:
+          type: string
+          maxLength: 1
+
+        badAttempts:
+          type: integer
+
+        nameFirst:
+          type: string
+          maxLength: 100
+
+        nameLast:
+          type: string
+          maxLength: 100
+
+        sagePwCipher:
+          type: string
+          maxLength: 4000
+
+        sageToAdd:
+          type: string
+          maxLength: 4000
+
+        active:
+          type: string
+          maxLength: 1
+          description: Indicates whether the user is active
+
+        hideFromClose:
+          type: string
+          maxLength: 1
+
+        pwHashScheme:
+          type: string
+          maxLength: 20
+
+        authNonce:
+          type: string
+          maxLength: 64
+
+        userType:
+          type: string
+          maxLength: 1
+
+      required:
+        - userName
+        - email
+        - active
+    UserFull:
+      x-has-interface: true
+      #x-has-dto: true
+      x-has-dao: false
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/UserRef'
+        - $ref: '#/components/schemas/UserBase'

@@ -309,6 +309,8 @@ components:
               x-parent-variable: orderId
               items:
                 $ref: '#/components/schemas/OrderPayment'
+            user:
+              $ref: '#/components/schemas/UserDAO'
 
     ItemDiscount:
       x-has-dao: true
@@ -1248,3 +1250,7 @@ components:
           properties:
             printer:
               $ref: '#/components/schemas/PrinterDAO'
+    UserDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UserFull'
