@@ -468,7 +468,7 @@ paths:
           description: Successfully cancelled the order
   /staff/payments/cancel/{id}:
     post:
-      description: 'Cancels an payment'
+      description: 'Cancels a payment'
       parameters:
         - in: path
           name: id # Note the name is the same as in the path
@@ -484,7 +484,11 @@ paths:
         - Payment
       responses:
         '200':
-          description: Successfully cancelled the payment
+          description: Returns order after payment cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
   /catalog/syncClasses:
     post:
       description: 'Syncs the current catalog with prices from the db'
