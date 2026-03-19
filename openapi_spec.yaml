@@ -1337,6 +1337,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogDiscountPublicDTO'
+            taxes:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogTaxDTO'
     CatalogDTO:
       x-has-dto: true
       type: object
