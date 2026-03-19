@@ -395,6 +395,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderDTO'
+  /payments/{id}/poll:
+    parameters:
+      - in: path
+        name: id # Note the name is the same as in the path
+        required: true
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+        description: The payment ID
+    post:
+      description: 'Polls payment'
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: Successfully cancelled the order
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml#/components/schemas/PaymentStatus'
   /orders/{id}/poll:
     parameters:
       - in: path
