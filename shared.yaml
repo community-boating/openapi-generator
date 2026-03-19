@@ -2560,8 +2560,6 @@ components:
       x-has-dao: false
       required: [ itemId, discountId ]
       properties:
-        addChildItemsIfFree:
-          type: boolean
         requiresParentEligibility:
           type: boolean
         discountType:
