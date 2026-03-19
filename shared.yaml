@@ -2685,7 +2685,9 @@ components:
               items:
                 $ref: '#/components/schemas/OrderPaymentBase'
             user:
-              $ref: '#/components/schemas/UserRef'
+              readOnly: true
+              allOf:
+                - $ref: '#/components/schemas/UserRef'
     LineItemRef:
       x-has-interface: true
       x-has-dto: false
