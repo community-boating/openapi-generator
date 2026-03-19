@@ -3603,17 +3603,17 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/DiscountBase'
+            taxes:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/TaxBase'
     CatalogInternalFull:
       x-dao-interface: false
       allOf:
         - $ref: '#/components/schemas/CatalogFull'
         - type: object
           properties:
-            taxes:
-              x-parent-variable: catalogId
-              type: array
-              items:
-                $ref: '#/components/schemas/TaxBase'
             categories:
               x-parent-variable: catalogId
               type: array
