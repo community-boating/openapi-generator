@@ -411,7 +411,7 @@ paths:
         - Payment
       responses:
         '200':
-          description: Successfully cancelled the order
+          description: Successfully polled the payment
           content:
             application/json:
               schema:
@@ -432,7 +432,7 @@ paths:
         - CompassOrder
       responses:
         '200':
-          description: Successfully cancelled the order
+          description: Successfully polled the order
           content:
             application/json:
               schema:
@@ -466,6 +466,25 @@ paths:
       responses:
         '200':
           description: Successfully cancelled the order
+  /staff/payments/cancel/{id}:
+    post:
+      description: 'Cancels an payment'
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          description: The payment ID
+      security:
+        - staff: [ ]
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: Successfully cancelled the payment
   /catalog/syncClasses:
     post:
       description: 'Syncs the current catalog with prices from the db'
