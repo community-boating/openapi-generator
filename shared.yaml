@@ -3075,7 +3075,7 @@ components:
           type: string
           maxLength: 200
     LineItemTaxFull:
-      required: [ taxId, lineItemId ]
+      required: [ taxId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/LineItemTaxRef'
@@ -3084,6 +3084,12 @@ components:
           properties:
             taxId:
               $ref: '#/components/schemas/TaxRef'
+    LineItemTaxInternal:
+      required: [ taxId, lineItemId ]
+      allOf:
+        - $ref: '#/components/schemas/LineItemTaxFull'
+        - type: object
+          properties:
             lineItemId:
               $ref: '#/components/schemas/LineItemBase'
     BalanceTransactionRef:

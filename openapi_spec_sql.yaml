@@ -269,7 +269,7 @@ components:
       x-no-interface: true
       required: [assignId, taxId, lineItemId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/LineItemTaxFull'
+        - $ref: './shared.yaml#/components/schemas/LineItemTaxInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
