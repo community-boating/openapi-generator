@@ -60,6 +60,7 @@ components:
       enum:
         - 'OPEN'
         - 'PAYING'
+        - 'PAID'
         - 'PROCESSED'
         - 'CANCELLED'
         - 'REFUNDING'
@@ -109,7 +110,7 @@ components:
     PaymentStatus:
       type: string
       enum:
-        - 'CAPTURED'
+        - 'CAPTURABLE'
         - 'PENDING'
         - 'CANCELLED'
         - 'SUCCESSFUL'
