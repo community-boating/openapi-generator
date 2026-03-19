@@ -3019,7 +3019,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
     TaxBase:
-      required: [ taxName, taxRate, taxMinValueCents ]
+      required: [ taxName, taxRate ]
       properties:
         taxName:
           type: string

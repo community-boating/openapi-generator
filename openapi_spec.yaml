@@ -1371,7 +1371,7 @@ components:
                 $ref: '#/components/schemas/CatalogProductDTO'
     CatalogTaxDTO:
       x-has-dto: true
-      required: [ taxName, taxRate, taxMinValueCents ]
+      required: [ taxName, taxRate ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/TaxFull'
     CatalogDiscountCategoryDTO:
@@ -1409,6 +1409,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
+            itemDiscounts:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDiscountDTO'
     CatalogDiscountInstancePublicDTO:
       x-has-dto: true
       allOf:
