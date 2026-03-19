@@ -466,7 +466,7 @@ paths:
       responses:
         '200':
           description: Successfully cancelled the order
-  /staff/payments/cancel/{id}:
+  /staff/payment/cancel/{id}:
     post:
       description: 'Cancels a payment'
       parameters:
