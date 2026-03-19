@@ -3764,18 +3764,6 @@ components:
         itemSKU:
           type: string
           maxLength: 500
-        minQuantity:
-          type: integer
-        maxQuantity:
-          type: integer
-        allowPriceOverride:
-          type: boolean
-        priceOverrideMin:
-          type: integer
-          format: int64
-        priceOverrideMax:
-          type: integer
-          format: int64
         squareItemId:
           type: string
           maxLength: 200
@@ -3889,6 +3877,18 @@ components:
         - $ref: '#/components/schemas/DateRangeActivated'
         - type: object
           properties:
+            minQuantity:
+              type: integer
+            maxQuantity:
+              type: integer
+            allowPriceOverride:
+              type: boolean
+            priceOverrideMin:
+              type: integer
+              format: int64
+            priceOverrideMax:
+              type: integer
+              format: int64
             priceCents:
               type: integer
               format: int64
