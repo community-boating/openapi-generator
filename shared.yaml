@@ -3085,6 +3085,7 @@ components:
             taxId:
               $ref: '#/components/schemas/TaxRef'
     LineItemTaxInternal:
+      x-dao-interface: true
       required: [ taxId, lineItemId ]
       allOf:
         - $ref: '#/components/schemas/LineItemTaxFull'
