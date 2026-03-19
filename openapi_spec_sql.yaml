@@ -1240,6 +1240,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/DiscountInstance'
+            itemDiscounts:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemDiscount'
 
     CashDrawer:
       x-has-dao: true

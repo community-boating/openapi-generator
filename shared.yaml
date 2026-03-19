@@ -3313,6 +3313,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/DiscountInstanceRef'
+            itemDiscounts:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemDiscountRef'
     DiscountCategoryRef:
       x-has-interface: true
       x-has-dto: true
