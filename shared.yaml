@@ -2634,8 +2634,13 @@ components:
           readOnly: true
           type: integer
           format: int64
-        amountCapturedCents:
-          description: Total of all captured payments
+        amountCapturableCents:
+          description: Total of all capturable payments
+          readOnly: true
+          type: integer
+          format: int64
+        amountAppliedCents:
+          description: Total of all capturable and paid payments
           readOnly: true
           type: integer
           format: int64
@@ -3405,6 +3410,12 @@ components:
         paymentServiceChangeCents:
           type: integer
           format: int64
+        paymentCapturableCents:
+          type: integer
+          format: int64
+        paymentCapturableDate:
+          type: string
+          format: date-time
         paymentPaidCents:
           type: integer
           format: int64
