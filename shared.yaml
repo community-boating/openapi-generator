@@ -3139,6 +3139,7 @@ components:
       required: [ assignId, personId ]
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/WithPersonRef'
     PersonBalanceFull:
       x-has-interface: true
