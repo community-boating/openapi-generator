@@ -443,6 +443,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonBalance'
+            balanceTransactions:
+              x-parent-variable: balanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/BalanceTransaction'
     BalanceLookupCooldown:
       x-has-dao: true
       required: [assignId, personId, searchAttempt]
