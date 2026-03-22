@@ -182,6 +182,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/BalanceDTO'
+  /member/memberships:
+    x-is-paginated: true
+    get:
+      summary: Gets a list of memberships
+      security:
+        - staff: [ ]
+      tags:
+        - PersonNew
+      x-is-paginated: true
+      parameters:
+        - in: query
+          name: personId
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: The owner of the membership
+      responses:
+        '200':
+          description: Successfully fetched membership
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MembershipDTO'
   /staff/memberships:
     x-is-paginated: true
     get:
