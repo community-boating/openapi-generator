@@ -1968,6 +1968,9 @@ components:
         - $ref: './shared.yaml#/components/schemas/BalanceTransactionFull'
         - type: object
           properties:
+            expirationDate:
+              writeOnly: true
+              type: boolean
             cardNum:
               writeOnly: true
               type: string
