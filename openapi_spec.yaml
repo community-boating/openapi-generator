@@ -365,6 +365,11 @@ paths:
             type: integer
             minimum: 1
           description: The personId of the order owner
+        - in: query
+          name: status
+          schema:
+            $ref: './shared.yaml#/components/schemas/OrderStateNew'
+          description: Order Status
       security:
         - member: [ ]
       description: 'Returns orders for this person'
@@ -385,6 +390,12 @@ paths:
         - CompassOrder
       security:
         - member: [ ]
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: './shared.yaml#/components/schemas/OrderStateNew'
+          description: Order Status
       description: 'Returns orders for this person'
       x-is-paginated: true
       responses:
