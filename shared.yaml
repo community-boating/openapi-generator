@@ -4026,7 +4026,88 @@ components:
           x-dto-column: MEMBERSHIP_TYPE_ID
           x-auto-increment: MEMBERSHIP_TYPES_SEQ
           type: integer
-
+    MembershipTypeBase:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/MembershipTypeRef'
+        - type: object
+          properties:
+            programId:
+              type: integer
+              format: int64
+            membershipTypeName:
+              type: string
+              maxLength: 200
+            displayOrder:
+              type: integer
+              format: int32
+            active:
+              type: string
+              maxLength: 1
+              description: Y/N flag
+              enum: [ Y, N ]
+            createdOn:
+              type: string
+              format: date-time
+            createdBy:
+              type: string
+              maxLength: 500
+            updatedOn:
+              type: string
+              format: date-time
+            updatedBy:
+              type: string
+              maxLength: 500
+            duration:
+              type: integer
+              description: Duration value (likely days/months depending on business logic)
+            expirationType:
+              type: string
+              maxLength: 50
+            price:
+              type: number
+              format: double
+            oldDiscountType:
+              type: integer
+            regCodeRowId:
+              type: integer
+            alertOnClose:
+              type: string
+              maxLength: 1
+              enum: [ Y, N ]
+            gcEligible:
+              type: string
+              maxLength: 1
+              enum: [ Y, N ]
+            membershipTypeDisplayName:
+              type: string
+              maxLength: 100
+            availableOnline:
+              type: string
+              maxLength: 1
+              enum: [ Y, N ]
+            canHaveGuestPrivs:
+              type: string
+              maxLength: 1
+              enum: [ Y, N ]
+            gcRegCodeRowId:
+              type: integer
+            ratingsRestricted:
+              type: string
+              maxLength: 1
+              enum: [ Y, N ]
+            taxable:
+              type: string
+              maxLength: 1
+              enum: [ Y, N ]
+            programPriority:
+              type: integer
+            renewalEligible:
+              type: string
+              maxLength: 1
+              enum: [ Y, N ]
     ApClassTypeRef:
       x-has-interface: true
       #x-has-dto: true
