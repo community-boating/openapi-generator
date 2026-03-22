@@ -353,6 +353,49 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderWithDiscountsDTO'
+  /staff/compass-orders:
+    x-is-paginated: true
+    get:
+      tags:
+        - CompassOrder
+      parameters:
+        - in: query
+          name: personId # Note the name is the same as in the path
+          schema:
+            type: integer
+            minimum: 1
+          description: The personId of the order owner
+      security:
+        - member: [ ]
+      description: 'Returns orders for this person'
+      x-is-paginated: true
+      responses:
+        '200':
+          description: Orders for person
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDTO'
+  /member/compass-orders:
+    x-is-paginated: true
+    get:
+      tags:
+        - CompassOrder
+      security:
+        - member: [ ]
+      description: 'Returns orders for this person'
+      x-is-paginated: true
+      responses:
+        '200':
+          description: Orders for person
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDTO'
   /member/compass-order/{id}:
     get:
       parameters:
@@ -1858,6 +1901,9 @@ components:
               $ref: './shared.yaml#/components/schemas/LineItemOrderRef'
             guestPrivs:
               $ref: '#/components/schemas/GuestPrivsDTO'
+            programName:
+              type: string
+              maxLength: 200
     GuestPrivsDTO:
       x-has-dto: true
       allOf:
