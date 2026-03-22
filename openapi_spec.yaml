@@ -261,12 +261,14 @@ paths:
                 items:
                   $ref: '#/components/schemas/BalanceDTO'
     post:
+      x-use-tracked: true
       summary: Updated or creates a balance
       security:
         - staff: []
       tags:
         - Balance
       requestBody:
+        x-use-tracked: true
         required: true
         content:
           application/json:
