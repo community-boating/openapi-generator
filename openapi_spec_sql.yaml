@@ -689,7 +689,7 @@ components:
     MembershipType:
       x-has-dao: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/MembershipTypeRef'
+        - $ref: './shared.yaml#/components/schemas/MembershipTypeBase'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
     #Person:
     #  x-already-exists: true
