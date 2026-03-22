@@ -1914,7 +1914,7 @@ components:
               $ref: '#/components/schemas/GuestPrivsDTO'
             programName:
               type: string
-              maxLength: 200
+              maxLength: 100
             typeName:
               type: string
               maxLength: 200
