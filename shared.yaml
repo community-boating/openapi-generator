@@ -4013,7 +4013,46 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/DonationInitiativeRef'
         - $ref: '#/components/schemas/DonationInitiativeBase'
-
+    ProgramTypeRef:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          x-table-name: PROGRAM_TYPES
+          x-dto-column: PROGRAM_ID
+          x-auto-increment: PROGRAM_TYPES_SEQ
+          type: integer
+    ProgramTypeBase:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      type: object
+      required:
+        - programId
+        - programName
+      allOf:
+        - $ref: '#/components/schemas/ProgramTypeRef'
+        - type: object
+          properties:
+            programName:
+              type: string
+              maxLength: 100
+            displayOrder:
+              type: integer
+              format: int32
+            active:
+              type: boolean
+              maxLength: 1
+              x-boolean-char: Y
+              description: Y/N flag
+            colorDisplay:
+              type: string
+              maxLength: 4000
     MembershipTypeRef:
       x-has-interface: true
       x-has-dto: true
@@ -4028,6 +4067,7 @@ components:
           type: integer
     MembershipTypeBase:
       x-has-interface: true
+      x-dao-interface: true
       x-has-dto: true
       x-has-dao: false
       allOf:
@@ -4035,8 +4075,7 @@ components:
         - type: object
           properties:
             programId:
-              type: integer
-              format: int64
+              $ref: '#/components/schemas/ProgramTypeRef'
             membershipTypeName:
               type: string
               maxLength: 200
@@ -4044,22 +4083,9 @@ components:
               type: integer
               format: int32
             active:
-              type: string
-              maxLength: 1
+              type: boolean
               description: Y/N flag
-              enum: [ Y, N ]
-            createdOn:
-              type: string
-              format: date-time
-            createdBy:
-              type: string
-              maxLength: 500
-            updatedOn:
-              type: string
-              format: date-time
-            updatedBy:
-              type: string
-              maxLength: 500
+              x-boolean-char: Y
             duration:
               type: integer
               description: Duration value (likely days/months depending on business logic)
@@ -4074,40 +4100,33 @@ components:
             regCodeRowId:
               type: integer
             alertOnClose:
-              type: string
-              maxLength: 1
-              enum: [ Y, N ]
+              type: boolean
+              x-boolean-char: Y
             gcEligible:
-              type: string
-              maxLength: 1
-              enum: [ Y, N ]
+              type: boolean
+              x-boolean-char: Y
             membershipTypeDisplayName:
               type: string
               maxLength: 100
             availableOnline:
-              type: string
-              maxLength: 1
-              enum: [ Y, N ]
+              type: boolean
+              x-boolean-char: Y
             canHaveGuestPrivs:
-              type: string
-              maxLength: 1
-              enum: [ Y, N ]
+              type: boolean
+              x-boolean-char: Y
             gcRegCodeRowId:
               type: integer
             ratingsRestricted:
-              type: string
-              maxLength: 1
-              enum: [ Y, N ]
+              type: boolean
+              x-boolean-char: Y
             taxable:
-              type: string
-              maxLength: 1
-              enum: [ Y, N ]
+              type: boolean
+              x-boolean-char: Y
             programPriority:
               type: integer
             renewalEligible:
-              type: string
-              maxLength: 1
-              enum: [ Y, N ]
+              type: boolean
+              x-boolean-char: Y
     ApClassTypeRef:
       x-has-interface: true
       #x-has-dto: true
