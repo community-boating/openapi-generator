@@ -1915,6 +1915,9 @@ components:
             programName:
               type: string
               maxLength: 200
+            typeName:
+              type: string
+              maxLength: 200
     GuestPrivsDTO:
       x-has-dto: true
       allOf:
