@@ -2220,7 +2220,7 @@ components:
         - $ref: '#/components/schemas/WithPersonRef'
     MembershipInternal:
       x-has-interface: true
-      x-dao-interface: true
+      #x-dao-interface: true
       x-has-dto: false
       x-has-dao: false
       required: [ membershipTypeId, personId, assignId ]
@@ -3191,6 +3191,11 @@ components:
             balanceMinimumCents:
               type: integer
               format: int64
+            balanceTransactions:
+              x-parent-variable: balanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/BalanceTransactionRef'
     StripeTransactionRef:
       x-has-interface: true
       x-has-dto: false
