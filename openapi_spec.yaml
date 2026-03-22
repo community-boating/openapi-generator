@@ -1259,10 +1259,6 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonBalanceBase'
-        - type: object
-          properties:
-            balanceId:
-              $ref: '#/components/schemas/BalanceDTO'
     BalanceDTO:
       x-has-dto: true
       required: [ balanceCents, balanceType ]
