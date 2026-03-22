@@ -1970,7 +1970,8 @@ components:
           properties:
             expirationDate:
               writeOnly: true
-              type: boolean
+              type: string
+              format: date-time
             cardNum:
               writeOnly: true
               type: string
