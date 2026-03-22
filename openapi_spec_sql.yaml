@@ -691,6 +691,16 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/MembershipTypeBase'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            programId:
+              $ref: '#/components/schemas/ProgramType'
+
+    ProgramType:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ProgramTypeBase'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
     #Person:
     #  x-already-exists: true
     #  required: [assignId]
