@@ -124,6 +124,24 @@ paths:
       responses:
         '200':
           description: Successfully submitted EII response
+  /member/balances:
+    x-is-paginated: true
+    get:
+      summary: Gets a list of balances
+      security:
+        - staff: [ ]
+      tags:
+        - Balance
+      x-is-paginated: true
+      responses:
+        '200':
+          description: Successful fetch of balances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BalanceDTO'
   /staff/balance/{number}:
     get:
       security:
@@ -190,24 +208,6 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/BalanceDTO'
-    /member/balances:
-      x-is-paginated: true
-      get:
-        summary: Gets a list of balances
-        security:
-          - staff: [ ]
-        tags:
-          - Balance
-        x-is-paginated: true
-        responses:
-          '200':
-            description: Successful fetch of balances
-            content:
-              application/json:
-                schema:
-                  type: array
-                  items:
-                    $ref: '#/components/schemas/BalanceDTO'
     post:
       summary: Updated or creates a balance
       security:
