@@ -141,7 +141,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BalanceDTO'
+                  $ref: '#/components/schemas/BalanceFullDTO'
   /staff/balance/{number}:
     get:
       security:
@@ -161,7 +161,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BalanceDTO'
+                $ref: '#/components/schemas/BalanceFullDTO'
   /member/balance/{number}:
     get:
       security:
@@ -181,7 +181,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BalanceDTO'
+                $ref: '#/components/schemas/BalanceFullDTO'
   /member/memberships:
     x-is-paginated: true
     get:
@@ -259,7 +259,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BalanceDTO'
+                  $ref: '#/components/schemas/BalanceFullDTO'
     post:
       x-use-tracked: true
       summary: Updated or creates a balance
@@ -280,7 +280,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BalanceDTO'
+                $ref: '#/components/schemas/BalanceFullDTO'
 
   /ap-class/get-eligible/{personId}:
     get:
@@ -1381,6 +1381,23 @@ components:
         #    lineItemId:
         #      type: integer
         #      format: int64
+    BalanceTransactionFullDTO:
+      x-has-dto: true
+      required: [ id, balanceId, transactionAmountCents ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceTransactionInternalFull'
+        - type: object
+          properties:
+            paymentId:
+              $ref: '#/components/schemas/OrderPaymentDTO'
+        #- type: properties
+        #  properties:
+        #    paymentId:
+        #      type: integer
+        #      format: int64
+        #    lineItemId:
+        #      type: integer
+        #      format: int64
     PersonBalanceDTO:
       x-has-dto: true
       allOf:
@@ -1405,6 +1422,14 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonBalanceDTO'
+    BalanceFullDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/BalanceDTO'
+        - type: object
+          properties:
+            paymentId:
+              $ref: '#/components/schemas/OrderPaymentDTO'
     ClassSignupResponseDTO:
       type: object
       properties:
