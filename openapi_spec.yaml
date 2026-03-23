@@ -1428,8 +1428,11 @@ components:
         - $ref: '#/components/schemas/BalanceDTO'
         - type: object
           properties:
-            paymentId:
-              $ref: '#/components/schemas/OrderPaymentDTO'
+            balanceTransactions:
+              x-parent-variable: balanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/BalanceTransactionFullDTO'
     ClassSignupResponseDTO:
       type: object
       properties:
