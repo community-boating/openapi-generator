@@ -82,6 +82,8 @@ components:
       type: string
       enum:
         - 'GIFT_CARD_PURCHASE'
+        - 'GIFT_CARD_LOAD_IMPORT'
+        - 'GIFT_CARD_LOAD_INITIAL'
         - 'GIFT_CARD_LOAD'
         - 'ADD_MANUAL'
         - 'REMOVE_MANUAL'
