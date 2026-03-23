@@ -225,6 +225,12 @@ paths:
             type: integer
             minimum: 1
           description: The owner of the membership
+        - in: query
+          name: purchasableState
+          required: false
+          schema:
+            $ref: './shared.yaml#/components/schemas/PurchasableState'
+          description: The purchasable state of the membership (default ACTIVE)
       responses:
         '200':
           description: Successfully fetched membership
@@ -251,6 +257,24 @@ paths:
             type: integer
             minimum: 1
           description: The owner of the balance
+        - in: query
+          name: filterZeroValue
+          required: false
+          schema:
+            type: boolean
+          description: Filters balances with zero value (default true)
+        - in: query
+          name: filterHasLoad
+          required: false
+          schema:
+            type: boolean
+          description: Filters balances without loads (default true)
+        - in: query
+          name: filterHasPurchase
+          required: false
+          schema:
+            type: boolean
+          description: Filters balances without purchases (default false)
       responses:
         '200':
           description: Successful fetch of balances
