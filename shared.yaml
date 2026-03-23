@@ -3112,6 +3112,9 @@ components:
             transactionAmountCents:
               type: integer
               format: int64
+            transactionDateTime:
+              type: string
+              format: date-time
     BalanceTransactionFull:
       required: [ balanceId, transactionAmountCents ]
       allOf:
