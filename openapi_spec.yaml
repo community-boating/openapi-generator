@@ -1393,6 +1393,10 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonBalanceBase'
+        - type: object
+          properties:
+            personId:
+              $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
     BalanceDTO:
       x-has-dto: true
       required: [ balanceCents, balanceType ]
