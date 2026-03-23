@@ -141,7 +141,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BalanceFullDTO'
+                  $ref: '#/components/schemas/BalanceDTO'
   /staff/balance/{number}:
     get:
       security:
@@ -161,7 +161,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BalanceFullDTO'
+                $ref: '#/components/schemas/BalanceDTO'
   /member/balance/{number}:
     get:
       security:
@@ -181,7 +181,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BalanceFullDTO'
+                $ref: '#/components/schemas/BalanceDTO'
   /member/memberships:
     x-is-paginated: true
     get:
@@ -259,7 +259,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/BalanceFullDTO'
+                  $ref: '#/components/schemas/BalanceDTO'
     post:
       x-use-tracked: true
       summary: Updated or creates a balance
@@ -280,7 +280,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/BalanceFullDTO'
+                $ref: '#/components/schemas/BalanceDTO'
 
   /ap-class/get-eligible/{personId}:
     get:
@@ -1381,15 +1381,6 @@ components:
         #    lineItemId:
         #      type: integer
         #      format: int64
-    BalanceTransactionFullDTO:
-      x-has-dto: true
-      required: [ id, balanceId, transactionAmountCents ]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/BalanceTransactionInternalFull'
-        - type: object
-          properties:
-            paymentId:
-              $ref: '#/components/schemas/OrderPaymentDTO'
         #- type: properties
         #  properties:
         #    paymentId:
@@ -1402,8 +1393,9 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonBalanceBase'
-    BalanceBaseDTO:
+    BalanceDTO:
       x-has-dto: true
+      required: [ balanceCents, balanceType ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/BalanceFull'
         - type: object
@@ -1411,34 +1403,16 @@ components:
             balanceAmountCurrent:
               type: integer
               format: int64
-            personBalances:
-              x-parent-variable: balanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonBalanceDTO'
-    BalanceDTO:
-      x-has-dto: true
-      required: [ balanceType ]
-      allOf:
-        - $ref: '#/components/schemas/BalanceBaseDTO'
-        - type: object
-          properties:
             balanceTransactions:
               x-parent-variable: balanceId
               type: array
               items:
                 $ref: '#/components/schemas/BalanceTransactionDTO'
-    BalanceFullDTO:
-      x-has-dto: true
-      allOf:
-        - $ref: '#/components/schemas/BalanceBaseDTO'
-        - type: object
-          properties:
-            balanceTransactions:
+            personBalances:
               x-parent-variable: balanceId
               type: array
               items:
-                $ref: '#/components/schemas/BalanceTransactionFullDTO'
+                $ref: '#/components/schemas/PersonBalanceDTO'
     ClassSignupResponseDTO:
       type: object
       properties:
