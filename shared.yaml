@@ -3174,6 +3174,8 @@ components:
             balanceAccountNumber:
               type: string
               maxLength: 200
+            balanceIsPrivate:
+              type: boolean
             balanceType:
               $ref: '#/components/schemas/BalanceType'
     BalanceFull:
