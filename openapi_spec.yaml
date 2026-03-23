@@ -1402,9 +1402,8 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonBalanceBase'
-    BalanceDTO:
+    BalanceBaseDTO:
       x-has-dto: true
-      required: [ balanceCents, balanceType ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/BalanceFull'
         - type: object
@@ -1412,20 +1411,27 @@ components:
             balanceAmountCurrent:
               type: integer
               format: int64
-            balanceTransactions:
-              x-parent-variable: balanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/BalanceTransactionDTO'
             personBalances:
               x-parent-variable: balanceId
               type: array
               items:
                 $ref: '#/components/schemas/PersonBalanceDTO'
+    BalanceDTO:
+      x-has-dto: true
+      required: [ balanceType ]
+      allOf:
+        - $ref: '#/components/schemas/BalanceBaseDTO'
+        - type: object
+          properties:
+            balanceTransactions:
+              x-parent-variable: balanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/BalanceTransactionDTO'
     BalanceFullDTO:
       x-has-dto: true
       allOf:
-        - $ref: '#/components/schemas/BalanceDTO'
+        - $ref: '#/components/schemas/BalanceBaseDTO'
         - type: object
           properties:
             balanceTransactions:
