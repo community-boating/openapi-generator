@@ -73,7 +73,7 @@ components:
         - 'PURCHASE'
         - 'RETURN'
         - 'RESTOCK'
-        - 'OTHER'
+        - 'STOCK_REMOVAL'
     BalanceType:
       type: string
       enum:
