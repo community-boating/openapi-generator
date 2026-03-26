@@ -1931,12 +1931,140 @@ components:
         - $ref: '#/components/schemas/PersonBase'
         - $ref: '#/components/schemas/PersonPublic'
     #    - $ref: '#/components/schemas/PersonMember'
+    PersonLegacy:
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+
+        parentEmail:
+          type: string
+          maxLength: 100
+
+        incomeLevel:
+          type: integer
+          format: int32
+
+        incomeAmt:
+          type: integer
+          format: int32
+
+        incomeAmtRaw:
+          type: string
+          maxLength: 50
+
+        badMail:
+          type: string
+          maxLength: 1
+
+        deceased:
+          type: string
+          maxLength: 1
+
+        doNotCall:
+          type: string
+          maxLength: 1
+
+        doNotEmail:
+          type: string
+          maxLength: 1
+
+        doNotMail:
+          type: string
+          maxLength: 1
+
+        employer:
+          type: string
+          maxLength: 100
+
+        referralSource:
+          type: string
+          maxLength: 200
+
+        badPhone:
+          type: string
+          maxLength: 1
+
+        badEmail:
+          type: string
+          maxLength: 1
+
+        referralOther:
+          type: string
+          maxLength: 100
+
+        jpAgeOverride:
+          type: string
+          maxLength: 1
+
+        sendAlert:
+          type: string
+          maxLength: 1
+
+        ignoreJpMinAge:
+          type: string
+          maxLength: 1
+
+        uapInterestedLessons:
+          type: string
+          maxLength: 1
+
+        uapInterestedRides:
+          type: string
+          maxLength: 1
+
+        entityType:
+          type: string
+          maxLength: 1
+
+        jpTeamId:
+          type: integer
+          format: int32
+
+        guestPortalReg:
+          type: string
+          maxLength: 1
+
+        signoutBlockReason:
+          type: string
+
+        campFair:
+          type: string
+          maxLength: 50
+
+        dataUnconfirmed:
+          type: string
+          maxLength: 1
+
+        protopersonCookie:
+          type: string
+          maxLength: 50
+
+        protoState:
+          type: string
+          maxLength: 1
+
+        memberComment:
+          type: string
+
+        slackUserId:
+          type: string
+          maxLength: 20
+
+        squareCustomerId:
+          type: string
+          maxLength: 50
+
+        defaultCardId:
+          type: string
+          maxLength: 50
     PersonInternalFull:
       x-has-interface: true
       x-dao-interface: true
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/PersonInternal'
+        - $ref: '#/components/schemas/PersonLegacy'
         - $ref: '#/components/schemas/PersonFull'
     PersonPhoneRef:
       x-has-interface: true
