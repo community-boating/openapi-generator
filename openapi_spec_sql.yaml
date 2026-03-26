@@ -1204,7 +1204,7 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/WithAccessControl'
-        - $ref: './shared.yaml#/components/schemas/PersonRelation'
+        - $ref: './shared.yaml#/components/schemas/PersonRelationFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           required: [A, B, relationId]
