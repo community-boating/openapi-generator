@@ -2695,10 +2695,10 @@ components:
         - type: object
           properties:
             page:
-              type: number
+              type: integer
               format: int32
             perPage:
-              type: number
+              type: integer
               format: int32
             cardNumber:
               type: string
