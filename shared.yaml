@@ -1769,6 +1769,18 @@ components:
         - type: object
           required: [ temp ]
           properties:
+            veteranEligible:
+              type: string
+              maxLength: 1
+              nullable: true
+            sailingExp:
+              type: string
+              maxLength: 100
+              nullable: true
+            orgContact:
+              type: string
+              maxLength: 200
+              nullable: true
             allowSignouts:
               x-boolean-char: Y
               readOnly: true
