@@ -1877,22 +1877,22 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonAddressBase'
-    PersonMember:
-      x-has-interface: true
-      x-has-dto: false
-      x-has-dao: false
-      properties:
-        memberships:
-          x-parent-variable: personId
-          type: array
-          items:
-            $ref: '#/components/schemas/MembershipBase'
-        cards:
-          x-parent-variable: personId
-          x-base-type: CardDTO
-          type: array
-          items:
-            $ref: '#/components/schemas/CardBase'
+    #PersonMember:
+    #  x-has-interface: true
+    #  x-has-dto: false
+    #  x-has-dao: false
+    #  properties:
+    #    memberships:
+    #      x-parent-variable: personId
+    #      type: array
+    #      items:
+    #        $ref: '#/components/schemas/MembershipBase'
+    #    cards:
+    #      x-parent-variable: personId
+    #      x-base-type: CardDTO
+    #      type: array
+    #      items:
+    #        $ref: '#/components/schemas/CardBase'
     PersonInternal:
       x-has-interface: true
       x-dao-interface: true
@@ -1921,7 +1921,7 @@ components:
         - $ref: '#/components/schemas/PersonRef'
         - $ref: '#/components/schemas/PersonBase'
         - $ref: '#/components/schemas/PersonPublic'
-        - $ref: '#/components/schemas/PersonMember'
+    #    - $ref: '#/components/schemas/PersonMember'
     PersonInternalFull:
       x-has-interface: true
       x-dao-interface: true
@@ -1998,8 +1998,23 @@ components:
               x-dto-column: TYPE_ID
               allOf:
                 - $ref: '#/components/schemas/PersonRelationType'
-    PersonRelation:
-      required: [ A, B ]
+    PersonRelationB:
+      required: [ B ]
+      x-has-dto: false
+      x-has-dao: false
+      x-has-interface: true
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/PersonRelationRef'
+        - $ref: '#/components/schemas/PersonRelationBase'
+        - type: object
+          properties:
+            B:
+              allOf:
+                - $ref: '#/components/schemas/PersonBase'
+    PersonRelationA:
+      required: [ A ]
       x-has-dto: false
       x-has-dao: false
       x-has-interface: true
@@ -2012,9 +2027,15 @@ components:
             A:
               allOf:
                 - $ref: '#/components/schemas/PersonBase'
-            B:
-              allOf:
-                - $ref: '#/components/schemas/PersonBase'
+    PersonRelationFull:
+      required: [A, B]
+      x-has-dto: false
+      x-has-dao: false
+      x-has-interface: true
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/PersonRelationA'
+        - $ref: '#/components/schemas/PersonRelationB'
     #PersonRelated:
     #  allOf:
     #    - $ref: '#/components/schemas/PersonProperties'
