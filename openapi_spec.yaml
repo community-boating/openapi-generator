@@ -874,6 +874,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/StripeConstantsDTO'
   /staff/personsNew/search:
+    x-is-paginated: true
     get:
       requestBody:
         required: true
