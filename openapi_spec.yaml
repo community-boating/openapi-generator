@@ -2260,19 +2260,19 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonInternalFull'
-        - $ref: '#/components/schemas/PersonPublicChildAndParentDTO'
-        - type: object
-          properties:
-            cards:
-              type: array
-              x-base-type: false
-              items:
-                $ref: '#/components/schemas/CardDTO'
-            memberships:
-              type: array
-              x-base-type: MembershipDTO
-              items:
-                $ref: '#/components/schemas/MembershipDTO'
+        - $ref: '#/components/schemas/PersonPublicMemberDTO'
+        #- type: object
+        #  properties:
+        #    cards:
+        #      type: array
+        #      x-base-type: false
+        #      items:
+        #        $ref: '#/components/schemas/CardDTO'
+        #    memberships:
+        #      type: array
+        #      x-base-type: MembershipDTO
+        #      items:
+        #        $ref: '#/components/schemas/MembershipDTO'
     PersonWithRelationsDTO:
       x-has-dto: true
       allOf:
@@ -2284,14 +2284,14 @@ components:
               x-base-type: false
               type: array
               items:
-                $ref: '#/components/schemas/PersonRelationDTO'
+                $ref: '#/components/schemas/PersonRelationBDTO'
             relationsB:
               x-column-parent-fk: B
               x-base-type: false
               type: array
               items:
-                $ref: '#/components/schemas/PersonRelationDTO'
-    PersonPublicChildAndParentDTO:
+                $ref: '#/components/schemas/PersonRelationADTO'
+    PersonPublicMemberDTO:
       x-has-dto: true
       allOf:
         - $ref: '#/components/schemas/PersonPublicDTO'
@@ -2307,6 +2307,12 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CardDTO'
+    PersonPublicChildAndParentDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicMemberDTO'
+        - type: object
+          properties:
             emergencyContacts:
               maxLength: 3
               type: array
@@ -2336,7 +2342,7 @@ components:
     PersonPublicRelatedDTO:
       x-has-dto: true
       x-sub-variable: B
-      x-sub-type: PersonRelationInterfaceI
+      x-sub-type: PersonRelationBInterfaceI
       allOf:
         - $ref: '#/components/schemas/PersonPublicDTO'
         - $ref: './shared.yaml#/components/schemas/PersonRelationBase'
@@ -2349,19 +2355,38 @@ components:
             bTitle:
               readOnly: true
               type: string
-    PersonRelationDTO:
+    PersonRelationBDTO:
       x-has-dto: true
       required: [ assignId ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonRelation'
+        - $ref: './shared.yaml#/components/schemas/PersonRelationA'
+        #- $ref: '#/components/schemas/PersonDTO'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+        - type: object
+          properties:
+            #A:
+            #  $ref: '#/components/schemas/PersonDTO'
+            B:
+              $ref: '#/components/schemas/PersonDTO'
+            aTitle:
+              readOnly: true
+              type: string
+            bTitle:
+              readOnly: true
+              type: string
+    PersonRelationADTO:
+      x-has-dto: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRelationA'
         #- $ref: '#/components/schemas/PersonDTO'
         - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
           properties:
             A:
               $ref: '#/components/schemas/PersonDTO'
-            B:
-              $ref: '#/components/schemas/PersonDTO'
+            #B:
+            #  $ref: '#/components/schemas/PersonDTO'
             aTitle:
               readOnly: true
               type: string
