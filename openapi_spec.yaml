@@ -1952,6 +1952,10 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/DamageWaiverFull'
+    DamageWaiverDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DamageWaiverFull'
     PurchaseGuestPrivilegesDTO:
       x-has-dto: true
       allOf:
@@ -2319,6 +2323,11 @@ components:
         - $ref: '#/components/schemas/PersonPublicDTO'
         - type: object
           properties:
+            currentDamageWaivers:
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/DamageWaiverDTO'
             currentMemberships:
               readOnly: true
               type: array
