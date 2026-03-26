@@ -2696,8 +2696,10 @@ components:
           properties:
             page:
               type: number
+              format: int32
             perPage:
               type: number
+              format: int32
             cardNumber:
               type: string
             phone:
