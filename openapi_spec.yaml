@@ -873,6 +873,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripeConstantsDTO'
+  /staff/personsNew/search:
+    get:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonSearchCriteria'
+      tags:
+        - PersonNew
+      security:
+        - staff: [ ]
+      description: 'Test new person dto'
+      x-is-paginated: true
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonWithRelationsDTO'
   /staff/personsNew/{id}:
     get:
       parameters:
@@ -2667,3 +2688,19 @@ components:
       type: object
       oneOf:
         - $ref: '#/components/schemas/PrinterInternalDTO'
+    PersonSearchCriteria:
+      x-has-dto: true
+      allOf:
+        - $ref: '#./shared.yaml#/components/schemas/PersonNameInfo'
+        - type: object
+          properties:
+            page:
+              type: number
+            perPage:
+              type: number
+            cardNumber:
+              type: string
+            phone:
+              type: string
+            email:
+              type: string
