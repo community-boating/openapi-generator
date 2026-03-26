@@ -2692,7 +2692,7 @@ components:
     PersonSearchCriteria:
       x-has-dto: true
       allOf:
-        - $ref: '#./shared.yaml#/components/schemas/PersonNameInfo'
+        - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
         - type: object
           properties:
             page:
