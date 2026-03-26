@@ -758,7 +758,7 @@ components:
               x-backref-name: printer
               allOf:
                 - $ref: '#/components/schemas/CashDrawer'
-    PersonLegacy:
+    PersonLegacyFull:
       x-has-dao: false
       x-dao-interface: true
       type: object
@@ -1066,21 +1066,6 @@ components:
           maxLength: 1
           nullable: true
 
-        veteranEligible:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        sailingExp:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        orgContact:
-          type: string
-          maxLength: 200
-          nullable: true
-
         memberComment:
           type: string
           nullable: true
@@ -1105,7 +1090,7 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonInternalFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - $ref: '#/components/schemas/PersonLegacy'
+        - $ref: '#/components/schemas/PersonLegacyFull'
         - type: object
           properties:
             assignId:
