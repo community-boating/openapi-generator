@@ -2390,27 +2390,30 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonPublicChildDTO'
+    PersonRelationBaseDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRelationBase'
+        - type: object
+          properties:
+            aTitle:
+              type: string
+            bTitle:
+              type: string
     PersonPublicRelatedDTO:
       x-has-dto: true
       x-sub-variable: B
       x-sub-type: PersonRelationBInterfaceI
       allOf:
         - $ref: '#/components/schemas/PersonPublicDTO'
-        - $ref: './shared.yaml#/components/schemas/PersonRelationBase'
+        - $ref: '#/components/schemas/PersonRelationBaseDTO'
         - $ref: './shared.yaml#/components/schemas/Deletable'
-        - type: object
-          properties:
-            aTitle:
-              readOnly: true
-              type: string
-            bTitle:
-              readOnly: true
-              type: string
     PersonRelationBDTO:
       x-has-dto: true
       required: [ assignId ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonRelationA'
+        - $ref: './shared.yaml#/components/schemas/PersonRelationB'
+        - $ref: '#/components/schemas/PersonRelationBaseDTO'
         #- $ref: '#/components/schemas/PersonDTO'
         - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
@@ -2419,17 +2422,12 @@ components:
             #  $ref: '#/components/schemas/PersonDTO'
             B:
               $ref: '#/components/schemas/PersonDTO'
-            aTitle:
-              readOnly: true
-              type: string
-            bTitle:
-              readOnly: true
-              type: string
     PersonRelationADTO:
       x-has-dto: true
       required: [ assignId ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonRelationA'
+        - $ref: '#/components/schemas/PersonRelationBaseDTO'
         #- $ref: '#/components/schemas/PersonDTO'
         - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
@@ -2438,12 +2436,6 @@ components:
               $ref: '#/components/schemas/PersonDTO'
             #B:
             #  $ref: '#/components/schemas/PersonDTO'
-            aTitle:
-              readOnly: true
-              type: string
-            bTitle:
-              readOnly: true
-              type: string
     PhoneBaseDTO:
       x-has-dto: true
       x-has-dao: false
