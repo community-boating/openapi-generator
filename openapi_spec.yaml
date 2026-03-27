@@ -897,7 +897,7 @@ paths:
                 $ref: '#/components/schemas/PersonDashboardDTO'
   /staff/personsNew/search:
     x-is-paginated: true
-    get:
+    post:
       requestBody:
         required: true
         content:
