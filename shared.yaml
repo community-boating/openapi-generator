@@ -2158,13 +2158,13 @@ components:
       type: object
       properties:
         relationsA:
-          x-parent-variable: B
+          x-parent-variable: A
           x-column-parent-fk: A
           type: array
           items:
             $ref: '#/components/schemas/PersonRelationA'
         relationsB:
-          x-parent-variable: A
+          x-parent-variable: B
           x-column-parent-fk: B
           type: array
           items:
