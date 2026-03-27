@@ -875,7 +875,7 @@ paths:
                 $ref: '#/components/schemas/StripeConstantsDTO'
   /staff/personsNew/dashboard:
     x-is-paginated: true
-    get:
+    post:
       requestBody:
         required: true
         content:
