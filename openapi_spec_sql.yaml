@@ -1114,6 +1114,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelationDAO'
+            damageWaivers:
+              x-parent-variable: personId
+              type: array
+              items:
+                $ref: '#/components/schemas/DamageWaiver'
             memberships:
               x-parent-variable: personId
               type: array
