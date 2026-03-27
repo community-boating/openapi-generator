@@ -873,6 +873,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripeConstantsDTO'
+  /staff/personsNew/dashboard:
+    x-is-paginated: true
+    get:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonSearchCriteria'
+      tags:
+        - PersonNew
+      security:
+        - staff: [ ]
+      description: 'Test new person dto'
+      x-is-paginated: true
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDashboardDTO'
   /staff/personsNew/search:
     x-is-paginated: true
     get:
@@ -2338,6 +2360,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CardDTO'
+    PersonDashboardDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicMemberDTO'
     PersonPublicChildAndParentDTO:
       x-has-dto: true
       allOf:
