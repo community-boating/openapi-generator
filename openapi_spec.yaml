@@ -2319,21 +2319,23 @@ components:
       x-has-dto: true
       allOf:
         - $ref: '#/components/schemas/PersonDTO'
-        - $ref: './shared.yaml#/components/schemas/PersonRelationFull'
+        - $ref: './shared.yaml#/components/schemas/PersonWithRelations'
         - type: object
           properties:
             relationsA:
+              x-parent-variable: B
               x-column-parent-fk: A
               x-base-type: false
               type: array
               items:
-                $ref: '#/components/schemas/PersonRelationBDTO'
+                $ref: '#/components/schemas/PersonRelationADTO'
             relationsB:
+              x-parent-variable: A
               x-column-parent-fk: B
               x-base-type: false
               type: array
               items:
-                $ref: '#/components/schemas/PersonRelationADTO'
+                $ref: '#/components/schemas/PersonRelationBDTO'
     PersonPublicMemberDTO:
       x-has-dto: true
       allOf:
@@ -2403,7 +2405,7 @@ components:
               type: string
     PersonPublicRelatedDTO:
       x-has-dto: true
-      x-sub-variable: B
+      x-sub-variable: A
       x-sub-type: PersonRelationBInterfaceI
       allOf:
         - $ref: '#/components/schemas/PersonPublicDTO'
@@ -2419,10 +2421,10 @@ components:
         - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
           properties:
-            #A:
-            #  $ref: '#/components/schemas/PersonDTO'
-            B:
+            A:
               $ref: '#/components/schemas/PersonDTO'
+            #B:
+            #  $ref: '#/components/schemas/PersonDTO'
     PersonRelationADTO:
       x-has-dto: true
       required: [ assignId ]
@@ -2433,10 +2435,10 @@ components:
         - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
           properties:
-            A:
-              $ref: '#/components/schemas/PersonDTO'
-            #B:
+            #A:
             #  $ref: '#/components/schemas/PersonDTO'
+            B:
+              $ref: '#/components/schemas/PersonDTO'
     PhoneBaseDTO:
       x-has-dto: true
       x-has-dao: false
