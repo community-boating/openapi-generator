@@ -1930,6 +1930,7 @@ components:
         - $ref: '#/components/schemas/PersonRef'
         - $ref: '#/components/schemas/PersonBase'
         - $ref: '#/components/schemas/PersonPublic'
+        - $ref: '#/components/schemas/PersonWithRelations'
     #    - $ref: '#/components/schemas/PersonMember'
     PersonLegacy:
       x-has-dao: false
@@ -2112,7 +2113,9 @@ components:
           properties:
             relationId:
               type: integer
+              x-auto-increment: PERSON_RELATIONSHIPS_SEQ
               x-col-primary: true
+              x-table-name: person_relationships
     PersonRelationBase:
       type: object
       x-has-dto: false
@@ -2136,23 +2139,42 @@ components:
               allOf:
                 - $ref: '#/components/schemas/PersonRelationType'
     PersonRelationBBase:
-      required: [ B ]
+      required: [ A ]
       x-has-dto: false
       x-has-dao: false
       x-has-interface: true
-      x-dao-interface: true
+      #x-dao-interface: true
       type: object
       properties:
-        B:
-          x-dto-column: B
+        A:
+          x-dto-column: A
           allOf:
             - $ref: '#/components/schemas/PersonBase'
-    PersonRelationB:
-      required: [ B ]
+    PersonWithRelations:
       x-has-dto: false
       x-has-dao: false
       x-has-interface: true
-      x-dao-interface: true
+      #x-dao-interface: false
+      type: object
+      properties:
+        relationsA:
+          x-parent-variable: B
+          x-column-parent-fk: A
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonRelationA'
+        relationsB:
+          x-parent-variable: A
+          x-column-parent-fk: B
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonRelationB'
+    PersonRelationB:
+      required: [ A ]
+      x-has-dto: false
+      x-has-dao: false
+      x-has-interface: true
+      #x-dao-interface: true
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/PersonRelationRef'
@@ -2162,11 +2184,11 @@ components:
       x-has-dto: false
       x-has-dao: false
       x-has-interface: true
-      required: [ A ]
+      required: [ B ]
       type: object
       properties:
-        A:
-          x-dto-column: A
+        B:
+          x-dto-column: B
           allOf:
             - $ref: '#/components/schemas/PersonBase'
     PersonRelationA:
@@ -2184,7 +2206,7 @@ components:
       x-has-dto: false
       x-has-dao: false
       x-has-interface: true
-      x-dao-interface: true
+      #x-dao-interface: true
       allOf:
         - $ref: '#/components/schemas/PersonRelationABase'
         - $ref: '#/components/schemas/PersonRelationBBase'
