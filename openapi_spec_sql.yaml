@@ -1100,7 +1100,7 @@ components:
               x-auto-increment: PERSONS_SEQ
               type: integer
             relationsA:
-              x-parent-variable: B
+              x-parent-variable: A
               x-column-parent-fk: A
               type: array
               items:
@@ -1109,7 +1109,7 @@ components:
               type: string
               maxLength: 100
             relationsB:
-              x-parent-variable: A
+              x-parent-variable: B
               x-column-parent-fk: B
               type: array
               items:
