@@ -2319,6 +2319,7 @@ components:
       x-has-dto: true
       allOf:
         - $ref: '#/components/schemas/PersonDTO'
+        - $ref: './shared.yaml#/components/schemas/PersonRelationFull'
         - type: object
           properties:
             relationsA:
