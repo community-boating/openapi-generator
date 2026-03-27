@@ -2323,14 +2323,14 @@ components:
         - type: object
           properties:
             relationsA:
-              x-parent-variable: B
+              x-parent-variable: A
               x-column-parent-fk: A
               x-base-type: false
               type: array
               items:
                 $ref: '#/components/schemas/PersonRelationADTO'
             relationsB:
-              x-parent-variable: A
+              x-parent-variable: B
               x-column-parent-fk: B
               x-base-type: false
               type: array
