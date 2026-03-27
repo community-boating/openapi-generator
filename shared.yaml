@@ -1895,23 +1895,23 @@ components:
     #        $ref: '#/components/schemas/CardBase'
     PersonInternal:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dto: false
       x-has-dao: false
       allOf:
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
-            relationsA:
-              x-parent-variable: A
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonRelationBase'
-            relationsB:
-              x-parent-variable: B
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonRelationBase'
+            #relationsA:
+            #  x-parent-variable: A
+            #  type: array
+            #  items:
+            #    $ref: '#/components/schemas/PersonRelationBase'
+            #relationsB:
+            #  x-parent-variable: B
+            #  type: array
+            #  items:
+            #    $ref: '#/components/schemas/PersonRelationBase'
             veteranEligible:
               type: string
               maxLength: 1
@@ -2060,7 +2060,7 @@ components:
           maxLength: 50
     PersonInternalFull:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/PersonInternal'
@@ -2135,6 +2135,18 @@ components:
               x-dto-column: TYPE_ID
               allOf:
                 - $ref: '#/components/schemas/PersonRelationType'
+    PersonRelationBBase:
+      required: [ B ]
+      x-has-dto: false
+      x-has-dao: false
+      x-has-interface: true
+      x-dao-interface: true
+      type: object
+      properties:
+        B:
+          x-dto-column: B
+          allOf:
+            - $ref: '#/components/schemas/PersonBase'
     PersonRelationB:
       required: [ B ]
       x-has-dto: false
@@ -2145,11 +2157,18 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/PersonRelationRef'
         - $ref: '#/components/schemas/PersonRelationBase'
-        - type: object
-          properties:
-            B:
-              allOf:
-                - $ref: '#/components/schemas/PersonBase'
+        - $ref: '#/components/schemas/PersonRelationBBase'
+    PersonRelationABase:
+      x-has-dto: false
+      x-has-dao: false
+      x-has-interface: true
+      required: [ A ]
+      type: object
+      properties:
+        A:
+          x-dto-column: A
+          allOf:
+            - $ref: '#/components/schemas/PersonBase'
     PersonRelationA:
       required: [ A ]
       x-has-dto: false
@@ -2159,11 +2178,16 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/PersonRelationRef'
         - $ref: '#/components/schemas/PersonRelationBase'
-        - type: object
-          properties:
-            A:
-              allOf:
-                - $ref: '#/components/schemas/PersonBase'
+        - $ref: '#/components/schemas/PersonRelationABase'
+    PersonRelationFullBase:
+      required: [ A, B ]
+      x-has-dto: false
+      x-has-dao: false
+      x-has-interface: true
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/PersonRelationABase'
+        - $ref: '#/components/schemas/PersonRelationBBase'
     PersonRelationFull:
       required: [A, B]
       x-has-dto: false
