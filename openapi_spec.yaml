@@ -1326,6 +1326,43 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PaymentTestDTO'
+  /member/agreements:
+    get:
+      description: 'Gets current agreements'
+      tags:
+        - Agreement
+      security:
+        - member: [ ]
+      responses:
+        '200':
+          description: Successfully returns current (latest) agreements
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonAgreementInstanceDTO'
+    post:
+      description: 'Posts an agreement'
+      tags:
+        - Agreement
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonAgreeDTO'
+      responses:
+        '200':
+          description: Successfully returns current (latest) agreements after adding agreements specified in request
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonAgreementInstanceDTO'
 components:
   securitySchemes:
     staff:
@@ -1539,6 +1576,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogTaxDTO'
+            agreements:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/AgreementDTO'
     CatalogDTO:
       x-has-dto: true
       type: object
@@ -1571,6 +1613,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogProductDTO'
+            agreements:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/AgreementDTO'
     CatalogTaxDTO:
       x-has-dto: true
       required: [ taxName, taxRate ]
@@ -1701,6 +1748,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemCategoryDTO'
+            itemAgreements:
+              x-parent-variable: itemId
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemAgreementDTO'
     CatalogItemDiscountDTO:
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemDiscountFull'
@@ -2731,3 +2783,53 @@ components:
               type: string
             email:
               type: string
+    AgreementDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementFull'
+        - type: object
+          properties:
+            agreementInstances:
+              x-parent-variable: agreementId
+              type: array
+              items:
+                $ref: '#/components/schemas/AgreementInstanceDTO'
+    AgreementInstanceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementInstanceFull'
+    AgreementBaseDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementRef'
+        - $ref: './shared.yaml#/components/schemas/AgreementBase'
+    AgreementInstanceWithAgreementDTO:
+      x-has-dto: true
+      required: [agreementId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementInstanceInternal'
+        - type: object
+          properties:
+            agreementId:
+              $ref: '#/components/schemas/AgreementBaseDTO'
+    PersonAgreementInstanceDTO:
+      x-has-dto: true
+      required: [personId, agreementInstanceId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonAgreementInstanceFull'
+        - type: object
+          properties:
+            agreementInstanceId:
+              $ref: '#/components/schemas/AgreementInstanceWithAgreementDTO'
+    ItemAgreementDTO:
+      x-has-dto: true
+      required: [agreementId, itemId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemAgreementFull'
+    PersonAgreeDTO:
+      x-has-dto: true
+      properties:
+        agreementInstances:
+          type: array
+          items:
+            $ref: './shared.yaml#/components/schemas/AgreementInstanceRef'

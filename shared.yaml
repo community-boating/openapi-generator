@@ -3840,6 +3840,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/TaxBase'
+            agreements:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/AgreementBase'
     CatalogInternalFull:
       x-dao-interface: false
       allOf:
@@ -4036,6 +4041,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ItemCategoryFull'
+            itemAgreements:
+              x-parent-variable: itemId
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemAgreementFull'
     ItemInternalFull:
       x-has-interface: true
       x-has-dto: false
@@ -4504,3 +4514,172 @@ components:
       allOf:
         - $ref: '#/components/schemas/UserRef'
         - $ref: '#/components/schemas/UserBase'
+    AgreementRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+    AgreementBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        agreementName:
+          type: string
+          maxLength: 100
+    AgreementFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/AgreementRef'
+        - $ref: '#/components/schemas/AgreementBase'
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            agreementInstances:
+              x-parent-variable: agreementId
+              type: array
+              items:
+                $ref: '#/components/schemas/AgreementInstanceRef'
+    AgreementInternal:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [assignId]
+      allOf:
+        - $ref: '#/components/schemas/AgreementFull'
+        - $ref: '#/components/schemas/WithCatalogRef'
+    AgreementInstanceRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+    AgreementInstanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        agreementVersion:
+          type: integer
+        agreementText:
+          type: string
+          maxLength: 2000
+    AgreementInstanceFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/AgreementInstanceRef'
+        - $ref: '#/components/schemas/AgreementInstanceBase'
+        - $ref: '#/components/schemas/Deletable'
+    AgreementInstanceInternal:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [agreementId]
+      allOf:
+        - $ref: '#/components/schemas/AgreementInstanceFull'
+        - type: object
+          properties:
+            agreementId:
+              $ref: '#/components/schemas/AgreementRef'
+    ItemAgreementRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+    ItemAgreementBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties: {}
+    ItemAgreementFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [agreementId]
+      allOf:
+        - $ref: '#/components/schemas/ItemAgreementRef'
+        - $ref: '#/components/schemas/ItemAgreementBase'
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            agreementId:
+              $ref: '#/components/schemas/AgreementRef'
+    ItemAgreementInternal:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [agreementId, itemId]
+      allOf:
+        - $ref: '#/components/schemas/ItemAgreementFull'
+        - type: object
+          properties:
+            itemId:
+              $ref: '#/components/schemas/ItemRef'
+    PersonAgreementInstanceRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+    PersonAgreementInstanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/PersonNameInfo'
+        - type: object
+          properties:
+            agreedOn:
+              type: string
+              format: date-time
+            agreementExpiration:
+              type: string
+              format: date-time
+            ipAddress:
+              type: string
+              maxLength: 100
+            userAgent:
+              type: string
+              maxLength: 100
+            email:
+              type: string
+              maxLength: 200
+            agreementAction:
+              $ref: '#/components/schemas/AgreementAction'
+    PersonAgreementInstanceFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/PersonAgreementInstanceRef'
+        - $ref: '#/components/schemas/PersonAgreementInstanceBase'
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            agreementInstanceId:
+              $ref: '#/components/schemas/AgreementInstanceRef'
+    PersonAgreementInstanceInternal:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/PersonAgreementInstanceFull'
+        - $ref: '#/components/schemas/WithPersonRef'
+    AgreementAction:
+      x-has-dto: true
+      type: string
+      enum:
+        - 'ACTION_AGREE'
+        - 'ACTION_AGREE_REVOKE'

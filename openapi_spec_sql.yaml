@@ -41,6 +41,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/Product'
+            agreements:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/Agreement'
     Product:
       x-has-dao: true
       required: [assignId, productName, productDescription, active, catalogId]
@@ -90,6 +95,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ItemTax'
+            itemAgreements:
+              x-parent-variable: itemId
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemAgreement'
     DiscountCategory:
       x-has-dao: true
       required: [assignId, discountId]
@@ -1264,3 +1274,49 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/UserFull'
+
+    Agreement:
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementInternal'
+        - type: object
+          properties:
+            agreementInstances:
+              x-parent-variable: agreementId
+              type: array
+              items:
+                $ref: '#/components/schemas/AgreementInstance'
+            catalogId:
+              $ref: '#/components/schemas/Catalog'
+    AgreementInstance:
+      x-has-dao: true
+      required: [ assignId, agreementId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementInstanceInternal'
+        - type: object
+          properties:
+            agreementId:
+              $ref: '#/components/schemas/Agreement'
+    PersonAgreementInstance:
+      x-has-dao: true
+      required: [ assignId, personId, agreementInstanceId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonAgreementInstanceInternal'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            agreementInstanceId:
+              $ref: '#/components/schemas/AgreementInstance'
+    ItemAgreement:
+      x-has-dao: true
+      required: [ assignId, agreementId, itemId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemAgreementInternal'
+        - type: object
+          properties:
+            agreementId:
+              $ref: '#/components/schemas/Agreement'
+            itemId:
+              $ref: '#/components/schemas/Item'
