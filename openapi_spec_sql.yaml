@@ -1178,9 +1178,10 @@ components:
               allOf:
                 - $ref: '#/components/schemas/LineItem'
             guestPrivs:
-              x-backref-name: membershipId
-              allOf:
-                - $ref: '#/components/schemas/GuestPrivsDAO'
+              x-parent-variable: membershipId
+              type: array
+              items:
+                $ref: '#/components/schemas/GuestPrivsDAO'
     CardDAO:
       x-has-dao: true
       required: [ assignId ]

@@ -2439,9 +2439,10 @@ components:
         - type: object
           properties:
             guestPrivs:
-              x-backref-name: membershipId
-              allOf:
-                - $ref: '#/components/schemas/GuestPrivsRef'
+              x-parent-variable: membershipId
+              type: array
+              items:
+                $ref: '#/components/schemas/GuestPrivsRef'
     GuestPrivsRef:
       x-has-interface: true
       x-has-dto: false
@@ -4600,7 +4601,7 @@ components:
       x-has-dto: false
       x-has-dao: false
       type: object
-      properties: {}
+      properties: { }
     ItemAgreementFull:
       x-has-interface: true
       x-has-dto: false

@@ -2070,7 +2070,10 @@ components:
             lineItemId:
               $ref: './shared.yaml#/components/schemas/LineItemOrderRef'
             guestPrivs:
-              $ref: '#/components/schemas/GuestPrivsDTO'
+              x-parent-variable: membershipId
+              type: array
+              items:
+                $ref: '#/components/schemas/GuestPrivsDTO'
             programName:
               type: string
               maxLength: 100
