@@ -2764,6 +2764,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/TempID'
     ItemDiscountBase:
       x-has-interface: true
       x-dao-interface: false
@@ -3236,6 +3237,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/TempID'
     TaxBase:
       required: [ taxName, taxRate ]
       properties:
@@ -3462,6 +3464,7 @@ components:
       x-has-dao: false
       required: [ instanceId ]
       allOf:
+        - $ref: '#/components/schemas/TempID'
         - type: object
           properties:
             instanceId:
@@ -3519,6 +3522,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/IntegerIDResource'
+        - $ref: '#/components/schemas/TempID'
         - type: object
           properties:
             assignId:
@@ -3960,6 +3964,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/TempID'
     ProductBase:
       required: [ productName, productDescription, active ]
       properties:
@@ -3995,6 +4000,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/TempID'
     ItemBase:
       properties:
         itemType:
@@ -4091,6 +4097,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/TempID'
     CategoryBase:
       required: [ categoryName, description ]
       allOf:
@@ -4120,6 +4127,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/TempID'
     ItemInstanceBase:
       x-has-interface: true
       x-has-dto: false
@@ -4521,6 +4529,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
+        - $ref: '#/components/schemas/TempID'
     AgreementBase:
       x-has-interface: true
       x-has-dto: false
