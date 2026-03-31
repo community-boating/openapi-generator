@@ -4573,13 +4573,15 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      type: object
-      properties:
-        agreementVersion:
-          type: integer
-        agreementText:
-          type: string
-          maxLength: 2000
+      allOf:
+        - $ref: '#/components/schemas/DateRangeActivated'
+        - type: object
+          properties:
+            agreementVersion:
+              type: integer
+            agreementText:
+              type: string
+              maxLength: 2000
     AgreementInstanceFull:
       x-has-interface: true
       x-has-dto: false
