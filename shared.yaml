@@ -1551,6 +1551,10 @@ components:
           readOnly: true
           allOf:
             - $ref: '#/components/schemas/PurchasableState'
+        purchaseDate:
+          readOnly: true
+          type: string
+          format: date-time
     Purchasable:
       x-has-interface: true
       x-has-dto: false
@@ -2257,12 +2261,6 @@ components:
         - $ref: '#/components/schemas/DateRangeActivated'
         - type: object
           properties:
-            startActive:
-              type: string
-              format: date-time
-            endActive:
-              type: string
-              format: date-time
             name:
               type: string
               maxLength: 100
@@ -2394,21 +2392,21 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/Purchasable'
+        - $ref: '#/components/schemas/DateRangeActivated'
         - type: object
           properties:
             membershipTypeId:
               $ref: '#/components/schemas/MembershipTypeRef'
-            startDate:
-              type: string
-              format: date
-            purchaseDate:
+            startActive:
               readOnly: true
+              x-dto-column: START_DATE
               type: string
-              format: date
-            expirationDate:
+              format: date-time
+            endActive:
               readOnly: true
+              x-dto-column: EXPIRATION_DATE
               type: string
-              format: date
+              format: date-time
             temp:
               readOnly: true
               type: string
@@ -2458,8 +2456,9 @@ components:
         - type: object
           properties:
             startDate:
+              readOnly: true
               type: string
-              format: date
+              format: date-time
     GuestPrivsFull:
       x-has-interface: true
       x-has-dto: false
@@ -2499,11 +2498,19 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/Purchasable'
+        - $ref: '#/components/schemas/DateRangeActivated'
         - type: object
           properties:
-            startDate:
+            startActive:
+              readOnly: true
+              x-dto-column: START_DATE
               type: string
-              format: date
+              format: date-time
+            endActive:
+              readOnly: true
+              x-dto-column: EXPIRATION_DATE
+              type: string
+              format: date-time
     DamageWaiverFull:
       allOf:
         - $ref: '#/components/schemas/Deletable'
@@ -2997,19 +3004,19 @@ components:
             subscriptionId:
               $ref: '#/components/schemas/PersonSubscriptionRef'
             classSignup:
-              $ref: '#/components/schemas/ClassSignupRef'
+              $ref: '#/components/schemas/ClassSignupFull'
             membership:
-              $ref: '#/components/schemas/MembershipRef'
+              $ref: '#/components/schemas/MembershipFull'
             donation:
-              $ref: '#/components/schemas/DonationRef'
+              $ref: '#/components/schemas/DonationFull'
             card:
-              $ref: '#/components/schemas/CardRef'
+              $ref: '#/components/schemas/CardFull'
             giftCard:
-              $ref: '#/components/schemas/BalanceTransactionRef'
+              $ref: '#/components/schemas/BalanceTransactionFull'
             guestPrivs:
-              $ref: '#/components/schemas/GuestPrivsRef'
+              $ref: '#/components/schemas/GuestPrivsFull'
             damageWaiver:
-              $ref: '#/components/schemas/DamageWaiverRef'
+              $ref: '#/components/schemas/DamageWaiverFull'
             stockChange:
               $ref: '#/components/schemas/ItemInstanceStockChangeBase'
             appliedTaxes:
