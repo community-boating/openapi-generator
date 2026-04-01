@@ -1355,6 +1355,7 @@ paths:
               schema:
                 $ref: '#/components/schemas/PersonAgreementsDTO'
     post:
+      x-full-request: true
       description: 'Posts an agreement'
       tags:
         - Agreement
