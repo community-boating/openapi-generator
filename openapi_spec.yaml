@@ -2831,7 +2831,7 @@ components:
       x-has-dto: true
       required: [personId, agreementInstanceId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonAgreementInstanceFull'
+        - $ref: './shared.yaml#/components/schemas/PersonAgreementInstanceInternal'
     ItemAgreementDTO:
       x-has-dto: true
       required: [agreementId, itemId]
