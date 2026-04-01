@@ -2787,7 +2787,7 @@ components:
             email:
               type: string
     AgreementCategoryDTO:
-      x-has-dao: true
+      x-has-dto: true
       required: [ assignId ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/AgreementCategoryFull'
