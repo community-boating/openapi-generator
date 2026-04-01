@@ -4628,7 +4628,7 @@ components:
               type: integer
             agreementText:
               type: string
-              maxLength: 2000
+              maxLength: 4000
             agreementHeader:
               type: string
               maxLength: 200
