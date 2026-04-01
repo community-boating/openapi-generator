@@ -2471,8 +2471,8 @@ components:
               type: string
     PersonPublicRelatedDTO:
       x-has-dto: true
-      x-sub-variable: A
-      x-sub-type: PersonRelationBInterfaceI
+      x-sub-variable: B
+      x-sub-type: PersonRelationAInterfaceI
       allOf:
         - $ref: '#/components/schemas/PersonPublicDTO'
         - $ref: '#/components/schemas/PersonRelationBaseDTO'
@@ -2840,10 +2840,17 @@ components:
     PersonAgreeDTO:
       x-has-dto: true
       properties:
-        agreementInstances:
+        agreementActions:
           type: array
           items:
-            $ref: './shared.yaml#/components/schemas/AgreementInstanceRef'
+            $ref: '#/components/schemas/PersonAgreeActionDTO'
+    PersonAgreeActionDTO:
+      x-has-dto: true
+      properties:
+        agreementId:
+          $ref: './shared.yaml#/components/schemas/AgreementRef'
+        agreementAction:
+          $ref: './shared.yaml#/components/schemas/AgreementAction'
     PersonAgreementsDTO:
       x-has-dto: true
       properties:
