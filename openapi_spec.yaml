@@ -587,6 +587,20 @@ paths:
             application/json:
               schema:
                 $ref: './shared.yaml#/components/schemas/OrderStateNew'
+  /member/orders/requiredAgreements:
+    get:
+      description: 'Gets required agreements for current open order'
+      security:
+        - member: [ ]
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Returns order after payment cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RequiredAgreementsDTO'
   /member/orders/cancel:
     post:
       description: 'Cancels current person order, deleting if possible'
@@ -2846,3 +2860,17 @@ components:
           type: array
           items:
             $ref: './shared.yaml#/components/schemas/AgreementInstanceRef'
+    RequiredAgreementsDTO:
+      x-has-dto: true
+      properties:
+        requiredAgreements:
+          type: array
+          items:
+            $ref: '#/components/schemas/RequiredAgreementDTO'
+    RequiredAgreementDTO:
+      x-has-dto: true
+      properties:
+        agreementId:
+          $ref: './shared.yaml#/components/schemas/AgreementRef'
+        hasAgreement:
+          type: boolean
