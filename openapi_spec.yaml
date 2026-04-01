@@ -2826,15 +2826,6 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/AgreementRef'
         - $ref: './shared.yaml#/components/schemas/AgreementBase'
-    AgreementInstanceWithAgreementDTO:
-      x-has-dto: true
-      required: [agreementId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/AgreementInstanceInternal'
-        - type: object
-          properties:
-            agreementId:
-              $ref: '#/components/schemas/AgreementBaseDTO'
     PersonAgreementInstanceDTO:
       x-has-dto: true
       required: [personId, agreementInstanceId]
@@ -2843,7 +2834,7 @@ components:
         - type: object
           properties:
             agreementInstanceId:
-              $ref: '#/components/schemas/AgreementInstanceWithAgreementDTO'
+              $ref: '#/components/schemas/AgreementInstanceDTO'
     ItemAgreementDTO:
       x-has-dto: true
       required: [agreementId, itemId]
