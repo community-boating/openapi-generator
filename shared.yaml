@@ -4739,7 +4739,6 @@ components:
               $ref: '#/components/schemas/AgreementRef'
     PersonAgreementInstanceInternal:
       x-has-interface: true
-      x-dao-interface: true
       x-has-dto: false
       x-has-dao: false
       allOf:
