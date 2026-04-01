@@ -4629,6 +4629,9 @@ components:
             agreementText:
               type: string
               maxLength: 2000
+            agreementHeader:
+              type: string
+              maxLength: 200
             agreementAgreeText:
               type: string
               maxLength: 200
