@@ -2851,13 +2851,6 @@ components:
           $ref: './shared.yaml#/components/schemas/AgreementRef'
         agreementAction:
           $ref: './shared.yaml#/components/schemas/AgreementAction'
-    PersonAgreementsDTO:
-      x-has-dto: true
-      properties:
-        personAgreements:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonAgreementDTO'
     PersonAgreementDTO:
       x-has-dto: true
       properties:
@@ -2881,3 +2874,10 @@ components:
           properties:
             agreementId:
               $ref: '#/components/schemas/AgreementWithLatestInstanceDTO'
+    PersonAgreementsDTO:
+      x-has-dto: true
+      properties:
+        personAgreements:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonAgreementFullDTO'
