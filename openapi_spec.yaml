@@ -2786,6 +2786,11 @@ components:
               type: string
             email:
               type: string
+    AgreementCategoryDTO:
+      x-has-dao: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementCategoryFull'
     AgreementDTO:
       x-has-dto: true
       allOf:
@@ -2797,6 +2802,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/AgreementInstanceDTO'
+            agreementCategories:
+              x-parent-variable: agreementId
+              type: array
+              items:
+                $ref: '#/components/schemas/AgreementCategoryDTO'
     AgreementInstanceDTO:
       x-has-dto: true
       allOf:

@@ -1275,7 +1275,17 @@ components:
       x-has-dao: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/UserFull'
-
+    AgreementCategory:
+      x-has-dao: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementCategoryInternal'
+        - type: object
+          properties:
+            agreementId:
+              $ref: '#/components/schemas/Agreement'
+            categoryId:
+              $ref: '#/components/schemas/Category'
     Agreement:
       x-has-dao: true
       required: [assignId]
@@ -1288,6 +1298,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/AgreementInstance'
+            agreementCategories:
+              x-parent-variable: agreementId
+              type: array
+              items:
+                $ref: '#/components/schemas/AgreementCategory'
             catalogId:
               $ref: '#/components/schemas/Catalog'
     AgreementInstance:

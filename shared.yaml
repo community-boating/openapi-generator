@@ -4530,6 +4530,32 @@ components:
       allOf:
         - $ref: '#/components/schemas/UserRef'
         - $ref: '#/components/schemas/UserBase'
+    AgreementCategoryRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+    AgreementCategoryFull:
+      x-has-interface: true
+      required: [ categoryId ]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/ItemCategoryRef'
+        - type: object
+          properties:
+            categoryId:
+              $ref: '#/components/schemas/CategoryRef'
+    AgreementCategoryInternal:
+      x-has-interface: true
+      required: [ item, categoryId ]
+      allOf:
+        - $ref: '#/components/schemas/ItemCategoryRef'
+        - $ref: '#/components/schemas/ItemCategoryFull'
+        - type: object
+          properties:
+            agreementId:
+              $ref: '#/components/schemas/AgreementRef'
     AgreementRef:
       x-has-interface: true
       x-has-dto: true
@@ -4560,7 +4586,12 @@ components:
               x-parent-variable: agreementId
               type: array
               items:
-                $ref: '#/components/schemas/AgreementInstanceRef'
+                $ref: '#/components/schemas/AgreementInstanceFull'
+            agreementCategories:
+              x-parent-variable: agreementId
+              type: array
+              items:
+                $ref: '#/components/schemas/AgreementCategoryFull'
     AgreementInternal:
       x-has-interface: true
       x-dao-interface: true
