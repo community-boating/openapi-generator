@@ -2098,6 +2098,9 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/GuestPrivsDTO'
+            typeAndExpirationString:
+              type: string
+              maxLength: 100
             programName:
               type: string
               maxLength: 100
