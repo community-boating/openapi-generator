@@ -611,6 +611,19 @@ paths:
       responses:
         '200':
           description: Successfully cancelled the order
+  /staff/orders/capturePaid:
+    post:
+      x-one-of-permissions:
+        - scope: admin
+          type: ADMIN
+      description: 'Captures paid orders'
+      security:
+        - staff: [ ]
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Successfully captures paid orders
   /staff/orders/cancel/{id}:
     post:
       description: 'Cancels an order, deleting if possible'
