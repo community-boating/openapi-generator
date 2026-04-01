@@ -2455,6 +2455,8 @@ components:
         - $ref: '#/components/schemas/Purchasable'
         - type: object
           properties:
+            price:
+              type: integer
             startDate:
               readOnly: true
               type: string
@@ -2501,6 +2503,8 @@ components:
         - $ref: '#/components/schemas/DateRangeActivated'
         - type: object
           properties:
+            price:
+              type: integer
             startActive:
               readOnly: true
               x-dto-column: START_DATE
@@ -2538,6 +2542,8 @@ components:
         - $ref: '#/components/schemas/Purchasable'
         - type: object
           properties:
+            price:
+              type: integer
             issueDate:
               type: string
               format: date-time
