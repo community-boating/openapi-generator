@@ -2867,3 +2867,17 @@ components:
           $ref: '#/components/schemas/PersonAgreementInstanceDTO'
         isAgreed:
           type: boolean
+    AgreementWithLatestInstanceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementInstanceBase'
+        - $ref: './shared.yaml#/components/schemas/AgreementRef'
+        - $ref: './shared.yaml#/components/schemas/AgreementBase'
+    PersonAgreementFullDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonAgreementDTO'
+        - type: object
+          properties:
+            agreementId:
+              $ref: '#/components/schemas/AgreementWithLatestInstanceDTO'
