@@ -4581,6 +4581,8 @@ components:
           maxLength: 100
         isGlobal:
           type: boolean
+        sortOrder:
+          type: integer
     AgreementFull:
       x-has-interface: true
       x-has-dto: false
