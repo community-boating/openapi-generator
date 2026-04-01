@@ -4573,6 +4573,8 @@ components:
         agreementName:
           type: string
           maxLength: 100
+        isGlobal:
+          type: boolean
     AgreementFull:
       x-has-interface: true
       x-has-dto: false
@@ -4621,6 +4623,9 @@ components:
             agreementText:
               type: string
               maxLength: 2000
+            agreementAgreeText:
+              type: string
+              maxLength: 200
     AgreementInstanceFull:
       x-has-interface: true
       x-has-dto: false
