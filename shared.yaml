@@ -4541,17 +4541,18 @@ components:
       required: [ categoryId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
-        - $ref: '#/components/schemas/ItemCategoryRef'
+        - $ref: '#/components/schemas/AgreementCategoryRef'
         - type: object
           properties:
             categoryId:
               $ref: '#/components/schemas/CategoryRef'
     AgreementCategoryInternal:
       x-has-interface: true
+      x-dao-interface: true
       required: [ item, categoryId ]
       allOf:
-        - $ref: '#/components/schemas/ItemCategoryRef'
-        - $ref: '#/components/schemas/ItemCategoryFull'
+        - $ref: '#/components/schemas/AgreementCategoryRef'
+        - $ref: '#/components/schemas/AgreementCategoryFull'
         - type: object
           properties:
             agreementId:
