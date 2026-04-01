@@ -1323,6 +1323,8 @@ components:
           properties:
             personId:
               $ref: '#/components/schemas/PersonDAO'
+            agreementId:
+              $ref: '#/components/schemas/Agreement'
             agreementInstanceId:
               $ref: '#/components/schemas/AgreementInstance'
     ItemAgreement:
