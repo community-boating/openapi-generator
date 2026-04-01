@@ -600,7 +600,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/RequiredAgreementsDTO'
+                $ref: '#/components/schemas/PersonAgreementsDTO'
   /member/orders/cancel:
     post:
       description: 'Cancels current person order, deleting if possible'
@@ -1353,9 +1353,7 @@ paths:
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/PersonAgreementInstanceDTO'
+                $ref: '#/components/schemas/PersonAgreementsDTO'
     post:
       description: 'Posts an agreement'
       tags:
@@ -2860,17 +2858,19 @@ components:
           type: array
           items:
             $ref: './shared.yaml#/components/schemas/AgreementInstanceRef'
-    RequiredAgreementsDTO:
+    PersonAgreementsDTO:
       x-has-dto: true
       properties:
-        requiredAgreements:
+        personAgreements:
           type: array
           items:
-            $ref: '#/components/schemas/RequiredAgreementDTO'
-    RequiredAgreementDTO:
+            $ref: '#/components/schemas/PersonAgreementDTO'
+    PersonAgreementDTO:
       x-has-dto: true
       properties:
         agreementId:
           $ref: './shared.yaml#/components/schemas/AgreementRef'
-        hasAgreement:
+        latestAgreementAction:
+          $ref: '#/components/schemas/PersonAgreementInstanceDTO'
+        isAgreed:
           type: boolean
