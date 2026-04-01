@@ -4720,6 +4720,8 @@ components:
           properties:
             agreementInstanceId:
               $ref: '#/components/schemas/AgreementInstanceRef'
+            agreementId:
+              $ref: '#/components/schemas/AgreementInstanceRef'
     PersonAgreementInstanceInternal:
       x-has-interface: true
       x-dao-interface: true
