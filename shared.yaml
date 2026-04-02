@@ -2739,6 +2739,10 @@ components:
       properties:
         isApplied:
           type: boolean
+        isAutoApplied:
+          type: boolean
+        isUnapplied:
+          type: boolean
         discountType:
           $ref: '#/components/schemas/DiscountType'
         specifiedCents:
@@ -4630,7 +4634,6 @@ components:
               type: integer
             agreementText:
               type: string
-              maxLength: 4000
             agreementHeader:
               type: string
               maxLength: 200
