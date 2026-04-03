@@ -1499,7 +1499,9 @@ components:
         - type: object
           properties:
             paymentId:
-              $ref: '#/components/schemas/BalanceTransactionOrderPaymentDTO'
+              x-backref-name: balanceTransaction
+              allOf:
+                - $ref: '#/components/schemas/BalanceTransactionOrderPaymentDTO'
         #    lineItemId:
         #      type: integer
         #      format: int64
