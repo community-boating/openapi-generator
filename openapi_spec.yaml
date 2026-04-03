@@ -1520,6 +1520,18 @@ components:
           properties:
             personId:
               $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
+    PurchaseBalanceDTO:
+      x-has-dto: true
+      required: [ balanceCents, balanceType ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceFull'
+        - type: object
+          properties:
+            personBalances:
+              x-parent-variable: balanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonBalanceDTO'
     BalanceDTO:
       x-has-dto: true
       required: [ balanceCents, balanceType ]
@@ -2275,7 +2287,7 @@ components:
             balanceId:
               readOnly: true
               allOf:
-                - $ref: '#/components/schemas/BalanceDTO'
+                - $ref: '#/components/schemas/PurchaseBalanceDTO'
 
     PersonSubscriptionDTO:
       x-has-dto: true
