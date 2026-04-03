@@ -1495,12 +1495,11 @@ components:
       x-has-dto: true
       required: [id, balanceId, transactionAmountCents]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/BalanceTransactionFull'
-        #- type: properties
-        #  properties:
-        #    paymentId:
-        #      type: integer
-        #      format: int64
+        - $ref: './shared.yaml#/components/schemas/BalanceTransactionInternalFull'
+        - type: object
+          properties:
+            paymentId:
+              $ref: '#/components/schemas/BalanceTransactionOrderPaymentDTO'
         #    lineItemId:
         #      type: integer
         #      format: int64
@@ -1892,6 +1891,10 @@ components:
       #    properties:
       #      balanceSource:
       #        $ref: '#/components/schemas/BalanceRef'
+    BalanceTransactionOrderPaymentDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderPaymentBase'
     OrderPaymentDTO:
       x-has-dto: true
       allOf:
