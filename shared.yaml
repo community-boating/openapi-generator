@@ -2743,6 +2743,8 @@ components:
           type: boolean
         isUnapplied:
           type: boolean
+        isAutoAddProcessed:
+          type: boolean
         discountType:
           $ref: '#/components/schemas/DiscountType'
         specifiedCents:
