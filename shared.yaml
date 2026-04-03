@@ -3371,7 +3371,9 @@ components:
         - type: object
           properties:
             paymentId:
-              $ref: '#/components/schemas/OrderPaymentBase'
+              x-backref-name: balanceTransaction
+              allOf:
+                - $ref: '#/components/schemas/OrderPaymentBase'
     PersonBalanceBase:
       x-has-interface: true
       x-has-dto: true
