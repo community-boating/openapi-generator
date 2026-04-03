@@ -444,7 +444,7 @@ components:
       x-has-dao: true
       required: [assignId, personId, balanceType]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/BalanceFull'
+        - $ref: './shared.yaml#/components/schemas/BalanceInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:

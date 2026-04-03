@@ -3431,6 +3431,12 @@ components:
             balanceMinimumCents:
               type: integer
               format: int64
+    BalanceInternal:
+      required: [ balanceType ]
+      allOf:
+        - $ref: '#/components/schemas/BalanceFull'
+        - type: object
+          properties:
             balanceTransactions:
               x-parent-variable: balanceId
               type: array

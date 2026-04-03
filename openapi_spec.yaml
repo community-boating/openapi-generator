@@ -1524,7 +1524,7 @@ components:
       x-has-dto: true
       required: [ balanceCents, balanceType ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/BalanceFull'
+        - $ref: './shared.yaml#/components/schemas/BalanceInternal'
         - type: object
           properties:
             balanceAmountCurrent:
