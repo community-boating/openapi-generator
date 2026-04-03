@@ -418,7 +418,9 @@ components:
             balanceId:
               $ref: '#/components/schemas/Balance'
             paymentId:
-              $ref: '#/components/schemas/OrderPayment'
+              x-backref-name: balanceTransaction
+              allOf:
+                - $ref: '#/components/schemas/OrderPayment'
             lineItemId:
               x-backref-name: giftCard
               allOf:
