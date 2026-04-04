@@ -63,6 +63,7 @@ components:
         - 'PAYING'
         - 'PAID'
         - 'PROCESSED'
+        - 'CAPTURING'
         - 'CANCELLED'
         - 'REFUNDING'
         - 'REFUNDED'
