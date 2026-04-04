@@ -2816,7 +2816,7 @@ components:
               $ref: '#/components/schemas/DiscountRef'
     ItemDiscountInternal:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dao: false
       required: [ itemId, discountId ]
       allOf:
