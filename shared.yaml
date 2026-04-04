@@ -2805,17 +2805,26 @@ components:
       x-has-interface: true
       x-dao-interface: false
       x-has-dao: false
-      required: [ itemId, discountId ]
+      required: [ discountId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: './shared.yaml#/components/schemas/ItemDiscountRef'
         - $ref: './shared.yaml#/components/schemas/ItemDiscountBase'
         - type: object
           properties:
-            itemId:
-              $ref: '#/components/schemas/ItemRef'
             discountId:
               $ref: '#/components/schemas/DiscountRef'
+    ItemDiscountInternal:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dao: false
+      required: [ itemId, discountId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemDiscountFull'
+        - type: object
+          properties:
+            itemId:
+              $ref: '#/components/schemas/ItemRef'
     OrderRef:
       x-has-interface: true
       x-has-dto: true
@@ -4110,10 +4119,19 @@ components:
         - $ref: '#/components/schemas/ItemTaxRef'
         - type: object
           properties:
-            itemId:
-              $ref: '#/components/schemas/ItemRef'
             taxId:
               $ref: '#/components/schemas/TaxRef'
+    ItemTaxInternal:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/ItemTaxFull'
+        - type: object
+          properties:
+            itemId:
+              $ref: '#/components/schemas/ItemRef'
     CategoryRef:
       x-has-interface: true
       x-has-dto: true
