@@ -3289,6 +3289,14 @@ components:
         - $ref: '#/components/schemas/TaxRef'
         - $ref: '#/components/schemas/TaxBase'
         - $ref: '#/components/schemas/WithCatalogRef'
+    TaxInternal:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/TaxFull'
+        - $ref: '#/components/schemas/WithCatalogRef'
     LineItemTaxRef:
       x-has-interface: true
       x-has-dto: false
