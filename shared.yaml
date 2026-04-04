@@ -2661,6 +2661,7 @@ components:
             - $ref: '#/components/schemas/LineItemRef'
     WithCatalogRef:
       x-has-interface: true
+      x-dao-interface: true
       x-has-dto: false
       x-has-dao: false
       type: object
@@ -3288,7 +3289,6 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/TaxRef'
         - $ref: '#/components/schemas/TaxBase'
-        - $ref: '#/components/schemas/WithCatalogRef'
     TaxInternal:
       x-has-interface: true
       x-dao-interface: true
@@ -3528,6 +3528,7 @@ components:
               format: int64
             percent:
               type: string
+              maxLength: 50
             autoApply:
               type: boolean
             isGlobal:
@@ -4021,6 +4022,10 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ProductRef'
         - $ref: '#/components/schemas/ProductBase'
+    ProductInternal:
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/ProductFull'
         - $ref: '#/components/schemas/WithCatalogRef'
     CustomPaymentMethodMappingBase:
       type: object
@@ -4163,13 +4168,18 @@ components:
             categoryType:
               $ref: '#/components/schemas/CategoryType'
     CategoryFull:
-      required: [ categoryName, description, catalogId ]
+      required: [ categoryName, description ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/CategoryRef'
         - $ref: '#/components/schemas/CategoryBase'
-        - $ref: '#/components/schemas/WithCatalogRef'
         - $ref: '#/components/schemas/DBHistory'
+    CategoryInternal:
+      required: [ categoryName, description, catalogId ]
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/CategoryFull'
+        - $ref: '#/components/schemas/WithCatalogRef'
     ItemInstanceRef:
       x-has-interface: true
       x-has-dto: true
