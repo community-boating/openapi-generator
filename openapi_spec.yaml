@@ -1638,7 +1638,7 @@ components:
               x-parent-variable: catalogId
               type: array
               items:
-                $ref: '#/components/schemas/CatalogItemDTO'
+                $ref: '#/components/schemas/CatalogItemUpdateDTO'
             categories:
               x-parent-variable: catalogId
               type: array
@@ -1720,11 +1720,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
-            itemDiscounts:
-              x-parent-variable: discountId
-              type: array
-              items:
-                $ref: '#/components/schemas/CatalogItemDiscountUpdateDTO'
     CatalogDiscountDTO:
       x-has-dto: true
       allOf:
@@ -1791,8 +1786,7 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemCategoryPublicDTO'
-
-    CatalogItemDTO:
+    CatalogItemSharedDTO:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemInternalFull'
@@ -1816,11 +1810,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemInstanceDTO'
-            itemDiscounts:
-              x-parent-variable: itemId
-              type: array
-              items:
-                $ref: '#/components/schemas/CatalogItemDiscountDTO'
             itemTaxes:
               x-parent-variable: itemId
               type: array
@@ -1836,6 +1825,28 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ItemAgreementDTO'
+    CatalogItemDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/CatalogItemSharedDTO'
+        - type: object
+          properties:
+            itemDiscounts:
+              x-parent-variable: itemId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDiscountDTO'
+    CatalogItemUpdateDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/CatalogItemSharedDTO'
+        - type: object
+          properties:
+            itemDiscounts:
+              x-parent-variable: itemId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDiscountUpdateDTO'
     CatalogItemDiscountUpdateDTO:
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemDiscountFull'
