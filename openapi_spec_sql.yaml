@@ -50,7 +50,7 @@ components:
       x-has-dao: true
       required: [assignId, productName, productDescription, active, catalogId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ProductFull'
+        - $ref: './shared.yaml#/components/schemas/ProductInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
@@ -135,7 +135,7 @@ components:
       x-has-dao: true
       required: [assignId, categoryName, description, catalogId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/CategoryFull'
+        - $ref: './shared.yaml#/components/schemas/CategoryInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
