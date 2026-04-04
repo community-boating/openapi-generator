@@ -789,7 +789,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/CatalogDTO'
+              $ref: '#/components/schemas/CatalogUpdateDTO'
       responses:
         '200':
           description: Successfully returns the updated catalog
@@ -1591,11 +1591,29 @@ components:
           type: boolean
         ClassSignupOverrides:
           $ref: '#/components/schemas/ClassSignupOverrides'
+    CatalogSharedDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CatalogFull'
+        - type: object
+          properties:
+            taxes:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogTaxDTO'
+            agreements:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/AgreementDTO'
     CatalogPublicDTO:
       x-has-dto: true
       type: object
       allOf:
         - $ref: './shared.yaml#/components/schemas/CatalogFull'
+        - $ref: '#/components/schemas/CatalogSharedDTO'
         - type: object
           properties:
             items:
@@ -1608,21 +1626,12 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogDiscountPublicDTO'
-            taxes:
-              x-parent-variable: catalogId
-              type: array
-              items:
-                $ref: '#/components/schemas/CatalogTaxDTO'
-            agreements:
-              x-parent-variable: catalogId
-              type: array
-              items:
-                $ref: '#/components/schemas/AgreementDTO'
-    CatalogDTO:
+    CatalogUpdateDTO:
       x-has-dto: true
       type: object
       allOf:
         - $ref: './shared.yaml#/components/schemas/CatalogInternalFull'
+        - $ref: '#/components/schemas/CatalogSharedDTO'
         - type: object
           properties:
             items:
@@ -1630,11 +1639,32 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemDTO'
-            taxes:
+            categories:
               x-parent-variable: catalogId
               type: array
               items:
-                $ref: '#/components/schemas/CatalogTaxDTO'
+                $ref: '#/components/schemas/CatalogCategoryDTO'
+            discounts:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountUpdateDTO'
+            products:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogProductDTO'
+    CatalogDTO:
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CatalogInternalFull'
+        - $ref: '#/components/schemas/CatalogSharedDTO'
+        - type: object
+          properties:
+            items:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDTO'
             categories:
               x-parent-variable: catalogId
               type: array
@@ -1650,11 +1680,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogProductDTO'
-            agreements:
-              x-parent-variable: catalogId
-              type: array
-              items:
-                $ref: '#/components/schemas/AgreementDTO'
     CatalogTaxDTO:
       x-has-dto: true
       required: [ taxName, taxRate ]
@@ -1679,6 +1704,27 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogDiscountInstancePublicDTO'
+    CatalogDiscountUpdateDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountFull'
+        - type: object
+          properties:
+            categories:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountCategoryDTO'
+            instances:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
+            itemDiscounts:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDiscountUpdateDTO'
     CatalogDiscountDTO:
       x-has-dto: true
       allOf:
@@ -1790,9 +1836,12 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ItemAgreementDTO'
-    CatalogItemDiscountDTO:
+    CatalogItemDiscountUpdateDTO:
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemDiscountFull'
+    CatalogItemDiscountDTO:
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemDiscountInternal'
     CatalogItemTaxDTO:
       x-has-dto: true
       allOf:
@@ -1806,7 +1855,7 @@ components:
       required: [categoryId]
       x-has-dto: true
       allOf:
-        - $ref: "./shared.yaml#/components/schemas/ItemCategoryInternalFull"
+        - $ref: "./shared.yaml#/components/schemas/ItemCategoryFull"
     CatalogProductDTO:
       required: [productName, productDescription, active]
       x-has-dto: true
