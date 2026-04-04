@@ -254,7 +254,7 @@ components:
       x-has-dao: true
       required: [assignId, itemId, taxId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemTaxFull'
+        - $ref: './shared.yaml#/components/schemas/ItemTaxInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
@@ -326,7 +326,7 @@ components:
       x-has-dao: true
       required: [assignId, itemId, discountId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemDiscountFull'
+        - $ref: './shared.yaml#/components/schemas/ItemDiscountInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
