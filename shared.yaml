@@ -3087,6 +3087,7 @@ components:
               $ref: '#/components/schemas/CategoryRef'
     ItemCategoryInternalFull:
       x-has-interface: true
+      x-dao-interface: true
       required: [ item, categoryId ]
       allOf:
         - $ref: '#/components/schemas/ItemCategoryFull'
