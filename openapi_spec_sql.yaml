@@ -146,7 +146,7 @@ components:
       x-has-dao: true
       required: [assignId, itemId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemInstanceFull'
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
