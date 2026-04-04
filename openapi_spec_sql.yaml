@@ -267,7 +267,7 @@ components:
       x-has-dao: true
       required: [assignId, taxName, taxRate, catalogId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/TaxFull'
+        - $ref: './shared.yaml#/components/schemas/TaxInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
