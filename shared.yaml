@@ -3083,22 +3083,17 @@ components:
         - $ref: '#/components/schemas/ItemCategoryRef'
         - type: object
           properties:
-            item:
-              $ref: '#/components/schemas/ItemRef'
             categoryId:
               $ref: '#/components/schemas/CategoryRef'
     ItemCategoryInternalFull:
       x-has-interface: true
       required: [ item, categoryId ]
       allOf:
-        - $ref: '#/components/schemas/ItemCategoryRef'
         - $ref: '#/components/schemas/ItemCategoryFull'
         - type: object
           properties:
             item:
               $ref: '#/components/schemas/ItemRef'
-            categoryId:
-              $ref: '#/components/schemas/CategoryRef'
     LineItemRefundRef:
       x-has-interface: true
       x-has-dto: false
