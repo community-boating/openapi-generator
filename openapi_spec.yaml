@@ -1896,6 +1896,7 @@ components:
     BalanceTransactionOrderPaymentDTO:
       x-has-dto: true
       allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderPaymentRef'
         - $ref: './shared.yaml#/components/schemas/OrderPaymentBase'
     OrderPaymentDTO:
       x-has-dto: true
