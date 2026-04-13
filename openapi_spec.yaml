@@ -1398,6 +1398,14 @@ paths:
   /member/agreements:
     get:
       description: 'Gets current agreements'
+      parameters:
+        - in: query
+          name: requiredAgreements # Note the name is the same as in the path
+          required: false
+          schema:
+            type: array
+            items:
+              $ref: './shared.yaml#/components/schemas/AgreementRef'
       tags:
         - Agreement
       security:
