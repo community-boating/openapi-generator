@@ -1648,6 +1648,11 @@ components:
         - $ref: './shared.yaml#/components/schemas/CatalogFull'
         - type: object
           properties:
+            categories:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogCategoryDTO'
             taxes:
               x-parent-variable: catalogId
               type: array
@@ -1689,11 +1694,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemUpdateDTO'
-            categories:
-              x-parent-variable: catalogId
-              type: array
-              items:
-                $ref: '#/components/schemas/CatalogCategoryDTO'
             discounts:
               x-parent-variable: catalogId
               type: array
