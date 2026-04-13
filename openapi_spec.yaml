@@ -1398,14 +1398,12 @@ paths:
   /member/agreements:
     get:
       description: 'Gets current agreements'
-      parameters:
-        - in: query
-          name: requiredAgreements # Note the name is the same as in the path
-          required: false
-          schema:
-            type: array
-            items:
-              $ref: './shared.yaml#/components/schemas/AgreementRef'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequiredAgreementsDTO'
       tags:
         - Agreement
       security:
@@ -3052,6 +3050,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonAgreementFullDTO'
+    RequiredAgreementsDTO:
+      x-has-dto: true
+      properties:
+        requiredAgreements:
+          type: array
+          items:
+            $ref: './shared.yaml#/components/schemas/AgreementRef'
     RatingDTO:
       x-has-dto: true
       allOf:
