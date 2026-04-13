@@ -4685,7 +4685,7 @@ components:
               x-boolean-char: Y
     ApClassTypeRef:
       x-has-interface: true
-      x-has-dto: true
+      x-has-dto: false
       x-has-dao: false
       required: [ assignId ]
       allOf:
@@ -4717,7 +4717,7 @@ components:
               type: integer
     JpClassTypeRef:
       x-has-interface: true
-      #x-has-dto: true
+      x-has-dto: false
       x-has-dao: false
       x-dao-interface: true
       required: [ assignId ]
