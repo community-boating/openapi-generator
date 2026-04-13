@@ -4101,6 +4101,11 @@ components:
         - $ref: '#/components/schemas/CatalogBase'
         - type: object
           properties:
+            categories:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CategoryBase'
             items:
               x-parent-variable: catalogId
               type: array
@@ -4127,11 +4132,6 @@ components:
         - $ref: '#/components/schemas/CatalogFull'
         - type: object
           properties:
-            categories:
-              x-parent-variable: catalogId
-              type: array
-              items:
-                $ref: '#/components/schemas/CategoryBase'
             products:
               x-parent-variable: catalogId
               type: array
