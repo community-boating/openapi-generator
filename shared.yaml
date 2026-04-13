@@ -5236,6 +5236,7 @@ components:
       required: [assignId]
       properties:
         assignId:
+          x-col-primary: true
           type: integer
     WithSessionLength:
       x-has-interface: true
