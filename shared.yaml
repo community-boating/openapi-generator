@@ -5227,6 +5227,7 @@ components:
       required: [ assignId ]
       properties:
         assignId:
+          x-col-primary: true
           type: integer
     UnifiedClassTypeRef:
       x-has-interface: true
