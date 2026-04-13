@@ -159,7 +159,15 @@ components:
         - 'INELIGIBLE'
         - 'ELIGIBLE'
         - 'ENROLLED'
+        - 'PURCHASE_HOLD'
         - 'WAITLISTED'
+    ClassSignupAvailabilityStatus:
+      type: string
+      enum:
+        - 'AVAILABLE'
+        - 'WAITLIST_AVAILABLE'
+        - 'FUTURE_UNAVAILABLE'
+        - 'UNAVAILABLE'
     PersonRelationType:
       type: integer
       x-enum-varnames:
@@ -222,10 +230,23 @@ components:
         - 5
         - 6
         - 7
+    ProgramTypeEnum:
+      type: integer
+      x-enum-varnames:
+        - ADULT_PROGRAM
+        - JUNIOR_PROGRAM
+        - UNIVERSAL_ACCESS_PROGRAM
+        - HIGH_SCHOOL
+      enum:
+        - 1
+        - 2
+        - 3
+        - 4
     DummyEnum:
       type: string
       x-is-dummy: true
       allOf:
+        - $ref: '#/components/schemas/ProgramTypeEnum'
         - $ref: '#/components/schemas/AccessControl'
         - $ref: '#/components/schemas/ReferralSource'
         - $ref: '#/components/schemas/Gender'
@@ -1504,6 +1525,38 @@ components:
         - 'UNRESOLVED'
         - 'RESOLVED_AUTOMATICALLY'
         - 'RESOLVED_MANUALLY'
+    SignupTypeEnum:
+      type: string
+      x-enum-varnames:
+        - ENROLLED
+        - UNENROLLED
+        - WAITLISTED
+        - PURCHASE_HOLD
+        - AUTO_CANCELLED
+      enum:
+        - 'E'
+        - 'U'
+        - 'W'
+        - 'P'
+        - 'A'
+    AttendanceTypeEnum:
+      type: string
+      x-enum-varnames:
+        - HERE
+        - ABSENT
+      enum:
+        - 'H'
+        - 'A'
+    WlResultTypeEnum:
+      type: string
+      x-enum-varnames:
+        - EXPIRED
+        - PENDING
+        - FAILED
+      enum:
+        - 'E'
+        - 'P'
+        - 'F'
     DBHistory:
       x-has-interface: true
       x-has-dto: false
@@ -1546,21 +1599,23 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      type: object
-      properties:
-        purchasableState:
-          readOnly: true
-          allOf:
-            - $ref: '#/components/schemas/PurchasableState'
-        purchaseDate:
-          readOnly: true
-          type: string
-          format: date-time
+      allOf:
+        - type: object
+          properties:
+            purchasableState:
+              readOnly: true
+              allOf:
+                - $ref: '#/components/schemas/PurchasableState'
+            purchaseDate:
+              readOnly: true
+              type: string
+              format: date-time
     Purchasable:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       allOf:
+        - $ref: '#/components/schemas/WithPrice'
         - $ref: '#/components/schemas/PurchasableWithoutClose'
         - type: object
           properties:
@@ -2324,61 +2379,242 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/AddressBase'
         - $ref: '#/components/schemas/AddressRef'
-    ClassSignupRef:
+    ApClassAttendanceRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: false
       allOf:
+        - $ref: '#/components/schemas/UnifiedClassAttendanceRef'
         - type: object
-          required: [ signupId ]
+          required: [ assignId ]
           properties:
-            signupId:
+            assignId:
               x-col-primary: true
+              x-dto-column: ATTEND_ID
+              x-table-name: AP_CLASS_ATTENDANCE
+              x-auto-increment: AP_CLASS_ATTENDANCE_SEQ
               type: integer
-    ClassSignupBase:
-      properties:
-        signupType:
-          readOnly: true
-          type: string
-          minLength: 1
-          maxLength: 1
-        price:
-          readOnly: true
-          type: integer
-        classTypeEnum:
-          $ref: '#/components/schemas/ClassTypeEnum'
-    ClassSignupFull:
+    ApClassAttendanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassAttendanceBase'
+    ApClassAttendanceFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      required: [ assignId, signupId, sessionId, personId ]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/ApClassAttendanceRef'
+        - $ref: '#/components/schemas/ApClassAttendanceBase'
+        - $ref: '#/components/schemas/UnifiedClassAttendanceFull'
+        - type: object
+          properties:
+            sessionId:
+              $ref: '#/components/schemas/ApClassSessionRef'
+            signupId:
+              $ref: '#/components/schemas/ApClassSignupRef'
+    ApClassSignupRef:
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSignupRef'
+        - type: object
+          required: [ assignId ]
+          properties:
+            assignId:
+              x-col-primary: true
+              x-dto-column: SIGNUP_ID
+              x-table-name: AP_CLASS_SIGNUPS
+              x-auto-increment: AP_CLASS_SIGNUPS_SEQ
+              type: integer
+    ApClassSignupBase:
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSignupBase'
+    ApClassSignupFull:
       required: [ signupId, instanceId, personId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
-        - $ref: '#/components/schemas/ClassSignupRef'
-        - $ref: '#/components/schemas/ClassSignupBase'
+        - $ref: '#/components/schemas/ApClassSignupRef'
+        - $ref: '#/components/schemas/ApClassSignupBase'
         - $ref: '#/components/schemas/Purchasable'
-        - $ref: '#/components/schemas/WithPersonRef'
+        - $ref: '#/components/schemas/UnifiedClassSignupInternal'
         - type: object
           properties:
             instanceId:
               $ref: '#/components/schemas/ApClassInstanceRef'
-    ClassSignupInternalFull:
+            wlResult:
+              x-backref-name: signupId
+              allOf:
+                - $ref: '#/components/schemas/ApClassWlResultFull'
+            attendance:
+              x-parent-variable: signupId
+              type: array
+              items:
+                $ref: '#/components/schemas/ApClassAttendanceRef'
+    ApClassSignupInternalFull:
       allOf:
-        - $ref: '#/components/schemas/ClassSignupFull'
+        - $ref: '#/components/schemas/ApClassSignupFull'
         - $ref: '#/components/schemas/WithLineItemRef'
-    JpClassSignupRef:
+    ApClassWlResultRef:
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassWlResultRef'
+        - type: object
+          required: [ assignId ]
+          properties:
+            assignId:
+              x-col-primary: true
+              x-pk-type: Int
+              x-dto-column: SIGNUP_ID
+              x-table-name: AP_CLASS_WL_RESULTS
+              allOf:
+                - $ref: '#/components/schemas/ApClassSignupRef'
+    ApClassWlResultBase:
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassWlResultBase'
+    ApClassWlResultFull:
       required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/UnifiedClassWlResultFull'
+        - $ref: '#/components/schemas/ApClassWlResultRef'
+        - $ref: '#/components/schemas/ApClassWlResultBase'
+    JpClassWlResultRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: false
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassWlResultRef'
+        - type: object
+          required: [ assignId ]
+          properties:
+            assignId:
+              x-col-primary: true
+              x-pk-type: Int
+              x-dto-column: SIGNUP_ID
+              x-table-name: JP_CLASS_WL_RESULTS
+              allOf:
+                - $ref: '#/components/schemas/JpClassSignupRef'
+    JpClassWlResultBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: false
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassWlResultBase'
+    JpClassWlResultFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: false
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/UnifiedClassWlResultFull'
+        - $ref: '#/components/schemas/JpClassWlResultRef'
+        - $ref: '#/components/schemas/JpClassWlResultBase'
+    JpClassAttendanceRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: false
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassAttendanceRef'
+        - type: object
+          required: [ assignId ]
+          properties:
+            assignId:
+              x-col-primary: true
+              x-dto-column: ATTEND_ID
+              x-table-name: JP_CLASS_ATTENDANCE
+              x-auto-increment: JP_CLASS_ATTENDANCE_SEQ
+              type: integer
+    JpClassAttendanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassAttendanceBase'
+    JpClassAttendanceFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      required: [ assignId, signupId, sessionId, personId ]
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/JpClassAttendanceRef'
+        - $ref: '#/components/schemas/JpClassAttendanceBase'
+        - $ref: '#/components/schemas/UnifiedClassAttendanceFull'
+        - type: object
+          properties:
+            sessionId:
+              $ref: '#/components/schemas/JpClassSessionRef'
+            signupId:
+              $ref: '#/components/schemas/JpClassSignupRef'
+    WithStaggerRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
       properties:
-        assignId:
-          x-col-primary: true
-          x-dto-column: SIGNUP_ID
-          x-table-name: JP_CLASS_SIGNUPS
-          x-auto-increment: JP_CLASS_SIGNUPS_SEQ
-          type: integer
+        staggerId:
+          $ref: '#/components/schemas/JpClassStaggerRef'
+    JpClassSignupRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSignupRef'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-dto-column: SIGNUP_ID
+              x-table-name: JP_CLASS_SIGNUPS
+              x-auto-increment: JP_CLASS_SIGNUPS_SEQ
+              type: integer
+    JpClassSignupBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSignupBase'
+        - type: object
+          properties: {}
     JpClassSignupFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
       required: [ assignId, instanceId, personId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/JpClassSignupRef'
-        - $ref: '#/components/schemas/WithPersonRef'
+        - $ref: '#/components/schemas/JpClassSignupBase'
+        - $ref: '#/components/schemas/UnifiedClassSignupInternal'
+        - $ref: '#/components/schemas/WithStaggerRef'
+        - $ref: '#/components/schemas/DBHistory'
         - type: object
           properties:
             instanceId:
               $ref: '#/components/schemas/JpClassInstanceRef'
+            sectionId:
+              $ref: '#/components/schemas/JpClassSectionRef'
+            wlResult:
+              x-backref-name: assignId
+              allOf:
+                - $ref: '#/components/schemas/JpClassWlResultFull'
+            attendance:
+              x-parent-variable: signupId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassAttendanceRef'
     MembershipRef:
       x-has-interface: true
       x-has-dto: false
@@ -2413,9 +2649,6 @@ components:
               type: string
               maxLength: 1
               minLength: 1
-            price:
-              readOnly: true
-              type: integer
     MembershipFull:
       x-has-interface: true
       x-has-dto: false
@@ -2456,8 +2689,6 @@ components:
         - $ref: '#/components/schemas/Purchasable'
         - type: object
           properties:
-            price:
-              type: integer
             startDate:
               readOnly: true
               type: string
@@ -2504,8 +2735,6 @@ components:
         - $ref: '#/components/schemas/DateRangeActivated'
         - type: object
           properties:
-            price:
-              type: integer
             startActive:
               readOnly: true
               x-dto-column: START_DATE
@@ -2543,8 +2772,6 @@ components:
         - $ref: '#/components/schemas/Purchasable'
         - type: object
           properties:
-            price:
-              type: integer
             issueDate:
               type: string
               format: date-time
@@ -2620,10 +2847,11 @@ components:
             skipAck:
               x-boolean-char: Y
               type: boolean
-            amount:
+            price:
               readOnly: true
               type: number
               format: double
+              x-dto-column: AMOUNT
     WithOptionalPersonRef:
       x-has-interface: true
       x-has-dto: false
@@ -2791,17 +3019,12 @@ components:
       x-dao-interface: false
       x-has-dao: false
       required: [ itemId, discountId ]
-      properties:
-        requiresParentEligibility:
-          type: boolean
-        discountType:
-          $ref: '#/components/schemas/DiscountType'
-        amountCents:
-          type: integer
-          format: int64
-        percent:
-          type: string
-          maxLength: 50
+      allOf:
+        - $ref: '#/components/schemas/DiscountAmount'
+        - type: object
+          properties:
+            requiresParentEligibility:
+              type: boolean
     ItemDiscountFull:
       x-has-interface: true
       x-dao-interface: false
@@ -3027,7 +3250,7 @@ components:
             subscriptionId:
               $ref: '#/components/schemas/PersonSubscriptionRef'
             classSignup:
-              $ref: '#/components/schemas/ClassSignupFull'
+              $ref: '#/components/schemas/ApClassSignupFull'
             membership:
               $ref: '#/components/schemas/MembershipFull'
             donation:
@@ -3513,22 +3736,29 @@ components:
               x-dto-column: INSTANCE_ID
               x-auto-increment: DISCOUNT_INSTANCES_SEQ
               type: integer
+    DiscountAmount:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        discountType:
+          $ref: '#/components/schemas/DiscountType'
+        amountCents:
+          type: integer
+          format: int64
+        percent:
+          type: string
+          maxLength: 50
     DiscountInstanceBase:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/DateRangeActivated'
+        - $ref: '#/components/schemas/DiscountAmount'
         - type: object
           properties:
-            discountType:
-              $ref: '#/components/schemas/DiscountType'
-            amountCents:
-              type: integer
-              format: int64
-            percent:
-              type: string
-              maxLength: 50
             autoApply:
               type: boolean
             isGlobal:
@@ -4329,7 +4559,7 @@ components:
         - $ref: '#/components/schemas/DonationInitiativeBase'
     ProgramTypeRef:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dto: true
       x-has-dao: false
       required: [ assignId ]
@@ -4340,22 +4570,36 @@ components:
           x-dto-column: PROGRAM_ID
           x-auto-increment: PROGRAM_TYPES_SEQ
           type: integer
+    ProgramTypeName:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      type: object
+      properties:
+        programName:
+          type: string
+          maxLength: 100
+    ProgramTypeRefAndName:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/ProgramTypeRef'
+        - $ref: '#/components/schemas/ProgramTypeName'
     ProgramTypeBase:
       x-has-interface: true
       x-dao-interface: true
       x-has-dto: true
       x-has-dao: false
       type: object
-      required:
-        - programId
-        - programName
       allOf:
         - $ref: '#/components/schemas/ProgramTypeRef'
+        - $ref: '#/components/schemas/ProgramTypeName'
         - type: object
           properties:
-            programName:
-              type: string
-              maxLength: 100
             displayOrder:
               type: integer
               format: int32
@@ -4386,6 +4630,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/MembershipTypeRef'
+        - $ref: '#/components/schemas/WithPrice'
         - type: object
           properties:
             programId:
@@ -4406,9 +4651,6 @@ components:
             expirationType:
               type: string
               maxLength: 50
-            price:
-              type: number
-              format: double
             oldDiscountType:
               type: integer
             regCodeRowId:
@@ -4446,38 +4688,64 @@ components:
       #x-has-dto: true
       x-has-dao: false
       required: [ assignId ]
-      properties:
-        assignId:
-          x-col-primary: true
-          x-table-name: AP_CLASS_TYPES
-          x-dto-column: TYPE_ID
-          type: integer
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassTypeRef'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-table-name: AP_CLASS_TYPES
+              x-dto-column: TYPE_ID
+              x-auto-increment: AP_CLASS_TYPES_SEQ
+              type: integer
 
     ApClassInstanceRef:
       x-has-interface: true
       #x-has-dto: true
       x-has-dao: false
-      required: [ assignId ]
-      properties:
-        assignId:
-          x-col-primary: true
-          x-table-name: AP_CLASS_INSTANCES
-          x-dto-column: INSTANCE_ID
-          x-auto-increment: AP_CLASS_INSTANCES_SEQ
-          type: integer
 
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassInstanceRef'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-table-name: AP_CLASS_INSTANCES
+              x-dto-column: INSTANCE_ID
+              x-auto-increment: AP_CLASS_INSTANCES_SEQ
+              type: integer
+    JpClassTypeRef:
+      x-has-interface: true
+      #x-has-dto: true
+      x-has-dao: false
+      x-dao-interface: true
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassTypeRef'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-table-name: JP_CLASS_TYPES
+              x-dto-column: TYPE_ID
+              x-auto-increment: JP_CLASS_TYPES_SEQ
+              type: integer
     JpClassInstanceRef:
       x-has-interface: true
       #x-has-dto: true
       x-has-dao: false
       required: [ assignId ]
-      properties:
-        assignId:
-          x-col-primary: true
-          x-table-name: AP_CLASS_INSTANCES
-          x-dto-column: INSTANCE_ID
-          x-auto-increment: JP_CLASS_INSTANCES_SEQ
-          type: integer
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassInstanceRef'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-table-name: JP_CLASS_INSTANCES
+              x-dto-column: INSTANCE_ID
+              x-auto-increment: JP_CLASS_INSTANCES_SEQ
+              type: integer
     UserRef:
       x-has-interface: true
       #x-has-dto: true
@@ -4805,3 +5073,1210 @@ components:
       enum:
         - 'ACTION_AGREE'
         - 'ACTION_AGREE_REVOKE'
+    RatingRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [assignId]
+      properties:
+        assignId:
+          type: integer
+          x-col-primary: true
+          x-dto-column: RATING_ID
+          x-table-name: RATINGS
+          x-auto-increment: RATINGS_SEQ
+    WithRatingName:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        ratingName:
+          type: string
+          maxLength: 200
+    RatingRefAndName:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/RatingRef'
+        - $ref: '#/components/schemas/WithRatingName'
+    RatingBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/WithRatingName'
+        - type: object
+          properties:
+            displayOrder:
+              type: integer
+            active:
+              type: boolean
+              x-boolean-char: Y
+            testMinCrew:
+              type: integer
+            testMaxCrew:
+              type: integer
+            testable:
+              type: boolean
+              x-boolean-char: Y
+            ratingCategory:
+              type: string
+              maxLength: 1
+              minLength: 1
+    RatingFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/RatingRef'
+        - $ref: '#/components/schemas/RatingBase'
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            overriddenBy:
+              $ref: '#/components/schemas/RatingRef'
+            #overrides:
+            #  x-backref-name: overriddenBy
+            #  type: array
+            #  items:
+            #    $ref: '#/components/schemas/RatingRef'
+    PersonRatingRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      x-dao-interface: true
+      required: [ assignId ]
+      properties:
+        assignId:
+          type: integer
+          x-col-primary: true
+          x-dto-column: ASSIGN_ID
+          x-table-name: PERSONS_RATINGS
+          x-auto-increment: PERSONS_RATINGS_SEQ
+    PersonRatingBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+        testSignoutId:
+          type: integer
+    PersonRatingFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/PersonRatingRef'
+        - $ref: '#/components/schemas/PersonRatingBase'
+        - $ref: '#/components/schemas/WithPersonRef'
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            ratingId:
+              $ref: '#/components/schemas/RatingRef'
+            programId:
+              $ref: '#/components/schemas/ProgramTypeRef'
+            #overrides:
+            #  x-backref-name: overriddenBy
+            #  type: array
+            #  items:
+            #    $ref: '#/components/schemas/RatingRef'
+    ClassLocationRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [assignId]
+      properties:
+        assignId:
+          type: integer
+          x-col-primary: true
+          x-dto-column: LOCATION_ID
+          x-table-name: CLASS_LOCATIONS
+          x-auto-increment: CLASS_LOCATIONS_SEQ
+    ClassLocationBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        locationName:
+          type: string
+          maxLength: 100
+        active:
+          type: boolean
+          x-boolean-char: Y
+    ClassLocationFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/ClassLocationRef'
+        - $ref: '#/components/schemas/ClassLocationBase'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+    UnifiedClassStaggerRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [ assignId ]
+      properties:
+        assignId:
+          type: integer
+    UnifiedClassTypeRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [assignId]
+      properties:
+        assignId:
+          type: integer
+    WithSessionLength:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        sessionLength:
+          type: number
+          format: float
+    WithSessionCt:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        sessionCt:
+          type: integer
+    WithSignupMax:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        signupMax:
+          type: integer
+    WithCancelledDatetime:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        cancelledDatetime:
+          type: string
+          format: date-time
+    WithSignupMin:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        signupMin:
+          type: integer
+    WithAgeMin:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+        minAge:
+          type: integer
+    WithAgeMax:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+        maxAge:
+          type: integer
+    WithNoLimit:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+        noLimit:
+          type: boolean
+          x-boolean-char: Y
+    WithPrice:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+        price:
+          type: number
+          format: double
+    WithAllowMultiple:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+        allowMultiple:
+          type: boolean
+          x-boolean-char: Y
+    WithTypeName:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        typeName:
+          type: string
+    WithAdminHold:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        adminHold:
+          type: boolean
+          x-boolean-char: Y
+    ClassTypeRefWithName:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassTypeRef'
+        - $ref: '#/components/schemas/WithTypeName'
+    UnifiedClassTypeOverrideBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/WithPersonRef'
+        - type: object
+          properties:
+            typeId:
+              $ref: '#/components/schemas/UnifiedClassTypeRef'
+            season:
+              type: integer
+            isForOverkill:
+              type: boolean
+              x-boolean-char: Y
+    UnifiedClassTypeBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/WithTypeName'
+        - type: object
+          properties:
+            displayOrder:
+              type: integer
+            prereqMustComplete:
+              type: boolean
+              x-boolean-char: Y
+    UnifiedClassTypeFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassTypeRef'
+        - $ref: '#/components/schemas/UnifiedClassTypeBase'
+        - type: object
+          properties:
+            ratingPrereq:
+              $ref: '#/components/schemas/RatingRef'
+            ratingOverkill:
+              $ref: '#/components/schemas/RatingRef'
+            classPrereq:
+              $ref: '#/components/schemas/UnifiedClassTypeRef'
+            classOverkill:
+              $ref: '#/components/schemas/UnifiedClassTypeRef'
+    UnifiedClassInstanceRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [assignId]
+      properties:
+        assignId:
+          x-col-primary: true
+          type: integer
+    UnifiedClassInstanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/WithPrice'
+        - $ref: '#/components/schemas/WithSignupMax'
+    UnifiedClassInstanceFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassInstanceRef'
+        - $ref: '#/components/schemas/UnifiedClassInstanceBase'
+        - type: object
+          properties:
+            locationId:
+              $ref: '#/components/schemas/ClassLocationRef'
+            sessions:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/UnifiedClassSessionRef'
+    UnifiedClassInstanceInternal:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassInstanceFull'
+        - type: object
+          properties:
+            signups:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/UnifiedClassSignupRef'
+    UnifiedClassInstanceWithType:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassInstanceInternal'
+        - type: object
+          properties:
+            typeId:
+              $ref: '#/components/schemas/UnifiedClassTypeBase'
+    UnifiedClassSessionRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [assignId]
+      properties:
+        assignId:
+          x-col-primary: true
+          type: integer
+    UnifiedClassSessionBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        sessionDatetime:
+          type: string
+          format: date-time
+    UnifiedClassSessionFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [assignId]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSessionRef'
+        - $ref: '#/components/schemas/UnifiedClassSessionBase'
+        - type: object
+          properties: {}
+    UnifiedClassSessionInternal:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSessionFull'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/UnifiedClassInstanceRef'
+            attendance:
+              x-parent-variable: sessionId
+              type: array
+              items:
+                $ref: '#/components/schemas/UnifiedClassAttendanceRef'
+    UnifiedClassAttendanceRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          type: integer
+    UnifiedClassAttendanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        attend:
+          $ref: '#/components/schemas/AttendanceTypeEnum'
+    UnifiedClassAttendanceFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ assignId, sessionId, signupId, personId ]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassAttendanceRef'
+        - $ref: '#/components/schemas/UnifiedClassAttendanceBase'
+        - type: object
+          properties:
+            sessionId:
+              $ref: '#/components/schemas/UnifiedClassSessionRef'
+            signupId:
+              $ref: '#/components/schemas/UnifiedClassSignupRef'
+    UnifiedClassWlResultRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          x-pk-type: Int
+          allOf:
+            - $ref: '#/components/schemas/UnifiedClassSignupRef'
+    UnifiedClassWlResultBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        foVmDatetime:
+          type: string
+          format: date-time
+        wlResult:
+          $ref: '#/components/schemas/WlResultTypeEnum'
+        offerExpDatetime:
+          type: string
+          format: date-time
+        foAlertDatetime:
+          type: string
+          format: date-time
+        permitOvercrowd:
+          type: boolean
+          x-boolean-char: Y
+    UnifiedClassWlResultFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassWlResultRef'
+        - $ref: '#/components/schemas/UnifiedClassWlResultBase'
+        - type: object
+          properties: {}
+    UnifiedClassSignupRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          type: integer
+    UnifiedClassSignupBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/WithPrice'
+        - type: object
+          properties:
+            signupDatetime:
+              type: string
+              format: date-time
+            signupType:
+              $ref: '#/components/schemas/SignupTypeEnum'
+            signupNote:
+              type: string
+              maxLength: 4000
+            sequence:
+              type: integer
+              x-dto-column: SEQUENCE
+    UnifiedClassSignupFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSignupRef'
+        - $ref: '#/components/schemas/UnifiedClassSignupBase'
+        - $ref: '#/components/schemas/WithPersonRef'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/UnifiedClassInstanceRef'
+            wlResult:
+              x-backref-name: signupId
+              allOf:
+                - $ref: '#/components/schemas/UnifiedClassWlResultRef'
+    UnifiedClassSignupInternal:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSignupFull'
+        - type: object
+          properties:
+            attendance:
+              x-parent-variable: signupId
+              type: array
+              items:
+                $ref: '#/components/schemas/UnifiedClassAttendanceRef'
+            membershipUsed:
+              $ref: '#/components/schemas/MembershipRef'
+
+    ApClassFormatRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassTypeRef'
+        - type: object
+          properties:
+            assignId:
+              type: integer
+              x-col-primary: true
+              x-dto-column: FORMAT_ID
+              x-table-name: AP_CLASS_FORMATS
+              x-auto-increment: AP_CLASS_FORMATS_SEQ
+    ApClassFormatBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/WithSessionCt'
+        - $ref: '#/components/schemas/WithSessionLength'
+        - $ref: '#/components/schemas/WithSignupMax'
+        - $ref: '#/components/schemas/WithSignupMin'
+        - type: object
+          properties:
+            description:
+              type: string
+              maxLength: 1000
+            priceDefaultOverride:
+              type: integer
+            sessionCt:
+              type: integer
+              x-dto-column: SESSION_CT_DEFAULT
+            sessionLength:
+              type: number
+              format: float
+              x-dto-column: SESSION_LENGTH_DEFAULT
+            signupMax:
+              type: integer
+              x-dto-column: SIGNUP_MAX_DEFAULT_OVERRIDE
+            signupMin:
+              type: integer
+              x-dto-column: SIGNUP_MIN_DEFAULT_OVERRIDE
+    WithApClassType:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+        typeId:
+          $ref: '#/components/schemas/ApClassTypeRef'
+    ApClassFormatFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/ApClassFormatRef'
+        - $ref: '#/components/schemas/ApClassFormatBase'
+        - $ref: '#/components/schemas/WithApClassType'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+    ApClassTypeBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassTypeBase'
+        - $ref: '#/components/schemas/WithSignupMax'
+        - $ref: '#/components/schemas/WithSignupMin'
+        - type: object
+          properties:
+            signupMax:
+              type: integer
+              x-dto-column: SIGNUP_MAX_DEFAULT
+            signupMin:
+              type: integer
+              x-dto-column: SIGNUP_MIN_DEFAULT
+            descLong:
+              type: string
+            descShort:
+              type: string
+            colorCode:
+              type: string
+              maxLength: 6
+            noSignup:
+              type: boolean
+              x-boolean-char: Y
+            priceDefault:
+              type: integer
+            disallowIfOverkill:
+              type: boolean
+              x-boolean-char: Y
+            teachUrl:
+              type: string
+              maxLength: 100
+    ApClassTypeFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/ApClassTypeRef'
+        - $ref: '#/components/schemas/ApClassTypeBase'
+        - $ref: '#/components/schemas/UnifiedClassTypeFull'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            classPrereq:
+              $ref: '#/components/schemas/ApClassTypeRef'
+            classOverkill:
+              $ref: '#/components/schemas/ApClassTypeRef'
+    ApClassInstanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassInstanceBase'
+        - $ref: '#/components/schemas/WithCancelledDatetime'
+        - type: object
+          properties:
+            signupsStartOverride:
+              type: string
+              format: date-time
+            doNotAutoCancel:
+              type: boolean
+              x-boolean-char: Y
+            hideOnline:
+              type: boolean
+              x-boolean-char: Y
+            locationString:
+              type: string
+              maxLength: 100
+    ApClassInstanceFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/ApClassInstanceRef'
+        - $ref: '#/components/schemas/ApClassInstanceBase'
+        - $ref: '#/components/schemas/UnifiedClassInstanceWithType'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties: {}
+    ApClassInstanceInternal:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassInstanceInternal'
+        - $ref: '#/components/schemas/ApClassInstanceFull'
+        - type: object
+          properties:
+            formatId:
+              $ref: '#/components/schemas/ApClassFormatRef'
+            sessions:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/ApClassSessionRef'
+    ApClassTypeAndFormat:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/ApClassFormatBase'
+        - $ref: '#/components/schemas/WithApClassType'
+        - $ref: '#/components/schemas/ApClassTypeFull'
+        - type: object
+          properties:
+            typeId:
+              x-sub-type: ApClassType
+              x-sub-variable: typeId
+              allOf:
+                - $ref: '#/components/schemas/ApClassTypeRef'
+    ApClassInstanceWithType:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassInstanceWithType'
+        - $ref: '#/components/schemas/ApClassInstanceFull'
+        - type: object
+          properties:
+            typeId:
+              $ref: '#/components/schemas/ApClassTypeAndFormat'
+    ApClassSessionRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      required: [assignId]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSessionRef'
+        - type: object
+          properties:
+            assignId:
+              type: integer
+              x-col-primary: true
+              x-dto-column: SESSION_ID
+              x-table-name: AP_CLASS_SESSIONS
+              x-auto-increment: AP_CLASS_SESSIONS_SEQ
+    ApClassSessionBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSessionBase'
+        - $ref: '#/components/schemas/WithCancelledDatetime'
+        - type: object
+          properties:
+            isMakeup:
+              type: boolean
+              x-boolean-char: Y
+            headcount:
+              type: integer
+    ApClassSessionFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/ApClassSessionRef'
+        - $ref: '#/components/schemas/ApClassSessionBase'
+        - $ref: '#/components/schemas/UnifiedClassSessionFull'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties: {}
+    ApClassSessionInternal:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSessionInternal'
+        - $ref: '#/components/schemas/ApClassSessionFull'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/ApClassInstanceRef'
+            attendance:
+              x-parent-variable: sessionId
+              type: array
+              items:
+                $ref: '#/components/schemas/ApClassAttendanceRef'
+    ClassInstructorRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      required: [ assignId ]
+      allOf:
+        - type: object
+          properties:
+            assignId:
+              type: integer
+              x-col-primary: true
+              x-dto-column: INSTRUCTOR_ID
+              x-table-name: CLASS_INSTRUCTORS
+              x-auto-increment: CLASS_INSTRUCTORS_SEQ
+    ClassInstructorBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - type: object
+          properties:
+            nameFirst:
+              type: string
+              maxLength: 100
+            nameLast:
+              type: string
+              maxLength: 100
+            active:
+              type: boolean
+              x-boolean-char: Y
+    ClassInstructorFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/ClassInstructorRef'
+        - $ref: '#/components/schemas/ClassInstructorBase'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+    JpClassSectionRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: false
+      required: [ assignId ]
+      allOf:
+        - type: object
+          properties:
+            assignId:
+              type: integer
+              x-col-primary: true
+              x-dto-column: SECTION_ID
+              x-table-name: JP_CLASS_SECTIONS
+              x-auto-increment: JP_CLASS_SECTIONS_SEQ
+    JpClassSectionBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties: {}
+    JpClassSectionFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/JpClassSectionRef'
+        - $ref: '#/components/schemas/JpClassSectionBase'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/JpClassInstanceRef'
+            instructorId:
+              $ref: '#/components/schemas/ClassInstructorFull'
+            locationId:
+              $ref: '#/components/schemas/ClassLocationFull'
+            lookupId:
+              $ref: '#/components/schemas/JpClassSectionLookupFull'
+    JpClassSectionLookupRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      required: [ assignId ]
+      allOf:
+        - type: object
+          properties:
+            assignId:
+              type: integer
+              x-col-primary: true
+              x-dto-column: SECTION_ID
+              x-table-name: JP_CLASS_SECTION_LOOKUP
+              x-auto-increment: JP_CLASS_SECTION_LOOKUP_SEQ
+    JpClassSectionLookupBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - type: object
+          properties:
+            sectionName:
+              type: string
+            active:
+              type: boolean
+              x-boolean-char: Y
+            displayOrder:
+              type: integer
+            svgUrl:
+              type: string
+              maxLength: 100
+    JpClassSectionLookupFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/JpClassSectionLookupRef'
+        - $ref: '#/components/schemas/JpClassSectionLookupBase'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+    JpClassStaggerRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: false
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassStaggerRef'
+        - type: object
+          properties:
+            assignId:
+              type: integer
+              x-col-primary: true
+              x-dto-column: STAGGER_ID
+              x-table-name: JP_CLASS_STAGGERS
+              x-auto-increment: JP_CLASS_STAGGERS_ID_SEQ
+    JpClassStaggerBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+        staggerDate:
+          type: string
+          format: date-time
+        occupancy:
+          type: integer
+        reserveOnly:
+          type: boolean
+          x-boolean-char: Y
+        reserveRelease:
+          type: string
+          format: date-time
+    JpClassStaggerFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/JpClassStaggerRef'
+        - $ref: '#/components/schemas/JpClassStaggerBase'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            signups:
+              x-parent-variable: staggerId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassSignupRef'
+    JpClassTypeBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassTypeBase'
+        - $ref: '#/components/schemas/WithSignupMax'
+        - $ref: '#/components/schemas/WithAgeMax'
+        - $ref: '#/components/schemas/WithAgeMin'
+        - $ref: '#/components/schemas/WithSessionCt'
+        - $ref: '#/components/schemas/WithSessionLength'
+        - $ref: '#/components/schemas/WithNoLimit'
+        - $ref: '#/components/schemas/WithAllowMultiple'
+        - type: object
+          properties:
+            signupMax:
+              type: integer
+              x-dto-column: SIGNUP_MAX
+            minSessionsForAttended:
+              type: integer
+            active:
+              type: boolean
+              x-boolean-char: Y
+    JpClassTypeFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/JpClassTypeRef'
+        - $ref: '#/components/schemas/JpClassTypeBase'
+        - $ref: '#/components/schemas/UnifiedClassTypeFull'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            classPrereq:
+              $ref: '#/components/schemas/JpClassTypeRef'
+            classOverkill:
+              $ref: '#/components/schemas/JpClassTypeRef'
+
+
+    JpClassInstanceBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassInstanceBase'
+        - $ref: '#/components/schemas/WithTypeName'
+        - $ref: '#/components/schemas/WithAdminHold'
+        - $ref: '#/components/schemas/WithAgeMax'
+        - $ref: '#/components/schemas/WithAgeMin'
+        - $ref: '#/components/schemas/WithNoLimit'
+        - type: object
+          properties:
+            typeName:
+              type: string
+              maxLength: 200
+              x-dto-column: NAME_OVERRIDE
+            signupMax:
+              type: integer
+              x-dto-column: LIMIT_OVERRIDE
+            confirmTemplate:
+              type: string
+              maxLength: 100
+            reservedForGroup:
+              type: boolean
+              x-boolean-char: Y
+            noLimit:
+              type: boolean
+              x-boolean-char: Y
+              x-dto-column: OVERRIDE_NO_LIMIT
+    JpClassInstanceFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/JpClassInstanceRef'
+        - $ref: '#/components/schemas/JpClassInstanceBase'
+        - $ref: '#/components/schemas/UnifiedClassInstanceWithType'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            typeId:
+              $ref: '#/components/schemas/JpClassTypeFull'
+    JpClassInstanceInternal:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassInstanceInternal'
+        - $ref: '#/components/schemas/JpClassInstanceFull'
+        - type: object
+          properties:
+            sessions:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassSessionFull'
+            sections:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassSectionRef'
+            staggers:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassStaggerRef'
+            instructorId:
+              $ref: '#/components/schemas/ClassInstructorFull'
+    JpClassSessionRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSessionRef'
+        - type: object
+          properties:
+            assignId:
+              type: integer
+              x-col-primary: true
+              x-dto-column: SESSION_ID
+              x-table-name: JP_CLASS_SESSIONS
+              x-auto-increment: JP_CLASS_SESSIONS_SEQ
+    JpClassSessionBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSessionBase'
+        - $ref: '#/components/schemas/WithSessionLength'
+        - type: object
+          properties:
+            sessionLength:
+              type: number
+              format: float
+              x-dto-column: LENGTH_OVERRIDE
+    JpClassSessionFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/JpClassSessionRef'
+        - $ref: '#/components/schemas/JpClassSessionBase'
+        - $ref: '#/components/schemas/UnifiedClassSessionFull'
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties: {}
+    JpClassSessionInternal:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/UnifiedClassSessionInternal'
+        - $ref: '#/components/schemas/JpClassSessionFull'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/JpClassInstanceRef'
+            attendance:
+              x-parent-variable: sessionId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassAttendanceRef'
+    MembershipTypeExpRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      type: object
+      required: [assignId]
+      properties:
+        assignId:
+          x-col-primary: true
+          x-dto-column: EXPIRATION_ID
+          x-table-name: MEMBERSHIP_TYPE_EXP
+          x-auto-increment: MEMBERSHIP_TYPE_EXP_SEQ
+          type: integer
+    MembershipTypeExpBase:
+      properties:
+        season:
+          type: integer
+        startDate:
+          type: string
+          format: date-time
+        expirationDate:
+          type: string
+          format: date-time
+    MembershipTypeExpFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/MembershipTypeExpRef'
+        - $ref: '#/components/schemas/MembershipTypeExpBase'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            membershipTypeId:
+              $ref: '#/components/schemas/MembershipTypeRef'

@@ -182,7 +182,7 @@ components:
               $ref: '#/components/schemas/PersonSubscription'
             classSignup:
               nullable: true
-              $ref: '#/components/schemas/ClassSignup'
+              $ref: '#/components/schemas/ApClassSignupDAO'
             membership:
               nullable: true
               $ref: '#/components/schemas/MembershipDAO'
@@ -514,27 +514,273 @@ components:
     ApClassType:
       x-has-dao: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ApClassTypeRef'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-
+        - $ref: './shared.yaml#/components/schemas/ApClassTypeFull'
+        - type: object
+          properties:
+            ratingPrereq:
+              $ref: '#/components/schemas/RatingDAO'
+            ratingOverkill:
+              $ref: '#/components/schemas/RatingDAO'
+            classPrereq:
+              $ref: '#/components/schemas/ApClassType'
+            classOverkill:
+              $ref: '#/components/schemas/ApClassType'
+    ClassLocationDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ClassLocationFull'
     ApClassInstance:
       x-has-dao: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ApClassInstanceRef'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-    ClassSignup:
+        - $ref: './shared.yaml#/components/schemas/ApClassInstanceInternal'
+        - type: object
+          properties:
+            sessions:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/ApClassSessionDAO'
+            signups:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/ApClassSignupDAO'
+            locationId:
+              $ref: '#/components/schemas/ClassLocationDAO'
+            formatId:
+              $ref: '#/components/schemas/ApClassFormatDAO'
+            typeId:
+              $ref: '#/components/schemas/ApClassType'
+    ApClassFormatDAO:
       x-has-dao: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ClassSignupInternalFull'
+        - $ref: './shared.yaml#/components/schemas/ApClassFormatFull'
+        - type: object
+          properties:
+            typeId:
+              $ref: '#/components/schemas/ApClassType'
+    ApClassSessionDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ApClassSessionInternal'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/ApClassInstance'
+            attendance:
+              x-parent-variable: sessionId
+              type: array
+              items:
+                $ref: '#/components/schemas/ApClassAttendanceDAO'
+    ClassInstructorDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ClassInstructorFull'
+    JpClassSectionDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassSectionFull'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/JpClassInstanceDAO'
+            instructorId:
+              $ref: '#/components/schemas/ClassInstructorDAO'
+            locationId:
+              $ref: '#/components/schemas/ClassLocationDAO'
+            lookupId:
+              $ref: '#/components/schemas/JpClassSectionLookupDAO'
+    JpClassSectionLookupDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassSectionLookupFull'
+    JpClassStaggerDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassStaggerFull'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/JpClassInstanceDAO'
+            signups:
+              x-parent-variable: staggerId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassSignupDAO'
+    JpClassTypeOverrideDAO:
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassTypeOverrideBase'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
-            signupId:
+            assignId:
               x-col-primary: true
-              x-dto-column: SIGNUP_ID
-              x-table-name: AP_CLASS_SIGNUPS
-              x-auto-increment: AP_CLASS_SIGNUPS_SEQ
+              x-dto-column: ROW_ID
+              x-table-name: JP_CLASS_TYPE_OVERRIDES
+              x-auto-increment: JP_CLASS_TYPE_OVERRIDES_PK
               type: integer
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            typeId:
+              $ref: '#/components/schemas/JpClassTypeDAO'
+            season:
+              type: integer
+            isForOverkill:
+              type: boolean
+              x-boolean-char: Y
+    ApClassTypeOverrideDAO:
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassTypeOverrideBase'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-dto-column: ROW_ID
+              x-table-name: AP_CLASS_TYPE_OVERRIDES
+              x-auto-increment: AP_CLASS_TYPE_OVERRIDES_PK
+              type: integer
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            typeId:
+              $ref: '#/components/schemas/ApClassType'
+            season:
+              type: integer
+            isForOverkill:
+              type: boolean
+              x-boolean-char: Y
+
+
+    JpClassTypeDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassTypeFull'
+        - type: object
+          properties:
+            ratingPrereq:
+              $ref: '#/components/schemas/RatingDAO'
+            ratingOverkill:
+              $ref: '#/components/schemas/RatingDAO'
+            classPrereq:
+              $ref: '#/components/schemas/JpClassTypeDAO'
+            classOverkill:
+              $ref: '#/components/schemas/JpClassTypeDAO'
+    JpClassInstanceDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassInstanceInternal'
+        - type: object
+          properties:
+            sessions:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassSessionDAO'
+            sections:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassSectionDAO'
+            staggers:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassStaggerDAO'
+            signups:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassSignupDAO'
+            locationId:
+              $ref: '#/components/schemas/ClassLocationDAO'
+            instructorId:
+              $ref: '#/components/schemas/ClassInstructorDAO'
+            typeId:
+              $ref: '#/components/schemas/JpClassTypeDAO'
+    JpClassSessionDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassSessionInternal'
+        - type: object
+          properties:
+            instanceId:
+              $ref: '#/components/schemas/JpClassInstanceDAO'
+            attendance:
+              x-parent-variable: sessionId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassAttendanceDAO'
+    JpClassAttendanceDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassAttendanceFull'
+        - type: object
+          properties:
+            sessionId:
+              $ref: '#/components/schemas/JpClassSessionDAO'
+            signupId:
+              $ref: '#/components/schemas/JpClassSignupDAO'
+    JpClassSignupDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassSignupFull'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            instanceId:
+              $ref: '#/components/schemas/JpClassInstanceDAO'
+            sectionId:
+              $ref: '#/components/schemas/JpClassSectionDAO'
+            staggerId:
+              $ref: '#/components/schemas/JpClassStaggerDAO'
+            wlResult:
+              x-backref-name: assignId
+              allOf:
+                - $ref: '#/components/schemas/JpClassWlResultDAO'
+            attendance:
+              x-parent-variable: signupId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassAttendanceDAO'
+            membershipUsed:
+              $ref: '#/components/schemas/MembershipDAO'
+    JpClassWlResultDAO:
+      x-has-dao: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassWlResultFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-pk-type: Int
+              x-dto-column: SIGNUP_ID
+              x-table-name: JP_CLASS_WL_RESULTS
+              allOf:
+                - $ref: '#/components/schemas/JpClassSignupDAO'
+    ApClassAttendanceDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ApClassAttendanceFull'
+        - type: object
+          properties:
+            sessionId:
+              $ref: '#/components/schemas/ApClassSessionDAO'
+            signupId:
+              $ref: '#/components/schemas/ApClassSignupDAO'
+    ApClassSignupDAO:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ApClassSignupInternalFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
             personId:
               $ref: '#/components/schemas/PersonDAO'
             lineItemId:
@@ -543,6 +789,32 @@ components:
                 - $ref: '#/components/schemas/LineItem'
             instanceId:
               $ref: '#/components/schemas/ApClassInstance'
+            wlResult:
+              x-backref-name: assignId
+              allOf:
+                - $ref: '#/components/schemas/ApClassWlResultDAO'
+            attendance:
+              x-parent-variable: signupId
+              type: array
+              items:
+                $ref: '#/components/schemas/ApClassAttendanceDAO'
+            membershipUsed:
+              $ref: '#/components/schemas/MembershipDAO'
+    ApClassWlResultDAO:
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ApClassWlResultFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-pk-type: Int
+              x-dto-column: SIGNUP_ID
+              x-table-name: AP_CLASS_WL_RESULTS
+              allOf:
+                - $ref: '#/components/schemas/ApClassSignupDAO'
     GuestPrivsDAO:
       x-has-dao: true
       allOf:
@@ -1157,6 +1429,31 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonPhoneDAO'
+            apSignups:
+              x-parent-variable: personId
+              type: array
+              items:
+                $ref: '#/components/schemas/ApClassSignupDAO'
+            jpSignups:
+              x-parent-variable: personId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassSignupDAO'
+            ratings:
+              x-parent-variable: personId
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRatingDAO'
+            apClassTypeOverrides:
+              x-parent-variable: personId
+              type: array
+              items:
+                $ref: '#/components/schemas/ApClassTypeOverrideDAO'
+            jpClassTypeOverrides:
+              x-parent-variable: personId
+              type: array
+              items:
+                $ref: '#/components/schemas/JpClassTypeOverrideDAO'
 
     MembershipDAO:
       x-has-dao: true
@@ -1340,3 +1637,39 @@ components:
               $ref: '#/components/schemas/Agreement'
             itemId:
               $ref: '#/components/schemas/Item'
+    PersonRatingDAO:
+      x-has-dao: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRatingFull'
+        - type: object
+          properties:
+            ratingId:
+              $ref: '#/components/schemas/RatingDAO'
+            programId:
+              $ref: '#/components/schemas/ProgramType'
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+    RatingDAO:
+      x-has-dao: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/RatingFull'
+        - type: object
+          properties:
+            overriddenBy:
+              $ref: '#/components/schemas/RatingDAO'
+            #overrides:
+            #  x-backref-name: overriddenBy
+            #  type: array
+            #  items:
+            #    $ref: '#/components/schemas/RatingDAO'
+    MembershipTypeExpDAO:
+      x-has-dao: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/MembershipTypeExpFull'
+        - type: object
+          properties:
+            membershipTypeId:
+              $ref: '#/components/schemas/MembershipType'

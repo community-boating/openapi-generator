@@ -1290,7 +1290,7 @@ paths:
         - member: [ ]
       description: 'Returns a list of ap class signups'
       tags:
-        - ClassPublic
+        - UnifiedClass
       x-is-paginated: true
       responses:
         '200':
@@ -1300,7 +1300,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/ClassSignupDTO'
+                  $ref: '#/components/schemas/ApClassSignupDTO'
   /member/class/jp-signups:
     x-is-paginated: true
     get:
@@ -1308,7 +1308,7 @@ paths:
         - member: [ ]
       description: 'Returns a list of jp class signups'
       tags:
-        - ClassPublic
+        - UnifiedClass
       x-is-paginated: true
       responses:
         '200':
@@ -1323,7 +1323,7 @@ paths:
     post:
       description: 'Signs up for a class'
       tags:
-        - ClassPublic
+        - UnifiedClass
       security:
         - member: [ ]
       requestBody:
@@ -1339,6 +1339,48 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClassSignupResponseDTO'
+  /public/classes:
+    get:
+      description: 'Gets all classes'
+      tags:
+        - UnifiedClass
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassFilterOptions'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassInstanceDTO'
+  /member/classesWithEligibility:
+    get:
+      description: 'Gets all classes'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassFilterOptions'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassWithEligibilityDTO'
   /stripe/paymentTest:
     post:
       security:
@@ -1557,7 +1599,7 @@ components:
       type: object
       properties:
         classSignup:
-          $ref: '#/components/schemas/ClassSignupDTO'
+          $ref: '#/components/schemas/ApClassSignupDTO'
         jpClassSignup:
           $ref: '#/components/schemas/JpClassSignupDTO'
         errors:
@@ -1566,7 +1608,7 @@ components:
       type: object
       properties:
         classSignup:
-          $ref: '#/components/schemas/CreateClassSignupDTO'
+          $ref: '#/components/schemas/CreateApClassSignupDTO'
         jpClassSignup:
           $ref: '#/components/schemas/CreateJpClassSignupDTO'
     ClassSignupOverrides:
@@ -2139,17 +2181,17 @@ components:
           properties:
             personId:
               $ref: '#/components/schemas/PersonNameDTO'
-    CreateClassSignupDTO:
+    CreateApClassSignupDTO:
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ClassSignupFull'
+        - $ref: './shared.yaml#/components/schemas/ApClassSignupFull'
     CreateJpClassSignupDTO:
       allOf:
         - $ref: './shared.yaml#/components/schemas/JpClassSignupFull'
-    ClassSignupDTO:
+    ApClassSignupDTO:
       x-has-dto: true
       required: [ instanceId, personId ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ClassSignupInternalFull'
+        - $ref: './shared.yaml#/components/schemas/ApClassSignupInternalFull'
         - type: object
           properties:
             personId:
@@ -2160,7 +2202,7 @@ components:
       x-has-dto: true
       required: [instanceId, personId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ClassSignupFull'
+        - $ref: './shared.yaml#/components/schemas/ApClassSignupFull'
     MembershipDTO:
       x-has-dto: true
       allOf:
@@ -2780,6 +2822,33 @@ components:
             instanceBasePrice:
               type: integer
               format: int64
+    CatalogItemInstanceDiscountReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ReportDTO"
+        - $ref: "./shared.yaml#/components/schemas/DiscountAmount"
+        - $ref: "./shared.yaml#/components/schemas/DiscountBase"
+        - type: object
+          properties:
+            discountInstance:
+              $ref: './shared.yaml#/components/schemas/DiscountInstanceRef'
+    CatalogItemInstancePriceReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CatalogBaseReportDTO"
+        - type: object
+          properties:
+            itemInstance:
+              $ref: '#/components/schemas/CatalogItemInstanceReportItemInstanceDTO'
+            pricePaid:
+              type: integer
+              format: int64
+            discountsApplied:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemInstanceDiscountReportDTO'
     CatalogItemReportItemDTO:
       x-has-dto: true
       type: object
@@ -2795,10 +2864,10 @@ components:
           properties:
             item:
               $ref: '#/components/schemas/CatalogItemReportItemDTO'
-            itemInstanceReports:
+            itemInstancePriceReports:
               type: array
               items:
-                $ref: '#/components/schemas/CatalogItemInstanceReportDTO'
+                $ref: '#/components/schemas/CatalogItemInstancePriceReportDTO'
     CatalogItemReportsDTO:
       x-has-dto: true
       type: object
@@ -2975,3 +3044,246 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonAgreementFullDTO'
+    RatingDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/RatingFull'
+    RatingInternalDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/RatingFull'
+        - type: object
+          properties:
+            overriddenBy:
+              $ref: '#/components/schemas/RatingInternalDTO'
+            #overrides:
+            #  x-backref-name: overriddenBy
+            #  type: array
+            #  items:
+            #    $ref: '#/components/schemas/RatingInternalDTO'
+    MembershipTypeExpDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/MembershipTypeExpFull'
+    ClassLocationDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ClassLocationFull'
+    ClassTypeInfo:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/WithSessionCt'
+        - $ref: './shared.yaml#/components/schemas/WithSessionLength'
+        - $ref: './shared.yaml#/components/schemas/WithSignupMax'
+        - $ref: './shared.yaml#/components/schemas/WithSignupMin'
+        - $ref: './shared.yaml#/components/schemas/WithTypeName'
+        - $ref: './shared.yaml#/components/schemas/WithAdminHold'
+        - $ref: './shared.yaml#/components/schemas/WithNoLimit'
+        - $ref: './shared.yaml#/components/schemas/WithCancelledDatetime'
+        - $ref: './shared.yaml#/components/schemas/WithAllowMultiple'
+    ClassTypeDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassTypeFull'
+        - $ref: '#/components/schemas/ClassTypeInfo'
+        - type: object
+          properties:
+            ratingPrereq:
+              $ref: './shared.yaml#/components/schemas/RatingRefAndName'
+            ratingOverkill:
+              $ref: './shared.yaml#/components/schemas/RatingRefAndName'
+            classPrereq:
+              $ref: './shared.yaml#/components/schemas/ClassTypeRefWithName'
+            classOverkill:
+              $ref: './shared.yaml#/components/schemas/ClassTypeRefWithName'
+    ClassTypeOverrideDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassTypeOverrideBase'
+        - type: object
+          properties:
+            programId:
+              $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+    PricingInformationDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        catalogItemInstance:
+          $ref: './shared.yaml#/components/schemas/ItemInstanceRef'
+        catalogPriceCents:
+          type: integer
+          format: int64
+    ClassAvailabilityDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        totalSlots:
+          type: integer
+        enrolled:
+          type: integer
+        waitlisted:
+          type: integer
+        waitlistResultsExpired:
+          type: integer
+        waitlistResultsFailed:
+          type: integer
+        availableSlots:
+          type: integer
+        availableOn:
+          type: string
+          format: date-time
+        availabilityStatus:
+          $ref: './shared.yaml#/components/schemas/ClassSignupAvailabilityStatus'
+        allowWaitlist:
+          type: boolean
+        pricingInformation:
+          $ref: '#/components/schemas/PricingInformationDTO'
+        currentStaggerId:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassStaggerRef'
+        currentSignupSequence:
+          type: integer
+
+    ClassInstanceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceWithType'
+        - $ref: '#/components/schemas/ClassTypeInfo'
+        - type: object
+          properties:
+            typeId:
+              $ref: '#/components/schemas/ClassTypeDTO'
+            programId:
+              $ref: './shared.yaml#/components/schemas/ProgramTypeRefAndName'
+            locationId:
+              $ref: '#/components/schemas/ClassLocationDTO'
+            sessions:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassSessionDTO'
+            weekNumber:
+              type: integer
+            firstSessionDatetime:
+              type: string
+              format: date-time
+            lastSessionDatetime:
+              type: string
+              format: date-time
+            availability:
+              $ref: '#/components/schemas/ClassAvailabilityDTO'
+    ClassAttendanceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassAttendanceFull'
+        - type: object
+          properties:
+            signupId:
+              $ref: '#/components/schemas/ClassSignupFullDTO'
+    ClassSessionDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassSessionFull'
+        - $ref: './shared.yaml#/components/schemas/WithSessionLength'
+        - $ref: './shared.yaml#/components/schemas/WithCancelledDatetime'
+        - type: object
+          properties:
+            endDatetime:
+              type: string
+              format: date-time
+    ClassSessionInternalDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassSessionInternal'
+        - $ref: '#/components/schemas/ClassSessionDTO'
+        - type: object
+          properties:
+            attendance:
+              x-parent-variable: sessionId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassAttendanceDTO'
+    WlResultDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassWlResultFull'
+        - type: object
+          properties: {}
+    ClassSignupDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassSignupFull'
+        - $ref: './shared.yaml#/components/schemas/WithStaggerRef'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+        - type: object
+          properties:
+            wlResult:
+              x-backref-name: assignId
+              allOf:
+                - $ref: '#/components/schemas/WlResultDTO'
+    ClassSignupFullDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassSignupInternal'
+        - $ref: '#/components/schemas/ClassSignupDTO'
+        - type: object
+          properties:
+            attendance:
+              x-backref-name: sessionId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassAttendanceDTO'
+    ClassInstanceFullDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceInternal'
+        - $ref: '#/components/schemas/ClassInstanceDTO'
+        - type: object
+          properties:
+            signups:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassSignupFullDTO'
+            sessions:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassSessionInternalDTO'
+    ClassFilterOptions:
+      x-has-dto: true
+      type: object
+      properties:
+        includeCancelled:
+          type: boolean
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        typeId:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassTypeRef'
+        programId:
+          $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+    PersonClassEligibility:
+      x-has-dto: true
+      type: object
+      required: [personId, eligibilityStatus]
+      properties:
+        personId:
+          $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
+        eligibilityStatus:
+          $ref: './shared.yaml#/components/schemas/ClassSignupEligibilityStatus'
+        message:
+          type: string
+    ClassWithEligibilityDTO:
+      x-has-dto: true
+      type: object
+      required: [classInstance, personEligibility]
+      properties:
+        classInstance:
+          $ref: '#/components/schemas/ClassInstanceDTO'
+        personEligibility:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonClassEligibility'
