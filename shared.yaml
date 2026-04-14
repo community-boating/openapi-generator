@@ -167,6 +167,7 @@ components:
         - 'AVAILABLE'
         - 'WAITLIST_AVAILABLE'
         - 'FUTURE_UNAVAILABLE'
+        - 'UNAVAILABLE_STARTED'
         - 'UNAVAILABLE'
     PersonRelationType:
       type: integer
@@ -6098,7 +6099,6 @@ components:
         - $ref: '#/components/schemas/WithSessionLength'
         - $ref: '#/components/schemas/WithNoLimit'
         - $ref: '#/components/schemas/WithAllowMultiple'
-        - $ref: '#/components/schemas/WithConfirmTemplate'
         - type: object
           properties:
             signupMax:
@@ -6140,6 +6140,7 @@ components:
         - $ref: '#/components/schemas/WithAgeMax'
         - $ref: '#/components/schemas/WithAgeMin'
         - $ref: '#/components/schemas/WithNoLimit'
+        - $ref: '#/components/schemas/WithConfirmTemplate'
         - type: object
           properties:
             typeName:
