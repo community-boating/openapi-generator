@@ -51,7 +51,21 @@ paths:
             application/json:
               schema:
                 $ref: './shared.yaml#/components/schemas/Boolean'
-
+  /member/createGuestCard:
+    post:
+      summary: Creates a guest card
+      description: Creates a guest card
+      security:
+        - member: [ ]
+      tags:
+        - Member
+      responses:
+        '200':
+          description: Successfully created guest card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateGuestCardDTO'
   /member/info:
     post:
       summary: Test
@@ -3095,6 +3109,7 @@ components:
         - $ref: './shared.yaml#/components/schemas/WithNoLimit'
         - $ref: './shared.yaml#/components/schemas/WithCancelledDatetime'
         - $ref: './shared.yaml#/components/schemas/WithAllowMultiple'
+        - $ref: './shared.yaml#/components/schemas/WithConfirmTemplate'
     ClassTypeDTO:
       x-has-dto: true
       allOf:
@@ -3246,6 +3261,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ClassAttendanceDTO'
+            personId:
+              $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
     ClassInstanceFullDTO:
       x-has-dto: true
       allOf:
@@ -3279,6 +3296,8 @@ components:
           $ref: './shared.yaml#/components/schemas/UnifiedClassTypeRef'
         programId:
           $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+        instanceId:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
     PersonClassEligibility:
       x-has-dto: true
       type: object
@@ -3301,3 +3320,18 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonClassEligibility'
+    ClassWithEligibilitySingularDTO:
+      x-has-dto: true
+      type: object
+      required: [ classInstance, personEligibility ]
+      properties:
+        classInstance:
+          $ref: '#/components/schemas/ClassInstanceFullDTO'
+        personEligibility:
+          $ref: '#/components/schemas/PersonClassEligibility'
+    CreateGuestCardDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        cardNum:
+          type: string
