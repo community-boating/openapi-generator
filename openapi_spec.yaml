@@ -86,6 +86,12 @@ paths:
   #              format: binary
   /member/createGuestCard:
     post:
+      parameters:
+        - in: query
+          name: sendEmail
+          schema:
+            type: boolean
+          description: send an email containing a barcode of the card
       summary: Creates a guest card
       description: Creates a guest card
       security:
