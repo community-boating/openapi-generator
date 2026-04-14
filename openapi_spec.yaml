@@ -92,6 +92,11 @@ paths:
           schema:
             type: boolean
           description: send an email containing a barcode of the card
+        - in: query
+          name: forRental
+          schema:
+            type: boolean
+          description: card is for rental
       summary: Creates a guest card
       description: Creates a guest card
       security:
