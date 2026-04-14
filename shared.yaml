@@ -2778,6 +2778,7 @@ components:
             cardNum:
               type: string
               maxLength: 50
+              x-auto-increment: GUEST_CARD_SEQ
             temp:
               readOnly: true
               type: string
@@ -5346,6 +5347,15 @@ components:
         adminHold:
           type: boolean
           x-boolean-char: Y
+    WithConfirmTemplate:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        confirmTemplate:
+          type: string
+          maxLength: 100
     ClassTypeRefWithName:
       x-has-interface: true
       x-has-dto: false
@@ -5635,6 +5645,10 @@ components:
                 $ref: '#/components/schemas/UnifiedClassAttendanceRef'
             membershipUsed:
               $ref: '#/components/schemas/MembershipRef'
+            wlResult:
+              x-backref-name: signupId
+              allOf:
+                - $ref: '#/components/schemas/UnifiedClassWlResultFull'
 
     ApClassFormatRef:
       x-has-interface: true
@@ -6084,6 +6098,7 @@ components:
         - $ref: '#/components/schemas/WithSessionLength'
         - $ref: '#/components/schemas/WithNoLimit'
         - $ref: '#/components/schemas/WithAllowMultiple'
+        - $ref: '#/components/schemas/WithConfirmTemplate'
         - type: object
           properties:
             signupMax:
@@ -6134,9 +6149,6 @@ components:
             signupMax:
               type: integer
               x-dto-column: LIMIT_OVERRIDE
-            confirmTemplate:
-              type: string
-              maxLength: 100
             reservedForGroup:
               type: boolean
               x-boolean-char: Y
