@@ -51,26 +51,39 @@ paths:
             application/json:
               schema:
                 $ref: './shared.yaml#/components/schemas/Boolean'
-  /public/generateBarcodeImage:
-    get:
-      summary: Generates a barcode image
-      description: Generates a barcode image from the provided number
-      tags:
-        - Public
-      parameters:
-        - in: query
-          name: number
-          required: true
-          schema:
-            type: string
-      responses:
-        '200':
-          description: PNG barcode image
-          content:
-            image/png:
-              schema:
-                type: string
-                format: binary
+  #/flag:
+  #  get:
+  #    summary: Gets the latest flag
+  #    description: Gets the latest flag color (returns a javascript that will assign a variable like FLAG_COLOR = 'R')
+  #    tags:
+  #      - Public
+  #    responses:
+  #      '200':
+  #        description: PNG barcode image
+  #        content:
+  #          text/javascript:
+  #            schema:
+  #              type: string
+  #/public/generateBarcodeImage:
+  #  get:
+  #    summary: Generates a barcode image
+  #    description: Generates a barcode image from the provided number
+  #    tags:
+  #      - Public
+  #    parameters:
+  #      - in: query
+  #        name: number
+  #        required: true
+  #        schema:
+  #          type: string
+  #    responses:
+  #      '200':
+  #        description: PNG barcode image
+  #        content:
+  #          image/png:
+  #            schema:
+  #              type: string
+  #              format: binary
   /member/createGuestCard:
     post:
       summary: Creates a guest card
