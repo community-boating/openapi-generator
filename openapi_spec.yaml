@@ -1341,42 +1341,6 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DonationOptionsDTO'
-  /member/class/signups:
-    x-is-paginated: true
-    get:
-      security:
-        - member: [ ]
-      description: 'Returns a list of ap class signups'
-      tags:
-        - UnifiedClass
-      x-is-paginated: true
-      responses:
-        '200':
-          description: Returns payment intent
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/ApClassSignupDTO'
-  /member/class/jp-signups:
-    x-is-paginated: true
-    get:
-      security:
-        - member: [ ]
-      description: 'Returns a list of jp class signups'
-      tags:
-        - UnifiedClass
-      x-is-paginated: true
-      responses:
-        '200':
-          description: Returns payment intent
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: '#/components/schemas/JpClassSignupDTO'
   /member/classes/signup:
     post:
       description: 'Signs up for a class'
@@ -1397,8 +1361,28 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClassSignupResponseDTO'
+  /staff/classes/signup:
+    post:
+      description: 'Signs up for a class'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffClassSignupRequestDTO'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassSignupResponseDTO'
   /public/classes:
-    get:
+    post: #TODO this should be get
       description: 'Gets all classes'
       tags:
         - UnifiedClass
@@ -1417,9 +1401,9 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ClassInstanceDTO'
-  /member/classesWithEligibility:
-    get:
-      description: 'Gets all classes'
+  /member/classes:
+    post: #TODO this should be get
+      description: 'Gets all classes with eligibility and signups'
       tags:
         - UnifiedClass
       security:
@@ -1439,6 +1423,28 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ClassWithEligibilityDTO'
+  /staff/classes:
+    post: #TODO this should be get
+      description: 'Gets all classes with eligibility and signups'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassFilterOptions'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassWithEligibilitySingularDTO'
   /stripe/paymentTest:
     post:
       security:
@@ -1664,26 +1670,41 @@ components:
       type: object
       properties:
         classSignup:
-          $ref: '#/components/schemas/ApClassSignupDTO'
-        jpClassSignup:
-          $ref: '#/components/schemas/JpClassSignupDTO'
+          $ref: '#/components/schemas/ClassSignupFullDTO'
         errors:
           type: string
     ClassSignupRequestDTO:
       type: object
+      required: [classInstance, program, personId]
       properties:
-        classSignup:
-          $ref: '#/components/schemas/CreateApClassSignupDTO'
-        jpClassSignup:
-          $ref: '#/components/schemas/CreateJpClassSignupDTO'
+        classInstance:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        program:
+          $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+        personId:
+          $ref: './shared.yaml#/components/schemas/PersonRef'
+        signupType:
+          $ref: './shared.yaml#/components/schemas/SignupTypeEnum'
+    StaffClassSignupRequestDTO:
+      required: [classInstance, program, personId]
+      allOf:
+        - $ref: '#/components/schemas/ClassSignupRequestDTO'
+        - type: object
+          properties:
+            overrides:
+              $ref: '#/components/schemas/ClassSignupOverrides'
     ClassSignupOverrides:
       type: object
       properties:
+        overrideAll:
+          type: boolean
         overrideCanEnroll:
           type: boolean
         overrideClassStarted:
           type: boolean
         overrideClassCancelled:
+          type: boolean
+        overrideStaggeredStart:
           type: boolean
         typeOverride:
           type: string
@@ -3328,6 +3349,9 @@ components:
       x-has-dto: true
       type: object
       properties:
+        includeAvailability:
+          type: boolean
+          default: true
         includeCancelled:
           type: boolean
         startDate:
@@ -3342,6 +3366,8 @@ components:
           $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
         instanceId:
           $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        #personId:
+        #  $ref: './shared.yaml#/components/schemas/PersonRef'
     PersonClassEligibility:
       x-has-dto: true
       type: object
