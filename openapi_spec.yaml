@@ -3403,6 +3403,15 @@ components:
       required: [ classInstance, personEligibility ]
       properties:
         classInstance:
+          $ref: '#/components/schemas/ClassInstanceDTO'
+        personEligibility:
+          $ref: '#/components/schemas/PersonClassEligibility'
+    ClassWithEligibilitySingularInternalDTO:
+      x-has-dto: true
+      type: object
+      required: [ classInstance, personEligibility ]
+      properties:
+        classInstance:
           $ref: '#/components/schemas/ClassInstanceFullDTO'
         personEligibility:
           $ref: '#/components/schemas/PersonClassEligibility'
