@@ -1423,8 +1423,15 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ClassWithEligibilityDTO'
-  /staff/classes:
+  /staff/classes/{personId}:
     post: #TODO this should be get
+      parameters:
+        - in: path
+          name: personId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
       description: 'Gets all classes with eligibility and signups'
       tags:
         - UnifiedClass
