@@ -3375,6 +3375,8 @@ components:
           $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
         instanceId:
           $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        signupId:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassSignupRef'
         #personId:
         #  $ref: './shared.yaml#/components/schemas/PersonRef'
     PersonClassEligibility:
