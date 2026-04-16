@@ -5306,7 +5306,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: true
+      x-dao-interface: false
       type: object
       properties:
         noLimit:
@@ -5316,7 +5316,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: true
+      x-dao-interface: false
       type: object
       properties:
         noSignup:
