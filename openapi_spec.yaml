@@ -3242,6 +3242,8 @@ components:
           $ref: '#/components/schemas/PricingInformationDTO'
         currentStaggerId:
           $ref: './shared.yaml#/components/schemas/UnifiedClassStaggerRef'
+        isLastStagger:
+          type: boolean
         currentSignupSequence:
           type: integer
 
