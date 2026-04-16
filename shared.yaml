@@ -165,6 +165,7 @@ components:
       type: string
       enum:
         - 'AVAILABLE'
+        - 'PAID_AVAILABLE'
         - 'WAITLIST_AVAILABLE'
         - 'FUTURE_UNAVAILABLE'
         - 'STARTED_UNAVAILABLE'
