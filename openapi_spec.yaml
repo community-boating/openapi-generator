@@ -3179,6 +3179,7 @@ components:
         - $ref: './shared.yaml#/components/schemas/WithTypeName'
         - $ref: './shared.yaml#/components/schemas/WithAdminHold'
         - $ref: './shared.yaml#/components/schemas/WithNoLimit'
+        - $ref: './shared.yaml#/components/schemas/WithNoSignup'
         - $ref: './shared.yaml#/components/schemas/WithCancelledDatetime'
         - $ref: './shared.yaml#/components/schemas/WithAllowMultiple'
         - $ref: './shared.yaml#/components/schemas/WithConfirmTemplate'

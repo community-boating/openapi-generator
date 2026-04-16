@@ -167,7 +167,8 @@ components:
         - 'AVAILABLE'
         - 'WAITLIST_AVAILABLE'
         - 'FUTURE_UNAVAILABLE'
-        - 'UNAVAILABLE_STARTED'
+        - 'STARTED_UNAVAILABLE'
+        - 'NO_SIGNUP_UNAVAILABLE'
         - 'UNAVAILABLE'
     PersonRelationType:
       type: integer
@@ -2565,7 +2566,7 @@ components:
       type: object
       properties:
         staggerId:
-          $ref: '#/components/schemas/JpClassStaggerRef'
+          $ref: '#/components/schemas/UnifiedClassStaggerRef'
     JpClassSignupRef:
       x-has-interface: true
       x-has-dto: false
@@ -5311,6 +5312,16 @@ components:
         noLimit:
           type: boolean
           x-boolean-char: Y
+    WithNoSignup:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      x-dao-interface: true
+      type: object
+      properties:
+        noSignup:
+          type: boolean
+          x-boolean-char: Y
     WithPrice:
       x-has-interface: true
       x-has-dto: false
@@ -5725,6 +5736,7 @@ components:
         - $ref: '#/components/schemas/UnifiedClassTypeBase'
         - $ref: '#/components/schemas/WithSignupMax'
         - $ref: '#/components/schemas/WithSignupMin'
+        - $ref: '#/components/schemas/WithNoSignup'
         - type: object
           properties:
             signupMax:
@@ -5740,9 +5752,6 @@ components:
             colorCode:
               type: string
               maxLength: 6
-            noSignup:
-              type: boolean
-              x-boolean-char: Y
             priceDefault:
               type: integer
             disallowIfOverkill:
@@ -6025,6 +6034,8 @@ components:
               type: string
               maxLength: 100
     JpClassSectionLookupFull:
+
+
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
@@ -6038,7 +6049,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: false
+      x-dao-interface: true
       required: [ assignId ]
       allOf:
         - $ref: '#/components/schemas/UnifiedClassStaggerRef'
