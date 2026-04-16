@@ -3315,6 +3315,7 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/UnifiedClassSignupFull'
         - $ref: './shared.yaml#/components/schemas/WithStaggerRef'
+        - $ref: './shared.yaml#/components/schemas/WithLineItemRef'
         - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
           properties:
@@ -3387,6 +3388,8 @@ components:
           $ref: './shared.yaml#/components/schemas/ClassSignupEligibilityStatus'
         message:
           type: string
+        existingSignup:
+          $ref: '#/components/schemas/ClassSignupDTO'
     ClassWithEligibilityDTO:
       x-has-dto: true
       type: object
