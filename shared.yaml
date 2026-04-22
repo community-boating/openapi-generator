@@ -4430,6 +4430,8 @@ components:
         - $ref: '#/components/schemas/DateRangeActivated'
         - type: object
           properties:
+            ignoreStock:
+              type: boolean
             minQuantity:
               type: integer
             maxQuantity:
@@ -5880,6 +5882,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/UnifiedClassSessionBase'
         - $ref: '#/components/schemas/WithCancelledDatetime'
+        - $ref: '#/components/schemas/WithSessionLength'
         - type: object
           properties:
             isMakeup:
