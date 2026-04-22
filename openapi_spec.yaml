@@ -187,7 +187,7 @@ paths:
     get:
       summary: Gets a list of balances
       security:
-        - staff: [ ]
+        - member: [ ]
       tags:
         - Balance
       x-is-paginated: true
