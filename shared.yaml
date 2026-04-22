@@ -90,6 +90,17 @@ components:
         - 'ADD_MANUAL'
         - 'REMOVE_MANUAL'
         - 'REFUND'
+    DigitalPurchaseDeliveryMethod:
+      type: string
+      enum:
+        - 'EMAIL'
+        - 'MAIL'
+        - 'NONE'
+    DigitalPurchaseDeliveryTarget:
+      type: string
+      enum:
+        - 'PURCHASER'
+        - 'RECIPIENT'
     ClassTypeEnum:
       type: string
       enum:
@@ -2824,6 +2835,7 @@ components:
       required: [ fundId, initiativeId, state ]
       allOf:
         - $ref: '#/components/schemas/Purchasable'
+        - $ref: '#/components/schemas/DigitalPurchaseDeliveryInformation'
         - type: object
           properties:
             fundId:
@@ -3202,6 +3214,8 @@ components:
         squareLineItemUid:
           type: string
           maxLength: 200
+        digitalPurchaseDelivered:
+          type: boolean
     LineItemCalculated:
       type: object
       properties:
@@ -3579,10 +3593,21 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
+    DigitalPurchaseDeliveryInformation:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        target:
+          $ref: '#/components/schemas/DigitalPurchaseDeliveryTarget'
+        method:
+          $ref: '#/components/schemas/DigitalPurchaseDeliveryMethod'
     BalanceTransactionBase:
       required: [ transactionAmountCents ]
       allOf:
         - $ref: '#/components/schemas/PurchasableWithoutClose'
+        - $ref: '#/components/schemas/DigitalPurchaseDeliveryInformation'
         - type: object
           properties:
             balanceTransactionType:
@@ -4055,6 +4080,7 @@ components:
           properties:
             balanceSource:
               $ref: '#/components/schemas/BalanceRef'
+
     ItemInstanceStockChangeRef:
       x-has-interface: true
       x-has-dto: false
