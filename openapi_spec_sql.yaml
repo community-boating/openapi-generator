@@ -219,7 +219,16 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/LineItemRefund'
-
+    PurchaseDelivery:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PurchaseDeliveryFull'
+        - type: object
+          properties:
+            deliveryTarget:
+              $ref: '#/components/schemas/PersonDAO'
+            deliveryAddress:
+              $ref: '#/components/schemas/AddressDAO'
     LineItemRefund:
       x-has-dao: true
       required: [assignId, lineItemId]

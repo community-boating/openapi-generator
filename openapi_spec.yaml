@@ -164,14 +164,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/PersonPublicRelatedDTO'
+              $ref: '#/components/schemas/PersonPurchaseRecipientDTO'
       responses:
         '200':
           description: Successful login
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonPublicRelatedDTO'
+                $ref: '#/components/schemas/PersonPurchaseRecipientDTO'
         '401':
           description: Invalid credentials
   /member/eii:
@@ -2223,6 +2223,8 @@ components:
             stockChange:
               nullable: true
               $ref: '#/components/schemas/PurchaseStockedItemDTO'
+            purchaseDelivery:
+              $ref: '#/components/schemas/PurchaseDeliveryDTO'
             appliedTaxes:
               x-parent-variable: lineItemId
               type: array
@@ -2239,6 +2241,10 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/LineItemRefundDTO'
+    PurchaseDeliveryDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PurchaseDeliveryFull'
     LineItemDiscountDTO:
       x-has-dto: true
       allOf:
@@ -2758,6 +2764,16 @@ components:
             #  $ref: '#/components/schemas/PersonDTO'
             B:
               $ref: '#/components/schemas/PersonDTO'
+    PersonPurchaseRecipientDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRef'
+        - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
+        - $ref: './shared.yaml#/components/schemas/WithEmail'
+        - type: object
+          properties:
+            address:
+              $ref: '#/components/schemas/AddressDTO'
     PhoneBaseDTO:
       x-has-dto: true
       x-has-dao: false

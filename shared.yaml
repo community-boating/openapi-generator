@@ -90,17 +90,23 @@ components:
         - 'ADD_MANUAL'
         - 'REMOVE_MANUAL'
         - 'REFUND'
-    DigitalPurchaseDeliveryMethod:
+    PurchaseDeliveryMethod:
       type: string
       enum:
         - 'EMAIL'
         - 'MAIL'
         - 'NONE'
-    DigitalPurchaseDeliveryTarget:
+    PurchaseDeliveryTarget:
       type: string
       enum:
         - 'PURCHASER'
         - 'RECIPIENT'
+    PurchaseDeliveryStatus:
+      type: string
+      enum:
+        - 'DELIVERED'
+        - 'PENDING_DELIVERY'
+        - 'PENDING_PAYMENT'
     ClassTypeEnum:
       type: string
       enum:
@@ -2852,7 +2858,6 @@ components:
       required: [ fundId, initiativeId, state ]
       allOf:
         - $ref: '#/components/schemas/Purchasable'
-        - $ref: '#/components/schemas/DigitalPurchaseDeliveryInformation'
         - type: object
           properties:
             fundId:
@@ -3231,8 +3236,6 @@ components:
         squareLineItemUid:
           type: string
           maxLength: 200
-        digitalPurchaseDelivered:
-          type: boolean
     LineItemCalculated:
       type: object
       properties:
@@ -3300,6 +3303,8 @@ components:
               $ref: '#/components/schemas/DamageWaiverFull'
             stockChange:
               $ref: '#/components/schemas/ItemInstanceStockChangeBase'
+            purchaseDelivery:
+              $ref: '#/components/schemas/PurchaseDeliveryRef'
             appliedTaxes:
               x-parent-variable: lineItemId
               type: array
@@ -3610,21 +3615,44 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-    DigitalPurchaseDeliveryInformation:
+    PurchaseDeliveryRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+    PurchaseDeliveryBase:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       type: object
       properties:
         target:
-          $ref: '#/components/schemas/DigitalPurchaseDeliveryTarget'
+          $ref: '#/components/schemas/PurchaseDeliveryTarget'
         method:
-          $ref: '#/components/schemas/DigitalPurchaseDeliveryMethod'
+          $ref: '#/components/schemas/PurchaseDeliveryMethod'
+        deliveryStatus:
+          $ref: '#/components/schemas/PurchaseDeliveryStatus'
+        deliveredOn:
+          type: string
+          format: date-time
+    PurchaseDeliveryFull:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/PurchaseDeliveryRef'
+        - $ref: '#/components/schemas/PurchaseDeliveryBase'
+        - type: object
+          properties:
+            deliveryTarget:
+              $ref: '#/components/schemas/PersonRef'
+            deliveryAddress:
+              $ref: '#/components/schemas/AddressRef'
     BalanceTransactionBase:
       required: [ transactionAmountCents ]
       allOf:
         - $ref: '#/components/schemas/PurchasableWithoutClose'
-        - $ref: '#/components/schemas/DigitalPurchaseDeliveryInformation'
         - type: object
           properties:
             balanceTransactionType:
