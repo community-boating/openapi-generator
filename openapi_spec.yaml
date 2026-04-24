@@ -2667,11 +2667,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonPublicRelatedDTO'
-            purchaseRecipients:
-              maxLength: 25
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonPublicRelatedDTO'
+            #purchaseRecipients:
+            #  maxLength: 25
+            #  type: array
+            #  items:
+            #    $ref: '#/components/schemas/PersonPublicRelatedDTO'
     PersonPublicChildDTO:
       x-has-dto: true
       allOf:
