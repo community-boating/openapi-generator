@@ -1759,6 +1759,16 @@ components:
       allOf:
         - $ref: '#/components/schemas/PersonRef'
         - $ref: '#/components/schemas/PersonNameInfo'
+    WithEmail:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        email:
+          type: string
+          maxLength: 100
+          pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
     ReportMetaFull:
       x-has-interface: true
       x-has-dto: false
@@ -1840,6 +1850,7 @@ components:
       x-hsa-dao: false
       allOf:
         - $ref: '#/components/schemas/PersonNameInfo'
+        - $ref: '#/components/schemas/WithEmail'
         - type: object
           required: [ temp ]
           properties:
@@ -1918,10 +1929,6 @@ components:
             stripeCustomerId:
               readOnly: true
               type: string
-            email:
-              type: string
-              maxLength: 100
-              pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
             temp:
               readOnly: true
               type: string
@@ -2351,19 +2358,13 @@ components:
       type: object
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-    AddressBase:
+    AddressNoStatus:
       type: object
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
       required: [ line1, country ]
       properties:
-        isVerified:
-          readOnly: true
-          type: boolean
-        isBad:
-          readOnly: true
-          type: boolean
         line1:
           type: string
           maxLength: 200
@@ -2384,6 +2385,22 @@ components:
         zip:
           type: string
           maxLength: 15
+    AddressBase:
+      type: object
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ line1, country ]
+      allOf:
+        - $ref: '#/components/schemas/AddressNoStatus'
+        - type: object
+          properties:
+            isVerified:
+              readOnly: true
+              type: boolean
+            isBad:
+              readOnly: true
+              type: boolean
     Address:
       type: object
       x-has-interface: true
