@@ -1368,6 +1368,12 @@ components:
           type: string
           maxLength: 50
           nullable: true
+    PersonLookupCooldown:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
+        - $ref: './shared.yaml#/components/schemas/WithEmail'
+        - $ref: './shared.yaml#/components/schemas/AddressNoStatus'
     PersonDAO:
       x-has-dao: true
       required: [personId, relationsA, relationsB]
