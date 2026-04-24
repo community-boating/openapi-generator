@@ -1370,10 +1370,19 @@ components:
           nullable: true
     PersonLookupCooldown:
       x-has-dao: true
+      required: [searchingPerson]
       allOf:
+        - $ref: './shared.yaml#/components/schemas/LongIDResource'
         - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
         - $ref: './shared.yaml#/components/schemas/WithEmail'
         - $ref: './shared.yaml#/components/schemas/AddressNoStatus'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            searchingPerson:
+              $ref: '#/components/schemas/PersonDAO'
+            matchingPerson:
+              $ref: '#/components/schemas/PersonDAO'
     PersonDAO:
       x-has-dao: true
       required: [personId, relationsA, relationsB]
