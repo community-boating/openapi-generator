@@ -1646,6 +1646,8 @@ components:
               x-backref-name: balanceTransaction
               allOf:
                 - $ref: '#/components/schemas/BalanceTransactionOrderPaymentDTO'
+            balanceId:
+              $ref: '#/components/schemas/BalanceBaseDTO'
         #    lineItemId:
         #      type: integer
         #      format: int64
@@ -1677,6 +1679,12 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PersonBalanceDTO'
+    BalanceBaseDTO:
+      x-has-dto: true
+      required: [ balanceCents, balanceType ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceRef'
+        - $ref: './shared.yaml#/components/schemas/BalanceBase'
     BalanceDTO:
       x-has-dto: true
       required: [ balanceCents, balanceType ]
