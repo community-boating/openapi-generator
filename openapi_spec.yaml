@@ -1313,7 +1313,11 @@ paths:
         - Payment
       responses:
         '200':
-          description: Returns payment intent
+          description: Returns order after payment cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
   /member/payment:
     post:
       security:
