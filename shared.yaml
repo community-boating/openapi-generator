@@ -2360,7 +2360,7 @@ components:
         - $ref: '#/components/schemas/PersonAddressRef'
         - $ref: '#/components/schemas/PersonAddressBase'
     AddressRef:
-      x-dao-interface: true
+      x-dao-interface: false
       type: object
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
@@ -3645,10 +3645,18 @@ components:
         - $ref: '#/components/schemas/PurchaseDeliveryBase'
         - type: object
           properties:
-            deliveryTarget:
+            personLookup:
+              $ref: '#/components/schemas/PersonLookupRef'
+            targetPerson:
               $ref: '#/components/schemas/PersonRef'
-            deliveryAddress:
+            targetAddress:
               $ref: '#/components/schemas/AddressRef'
+    PersonLookupRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
     BalanceTransactionBase:
       required: [ transactionAmountCents ]
       allOf:

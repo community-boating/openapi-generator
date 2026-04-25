@@ -204,6 +204,8 @@ components:
             stockChange:
               nullable: true
               $ref: '#/components/schemas/ItemInstanceStockChange'
+            purchaseDelivery:
+              $ref: '#/components/schemas/PurchaseDelivery'
             appliedTaxes:
               x-parent-variable: lineItemId
               type: array
@@ -225,10 +227,12 @@ components:
         - $ref: './shared.yaml#/components/schemas/PurchaseDeliveryFull'
         - type: object
           properties:
-            deliveryTarget:
+            targetPerson:
               $ref: '#/components/schemas/PersonDAO'
-            deliveryAddress:
+            targetAddress:
               $ref: '#/components/schemas/AddressDAO'
+            personLookup:
+              $ref: '#/components/schemas/PersonLookup'
     LineItemRefund:
       x-has-dao: true
       required: [assignId, lineItemId]
@@ -1377,21 +1381,25 @@ components:
           type: string
           maxLength: 50
           nullable: true
-    PersonLookupCooldown:
+    PersonLookup:
       x-has-dao: true
       required: [searchingPerson]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/LongIDResource'
+        - $ref: './shared.yaml#/components/schemas/PersonLookupRef'
         - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
         - $ref: './shared.yaml#/components/schemas/WithEmail'
         - $ref: './shared.yaml#/components/schemas/AddressNoStatus'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
+            isNew:
+              type: boolean
             searchingPerson:
               $ref: '#/components/schemas/PersonDAO'
             matchingPerson:
               $ref: '#/components/schemas/PersonDAO'
+            matchingAddress:
+              $ref: '#/components/schemas/AddressDAO'
     PersonDAO:
       x-has-dao: true
       required: [personId, relationsA, relationsB]
