@@ -693,6 +693,27 @@ paths:
       responses:
         '200':
           description: Successfully cancelled the order
+  /member/orders/applyDiscountByCode:
+    post:
+      description: 'Applies discounts to open order based on supplied activation code'
+      parameters:
+        - in: query
+          name: code # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The discount code
+      security:
+        - member: [ ]
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Returns order after payment cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
   /staff/orders/capturePaid:
     post:
       x-one-of-permissions:
