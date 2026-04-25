@@ -1396,7 +1396,7 @@ components:
               type: boolean
             addressSimilarityScore:
               type: number
-              format: float
+              format: double
             searchingPerson:
               $ref: '#/components/schemas/PersonDAO'
             matchingPerson:
