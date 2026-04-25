@@ -1394,6 +1394,9 @@ components:
           properties:
             isNew:
               type: boolean
+            addressSimilarityScore:
+              type: number
+              format: float
             searchingPerson:
               $ref: '#/components/schemas/PersonDAO'
             matchingPerson:
