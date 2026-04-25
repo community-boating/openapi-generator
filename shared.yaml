@@ -3691,7 +3691,7 @@ components:
             paymentId:
               x-backref-name: balanceTransaction
               allOf:
-                - $ref: '#/components/schemas/OrderPaymentBase'
+                - $ref: '#/components/schemas/OrderPaymentRef'
     PersonBalanceBase:
       x-has-interface: true
       x-has-dto: true

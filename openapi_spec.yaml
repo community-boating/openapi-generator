@@ -1642,6 +1642,15 @@ components:
           type: string
     BalanceTransactionDTO:
       x-has-dto: true
+      required: [ id, balanceId, transactionAmountCents ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceTransactionInternalFull'
+        - type: object
+          properties:
+            balanceId:
+              $ref: '#/components/schemas/BalanceBaseDTO'
+    BalanceTransactionWithPaymentDTO:
+      x-has-dto: true
       required: [id, balanceId, transactionAmountCents]
       allOf:
         - $ref: './shared.yaml#/components/schemas/BalanceTransactionInternalFull'
@@ -1651,8 +1660,6 @@ components:
               x-backref-name: balanceTransaction
               allOf:
                 - $ref: '#/components/schemas/BalanceTransactionOrderPaymentDTO'
-            balanceId:
-              $ref: '#/components/schemas/BalanceBaseDTO'
         #    lineItemId:
         #      type: integer
         #      format: int64
@@ -1704,7 +1711,7 @@ components:
               x-parent-variable: balanceId
               type: array
               items:
-                $ref: '#/components/schemas/BalanceTransactionDTO'
+                $ref: '#/components/schemas/BalanceTransactionWithPaymentDTO'
             personBalances:
               x-parent-variable: balanceId
               type: array
