@@ -3858,13 +3858,13 @@ components:
         - $ref: '#/components/schemas/DiscountInstanceBase'
         - $ref: '#/components/schemas/DateRangeActivated'
     DiscountInstanceInternalFull:
-      x-dao-interface: true
+      x-dao-interface: false
       allOf:
         - $ref: '#/components/schemas/DiscountInstanceFull'
         - type: object
           properties:
             universalCode:
-              writeOnly: true
+              #writeOnly: true
               type: string
               maxLength: 200
             discountId:
