@@ -2808,6 +2808,7 @@ components:
     PersonPurchaseRecipientDTO:
       x-has-dto: true
       allOf:
+        - $ref: './shared.yaml#/components/schemas/Deletable'
         - $ref: './shared.yaml#/components/schemas/PersonRef'
         - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
         - $ref: './shared.yaml#/components/schemas/WithEmail'
