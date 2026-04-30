@@ -2809,7 +2809,7 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/Deletable'
-        - $ref: './shared.yaml#/components/schemas/PersonRef'
+        - $ref: './shared.yaml#/components/schemas/PersonLookupRef'
         - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
         - $ref: './shared.yaml#/components/schemas/WithEmail'
         - type: object
