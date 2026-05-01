@@ -1388,7 +1388,7 @@ components:
         - $ref: './shared.yaml#/components/schemas/PersonLookupRef'
         - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
         - $ref: './shared.yaml#/components/schemas/WithEmail'
-        - $ref: './shared.yaml#/components/schemas/AddressNoStatus'
+        #- $ref: './shared.yaml#/components/schemas/AddressNoStatus'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
