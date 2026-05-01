@@ -1402,7 +1402,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MembershipAndGuestPrivsOptionsDTO'
+                $ref: '#/components/schemas/CatalogOptionsDTO'
     post:
       description: 'Returns options for membership and guest privs purchases'
       tags:
@@ -1418,14 +1418,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/MembershipAndGuestPrivsOptionsDTO'
+              $ref: '#/components/schemas/CatalogOptionsDTO'
       responses:
         '200':
           description: Returns membership and guest privs options
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/MembershipAndGuestPrivsOptionsDTO'
+                $ref: '#/components/schemas/CatalogOptionsDTO'
   /member/classes/signup:
     post:
       description: 'Signs up for a class'
@@ -2929,7 +2929,7 @@ components:
       type: object
       allOf:
         - $ref: './shared.yaml#/components/schemas/GuestPrivsTypeFull'
-    MembershipAndGuestPrivsOptionsDTO:
+    CatalogOptionsDTO:
       type: object
       properties:
         membershipTypes:
