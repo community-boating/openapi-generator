@@ -2929,6 +2929,20 @@ components:
       type: object
       allOf:
         - $ref: './shared.yaml#/components/schemas/GuestPrivsTypeFull'
+    ApClassTypeDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ApClassTypeFull'
+        - type: object
+          properties:
+            ratingPrereq:
+              $ref: './shared.yaml#/components/schemas/RatingRefAndName'
+            ratingOverkill:
+              $ref: './shared.yaml#/components/schemas/RatingRefAndName'
+            classPrereq:
+              $ref: './shared.yaml#/components/schemas/ClassTypeRefWithName'
+            classOverkill:
+              $ref: './shared.yaml#/components/schemas/ClassTypeRefWithName'
     CatalogOptionsDTO:
       type: object
       properties:
@@ -2940,6 +2954,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/GuestPrivsTypeDTO'
+        apClassTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApClassTypeDTO'
     ReportMetaDTO:
       x-has-dto: true
       type: object
