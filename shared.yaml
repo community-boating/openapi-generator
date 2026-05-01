@@ -2743,6 +2743,8 @@ components:
           properties:
             membershipId:
               $ref: '#/components/schemas/MembershipRef'
+            guestPrivsTypeId:
+              $ref: '#/components/schemas/GuestPrivsTypeRef'
     GuestPrivsInternalFull:
       x-dao-interface: true
       x-has-interface: true
@@ -4396,6 +4398,8 @@ components:
               $ref: '#/components/schemas/ApClassInstanceRef'
             membershipTypeId:
               $ref: '#/components/schemas/MembershipTypeRef'
+            guestPrivsTypeId:
+              $ref: '#/components/schemas/GuestPrivsTypeRef'
             productId:
               $ref: '#/components/schemas/ProductRef'
             itemInstances:
@@ -4770,6 +4774,61 @@ components:
             renewalEligible:
               type: boolean
               x-boolean-char: Y
+    MembershipTypeFull:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/MembershipTypeRef'
+        - $ref: '#/components/schemas/MembershipTypeBase'
+    GuestPrivsTypeRef:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        assignId:
+          x-col-primary: true
+          type: integer
+    GuestPrivsTypeBase:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/GuestPrivsTypeRef'
+        - type: object
+          properties:
+            guestPrivTypeName:
+              type: string
+              maxLength: 200
+            displayOrder:
+              type: integer
+              format: int32
+            active:
+              type: boolean
+              description: Y/N flag
+              x-boolean-char: Y
+            guestPrivTypeDisplayName:
+              type: string
+              maxLength: 100
+            availableOnline:
+              type: boolean
+              x-boolean-char: Y
+            renewalEligible:
+              type: boolean
+              x-boolean-char: Y
+    GuestPrivsTypeFull:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/GuestPrivsTypeRef'
+        - $ref: '#/components/schemas/GuestPrivsTypeBase'
     ApClassTypeRef:
       x-has-interface: true
       x-has-dto: false

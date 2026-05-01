@@ -71,6 +71,8 @@ components:
               $ref: '#/components/schemas/ApClassInstance'
             membershipTypeId:
               $ref: '#/components/schemas/MembershipType'
+            guestPrivsTypeId:
+              $ref: '#/components/schemas/GuestPrivsType'
             productId:
               $ref: '#/components/schemas/Product'
             catalogId:
@@ -841,6 +843,8 @@ components:
               type: integer
             membershipId:
               $ref: '#/components/schemas/MembershipDAO'
+            guestPrivsTypeId:
+              $ref: '#/components/schemas/GuestPrivsType'
             lineItemId:
               x-backref-name: guestPrivs
               allOf:
@@ -991,12 +995,18 @@ components:
     MembershipType:
       x-has-dao: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/MembershipTypeBase'
+        - $ref: './shared.yaml#/components/schemas/MembershipTypeFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             programId:
               $ref: '#/components/schemas/ProgramType'
+
+    GuestPrivsType:
+      x-has-dao: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/GuestPrivsTypeFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
 
     ProgramType:
       x-has-dao: true

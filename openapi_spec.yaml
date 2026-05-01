@@ -1386,11 +1386,46 @@ paths:
         - Donation
       responses:
         '200':
-          description: Returns payment intent
+          description: Return donation options
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/DonationOptionsDTO'
+  /catalog/options:
+    get:
+      description: 'Returns options for membership and guest privs purchases'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Returns membership and guest privs options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MembershipAndGuestPrivsOptionsDTO'
+    post:
+      description: 'Returns options for membership and guest privs purchases'
+      tags:
+        - Catalog
+      x-one-of-permissions:
+        - scope: admin
+          type: ADMIN
+      security:
+        - staff: [ ]
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/MembershipAndGuestPrivsOptionsDTO'
+      responses:
+        '200':
+          description: Returns membership and guest privs options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/MembershipAndGuestPrivsOptionsDTO'
   /member/classes/signup:
     post:
       description: 'Signs up for a class'
@@ -2886,6 +2921,17 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/DonationInitiativeDTO'
+    MembershipTypeDTO:
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/MembershipTypeFull'
+    MembershipAndGuestPrivsOptionsDTO:
+      type: object
+      properties:
+        membershipTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MembershipTypeDTO'
     ReportMetaDTO:
       x-has-dto: true
       type: object
