@@ -2939,10 +2939,6 @@ components:
               $ref: './shared.yaml#/components/schemas/RatingRefAndName'
             ratingOverkill:
               $ref: './shared.yaml#/components/schemas/RatingRefAndName'
-            classPrereq:
-              $ref: './shared.yaml#/components/schemas/ClassTypeRefWithName'
-            classOverkill:
-              $ref: './shared.yaml#/components/schemas/ClassTypeRefWithName'
     CatalogOptionsDTO:
       type: object
       properties:
