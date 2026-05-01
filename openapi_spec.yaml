@@ -2925,6 +2925,10 @@ components:
       type: object
       allOf:
         - $ref: './shared.yaml#/components/schemas/MembershipTypeFull'
+    GuestPrivsTypeDTO:
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/GuestPrivsTypeFull'
     MembershipAndGuestPrivsOptionsDTO:
       type: object
       properties:
@@ -2932,6 +2936,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MembershipTypeDTO'
+        guestPrivsTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuestPrivsTypeDTO'
     ReportMetaDTO:
       x-has-dto: true
       type: object
