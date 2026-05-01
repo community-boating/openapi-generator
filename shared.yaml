@@ -4702,6 +4702,33 @@ components:
             colorDisplay:
               type: string
               maxLength: 4000
+    CatalogOptionsBase:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      properties:
+        optionName:
+          type: string
+          maxLength: 200
+        displayOrder:
+          type: integer
+          format: int32
+        active:
+          type: boolean
+          description: Y/N flag
+          x-boolean-char: Y
+        optionDisplayName:
+          type: string
+          maxLength: 100
+        optionDescriptionShort:
+          type: string
+          maxLength: 4000
+        optionDescriptionLong:
+          type: string
+        availableOnline:
+          type: boolean
+          x-boolean-char: Y
     MembershipTypeRef:
       x-has-interface: true
       x-has-dto: true
@@ -4722,20 +4749,15 @@ components:
       allOf:
         - $ref: '#/components/schemas/MembershipTypeRef'
         - $ref: '#/components/schemas/WithPrice'
+        - $ref: '#/components/schemas/CatalogOptionsBase'
         - type: object
           properties:
             programId:
               $ref: '#/components/schemas/ProgramTypeRef'
-            membershipTypeName:
+            optionName:
               type: string
               maxLength: 200
-            displayOrder:
-              type: integer
-              format: int32
-            active:
-              type: boolean
-              description: Y/N flag
-              x-boolean-char: Y
+              x-dto-column: MEMBERSHIP_TYPE_NAME
             duration:
               type: integer
               description: Duration value (likely days/months depending on business logic)
@@ -4752,12 +4774,10 @@ components:
             gcEligible:
               type: boolean
               x-boolean-char: Y
-            membershipTypeDisplayName:
+            optionDisplayName:
               type: string
               maxLength: 100
-            availableOnline:
-              type: boolean
-              x-boolean-char: Y
+              x-dto-column: MEMBERSHIP_TYPE_DISPLAY_NAME
             canHaveGuestPrivs:
               type: boolean
               x-boolean-char: Y
@@ -4799,27 +4819,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/GuestPrivsTypeRef'
-        - type: object
-          properties:
-            guestPrivTypeName:
-              type: string
-              maxLength: 200
-            displayOrder:
-              type: integer
-              format: int32
-            active:
-              type: boolean
-              description: Y/N flag
-              x-boolean-char: Y
-            guestPrivTypeDisplayName:
-              type: string
-              maxLength: 100
-            availableOnline:
-              type: boolean
-              x-boolean-char: Y
-            renewalEligible:
-              type: boolean
-              x-boolean-char: Y
+        - $ref: '#/components/schemas/CatalogOptionsBase'
     GuestPrivsTypeFull:
       x-has-interface: true
       x-dao-interface: true
