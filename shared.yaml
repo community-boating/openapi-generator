@@ -2743,8 +2743,8 @@ components:
           properties:
             membershipId:
               $ref: '#/components/schemas/MembershipRef'
-            guestPrivsTypeId:
-              $ref: '#/components/schemas/GuestPrivsTypeRef'
+            #guestPrivsTypeId:
+            #  $ref: '#/components/schemas/GuestPrivsTypeRef'
     GuestPrivsInternalFull:
       x-dao-interface: true
       x-has-interface: true
@@ -2791,6 +2791,10 @@ components:
         - $ref: '#/components/schemas/DamageWaiverRef'
         - $ref: '#/components/schemas/DamageWaiverBase'
         - $ref: '#/components/schemas/WithPersonRef'
+        - type: object
+          properties:
+            damageWaiverTypeId:
+              $ref: '#/components/schemas/DamageWaiverTypeRef'
     DamageWaiverInternalFull:
       x-dao-interface: true
       allOf:
@@ -4398,8 +4402,8 @@ components:
               $ref: '#/components/schemas/ApClassInstanceRef'
             membershipTypeId:
               $ref: '#/components/schemas/MembershipTypeRef'
-            guestPrivsTypeId:
-              $ref: '#/components/schemas/GuestPrivsTypeRef'
+            damageWaiverTypeId:
+              $ref: '#/components/schemas/DamageWaiverTypeRef'
             productId:
               $ref: '#/components/schemas/ProductRef'
             itemInstances:
@@ -4803,7 +4807,7 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/MembershipTypeRef'
         - $ref: '#/components/schemas/MembershipTypeBase'
-    GuestPrivsTypeRef:
+    DamageWaiverTypeRef:
       x-has-interface: true
       x-has-dto: true
       x-has-dao: false
@@ -4812,23 +4816,23 @@ components:
         assignId:
           x-col-primary: true
           type: integer
-    GuestPrivsTypeBase:
+    DamageWaiverTypeBase:
       x-has-interface: true
       x-dao-interface: true
       x-has-dto: true
       x-has-dao: false
       allOf:
-        - $ref: '#/components/schemas/GuestPrivsTypeRef'
+        - $ref: '#/components/schemas/DamageWaiverTypeRef'
         - $ref: '#/components/schemas/CatalogOptionsBase'
-    GuestPrivsTypeFull:
+    DamageWaiverTypeFull:
       x-has-interface: true
       x-dao-interface: true
       x-has-dto: true
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/Deletable'
-        - $ref: '#/components/schemas/GuestPrivsTypeRef'
-        - $ref: '#/components/schemas/GuestPrivsTypeBase'
+        - $ref: '#/components/schemas/DamageWaiverTypeRef'
+        - $ref: '#/components/schemas/DamageWaiverTypeBase'
     ApClassTypeRef:
       x-has-interface: true
       x-has-dto: false

@@ -71,8 +71,8 @@ components:
               $ref: '#/components/schemas/ApClassInstance'
             membershipTypeId:
               $ref: '#/components/schemas/MembershipType'
-            guestPrivsTypeId:
-              $ref: '#/components/schemas/GuestPrivsType'
+            damageWaiverTypeId:
+              $ref: '#/components/schemas/DamageWaiverType'
             productId:
               $ref: '#/components/schemas/Product'
             catalogId:
@@ -843,8 +843,8 @@ components:
               type: integer
             membershipId:
               $ref: '#/components/schemas/MembershipDAO'
-            guestPrivsTypeId:
-              $ref: '#/components/schemas/GuestPrivsType'
+            #guestPrivsTypeId:
+            #  $ref: '#/components/schemas/GuestPrivsType'
             lineItemId:
               x-backref-name: guestPrivs
               allOf:
@@ -858,6 +858,8 @@ components:
           properties:
             personId:
               $ref: '#/components/schemas/PersonDAO'
+            damageWaiverTypeId:
+              $ref: '#/components/schemas/DamageWaiverType'
             lineItemId:
               x-backref-name: damageWaiver
               allOf:
@@ -1002,10 +1004,10 @@ components:
             programId:
               $ref: '#/components/schemas/ProgramType'
 
-    GuestPrivsType:
+    DamageWaiverType:
       x-has-dao: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/GuestPrivsTypeFull'
+        - $ref: './shared.yaml#/components/schemas/DamageWaiverTypeFull'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
 
     ProgramType:

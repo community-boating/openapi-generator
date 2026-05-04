@@ -2925,10 +2925,10 @@ components:
       type: object
       allOf:
         - $ref: './shared.yaml#/components/schemas/MembershipTypeFull'
-    GuestPrivsTypeDTO:
+    DamageWaiverTypeDTO:
       type: object
       allOf:
-        - $ref: './shared.yaml#/components/schemas/GuestPrivsTypeFull'
+        - $ref: './shared.yaml#/components/schemas/DamageWaiverTypeFull'
     ApClassTypeDTO:
       x-has-dto: true
       allOf:
@@ -2946,10 +2946,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/MembershipTypeDTO'
-        guestPrivsTypes:
+        damageWaiverTypes:
           type: array
           items:
-            $ref: '#/components/schemas/GuestPrivsTypeDTO'
+            $ref: '#/components/schemas/DamageWaiverTypeDTO'
         apClassTypes:
           type: array
           items:
