@@ -4693,16 +4693,9 @@ components:
       allOf:
         - $ref: '#/components/schemas/ProgramTypeRef'
         - $ref: '#/components/schemas/ProgramTypeName'
+        - $ref: '#/components/schemas/CatalogOptionsBase'
         - type: object
           properties:
-            displayOrder:
-              type: integer
-              format: int32
-            active:
-              type: boolean
-              maxLength: 1
-              x-boolean-char: Y
-              description: Y/N flag
             colorDisplay:
               type: string
               maxLength: 4000
@@ -4720,10 +4713,8 @@ components:
       x-has-dto: true
       x-has-dao: false
       required: [ assignId ]
+      type: object
       properties:
-        optionName:
-          type: string
-          maxLength: 200
         displayOrder:
           type: integer
           format: int32
@@ -4731,17 +4722,29 @@ components:
           type: boolean
           description: Y/N flag
           x-boolean-char: Y
-        optionDisplayName:
-          type: string
-          maxLength: 100
-        optionDescriptionShort:
-          type: string
-          maxLength: 4000
-        optionDescriptionLong:
-          type: string
-        availableOnline:
-          type: boolean
-          x-boolean-char: Y
+    CatalogOptionsFull:
+      x-has-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/CatalogOptionsBase'
+        - type: object
+          properties:
+            optionName:
+              type: string
+              maxLength: 200
+            optionDisplayName:
+              type: string
+              maxLength: 100
+            optionDescriptionShort:
+              type: string
+              maxLength: 4000
+            optionDescriptionLong:
+              type: string
+            availableOnline:
+              type: boolean
+              x-boolean-char: Y
     MembershipTypeRef:
       x-has-interface: true
       x-has-dto: true
@@ -4762,7 +4765,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/MembershipTypeRef'
         - $ref: '#/components/schemas/WithPrice'
-        - $ref: '#/components/schemas/CatalogOptionsBase'
+        - $ref: '#/components/schemas/CatalogOptionsFull'
         - type: object
           properties:
             programId:
@@ -4832,7 +4835,7 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/DamageWaiverTypeRef'
-        - $ref: '#/components/schemas/CatalogOptionsBase'
+        - $ref: '#/components/schemas/CatalogOptionsFull'
     DamageWaiverTypeFull:
       x-has-interface: true
       x-dao-interface: true
