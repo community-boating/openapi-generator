@@ -4686,7 +4686,7 @@ components:
         - $ref: '#/components/schemas/ProgramTypeName'
     ProgramTypeBase:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dto: true
       x-has-dao: false
       type: object
@@ -4701,7 +4701,7 @@ components:
               maxLength: 4000
     ProgramTypeFull:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dto: true
       x-has-dao: false
       allOf:
@@ -4759,7 +4759,7 @@ components:
           type: integer
     MembershipTypeBase:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dto: true
       x-has-dao: false
       allOf:
@@ -4812,7 +4812,7 @@ components:
               x-boolean-char: Y
     MembershipTypeFull:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dto: true
       x-has-dao: false
       allOf:
@@ -4830,7 +4830,7 @@ components:
           type: integer
     DamageWaiverTypeBase:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dto: true
       x-has-dao: false
       allOf:
@@ -4838,7 +4838,7 @@ components:
         - $ref: '#/components/schemas/CatalogOptionsFull'
     DamageWaiverTypeFull:
       x-has-interface: true
-      x-dao-interface: true
+      x-dao-interface: false
       x-has-dto: true
       x-has-dao: false
       allOf:
@@ -5890,7 +5890,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: true
+      x-dao-interface: false
       allOf:
         - $ref: '#/components/schemas/UnifiedClassTypeBase'
         - $ref: '#/components/schemas/WithSignupMax'
@@ -5923,7 +5923,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: true
+      x-dao-interface: false
       allOf:
         - $ref: '#/components/schemas/ApClassTypeRef'
         - $ref: '#/components/schemas/ApClassTypeBase'
