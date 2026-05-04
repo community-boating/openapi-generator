@@ -2925,6 +2925,10 @@ components:
       type: object
       allOf:
         - $ref: './shared.yaml#/components/schemas/MembershipTypeFull'
+    ProgramTypeDTO:
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ProgramTypeFull'
     DamageWaiverTypeDTO:
       type: object
       allOf:
@@ -2954,6 +2958,10 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/ApClassTypeDTO'
+        programTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProgramTypeDTO'
     ReportMetaDTO:
       x-has-dto: true
       type: object

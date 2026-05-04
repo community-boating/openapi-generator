@@ -4706,6 +4706,15 @@ components:
             colorDisplay:
               type: string
               maxLength: 4000
+    ProgramTypeFull:
+      x-has-interface: true
+      x-dao-interface: true
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/ProgramTypeRef'
+        - $ref: '#/components/schemas/ProgramTypeBase'
     CatalogOptionsBase:
       x-has-interface: true
       x-has-dto: true
