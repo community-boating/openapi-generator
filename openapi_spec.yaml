@@ -683,6 +683,29 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PersonAgreementsDTO'
+  /staff/agreements/:personId:
+    get:
+      description: 'Gets required agreements for current open order'
+      parameters:
+        - in: path
+          name: personId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          description: The person ID
+      security:
+        - staff: [ ]
+      tags:
+        - Agreement
+      responses:
+        '200':
+          description: Returns order after payment cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonAgreementsDTO'
   /member/orders/cancel:
     post:
       description: 'Cancels current person order, deleting if possible'
