@@ -683,7 +683,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PersonAgreementsDTO'
-  /staff/agreements/:personId:
+  /staff/agreements/{personId}:
     get:
       description: 'Gets required agreements for current open order'
       parameters:
