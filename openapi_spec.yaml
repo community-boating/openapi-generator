@@ -3329,11 +3329,14 @@ components:
             $ref: '#/components/schemas/PersonAgreementFullDTO'
     PersonAgreementsInternalDTO:
       x-has-dto: true
-      properties:
-        personAgreements:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonAgreementInternalDTO'
+      allOf:
+        - $ref: '#/components/schemas/PersonAgreementsDTO'
+        - type: object
+          properties:
+            personAgreements:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonAgreementInternalDTO'
     RequiredAgreementsDTO:
       x-has-dto: true
       properties:
