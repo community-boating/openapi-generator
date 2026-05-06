@@ -5202,7 +5202,7 @@ components:
               maxLength: 100
             userAgent:
               type: string
-              maxLength: 100
+              maxLength: 512
             email:
               type: string
               maxLength: 200
