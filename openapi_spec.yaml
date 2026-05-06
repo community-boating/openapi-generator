@@ -704,7 +704,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PersonAgreementsDTO'
+                $ref: '#/components/schemas/PersonAgreementsInternalDTO'
   /member/orders/cancel:
     post:
       description: 'Cancels current person order, deleting if possible'
@@ -3310,6 +3310,14 @@ components:
           properties:
             agreementId:
               $ref: '#/components/schemas/AgreementWithLatestInstanceDTO'
+    PersonAgreementInternalDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonAgreementFullDTO'
+        - type: object
+          properties:
+            allAgreementActions:
+              $ref: '#/components/schemas/PersonAgreementInstanceDTO'
     PersonAgreementsDTO:
       x-has-dto: true
       properties:
@@ -3317,6 +3325,13 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/PersonAgreementFullDTO'
+    PersonAgreementsInternalDTO:
+      x-has-dto: true
+      properties:
+        personAgreements:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonAgreementInternalDTO'
     RequiredAgreementsDTO:
       x-has-dto: true
       properties:
