@@ -3317,7 +3317,9 @@ components:
         - type: object
           properties:
             allAgreementActions:
-              $ref: '#/components/schemas/PersonAgreementInstanceDTO'
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonAgreementInstanceDTO'
     PersonAgreementsDTO:
       x-has-dto: true
       properties:
