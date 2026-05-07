@@ -1614,6 +1614,42 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/PersonAgreementsDTO'
+  
+  /member/optOut/status:
+    get:
+      description: 'Gets all opt-out groups and their status for the authenticated member'
+      tags:
+        - OptOut
+      security:
+        - member: [ ]
+      responses:
+        '200':
+          description: Successfully returns opt-out status for all groups
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptOutStatusResponseDTO'
+  
+  /member/optOut/update:
+    post:
+      description: 'Updates opt-out preference for a specific group'
+      tags:
+        - OptOut
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOptOutDTO'
+      responses:
+        '200':
+          description: Successfully updated opt-out status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptOutRequestDTO'
 components:
   securitySchemes:
     staff:
@@ -3344,6 +3380,68 @@ components:
           type: array
           items:
             $ref: './shared.yaml#/components/schemas/AgreementRef'
+    
+    OptOutGroupDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OptOutGroupFull'
+    
+    OptOutRequestDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OptOutRequestInternal'
+    
+    OptOutGroupWithStatusDTO:
+      x-has-dto: true
+      required: [ group, optedOut ]
+      properties:
+        group:
+          $ref: '#/components/schemas/OptOutGroupDTO'
+        optedOut:
+          type: boolean
+          description: 'true if user has opted out of this group'
+        optOutRequest:
+          $ref: '#/components/schemas/OptOutRequestDTO'
+          nullable: true
+          description: 'The opt-out request record if it exists'
+    
+    OptOutStatusResponseDTO:
+      x-has-dto: true
+      required: [ groups ]
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptOutGroupWithStatusDTO'
+    
+    UpdateOptOutDTO:
+      x-has-dto: true
+      required: [ token, optOutGrpId, doNotSend ]
+      properties:
+        token:
+          type: string
+          description: 'The opt-out token from the email link'
+        optOutGrpId:
+          type: integer
+          description: 'The opt-out group ID'
+        doNotSend:
+          type: boolean
+          description: 'true to opt out, false to opt in'
+    
+    EmailTrackingDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/EmailTrackingFull'
+    
+    EmailContentGroupDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/EmailContentGroupFull'
+    
+    EmailContentDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/EmailContentInternal'
     RatingDTO:
       x-has-dto: true
       allOf:

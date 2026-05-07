@@ -1684,6 +1684,24 @@ components:
               $ref: '#/components/schemas/Agreement'
             itemId:
               $ref: '#/components/schemas/Item'
+    AppIdIndex:
+      x-has-dao: true
+      required: [indexId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            indexId:
+              x-col-primary: true
+              type: integer
+            appId:
+              type: integer
+            appAlias:
+              type: string
+              maxLength: 200
+            appName:
+              type: string
+              maxLength: 100
     PersonRatingDAO:
       x-has-dao: true
       required: [ assignId ]
@@ -1720,3 +1738,57 @@ components:
           properties:
             membershipTypeId:
               $ref: '#/components/schemas/MembershipType'
+    
+    OptOutGroup:
+      x-has-dao: true
+      required: [ optOutGrpId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OptOutGroupFull'
+        - type: object
+          properties: {}
+    
+    OptOutRequest:
+      x-has-dao: true
+      required: [ reqId, email ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OptOutRequestInternal'
+        - type: object
+          properties:
+            optOutGrpId:
+              $ref: '#/components/schemas/OptOutGroup'
+            doNotSend:
+              type: boolean
+              x-column-type: booleanChar
+    
+    EmailTracking:
+      x-has-dao: true
+      required: [ emailId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/EmailTrackingFull'
+        - type: object
+          properties:
+            optOutGrpId:
+              $ref: '#/components/schemas/OptOutGroup'
+    
+    EmailContentGroup:
+      x-has-dao: true
+      required: [ groupId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/EmailContentGroupFull'
+        - type: object
+          properties: {}
+    
+    EmailContent:
+      x-has-dao: true
+      required: [ contentId, title ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/EmailContentInternal'
+        - type: object
+          properties:
+            emailGroupId:
+              $ref: '#/components/schemas/EmailContentGroup'
+            optOutGrpId:
+              $ref: '#/components/schemas/OptOutGroup'
+            hidden:
+              type: boolean
+              x-column-type: booleanChar

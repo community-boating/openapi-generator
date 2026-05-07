@@ -6466,3 +6466,293 @@ components:
           properties:
             membershipTypeId:
               $ref: '#/components/schemas/MembershipTypeRef'
+    PersonClassCompletionStatusCacheRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      required: [ cacheId ]
+      properties:
+        cacheId:
+          x-col-primary: true
+          x-dto-column: CACHE_ID
+          x-table-name: PERSON_CLASS_COMPLETION_STATUS_CACHE
+          x-auto-increment: PERSON_CLASS_COMPLETION_STATUS_CACHE_SEQ
+          type: integer
+    PersonClassCompletionStatusCacheBase:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      properties:
+        personId:
+          x-dto-column: PERSON_ID
+          allOf:
+            - $ref: '#/components/schemas/PersonRef'
+        apClassTypeId:
+          x-dto-column: AP_CLASS_TYPE_ID
+          type: integer
+          x-column-nullable: true
+          description: 'Adult Program class type ID (null if JP class)'
+        jpClassTypeId:
+          x-dto-column: JP_CLASS_TYPE_ID
+          type: integer
+          x-column-nullable: true
+          description: 'Junior Program class type ID (null if AP class)'
+        programType:
+          x-dto-column: PROGRAM_TYPE
+          x-enum-type: string
+          allOf:
+            - $ref: '#/components/schemas/ProgramTypeEnum'
+        isCompleted:
+          x-dto-column: IS_COMPLETED
+          type: boolean
+          description: 'Whether the person has completed all sessions of this class type'
+        sessionCount:
+          x-dto-column: SESSION_COUNT
+          type: integer
+          description: 'Number of sessions attended for this class type'
+        lastUpdated:
+          x-dto-column: LAST_UPDATED
+          type: string
+          format: date-time
+          description: 'Timestamp when cache was last calculated'
+    PersonClassCompletionStatusCacheFull:
+      x-has-interface: true
+      x-has-dao: false
+      x-has-dto: false
+      x-dao-interface: true
+      allOf:
+        - $ref: '#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/PersonClassCompletionStatusCacheRef'
+        - $ref: '#/components/schemas/PersonClassCompletionStatusCacheBase'
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties: {}
+
+    OptOutGroupRef:
+      x-has-interface: true
+      type: object
+      required: [ optOutGrpId ]
+      properties:
+        optOutGrpId:
+          type: integer
+          x-col-primary: true
+          x-auto-increment: OPT_OUT_GROUPS_SEQ
+
+    OptOutGroupBase:
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            groupName:
+              type: string
+              maxLength: 100
+
+    OptOutGroupFull:
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/OptOutGroupRef'
+        - $ref: '#/components/schemas/OptOutGroupBase'
+
+    OptOutRequestRef:
+      x-has-interface: true
+      type: object
+      required: [ reqId ]
+      properties:
+        reqId:
+          type: integer
+          x-col-primary: true
+          x-auto-increment: OPT_OUT_REQUESTS_SEQ
+
+    OptOutRequestBase:
+      x-has-interface: true
+      required: [ email ]
+      allOf:
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            email:
+              type: string
+              maxLength: 500
+            optOutGrpId:
+              $ref: '#/components/schemas/OptOutGroupRef'
+            doNotSend:
+              type: boolean
+            token:
+              type: string
+              maxLength: 50
+
+    OptOutRequestFull:
+      x-has-interface: true
+      required: [ reqId, email ]
+      allOf:
+        - $ref: '#/components/schemas/OptOutRequestRef'
+        - $ref: '#/components/schemas/OptOutRequestBase'
+
+    OptOutRequestInternal:
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/OptOutRequestFull'
+
+    EmailTrackingRef:
+      x-has-interface: true
+      type: object
+      required: [ emailId ]
+      properties:
+        emailId:
+          type: integer
+          x-col-primary: true
+          x-auto-increment: EMAIL_TRACKING_SEQ
+
+    EmailTrackingBase:
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            emailFrom:
+              type: string
+              maxLength: 200
+            emailTo:
+              type: string
+              maxLength: 200
+            emailSubj:
+              type: string
+              maxLength: 500
+            sendDateTime:
+              type: string
+              format: date
+            emailCC:
+              type: string
+              maxLength: 200
+            emailBCC:
+              type: string
+              maxLength: 200
+            status:
+              type: string
+              maxLength: 1
+            sendgridJson:
+              type: string
+            retryCt:
+              type: integer
+            emailFromAddrName:
+              type: string
+              maxLength: 100
+            emailFromAddrOnly:
+              type: string
+              maxLength: 100
+            optOutGrpId:
+              $ref: '#/components/schemas/OptOutGroupRef'
+            sendgridResp:
+              type: string
+              maxLength: 20
+            emailPlainBody:
+              type: string
+            emailHtmlBody:
+              type: string
+
+    EmailTrackingFull:
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/EmailTrackingRef'
+        - $ref: '#/components/schemas/EmailTrackingBase'
+
+    EmailContentGroupRef:
+      x-has-interface: true
+      type: object
+      required: [ groupId ]
+      properties:
+        groupId:
+          type: integer
+          x-col-primary: true
+          x-auto-increment: EMAIL_CONTENT_GROUPS_SEQ
+
+    EmailContentGroupBase:
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            groupName:
+              type: string
+              maxLength: 100
+
+    EmailContentGroupFull:
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/EmailContentGroupRef'
+        - $ref: '#/components/schemas/EmailContentGroupBase'
+
+    EmailContentRef:
+      x-has-interface: true
+      type: object
+      required: [ contentId ]
+      properties:
+        contentId:
+          type: integer
+          x-col-primary: true
+          x-auto-increment: EMAIL_CONTENTS_SEQ
+
+    EmailContentBase:
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/DBHistory'
+        - type: object
+          required: [ title ]
+          properties:
+            fromAddr:
+              type: string
+              maxLength: 100
+            ccAddr:
+              type: string
+              maxLength: 500
+            bccAddr:
+              type: string
+              maxLength: 500
+            subject:
+              type: string
+              maxLength: 200
+            plainBody:
+              type: string
+              maxLength: 4000
+            htmlBody:
+              type: string
+              maxLength: 4000
+            description:
+              type: string
+              maxLength: 4000
+            title:
+              type: string
+              maxLength: 50
+            emailGroupId:
+              $ref: '#/components/schemas/EmailContentGroupRef'
+            recGroupId:
+              type: integer
+            htmlBodyClob:
+              type: string
+            fromAddrName:
+              type: string
+              maxLength: 100
+            fromAddrOnly:
+              type: string
+              maxLength: 100
+            optOutGrpId:
+              $ref: '#/components/schemas/OptOutGroupRef'
+            replyTo:
+              type: string
+              maxLength: 100
+            hidden:
+              type: boolean
+
+    EmailContentFull:
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/EmailContentRef'
+        - $ref: '#/components/schemas/EmailContentBase'
+
+    EmailContentInternal:
+      x-has-interface: true
+      allOf:
+        - $ref: '#/components/schemas/EmailContentFull'
