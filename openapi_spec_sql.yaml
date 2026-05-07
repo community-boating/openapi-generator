@@ -1745,7 +1745,10 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/OptOutGroupFull'
         - type: object
-          properties: {}
+          properties:
+            requireOptIn:
+              type: boolean
+              x-column-type: booleanChar
     
     OptOutRequest:
       x-has-dao: true

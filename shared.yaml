@@ -6550,6 +6550,9 @@ components:
             groupName:
               type: string
               maxLength: 100
+            requireOptIn:
+              type: boolean
+              description: 'When true, requires explicit opt-in for emails to be sent (inverts normal opt-out logic)'
 
     OptOutGroupFull:
       x-has-interface: true
@@ -6578,8 +6581,6 @@ components:
             token:
               type: string
               maxLength: 50
-            optOutGrpId:
-              $ref: '#/components/schemas/OptOutGroupRef'
 
     OptOutRequestFull:
       x-has-interface: true
@@ -6599,6 +6600,8 @@ components:
             email:
               type: string
               maxLength: 500
+            optOutGrpId:
+              $ref: '#/components/schemas/OptOutGroupRef'
 
     EmailTrackingRef:
       x-has-interface: true
