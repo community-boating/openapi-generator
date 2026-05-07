@@ -1615,13 +1615,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/PersonAgreementsDTO'
   
-  /member/optOut/status:
+  /optOut/status:
     get:
       description: 'Gets all opt-out groups and their status for the authenticated member'
       tags:
         - OptOut
-      security:
-        - member: [ ]
       responses:
         '200':
           description: Successfully returns opt-out status for all groups
@@ -3727,5 +3725,3 @@ components:
       properties:
         cardNum:
           type: string
-
-          
