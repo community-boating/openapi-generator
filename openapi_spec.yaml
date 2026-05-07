@@ -3387,7 +3387,7 @@ components:
     OptOutRequestDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/OptOutRequestInternal'
+        - $ref: './shared.yaml#/components/schemas/OptOutRequestFull'
     
     OptOutGroupWithStatusDTO:
       x-has-dto: true
