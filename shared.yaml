@@ -6570,7 +6570,6 @@ components:
 
     OptOutRequestBase:
       x-has-interface: true
-      required: [ email ]
       allOf:
         - type: object
           properties:
