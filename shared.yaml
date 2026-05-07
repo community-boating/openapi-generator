@@ -6565,6 +6565,7 @@ components:
         reqId:
           type: integer
           x-col-primary: true
+          x-table-name: OPT_OUT_REQUESTS
           x-auto-increment: OPT_OUT_REQUESTS_SEQ
 
     OptOutRequestBase:
