@@ -6621,7 +6621,7 @@ components:
             emailSubj:
               type: string
               maxLength: 500
-            sendDateTime:
+            sendDatetime:
               type: string
               format: date
             emailCC:
