@@ -1748,7 +1748,7 @@ components:
           properties:
             requireOptIn:
               type: boolean
-              x-column-type: booleanChar
+              x-boolean-char: Y
     
     OptOutRequest:
       x-has-dao: true

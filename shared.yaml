@@ -6578,6 +6578,7 @@ components:
           properties:
             doNotSend:
               type: boolean
+              x-boolean-char: Y
             token:
               type: string
               maxLength: 50
