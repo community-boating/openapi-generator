@@ -6592,7 +6592,6 @@ components:
 
     OptOutRequestInternal:
       x-has-interface: true
-      x-dao-interface: true
       allOf:
         - $ref: '#/components/schemas/DBHistory'
         - $ref: '#/components/schemas/OptOutRequestFull'
