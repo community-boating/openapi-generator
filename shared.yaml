@@ -6578,6 +6578,8 @@ components:
             token:
               type: string
               maxLength: 50
+            optOutGrpId:
+              $ref: '#/components/schemas/OptOutGroupRef'
 
     OptOutRequestFull:
       x-has-interface: true
@@ -6597,8 +6599,6 @@ components:
             email:
               type: string
               maxLength: 500
-            optOutGrpId:
-              $ref: '#/components/schemas/OptOutGroupRef'
 
     EmailTrackingRef:
       x-has-interface: true
