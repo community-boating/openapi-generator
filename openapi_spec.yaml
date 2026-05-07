@@ -3387,12 +3387,12 @@ components:
     OptOutRequestDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/OptOutRequestBase'
+        - $ref: './shared.yaml#/components/schemas/OptOutRequestFull'
 
     UpdateOptOutDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/OptOutRequestFull'
+        - $ref: './shared.yaml#/components/schemas/OptOutRequestBase'
 
     OptOutGroupWithStatusDTO:
       x-has-dto: true
