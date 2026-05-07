@@ -6572,7 +6572,6 @@ components:
       x-has-interface: true
       required: [ email ]
       allOf:
-        - $ref: '#/components/schemas/DBHistory'
         - type: object
           properties:
             doNotSend:
@@ -6592,6 +6591,7 @@ components:
       x-has-interface: true
       x-dao-interface: true
       allOf:
+        - $ref: '#/components/schemas/DBHistory'
         - $ref: '#/components/schemas/OptOutRequestFull'
         - type: object
           properties:
