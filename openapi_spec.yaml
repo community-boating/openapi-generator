@@ -3383,12 +3383,17 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/OptOutGroupFull'
-    
+
     OptOutRequestDTO:
       x-has-dto: true
       allOf:
+        - $ref: './shared.yaml#/components/schemas/OptOutRequestInternal'
+
+    UpdateOptOutDTO:
+      x-has-dto: true
+      allOf:
         - $ref: './shared.yaml#/components/schemas/OptOutRequestFull'
-    
+
     OptOutGroupWithStatusDTO:
       x-has-dto: true
       required: [ group, optedOut ]
@@ -3411,20 +3416,6 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/OptOutGroupWithStatusDTO'
-    
-    UpdateOptOutDTO:
-      x-has-dto: true
-      required: [ token, optOutGrpId, doNotSend ]
-      properties:
-        token:
-          type: string
-          description: 'The opt-out token from the email link'
-        optOutGrpId:
-          type: integer
-          description: 'The opt-out group ID'
-        doNotSend:
-          type: boolean
-          description: 'true to opt out, false to opt in'
     
     EmailTrackingDTO:
       x-has-dto: true
