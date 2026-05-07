@@ -1615,11 +1615,13 @@ paths:
               schema:
                 $ref: '#/components/schemas/PersonAgreementsDTO'
   
-  /optOut/status:
+  /member/optOut/status:
     get:
       description: 'Gets all opt-out groups and their status for the authenticated member'
       tags:
         - OptOut
+      security:
+        - member: [ ]
       responses:
         '200':
           description: Successfully returns opt-out status for all groups
@@ -1628,13 +1630,11 @@ paths:
               schema:
                 $ref: '#/components/schemas/OptOutStatusResponseDTO'
   
-  /member/optOut/update:
+  /optOut/update:
     post:
       description: 'Updates opt-out preference for a specific group'
       tags:
         - OptOut
-      security:
-        - member: [ ]
       requestBody:
         required: true
         content:
@@ -3725,5 +3725,3 @@ components:
       properties:
         cardNum:
           type: string
-          
-          
