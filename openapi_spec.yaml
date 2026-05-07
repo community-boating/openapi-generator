@@ -1616,6 +1616,26 @@ paths:
                 $ref: '#/components/schemas/PersonAgreementsDTO'
   
   /member/optOut/status:
+    post:
+      description: 'Updates opt-out preference for a specific group'
+      tags:
+        - OptOut
+      security:
+        - member: [ ]
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OptOutRequestDTO'
+      responses:
+        '200':
+          description: Successfully returns opt-out status for all groups
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptOutStatusResponseDTO'
     get:
       description: 'Gets all opt-out groups and their status for the authenticated member'
       tags:
