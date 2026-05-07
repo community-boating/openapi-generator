@@ -1647,7 +1647,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OptOutRequestDTO'
+                $ref: '#/components/schemas/OptOutGroupWithStatusDTO'
 components:
   securitySchemes:
     staff:
