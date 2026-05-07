@@ -6574,11 +6574,6 @@ components:
         - $ref: '#/components/schemas/DBHistory'
         - type: object
           properties:
-            email:
-              type: string
-              maxLength: 500
-            optOutGrpId:
-              $ref: '#/components/schemas/OptOutGroupRef'
             doNotSend:
               type: boolean
             token:
