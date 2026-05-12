@@ -1504,6 +1504,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClassSignupResponseDTO'
+  
+  /staff/classes:
+    post: #TODO this should be get
+      description: 'Gets all classes with availability (no person eligibility)'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassFilterOptions'
+      responses:
+        '200':
+          description: Successfully returns all classes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffClassesResponseDTO'
   /public/classes:
     post: #TODO this should be get
       description: 'Gets all classes'
@@ -3754,6 +3775,16 @@ components:
           $ref: '#/components/schemas/ClassInstanceFullDTO'
         personEligibility:
           $ref: '#/components/schemas/PersonClassEligibility'
+    
+    StaffClassesResponseDTO:
+      x-has-dto: true
+      type: object
+      required: [ classes ]
+      properties:
+        classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassInstanceDTO'
     CreateGuestCardDTO:
       x-has-dto: true
       type: object
