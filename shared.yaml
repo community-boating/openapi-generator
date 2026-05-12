@@ -5750,6 +5750,7 @@ components:
       x-has-dao: false
       required: [ assignId ]
       allOf:
+        - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/UnifiedClassWlResultRef'
         - $ref: '#/components/schemas/UnifiedClassWlResultBase'
         - type: object
