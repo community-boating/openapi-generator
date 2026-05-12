@@ -3567,8 +3567,6 @@ components:
           format: date-time
         availabilityStatus:
           $ref: './shared.yaml#/components/schemas/ClassSignupAvailabilityStatus'
-        allowEnrollFromWaitlist:
-          type: boolean
         allowWaitlist:
           type: boolean
         pricingInformation:
