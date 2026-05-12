@@ -1468,6 +1468,22 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClassSignupResponseDTO'
+  /staff/classes/processWaitlistOffers:
+    post:
+      description: 'Signs up for a class'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffProcessWaitlistOffersRequestDTO'
+      responses:
+        '200':
+          description: Successfully submitted EII response
   /staff/classes/signup:
     post:
       description: 'Signs up for a class'
@@ -1893,6 +1909,14 @@ components:
           type: string
           maxLength: 1
           minLength: 1
+    StaffProcessWaitlistOffersRequestDTO:
+      type: object
+      required: [ classInstance, program ]
+      properties:
+        classInstance:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        program:
+          $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
     ValidateLineItemOverrides:
       type: object
       properties:

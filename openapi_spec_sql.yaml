@@ -1761,7 +1761,7 @@ components:
               $ref: '#/components/schemas/OptOutGroup'
             doNotSend:
               type: boolean
-              x-column-type: booleanChar
+              x-boolean-char: Y
     
     EmailTracking:
       x-has-dao: true
@@ -1794,4 +1794,4 @@ components:
               $ref: '#/components/schemas/OptOutGroup'
             hidden:
               type: boolean
-              x-column-type: booleanChar
+              x-boolean-char: Y
