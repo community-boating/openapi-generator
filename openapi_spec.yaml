@@ -3745,7 +3745,7 @@ components:
         eligibleActions:
           type: array
           items:
-            $ref: './shared.yaml#/components/schemas/PersonEligibleActionDTO'
+            $ref: '#/components/schemas/PersonEligibleActionDTO'
         message:
           type: string
         existingSignup:
