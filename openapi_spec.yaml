@@ -3742,10 +3742,25 @@ components:
           $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
         eligibilityStatus:
           $ref: './shared.yaml#/components/schemas/ClassSignupEligibilityStatus'
+        eligibleActions:
+          type: array
+          items:
+            $ref: './shared.yaml#/components/schemas/PersonEligibleActionDTO'
         message:
           type: string
         existingSignup:
           $ref: '#/components/schemas/ClassSignupDTO'
+    PersonEligibleActionDTO:
+      x-has-dto: true
+      type: object
+      required: [ action, isAvailable ]
+      properties:
+        action:
+          $ref: './shared.yaml#/components/schemas/SignupTypeEnum'
+        isAvailable:
+          type: boolean
+        actionError:
+          type: string
     ClassWithEligibilityDTO:
       x-has-dto: true
       type: object
