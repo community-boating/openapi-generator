@@ -3596,6 +3596,8 @@ components:
           $ref: './shared.yaml#/components/schemas/UnifiedClassStaggerRef'
         isLastStagger:
           type: boolean
+        waitlistedEnrollAction:
+          $ref: './shared.yaml#/components/schemas/SignupTypeEnum'
         currentSignupSequence:
           type: integer
 

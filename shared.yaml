@@ -185,8 +185,6 @@ components:
       enum:
         - 'AVAILABLE'
         - 'PAID_AVAILABLE'
-        - 'WAITLISTED_PAID_AVAILABLE'
-        - 'WAITLISTED_AVAILABLE'
         - 'WAITLIST_AVAILABLE'
         - 'FUTURE_UNAVAILABLE'
         - 'STARTED_UNAVAILABLE'
