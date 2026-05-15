@@ -179,6 +179,7 @@ components:
         - 'ENROLLED'
         - 'PURCHASE_HOLD'
         - 'WAITLISTED'
+        - 'WAITLISTED_PENDING'
     ClassSignupAvailabilityStatus:
       type: string
       enum:
