@@ -3244,6 +3244,11 @@ components:
         squareLineItemUid:
           type: string
           maxLength: 200
+        expiresOn:
+          description: Timestamp when this line item expires and should be automatically removed
+          type: string
+          format: date-time
+          nullable: true
     LineItemCalculated:
       type: object
       properties:
@@ -4387,6 +4392,11 @@ components:
         squareItemId:
           type: string
           maxLength: 200
+        expirationDurationSeconds:
+          description: Default expiration duration in seconds for line items of this item type
+          type: integer
+          format: int64
+          nullable: true
     ItemFull:
       x-has-interface: true
       x-has-dto: false
