@@ -2497,7 +2497,13 @@ components:
     ApClassSignupInternalFull:
       allOf:
         - $ref: '#/components/schemas/ApClassSignupFull'
-        - $ref: '#/components/schemas/WithLineItemWithExpiresOn'
+        - $ref: '#/components/schemas/WithLineItemRef'
+        - type: object
+          properties:
+            lineItemId:
+              x-backref-name: lineItemId
+              allOf:
+                - $ref: '#/components/schemas/LineItemWithExpiresOnRef'
     ApClassWlResultRef:
       allOf:
         - $ref: '#/components/schemas/UnifiedClassWlResultRef'
@@ -2933,17 +2939,6 @@ components:
           x-backref-name: lineItemId
           allOf:
             - $ref: '#/components/schemas/LineItemRef'
-    WithLineItemWithExpiresOn:
-      x-has-interface: true
-      x-has-dto: false
-      x-has-dao: false
-      type: object
-      #required: [ lineItemId ]
-      properties:
-        lineItemId:
-          x-backref-name: lineItemId
-          allOf:
-            - $ref: '#/components/schemas/LineItemWithExpiresOn'
     WithCatalogRef:
       x-has-interface: true
       x-dao-interface: true
@@ -3299,7 +3294,7 @@ components:
           format: int64
         displayOrder:
           type: integer
-    LineItemWithExpiresOn:
+    LineItemWithExpiresOnRef:
       allOf:
         - $ref: '#/components/schemas/WithExpiresOn'
         - $ref: '#/components/schemas/LineItemRef'
@@ -3308,7 +3303,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/LineItemBase'
-        - $ref: '#/components/schemas/LineItemWithExpiresOn'
+        - $ref: '#/components/schemas/LineItemWithExpiresOnRef'
         - type: object
           properties:
             parentItemId:
@@ -3358,7 +3353,7 @@ components:
       x-dao-interface: false
       required: [ itemInstanceId, orderId ]
       allOf:
-        - $ref: '#/components/schemas/LineItemRef'
+        - $ref: '#/components/schemas/LineItemWithExpiresOnRef'
         - type: object
           properties:
             orderId:
