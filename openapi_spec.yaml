@@ -3671,7 +3671,7 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/UnifiedClassSignupFull'
         - $ref: './shared.yaml#/components/schemas/WithStaggerRef'
-        - $ref: './shared.yaml#/components/schemas/WithLineItemRef'
+        - $ref: './shared.yaml#/components/schemas/WithLineItemWithExpiresOn'
         - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
           properties:

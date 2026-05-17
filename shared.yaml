@@ -2497,7 +2497,7 @@ components:
     ApClassSignupInternalFull:
       allOf:
         - $ref: '#/components/schemas/ApClassSignupFull'
-        - $ref: '#/components/schemas/WithLineItemRef'
+        - $ref: '#/components/schemas/WithLineItemWithExpiresOn'
     ApClassWlResultRef:
       allOf:
         - $ref: '#/components/schemas/UnifiedClassWlResultRef'
@@ -2933,6 +2933,17 @@ components:
           x-backref-name: lineItemId
           allOf:
             - $ref: '#/components/schemas/LineItemRef'
+    WithLineItemWithExpiresOn:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      type: object
+      #required: [ lineItemId ]
+      properties:
+        lineItemId:
+          x-backref-name: lineItemId
+          allOf:
+            - $ref: '#/components/schemas/LineItemWithExpiresOn'
     WithCatalogRef:
       x-has-interface: true
       x-dao-interface: true
@@ -3213,6 +3224,13 @@ components:
               x-col-secondary: true
               type: string
               maxLength: 200
+    WithExpiresOn:
+      type: object
+      properties:
+        expiresOn:
+          description: Timestamp when this line item expires and should be automatically removed
+          type: string
+          format: date-time
     LineItemBase:
       type: object
       required: [ amountBaseCents ]
@@ -3244,11 +3262,6 @@ components:
         squareLineItemUid:
           type: string
           maxLength: 200
-        expiresOn:
-          description: Timestamp when this line item expires and should be automatically removed
-          type: string
-          format: date-time
-          nullable: true
     LineItemCalculated:
       type: object
       properties:
@@ -3286,12 +3299,16 @@ components:
           format: int64
         displayOrder:
           type: integer
+    LineItemWithExpiresOn:
+      allOf:
+        - $ref: '#/components/schemas/WithExpiresOn'
+        - $ref: '#/components/schemas/LineItemRef'
     LineItemFull:
       required: [ itemInstanceId ]
       allOf:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/LineItemBase'
-        - $ref: '#/components/schemas/LineItemRef'
+        - $ref: '#/components/schemas/LineItemWithExpiresOn'
         - type: object
           properties:
             parentItemId:
@@ -4396,7 +4413,6 @@ components:
           description: Default expiration duration in seconds for line items of this item type
           type: integer
           format: int64
-          nullable: true
     ItemFull:
       x-has-interface: true
       x-has-dto: false
