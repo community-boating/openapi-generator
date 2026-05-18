@@ -1575,10 +1575,12 @@ components:
         - EXPIRED
         - PENDING
         - FAILED
+        - UNENROLLED
       enum:
         - 'E'
         - 'P'
         - 'F'
+        - 'U'
     DBHistory:
       x-has-interface: true
       x-has-dto: false
@@ -4068,6 +4070,11 @@ components:
         squarePaymentId:
           type: string
           maxLength: 200
+        expiresOn:
+          description: Timestamp when this payment expires and should be automatically cancelled
+          type: string
+          format: date-time
+          nullable: true
     OrderPaymentFull:
       required: [ orderId ]
       allOf:
