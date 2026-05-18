@@ -3748,10 +3748,10 @@ components:
           $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
         eligibilityStatus:
           $ref: './shared.yaml#/components/schemas/ClassSignupEligibilityStatus'
-        eligibleActions:
-          type: array
-          items:
-            $ref: '#/components/schemas/PersonEligibleActionDTO'
+        #eligibleActions:
+        #  type: array
+        #  items:
+        #    $ref: '#/components/schemas/PersonEligibleActionDTO'
         message:
           type: string
         existingSignup:
