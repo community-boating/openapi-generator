@@ -1567,6 +1567,92 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/ClassWithEligibilityDTO'
+  /member/guided-sail/timeslots/{year}/{month}:
+    get:
+      description: 'Get available guided sail time slots for a given month'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      parameters:
+        - in: path
+          name: year
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: month
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+      responses:
+        '200':
+          description: Successfully returns available time slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'shared.yaml#/components/schemas/GuidedSailTimeSlotsForDayDTO'
+  /member/guided-sail/current:
+    get:
+      description: 'Get current guided sail instances for authenticated member'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      responses:
+        '200':
+          description: Successfully returns current instances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'shared.yaml#/components/schemas/GuidedSailCurrentSessionDTO'
+  /member/guided-sail/create/{timeslot}:
+    post:
+      description: 'Create a guided sail instance for a specific timeslot'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      parameters:
+        - in: path
+          name: timeslot
+          required: true
+          schema:
+            type: string
+            description: Timeslot in ISO datetime format
+      responses:
+        '200':
+          description: Successfully created instance or returns error
+          content:
+            application/json:
+              schema:
+                $ref: 'shared.yaml#/components/schemas/GuidedSailCreateInstanceResult'
+  /member/guided-sail/cancel/{instanceId}:
+    post:
+      description: 'Cancel a guided sail instance'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      parameters:
+        - in: path
+          name: instanceId
+          required: true
+          schema:
+            type: integer
+      responses:
+        '200':
+          description: Successfully cancelled or returns error message
+          content:
+            application/json:
+              schema:
+                type: string
   /staff/classes/{personId}:
     post: #TODO this should be get
       parameters:
@@ -3089,6 +3175,15 @@ components:
       required: [ key, title ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ReportMetaFull'
+    ReportStatusCountDTO:
+      x-has-dto: true
+      type: object
+      required: [ status, count ]
+      properties:
+        status:
+          $ref: './shared.yaml#/components/schemas/ReportStatus'
+        count:
+          type: integer
     ReportDTO:
       x-has-dto: true
       type: object
@@ -3107,6 +3202,10 @@ components:
               x-parent-variable: report
               items:
                 $ref: '#/components/schemas/ReportMetaDTO'
+            statusCounts:
+              type: array
+              items:
+                $ref: '#/components/schemas/ReportStatusCountDTO'
     OrderPaymentReportDTO:
       x-has-dto: true
       type: object
@@ -3754,6 +3853,10 @@ components:
         #    $ref: '#/components/schemas/PersonEligibleActionDTO'
         message:
           type: string
+        instructorEligibilityStatus:
+          $ref: './shared.yaml#/components/schemas/ClassSignupEligibilityStatus'
+        #instructorEligibilityMessage:
+        #  type: string
         existingSignup:
           $ref: '#/components/schemas/ClassSignupDTO'
     PersonEligibleActionDTO:

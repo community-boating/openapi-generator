@@ -566,6 +566,8 @@ components:
               $ref: '#/components/schemas/ApClassFormatDAO'
             typeId:
               $ref: '#/components/schemas/ApClassType'
+            instructorId:
+              $ref: '#/components/schemas/PersonDAO'
     ApClassFormatDAO:
       x-has-dao: true
       allOf:
@@ -830,6 +832,72 @@ components:
               x-table-name: AP_CLASS_WL_RESULTS
               allOf:
                 - $ref: '#/components/schemas/ApClassSignupDAO'
+    SunsetTime:
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-dto-column: SUNSET_DATE
+              x-table-name: SUNSET_TIMES
+              x-pk-type: LocalDate
+              x-pk-type-entity: true
+              type: string
+              format: date
+            sunsetTime:
+              x-dto-column: SUNSET_TIME
+              type: string
+              format: date-time
+            sunriseTime:
+              x-dto-column: SUNRISE_TIME
+              type: string
+              format: date-time
+    DatetimeRange:
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-table-name: DATETIME_RANGE
+              type: integer
+            rangeName:
+              x-dto-column: RANGE_NAME
+              type: string
+              maxLength: 100
+            startDatetime:
+              x-dto-column: START_DATETIME
+              type: string
+              format: date-time
+            endDatetime:
+              x-dto-column: END_DATETIME
+              type: string
+              format: date-time
+    YearlyDate:
+      x-has-dao: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            assignId:
+              x-col-primary: true
+              x-table-name: YEARLY_DATE
+              type: integer
+            dateName:
+              x-dto-column: DATE_NAME
+              type: string
+              maxLength: 100
+            yearlyDate:
+              x-dto-column: YEARLY_DATE
+              type: string
+              description: MM-DD format
+              maxLength: 5
     GuestPrivsDAO:
       x-has-dao: true
       allOf:

@@ -171,6 +171,65 @@ components:
         - 'HOME'
         - 'CELL'
         - 'MOBILE'
+    
+    GuidedSailTimeSlotsForDayDTO:
+      type: object
+      required: [ date, timeSlots ]
+      properties:
+        date:
+          type: string
+          description: Date in format yyyy-MM-dd
+        timeSlots:
+          type: array
+          items:
+            $ref: '#/components/schemas/GuidedSailTimeSlot'
+
+    GuidedSailTimeSlot:
+      type: object
+      required: [ startTime, endTime ]
+      properties:
+        startTime:
+          type: string
+          description: Start time in format HH:mm
+        endTime:
+          type: string
+          description: End time in format HH:mm
+
+    GuidedSailCurrentSessionDTO:
+      type: object
+      required: [ sessionDatetime, sessionLength, instanceId, currentSignups, maxSignups ]
+      properties:
+        sessionDatetime:
+          type: string
+          format: date-time
+          description: Session datetime
+        sessionLength:
+          type: number
+          format: double
+          description: Session length in hours
+        instanceId:
+          type: integer
+          description: Instance ID
+        currentSignups:
+          type: integer
+          description: Current number of signups
+        maxSignups:
+          type: integer
+          description: Maximum number of signups
+
+    GuidedSailCreateInstanceResult:
+      type: object
+      properties:
+        instanceId:
+          type: integer
+          description: Created instance ID if successful
+        currentSignups:
+          type: integer
+          description: Current number of signups if successful
+        error:
+          type: string
+          description: Error message if failed
+
     ClassSignupEligibilityStatus:
       type: string
       enum:
@@ -180,6 +239,12 @@ components:
         - 'PURCHASE_HOLD'
         - 'WAITLISTED'
         - 'WAITLISTED_PENDING'
+    ClassSignupInstructorEligibilityStatus:
+      type: string
+      enum:
+        - 'INELIGIBLE'
+        - 'ELIGIBLE'
+        - 'ENROLLED'
     ClassSignupAvailabilityStatus:
       type: string
       enum:
@@ -4074,7 +4139,6 @@ components:
           description: Timestamp when this payment expires and should be automatically cancelled
           type: string
           format: date-time
-          nullable: true
     OrderPaymentFull:
       required: [ orderId ]
       allOf:
@@ -6018,6 +6082,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ApClassSessionRef'
+            instructorId:
+              $ref: '#/components/schemas/PersonRef'
     ApClassTypeAndFormat:
       x-has-interface: true
       x-has-dto: false
