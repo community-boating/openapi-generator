@@ -3728,6 +3728,8 @@ components:
               format: date-time
             availability:
               $ref: '#/components/schemas/ClassAvailabilityDTO'
+            instructorId:
+              $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
     ClassAttendanceDTO:
       x-has-dto: true
       allOf:
@@ -3854,7 +3856,7 @@ components:
         message:
           type: string
         instructorEligibilityStatus:
-          $ref: './shared.yaml#/components/schemas/ClassSignupEligibilityStatus'
+          $ref: './shared.yaml#/components/schemas/ClassSignupInstructorEligibilityStatus'
         #instructorEligibilityMessage:
         #  type: string
         existingSignup:

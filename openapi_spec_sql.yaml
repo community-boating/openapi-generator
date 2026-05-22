@@ -602,7 +602,7 @@ components:
             instanceId:
               $ref: '#/components/schemas/JpClassInstanceDAO'
             instructorId:
-              $ref: '#/components/schemas/ClassInstructorDAO'
+              $ref: '#/components/schemas/PersonDAO'
             locationId:
               $ref: '#/components/schemas/ClassLocationDAO'
             lookupId:
@@ -715,7 +715,7 @@ components:
             locationId:
               $ref: '#/components/schemas/ClassLocationDAO'
             instructorId:
-              $ref: '#/components/schemas/ClassInstructorDAO'
+              $ref: '#/components/schemas/PersonDAO'
             typeId:
               $ref: '#/components/schemas/JpClassTypeDAO'
     JpClassSessionDAO:

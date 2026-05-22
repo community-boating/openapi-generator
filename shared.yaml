@@ -5705,6 +5705,8 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/UnifiedClassSessionRef'
+            instructorId:
+              $ref: '#/components/schemas/PersonRef'
     UnifiedClassInstanceInternal:
       x-has-interface: true
       x-has-dto: false
@@ -6082,8 +6084,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ApClassSessionRef'
-            instructorId:
-              $ref: '#/components/schemas/PersonRef'
     ApClassTypeAndFormat:
       x-has-interface: true
       x-has-dto: false
@@ -6251,7 +6251,7 @@ components:
             instanceId:
               $ref: '#/components/schemas/JpClassInstanceRef'
             instructorId:
-              $ref: '#/components/schemas/ClassInstructorFull'
+              $ref: '#/components/schemas/PersonRef'
             locationId:
               $ref: '#/components/schemas/ClassLocationFull'
             lookupId:
@@ -6464,8 +6464,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/JpClassStaggerRef'
-            instructorId:
-              $ref: '#/components/schemas/ClassInstructorFull'
     JpClassSessionRef:
       x-has-interface: true
       x-has-dto: false
