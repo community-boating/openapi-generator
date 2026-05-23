@@ -532,6 +532,8 @@ components:
         - $ref: './shared.yaml#/components/schemas/ApClassTypeFull'
         - type: object
           properties:
+            teachRating:
+              $ref: '#/components/schemas/RatingDAO'
             ratingPrereq:
               $ref: '#/components/schemas/RatingDAO'
             ratingOverkill:
@@ -678,6 +680,8 @@ components:
         - $ref: './shared.yaml#/components/schemas/JpClassTypeFull'
         - type: object
           properties:
+            teachRating:
+              $ref: '#/components/schemas/RatingDAO'
             ratingPrereq:
               $ref: '#/components/schemas/RatingDAO'
             ratingOverkill:

@@ -5664,6 +5664,10 @@ components:
         - $ref: '#/components/schemas/UnifiedClassTypeBase'
         - type: object
           properties:
+            allowTeacher:
+              type: boolean
+            teachRating:
+              $ref: '#/components/schemas/RatingRef'
             ratingPrereq:
               $ref: '#/components/schemas/RatingRef'
             ratingOverkill:

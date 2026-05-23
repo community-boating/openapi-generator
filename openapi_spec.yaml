@@ -1468,6 +1468,90 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/ClassSignupResponseDTO'
+  
+  /member/classes/instructor/enroll:
+    post:
+      description: 'Enroll as instructor for a class'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorEnrollmentRequestDTO'
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: string
+  
+  /member/classes/instructor/unenroll:
+    post:
+      description: 'Unenroll as instructor from a class'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorEnrollmentRequestDTO'
+      responses:
+        '200':
+          description: Successfully unenrolled as instructor
+          content:
+            application/json:
+              schema:
+                type: string
+  
+  /staff/classes/instructor/enroll:
+    post:
+      description: 'Enroll a person as instructor for a class (staff)'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffInstructorEnrollmentRequestDTO'
+      responses:
+        '200':
+          description: Successfully enrolled person as instructor
+          content:
+            application/json:
+              schema:
+                type: string
+  
+  /staff/classes/instructor/unenroll:
+    post:
+      description: 'Unenroll a person as instructor from a class (staff)'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffInstructorEnrollmentRequestDTO'
+      responses:
+        '200':
+          description: Successfully unenrolled person as instructor
+          content:
+            application/json:
+              schema:
+                type: string
+  
   /staff/classes/processWaitlistOffers:
     post:
       description: 'Signs up for a class'
@@ -1999,6 +2083,24 @@ components:
           properties:
             overrides:
               $ref: '#/components/schemas/ClassSignupOverrides'
+    InstructorEnrollmentRequestDTO:
+      type: object
+      required: [classInstance, program]
+      properties:
+        classInstance:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        program:
+          $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+    StaffInstructorEnrollmentRequestDTO:
+      type: object
+      required: [classInstance, program, personId]
+      properties:
+        classInstance:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        program:
+          $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+        personId:
+          $ref: './shared.yaml#/components/schemas/PersonRef'
     ClassSignupOverrides:
       type: object
       properties:
@@ -3699,7 +3801,6 @@ components:
           $ref: './shared.yaml#/components/schemas/SignupTypeEnum'
         currentSignupSequence:
           type: integer
-
     ClassInstanceDTO:
       x-has-dto: true
       allOf:
@@ -3753,6 +3854,7 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/UnifiedClassSessionInternal'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ClassSessionDTO'
         - type: object
           properties:
@@ -3801,7 +3903,8 @@ components:
     ClassInstanceFullDTO:
       x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceInternal'
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceWithType'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
         - $ref: '#/components/schemas/ClassInstanceDTO'
         - type: object
           properties:
