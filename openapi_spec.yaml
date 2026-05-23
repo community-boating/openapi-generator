@@ -1484,6 +1484,7 @@ paths:
               $ref: '#/components/schemas/InstructorEnrollmentRequestDTO'
       responses:
         '200':
+          description: Successfully enrolled as instructor
           content:
             application/json:
               schema:
