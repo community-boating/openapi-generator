@@ -3960,7 +3960,7 @@ components:
         message:
           type: string
         instructorEligibility:
-          $ref: './shared.yaml#/components/schemas/ClassSignupInstructorEligibilityDTO'
+          $ref: '#/components/schemas/ClassSignupInstructorEligibilityDTO'
         #instructorEligibilityMessage:
         #  type: string
         existingSignup:
