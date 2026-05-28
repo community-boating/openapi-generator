@@ -1702,13 +1702,48 @@ paths:
             application/json:
               schema:
                 $ref: 'shared.yaml#/components/schemas/GuidedSailCreateInstanceResult'
+  /staff/guided-sail/timeslots/{year}/{month}/{personId}:
+    get:
+      description: 'Get available guided sail time slots for a given month'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      parameters:
+        - in: path
+          name: year
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: month
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: integer
+            description: Person id
+      responses:
+        '200':
+          description: Successfully returns available time slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'shared.yaml#/components/schemas/GuidedSailTimeSlotsForDayDTO'
   /staff/guided-sail/create/{timeslot}/{personId}:
     post:
       description: 'Create a guided sail instance for a specific timeslot'
       tags:
         - UnifiedClass
       security:
-        - member: [ ]
+        - staff: [ ]
       parameters:
         - in: path
           name: timeslot
@@ -1729,26 +1764,6 @@ paths:
             application/json:
               schema:
                 $ref: 'shared.yaml#/components/schemas/GuidedSailCreateInstanceResult'
-  /member/guided-sail/cancel/{instanceId}:
-    post:
-      description: 'Cancel a guided sail instance'
-      tags:
-        - UnifiedClass
-      security:
-        - member: [ ]
-      parameters:
-        - in: path
-          name: instanceId
-          required: true
-          schema:
-            type: integer
-      responses:
-        '200':
-          description: Successfully cancelled or returns error message
-          content:
-            application/json:
-              schema:
-                type: string
   /staff/classes/{personId}:
     post: #TODO this should be get
       parameters:
