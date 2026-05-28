@@ -178,6 +178,7 @@ components:
       properties:
         date:
           type: string
+          format: date
           description: Date in format yyyy-MM-dd
         timeSlots:
           type: array
@@ -194,28 +195,6 @@ components:
         endTime:
           type: string
           description: End time in format HH:mm
-
-    GuidedSailCurrentSessionDTO:
-      type: object
-      required: [ sessionDatetime, sessionLength, instanceId, currentSignups, maxSignups ]
-      properties:
-        sessionDatetime:
-          type: string
-          format: date-time
-          description: Session datetime
-        sessionLength:
-          type: number
-          format: double
-          description: Session length in hours
-        instanceId:
-          type: integer
-          description: Instance ID
-        currentSignups:
-          type: integer
-          description: Current number of signups
-        maxSignups:
-          type: integer
-          description: Maximum number of signups
 
     GuidedSailCreateInstanceResult:
       type: object
