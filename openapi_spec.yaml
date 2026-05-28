@@ -3959,12 +3959,21 @@ components:
         #    $ref: '#/components/schemas/PersonEligibleActionDTO'
         message:
           type: string
-        instructorEligibilityStatus:
-          $ref: './shared.yaml#/components/schemas/ClassSignupInstructorEligibilityStatus'
+        instructorEligibility:
+          $ref: './shared.yaml#/components/schemas/ClassSignupInstructorEligibilityDTO'
         #instructorEligibilityMessage:
         #  type: string
         existingSignup:
           $ref: '#/components/schemas/ClassSignupDTO'
+    ClassSignupInstructorEligibilityDTO:
+      x-has-dto: true
+      type: object
+      required: [ status ]
+      properties:
+        status:
+          $ref: './shared.yaml#/components/schemas/ClassSignupInstructorEligibilityStatus'
+        message:
+          type: string
     PersonEligibleActionDTO:
       x-has-dto: true
       type: object

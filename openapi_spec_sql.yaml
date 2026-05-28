@@ -840,38 +840,62 @@ components:
       x-has-dao: true
       required: [assignId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: './shared.yaml#/components/schemas/IntegerIDResource'
         - type: object
           properties:
             assignId:
               x-col-primary: true
-              x-dto-column: SUNSET_DATE
+              x-dto-column: ROW_ID
               x-table-name: SUNSET_TIMES
-              x-pk-type: LocalDate
-              x-pk-type-entity: true
-              type: string
-              format: date
-            sunsetTime:
-              x-dto-column: SUNSET_TIME
+              type: integer
+            forDate:
               type: string
               format: date-time
-            sunriseTime:
-              x-dto-column: SUNRISE_TIME
+            sunset:
+              type: string
+              format: date-time
+            sunrise:
+              type: string
+              format: date-time
+            twilightStart:
+              type: string
+              format: date-time
+            twilightEnd:
+              type: string
+              format: date-time
+            dayLengthSeconds:
+              type: integer
+              format: int64
+            solarNoon:
+              x-dto-column: SONAR_NOON #Probably a typo
+              type: string
+              format: date-time
+            nauticalTwilightStart:
+              type: string
+              format: date-time
+            nauticalTwilightEnd:
+              type: string
+              format: date-time
+            astronomicalTwilightStart:
+              type: string
+              format: date-time
+            astronomicalTwilightEnd:
               type: string
               format: date-time
     DatetimeRange:
       x-has-dao: true
       required: [assignId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: './shared.yaml#/components/schemas/IntegerIDResource'
         - type: object
           properties:
             assignId:
               x-col-primary: true
-              x-table-name: DATETIME_RANGE
+              x-dto-column: RANGE_ID
+              x-table-name: DATETIME_RANGES
               type: integer
-            rangeName:
-              x-dto-column: RANGE_NAME
+            rangeType:
+              x-dto-column: RANGE_TYPE
               type: string
               maxLength: 100
             startDatetime:
