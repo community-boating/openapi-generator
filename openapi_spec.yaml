@@ -1681,22 +1681,6 @@ paths:
                 type: array
                 items:
                   $ref: 'shared.yaml#/components/schemas/GuidedSailTimeSlotsForDayDTO'
-  /member/guided-sail/current:
-    get:
-      description: 'Get current guided sail instances for authenticated member'
-      tags:
-        - UnifiedClass
-      security:
-        - member: [ ]
-      responses:
-        '200':
-          description: Successfully returns current instances
-          content:
-            application/json:
-              schema:
-                type: array
-                items:
-                  $ref: 'shared.yaml#/components/schemas/GuidedSailCurrentSessionDTO'
   /member/guided-sail/create/{timeslot}:
     post:
       description: 'Create a guided sail instance for a specific timeslot'
@@ -1711,6 +1695,33 @@ paths:
           schema:
             type: string
             description: Timeslot in ISO datetime format
+      responses:
+        '200':
+          description: Successfully created instance or returns error
+          content:
+            application/json:
+              schema:
+                $ref: 'shared.yaml#/components/schemas/GuidedSailCreateInstanceResult'
+  /staff/guided-sail/create/{timeslot}/{personId}:
+    post:
+      description: 'Create a guided sail instance for a specific timeslot'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      parameters:
+        - in: path
+          name: timeslot
+          required: true
+          schema:
+            type: string
+            description: Timeslot in ISO datetime format
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: integer
+            description: Person id of class instructor
       responses:
         '200':
           description: Successfully created instance or returns error
@@ -3744,6 +3755,8 @@ components:
         - $ref: '#/components/schemas/ClassTypeInfo'
         - type: object
           properties:
+            teachRating:
+              $ref: './shared.yaml#/components/schemas/RatingRefAndName'
             ratingPrereq:
               $ref: './shared.yaml#/components/schemas/RatingRefAndName'
             ratingOverkill:
