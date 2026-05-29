@@ -3485,6 +3485,7 @@ components:
       allOf:
         - $ref: "#/components/schemas/ReportDTO"
         - $ref: '#/components/schemas/OrderReportBase'
+        - $ref: "./shared.yaml#/components/schemas/DBHistory"
         - $ref: "./shared.yaml#/components/schemas/OrderBase"
         - $ref: "./shared.yaml#/components/schemas/OrderRef"
         - type: object
