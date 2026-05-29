@@ -999,9 +999,8 @@ paths:
             type: string
             format: date-time
         - in: query
-          name: orderStatus
-          schema:
-            $ref: "./shared.yaml#/components/schemas/PaymentStatus"
+          name: paymentStatus
+          type: string
       tags:
         - Report
       security:
@@ -2495,6 +2494,7 @@ components:
       x-has-dto: true
       x-dao-type: OrderNew
       allOf:
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - $ref: './shared.yaml#/components/schemas/OrderFull'
         - $ref: './shared.yaml#/components/schemas/OrderCalculated'
         - type: object
