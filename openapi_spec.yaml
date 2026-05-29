@@ -3304,13 +3304,13 @@ components:
       required: [ key, title ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ReportMetaFull'
-    ReportStatusCountDTO:
+    ReportTypeCountDTO:
       x-has-dto: true
       type: object
-      required: [ status, count ]
+      required: [ type, count ]
       properties:
-        status:
-          $ref: './shared.yaml#/components/schemas/ReportStatus'
+        type:
+          $ref: './shared.yaml#/components/schemas/ReportType'
         count:
           type: integer
     ReportDTO:
@@ -3331,10 +3331,10 @@ components:
               x-parent-variable: report
               items:
                 $ref: '#/components/schemas/ReportMetaDTO'
-            statusCounts:
+            typeCounts:
               type: array
               items:
-                $ref: '#/components/schemas/ReportStatusCountDTO'
+                $ref: '#/components/schemas/ReportTypeCountDTO'
     OrderPaymentReportDTO:
       x-has-dto: true
       type: object
