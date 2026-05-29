@@ -1000,7 +1000,8 @@ paths:
             format: date-time
         - in: query
           name: paymentStatus
-          type: string
+          schema:
+            type: string
       tags:
         - Report
       security:
