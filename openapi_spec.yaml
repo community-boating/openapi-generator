@@ -3498,6 +3498,12 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/OrderPaymentReportDTO'
+            firstPaymentDate:
+              type: string
+              format: date-time
+            lastPaymentDate:
+              type: string
+              format: date-time
     OrderReportsDTO:
       x-has-dto: true
       type: object
