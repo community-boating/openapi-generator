@@ -1001,7 +1001,7 @@ paths:
         - in: query
           name: paymentStatus
           schema:
-            type: string
+            $ref: './shared.yaml#/components/schemas/PaymentStatus'
       tags:
         - Report
       security:
