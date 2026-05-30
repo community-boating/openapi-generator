@@ -498,11 +498,10 @@ components:
         - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
-            payments:
-              type: array
-              x-parent-variable: stripeTransaction
-              items:
-                $ref: '#/components/schemas/OrderPayment'
+            payment:
+              x-backref-name: stripeTransaction
+              allOf:
+                - $ref: '#/components/schemas/OrderPayment'
 
     CashTransaction:
       x-has-dao: true

@@ -3870,11 +3870,11 @@ components:
         - $ref: '#/components/schemas/StripeTransactionFull'
         - type: object
           properties:
-            payments:
-              type: array
-              x-parent-variable: stripeTransaction
-              items:
-                $ref: '#/components/schemas/OrderPaymentBase'
+            payment:
+              x-backref-name: stripeTransaction
+              #x-parent-variable: stripeTransaction
+              allOf:
+                - $ref: '#/components/schemas/OrderPaymentBase'
     DiscountInstanceRef:
       x-has-interface: true
       x-has-dto: false
