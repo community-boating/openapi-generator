@@ -3553,6 +3553,8 @@ components:
             paidDate:
               type: string
               format: date-time
+            paymentStatus:
+              $ref: './shared.yaml#/components/schemas/PaymentStatus'
     StripePaymentReportsDTO:
       x-has-dto: true
       type: object
