@@ -3533,6 +3533,17 @@ components:
       allOf:
         - $ref: "#/components/schemas/ReportDTO"
         - $ref: "./shared.yaml#/components/schemas/StripeTransactionBase"
+        - type: object
+          properties:
+            amountReceived:
+              type: integer
+              format: int64
+            amountCapturable:
+              type: integer
+              format: int64
+            amountBase:
+              type: integer
+              format: int64
     StripePaymentReportsDTO:
       x-has-dto: true
       type: object
