@@ -3544,6 +3544,15 @@ components:
             amountBase:
               type: integer
               format: int64
+            createdOn:
+              type: string
+              format: date-time
+            capturableDate:
+              type: string
+              format: date-time
+            paidDate:
+              type: string
+              format: date-time
     StripePaymentReportsDTO:
       x-has-dto: true
       type: object
