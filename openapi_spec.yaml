@@ -3556,7 +3556,7 @@ components:
             paymentStatus:
               $ref: './shared.yaml#/components/schemas/PaymentStatus'
             orderId:
-              type: number
+              type: integer
               format: int64
     StripePaymentReportsDTO:
       x-has-dto: true
