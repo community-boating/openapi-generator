@@ -1,409 +1,3321 @@
-openapi: 3.0.0
+openapi: 3.0.3
 info:
-  version: '1'
-  title: ''
-  description: ''
-paths: {}
+  title: Simple API with JWT Auth
+  version: 1.0.0
+  description: A minimal OpenAPI spec with JWT authentication and simple models.
+
+servers:
+  - url: https://api.example.com
+
+paths:
+  /paths/dummyEnum:
+    get:
+      parameters:
+        - in: query
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml#/components/schemas/DummyEnum'
+  /paths/dummyDto:
+    get:
+      parameters:
+        - in: query
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      responses:
+        '200':
+          description: User details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DummyDTO'
+  /member/getNoParams:
+    get:
+      summary: Test
+      description: Tests Post.
+      responses:
+        '200':
+          description: All good
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml#/components/schemas/Boolean'
+  #/flag:
+  #  get:
+  #    summary: Gets the latest flag
+  #    description: Gets the latest flag color (returns a javascript that will assign a variable like FLAG_COLOR = 'R')
+  #    tags:
+  #      - Public
+  #    responses:
+  #      '200':
+  #        description: PNG barcode image
+  #        content:
+  #          text/javascript:
+  #            schema:
+  #              type: string
+  #/public/generateBarcodeImage:
+  #  get:
+  #    summary: Generates a barcode image
+  #    description: Generates a barcode image from the provided number
+  #    tags:
+  #      - Public
+  #    parameters:
+  #      - in: query
+  #        name: number
+  #        required: true
+  #        schema:
+  #          type: string
+  #    responses:
+  #      '200':
+  #        description: PNG barcode image
+  #        content:
+  #          image/png:
+  #            schema:
+  #              type: string
+  #              format: binary
+  /member/createGuestCard:
+    post:
+      parameters:
+        - in: query
+          name: sendEmail
+          schema:
+            type: boolean
+          description: send an email containing a barcode of the card
+        - in: query
+          name: forRental
+          schema:
+            type: boolean
+          description: card is for rental
+      summary: Creates a guest card
+      description: Creates a guest card
+      security:
+        - member: [ ]
+      tags:
+        - Member
+      responses:
+        '200':
+          description: Successfully created guest card
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateGuestCardDTO'
+  /member/info:
+    post:
+      summary: Test
+      description: Tests Post.
+      security:
+        - member: []
+      tags:
+        - Member
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonPublicParentDTO'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonPublicParentDTO'
+        '401':
+          description: Invalid credentials
+    get:
+      summary: Test
+      description: Tests Post.
+      security:
+        - member: []
+      tags:
+        - Member
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonPublicParentDTO'
+        '401':
+          description: Invalid credentials
+  /member/purchaseRecipient:
+    post:
+      summary: Test
+      description: Tests Post.
+      security:
+        - member: [ ]
+      tags:
+        - Member
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonPurchaseRecipientDTO'
+      responses:
+        '200':
+          description: Successful login
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonPurchaseRecipientDTO'
+        '401':
+          description: Invalid credentials
+  /member/eii:
+    get:
+      summary: Gets EII
+      description: Returns current EII response.
+      security:
+        - member: [ ]
+      tags:
+        - Member
+      responses:
+        '200':
+          description: Current EII Response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CurrentEIIResponseDTO'
+  /member/eii/submit:
+    post:
+      summary: EII Submit
+      description: Submits an EII response scholarship purposes.
+      security:
+        - member: [ ]
+      tags:
+        - Member
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EIIResponseDTO'
+      responses:
+        '200':
+          description: Successfully submitted EII response
+  /member/balances:
+    x-is-paginated: true
+    get:
+      summary: Gets a list of balances
+      security:
+        - member: [ ]
+      tags:
+        - Balance
+      x-is-paginated: true
+      responses:
+        '200':
+          description: Successful fetch of balances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BalanceDTO'
+  /staff/balance/{number}:
+    get:
+      security:
+        - staff: []
+      tags:
+        - Balance
+      parameters:
+        - in: path
+          name: number
+          required: true
+          schema:
+            type: string
+          description: The balance number
+      responses:
+        '200':
+          description: Updated balance dto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceDTO'
+  /member/balance/{number}:
+    get:
+      security:
+        - member: []
+      tags:
+        - Balance
+      parameters:
+        - in: path
+          name: number
+          required: true
+          schema:
+            type: string
+          description: The balance number
+      responses:
+        '200':
+          description: Updated balance dto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceDTO'
+  /member/memberships:
+    x-is-paginated: true
+    get:
+      summary: Gets a list of memberships
+      security:
+        - member: [ ]
+      tags:
+        - PersonNew
+      x-is-paginated: true
+      parameters:
+        - in: query
+          name: personId
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: The owner of the membership
+      responses:
+        '200':
+          description: Successfully fetched membership
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MembershipDTO'
+  /staff/memberships:
+    x-is-paginated: true
+    get:
+      summary: Gets a list of memberships
+      security:
+        - staff: [ ]
+      tags:
+        - PersonNew
+      x-is-paginated: true
+      parameters:
+        - in: query
+          name: personId
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: The owner of the membership
+        - in: query
+          name: purchasableState
+          required: false
+          schema:
+            $ref: './shared.yaml#/components/schemas/PurchasableState'
+          description: The purchasable state of the membership (default ACTIVE)
+      responses:
+        '200':
+          description: Successfully fetched membership
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/MembershipDTO'
+  /staff/balances:
+    x-is-paginated: true
+    get:
+      summary: Gets a list of balances
+      security:
+        - staff: []
+      tags:
+        - Balance
+      x-is-paginated: true
+      parameters:
+        - in: query
+          name: personId
+          required: false
+          schema:
+            type: integer
+            minimum: 1
+          description: The owner of the balance
+        - in: query
+          name: filterZeroValue
+          required: false
+          schema:
+            type: boolean
+          description: Filters balances with zero value (default true)
+        - in: query
+          name: filterHasLoad
+          required: false
+          schema:
+            type: boolean
+          description: Filters balances without loads (default true)
+        - in: query
+          name: filterHasPurchase
+          required: false
+          schema:
+            type: boolean
+          description: Filters balances without purchases (default false)
+      responses:
+        '200':
+          description: Successful fetch of balances
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/BalanceDTO'
+    post:
+      x-use-tracked: true
+      summary: Updated or creates a balance
+      security:
+        - staff: []
+      tags:
+        - Balance
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BalanceDTO'
+      responses:
+        '200':
+          description: Updated balance dto
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceDTO'
+
+  /ap-class/get-eligible/{personId}:
+    get:
+      summary: Get eligible classes
+      description: Gets eligible class information for the supplied person_id
+      security:
+        - member: []
+      parameters:
+        - in: path
+          name: personId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The person id
+      responses:
+        '200':
+          description: Successfully fetched classes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APEligibleClass'
+        '204' :
+          description: No classes to show
+        '401' :
+          description: Invalid credentials
+        '403' :
+          description: Invalid permissions
+
+  /ap-class/get-future/{personId}:
+    get:
+      x-serve-example: true
+      summary: Get eligible classes
+      description: Gets eligible class information for the supplied person_id
+      parameters:
+        - in: path
+          name: personId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The person id
+      responses:
+        '200':
+          description: Successfully fetched classes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/APFutureClass'
+        '204' :
+          description: No classes to show
+        '401' :
+          description: Invalid credentials
+        '403' :
+          description: Invalid permissions
+  /staff/compass-order/{id}:
+    get:
+      description: 'Gets an existing order by id'
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          description: The order id
+      security:
+        - staff: []
+      tags:
+        -  CompassOrder
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderWithDiscountsDTO'
+  /staff/compass-order:
+    post:
+      description: 'Updates or inserts order and subobjects into the database for further use in the order system'
+      parameters: []
+      security:
+        - staff: []
+      tags:
+        -  CompassOrder
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderWithDiscountsDTO'
+  /staff/compass-orders:
+    x-is-paginated: true
+    get:
+      tags:
+        - CompassOrder
+      parameters:
+        - in: query
+          name: personId # Note the name is the same as in the path
+          schema:
+            type: integer
+            minimum: 1
+          description: The personId of the order owner
+        - in: query
+          name: status
+          schema:
+            $ref: './shared.yaml#/components/schemas/OrderStateNew'
+          description: Order Status
+      security:
+        - member: [ ]
+      description: 'Returns orders for this person'
+      x-is-paginated: true
+      responses:
+        '200':
+          description: Orders for person
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDTO'
+  /member/compass-orders:
+    x-is-paginated: true
+    get:
+      tags:
+        - CompassOrder
+      security:
+        - member: [ ]
+      parameters:
+        - in: query
+          name: status
+          schema:
+            $ref: './shared.yaml#/components/schemas/OrderStateNew'
+          description: Order Status
+      description: 'Returns orders for this person'
+      x-is-paginated: true
+      responses:
+        '200':
+          description: Orders for person
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/OrderDTO'
+  /member/compass-order/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          description: The order id
+      tags:
+        -  CompassOrder
+      security:
+        - member: []
+      description: 'Returns the current order this person has open'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+        '404':
+          description: Order doesn't exist
+  /member/compass-order/proto:
+    post:
+      description: 'Returns an order with calculated values without creating anything in the database'
+      parameters: [ ]
+      tags:
+        - CompassOrder
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+      responses:
+        '200':
+          x-use-tracked: true
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                x-use-tracked: true
+                allOf:
+                  - $ref: '#/components/schemas/OrderDTO'
+  /member/compass-order/open:
+    get:
+      tags:
+        -  CompassOrder
+      security:
+        - member: []
+      description: 'Returns the current order this person has open'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+        '404':
+          description: Order doesn't exist
+  /member/compass-order:
+    post:
+      description: 'Updates or inserts order and subobjects into the database for further use in the order system'
+      parameters: []
+      security:
+        - member: []
+      tags:
+        -  CompassOrder
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OrderDTO'
+      responses:
+        '200':
+          description: Successfully updated/inserted order
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+  /payments/{id}/poll:
+    parameters:
+      - in: path
+        name: id # Note the name is the same as in the path
+        required: true
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+        description: The payment ID
+    post:
+      description: 'Polls payment'
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: Successfully polled the payment
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml#/components/schemas/PaymentStatus'
+  /orders/{id}/poll:
+    parameters:
+      - in: path
+        name: id # Note the name is the same as in the path
+        required: true
+        schema:
+          type: integer
+          format: int64
+          minimum: 1
+        description: The order ID
+    post:
+      description: 'Polls order'
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Successfully polled the order
+          content:
+            application/json:
+              schema:
+                $ref: './shared.yaml#/components/schemas/OrderStateNew'
+  /member/orders/requiredAgreements:
+    get:
+      description: 'Gets required agreements for current open order'
+      security:
+        - member: [ ]
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Returns order after payment cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonAgreementsDTO'
+  /staff/agreements/{personId}:
+    get:
+      description: 'Gets required agreements for current open order'
+      parameters:
+        - in: path
+          name: personId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+          description: The person ID
+      security:
+        - staff: [ ]
+      tags:
+        - Agreement
+      responses:
+        '200':
+          description: Returns order after payment cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonAgreementsInternalDTO'
+  /member/orders/cancel:
+    post:
+      description: 'Cancels current person order, deleting if possible'
+      security:
+        - member: []
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Successfully cancelled the order
+  /member/orders/applyDiscountByCode:
+    post:
+      description: 'Applies discounts to open order based on supplied activation code'
+      parameters:
+        - in: query
+          name: code # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+          description: The discount code
+      security:
+        - member: [ ]
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Returns order after payment cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+  /staff/orders/capturePaid:
+    post:
+      x-one-of-permissions:
+        - scope: admin
+          type: ADMIN
+      description: 'Captures paid orders'
+      security:
+        - staff: [ ]
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Successfully captures paid orders
+  /staff/orders/cancel/{id}:
+    post:
+      description: 'Cancels an order, deleting if possible'
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          description: The order ID
+      security:
+        - staff: []
+      tags:
+        - CompassOrder
+      responses:
+        '200':
+          description: Successfully cancelled the order
+  /staff/payment/cancel/{id}:
+    post:
+      description: 'Cancels a payment'
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+          description: The payment ID
+      security:
+        - staff: [ ]
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: Returns order after payment cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+  /catalog/syncClasses:
+    post:
+      description: 'Syncs the current catalog with prices from the db'
+      x-one-of-permissions:
+        -
+          scope: admin
+          type: ADMIN
+      tags:
+        - Catalog
+      security:
+        - staff: []
+      responses:
+        '200':
+          description: Successfully syncs the catalog
+  /catalog/inventory:
+    get:
+      description: 'Gets the current inventory'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the inventory
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemStockDTO'
+  /catalog/inventory/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      description: 'Gets the current catalog'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the catalog
+          content:
+            application/json:
+              schema:
+                type: integer
+    post:
+      parameters:
+        - in: path
+          name: id
+          required: true
+          schema:
+            type: integer
+            format: int64
+      description: 'Updates the quantity of a specified item'
+      x-one-of-permissions:
+        -
+          scope: admin
+          type: ADMIN
+      tags:
+        - Catalog
+      security:
+        - staff: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StockChangeDTO'
+      responses:
+        '200':
+          description: Successfully syncs the catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ItemStockDTO'
+
+  /catalog:
+    get:
+      description: 'Gets the current catalog'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Successfully gets the catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogPublicDTO'
+  /staff/catalog:
+    get:
+      description: 'Gets the current catalog'
+      tags:
+        - Catalog
+      security:
+        - staff: []
+      responses:
+        '200':
+          description: Successfully gets the catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
+    post:
+      description: 'Updates the current catalog'
+      x-one-of-permissions:
+        -
+          scope: admin
+          type: ADMIN
+      tags:
+        - Catalog
+      security:
+        - staff: []
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CatalogUpdateDTO'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogDTO'
+  /staff/reports/catalog/items:
+    get:
+      description: 'Gets catalog item reports'
+      parameters:
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: itemType
+          schema:
+            $ref: "./shared.yaml#/components/schemas/ItemType"
+        - in: query
+          name: includeEmpty
+          schema:
+            type: boolean
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the catalog item reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogItemReportsDTO'
+  /staff/reports/orders:
+    get:
+      description: 'Gets order reports'
+      parameters:
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: orderStatus
+          schema:
+            $ref: "./shared.yaml#/components/schemas/OrderStateNew"
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the order reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderReportsDTO'
+  /staff/reports/stripe-payments:
+    get:
+      description: 'Gets stripe payment reports'
+      parameters:
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: paymentStatus
+          schema:
+            $ref: './shared.yaml#/components/schemas/PaymentStatus'
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the stripe payment reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripePaymentReportsDTO'
+  /stripe/constants:
+    get:
+      description: 'Returns stripe constants'
+      tags:
+        - Stripe
+      responses:
+        '200':
+          description: Successfully returns the stripe constants
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripeConstantsDTO'
+  /staff/personsNew/dashboard:
+    x-is-paginated: true
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonSearchCriteria'
+      tags:
+        - PersonNew
+      security:
+        - staff: [ ]
+      description: 'Test new person dto'
+      x-is-paginated: true
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonDashboardDTO'
+  /staff/personsNew/search:
+    x-is-paginated: true
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonSearchCriteria'
+      tags:
+        - PersonNew
+      security:
+        - staff: [ ]
+      description: 'Test new person dto'
+      x-is-paginated: true
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonWithRelationsDTO'
+  /staff/personsNew/{id}:
+    get:
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      tags:
+        - PersonNew
+      security:
+        - staff: []
+      description: 'Test new person dto'
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonWithRelationsDTO'
+  /staff/personsNew:
+    post:
+      tags:
+        - PersonNew
+      security:
+        - staff: [ ]
+      description: 'Updates person'
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonWithRelationsDTO'
+      responses:
+        '200':
+          description: 'Success'
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonWithRelationsDTO'
+  /staff/capturePaymentIntent:
+    post:
+      security:
+        - staff: [ ]
+      description: 'Captures payment intent'
+      tags:
+        - Stripe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CapturePaymentIntentDTO'
+      responses:
+        '200':
+          description: Successfully sends to card reader
+  /staff/cancelReaderActivity:
+    post:
+      security:
+        - staff: [ ]
+      description: 'Captures payment intent'
+      tags:
+        - Stripe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CancelReaderActivityDTO'
+      responses:
+        '200':
+          description: Successfully sends to card reader
+  /staff/sendToReader:
+    post:
+      security:
+        - staff: [ ]
+      description: 'Sends payment intent to card reader'
+      tags:
+        - Stripe
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/SendToReaderDTO'
+      responses:
+        '200':
+          description: Successfully sends to card reader
+  /staff/order/printReceipt:
+    post:
+      security:
+        - staff: [ ]
+      description: 'Prints order receipt'
+      tags:
+        - CompassOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PrintOrderReceiptDTO'
+      responses:
+        '200':
+          description: Successfully printed receipt
+  /staff/printTest/{mac}:
+    post:
+      security:
+        - staff: [ ]
+      description: 'Sends payment intent to card reader'
+      tags:
+        - Printer
+      parameters:
+        - in: path
+          name: mac # Note the name is the same as in the path
+          required: true
+          schema:
+            type: string
+            maxLength: 200
+      responses:
+        '200':
+          description: Successfully printed test
+  /staff/printers:
+    get:
+      security:
+        - staff: [ ]
+      description: 'Returns printers'
+      tags:
+        - Printer
+      responses:
+        '200':
+          description: Printers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrinterDTO'
+    post:
+      security:
+        - staff: [ ]
+      description: 'Updates printers'
+      tags:
+        - Printer
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditPrintersDTO'
+      responses:
+        '200':
+          description: Updated Printers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PrinterDTO'
+  /staff/readers:
+    get:
+      security:
+        - staff: [ ]
+      description: 'Returns card readers'
+      tags:
+        - Stripe
+      responses:
+        '200':
+          description: Returns card readers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CardReaderDTO'
+  /staff/cash-drawers:
+    get:
+      security:
+        - staff: [ ]
+      description: 'Returns cash drawers'
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: Returns cash drawers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CashDrawerDTO'
+    post:
+      security:
+        - staff: [ ]
+      description: 'Updated cash drawers'
+      tags:
+        - Payment
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/EditCashDrawersDTO'
+      responses:
+        '200':
+          description: Returns cash drawers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/CashDrawerDTO'
+  /staff/payment:
+    post:
+      security:
+        - staff: []
+      description: 'Creates test payment intent'
+      tags:
+        - Payment
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderPaymentDTO'
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateOrderPaymentResponseDTO'
+  /staff/checkout-session/{id}:
+    get:
+      security:
+        - staff: [ ]
+      tags:
+        - Payment
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      description: 'Creates a checkout session'
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutSessionDTO'
+  /member/checkout-session:
+    get:
+      security:
+        - member: []
+      tags:
+        - Payment
+      description: 'Creates a payment intent'
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutSessionDTO'
+  /member/payment/cancel/{id}:
+    post:
+      security:
+        - member: []
+      parameters:
+        - in: path
+          name: id # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            format: int64
+            minimum: 1
+      description: 'Cancels a payment'
+      tags:
+        - Payment
+      responses:
+        '200':
+          description: Returns order after payment cancellation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderDTO'
+  /member/payment:
+    post:
+      security:
+        - member: []
+      description: 'Creates a payment intent'
+      tags:
+        - Payment
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateOrderPaymentDTO'
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateOrderPaymentResponseDTO'
+  /member/donations:
+    x-is-paginated: true
+    get:
+      security:
+        - member: []
+      description: 'Returns a list of donations'
+      tags:
+        - Donation
+      x-is-paginated: true
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/DonationDTO'
+  /member/donation/options:
+    get:
+      description: 'Returns donation funds and initiatives'
+      tags:
+        - Donation
+      responses:
+        '200':
+          description: Return donation options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DonationOptionsDTO'
+  /catalog/options:
+    get:
+      description: 'Returns options for membership and guest privs purchases'
+      tags:
+        - Catalog
+      responses:
+        '200':
+          description: Returns membership and guest privs options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogOptionsDTO'
+    post:
+      description: 'Returns options for membership and guest privs purchases'
+      tags:
+        - Catalog
+      x-one-of-permissions:
+        - scope: admin
+          type: ADMIN
+      security:
+        - staff: [ ]
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CatalogOptionsDTO'
+      responses:
+        '200':
+          description: Returns membership and guest privs options
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogOptionsDTO'
+  /member/classes/signup:
+    post:
+      description: 'Signs up for a class'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassSignupRequestDTO'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassSignupResponseDTO'
+
+  /member/classes/instructor/enroll:
+    post:
+      description: 'Enroll as instructor for a class'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorEnrollmentRequestDTO'
+      responses:
+        '200':
+          description: Successfully enrolled as instructor
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /member/classes/instructor/unenroll:
+    post:
+      description: 'Unenroll as instructor from a class'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/InstructorEnrollmentRequestDTO'
+      responses:
+        '200':
+          description: Successfully unenrolled as instructor
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /staff/classes/instructor/enroll:
+    post:
+      description: 'Enroll a person as instructor for a class (staff)'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffInstructorEnrollmentRequestDTO'
+      responses:
+        '200':
+          description: Successfully enrolled person as instructor
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /staff/classes/instructor/unenroll:
+    post:
+      description: 'Unenroll a person as instructor from a class (staff)'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffInstructorEnrollmentRequestDTO'
+      responses:
+        '200':
+          description: Successfully unenrolled person as instructor
+          content:
+            application/json:
+              schema:
+                type: string
+
+  /staff/classes/processWaitlistOffers:
+    post:
+      description: 'Signs up for a class'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffProcessWaitlistOffersRequestDTO'
+      responses:
+        '200':
+          description: Successfully submitted EII response
+  /staff/classes/signup:
+    post:
+      description: 'Signs up for a class'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/StaffClassSignupRequestDTO'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ClassSignupResponseDTO'
+
+  /staff/classes:
+    post: #TODO this should be get
+      description: 'Gets all classes with availability (no person eligibility)'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassFilterOptions'
+      responses:
+        '200':
+          description: Successfully returns all classes
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StaffClassesResponseDTO'
+  /public/classes:
+    post: #TODO this should be get
+      description: 'Gets all classes'
+      tags:
+        - UnifiedClass
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassFilterOptions'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassInstanceDTO'
+  /member/classes:
+    post: #TODO this should be get
+      description: 'Gets all classes with eligibility and signups'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassFilterOptions'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassWithEligibilityDTO'
+  /member/guided-sail/timeslots/{year}/{month}:
+    get:
+      description: 'Get available guided sail time slots for a given month'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      parameters:
+        - in: path
+          name: year
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: month
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+      responses:
+        '200':
+          description: Successfully returns available time slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'shared.yaml#/components/schemas/GuidedSailTimeSlotsForDayDTO'
+  /member/guided-sail/create/{timeslot}:
+    post:
+      description: 'Create a guided sail instance for a specific timeslot'
+      tags:
+        - UnifiedClass
+      security:
+        - member: [ ]
+      parameters:
+        - in: path
+          name: timeslot
+          required: true
+          schema:
+            type: string
+            description: Timeslot in ISO datetime format
+      responses:
+        '200':
+          description: Successfully created instance or returns error
+          content:
+            application/json:
+              schema:
+                $ref: 'shared.yaml#/components/schemas/GuidedSailCreateInstanceResult'
+  /staff/guided-sail/timeslots/{year}/{month}/{personId}:
+    get:
+      description: 'Get available guided sail time slots for a given month'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      parameters:
+        - in: path
+          name: year
+          required: true
+          schema:
+            type: integer
+        - in: path
+          name: month
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 12
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: integer
+            description: Person id
+      responses:
+        '200':
+          description: Successfully returns available time slots
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: 'shared.yaml#/components/schemas/GuidedSailTimeSlotsForDayDTO'
+  /staff/guided-sail/create/{timeslot}/{personId}:
+    post:
+      description: 'Create a guided sail instance for a specific timeslot'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      parameters:
+        - in: path
+          name: timeslot
+          required: true
+          schema:
+            type: string
+            description: Timeslot in ISO datetime format
+        - in: path
+          name: personId
+          required: true
+          schema:
+            type: integer
+            description: Person id of class instructor
+      responses:
+        '200':
+          description: Successfully created instance or returns error
+          content:
+            application/json:
+              schema:
+                $ref: 'shared.yaml#/components/schemas/GuidedSailCreateInstanceResult'
+  /staff/classes/{personId}:
+    post: #TODO this should be get
+      parameters:
+        - in: path
+          name: personId # Note the name is the same as in the path
+          required: true
+          schema:
+            type: integer
+            minimum: 1
+      description: 'Gets all classes with eligibility and signups'
+      tags:
+        - UnifiedClass
+      security:
+        - staff: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ClassFilterOptions'
+      responses:
+        '200':
+          description: Successfully returns the updated catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ClassWithEligibilitySingularDTO'
+  /stripe/paymentTest:
+    post:
+      security:
+        - member: []
+      description: 'Creates test payment intent'
+      tags:
+        - Stripe
+      responses:
+        '200':
+          description: Returns payment intent
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentTestDTO'
+  /member/requiredAgreements:
+    post:
+      description: 'Gets current agreements'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/RequiredAgreementsDTO'
+      tags:
+        - Agreement
+      security:
+        - member: [ ]
+      responses:
+        '200':
+          description: Successfully returns current (latest) agreements
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonAgreementsDTO'
+  /member/agreements:
+    post:
+      x-full-request: true
+      description: 'Posts an agreement'
+      tags:
+        - Agreement
+      security:
+        - member: [ ]
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PersonAgreeDTO'
+      responses:
+        '200':
+          description: Successfully returns current (latest) agreements after adding agreements specified in request
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonAgreementsDTO'
+
+  /member/optOut/status:
+    post:
+      description: 'Updates opt-out preference for a specific group'
+      tags:
+        - OptOut
+      security:
+        - member: [ ]
+      requestBody:
+        x-use-tracked: true
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/OptOutRequestDTO'
+      responses:
+        '200':
+          description: Successfully returns opt-out status for all groups
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptOutStatusResponseDTO'
+    get:
+      description: 'Gets all opt-out groups and their status for the authenticated member'
+      tags:
+        - OptOut
+      security:
+        - member: [ ]
+      responses:
+        '200':
+          description: Successfully returns opt-out status for all groups
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptOutStatusResponseDTO'
+
+  /optOut/update:
+    post:
+      description: 'Updates opt-out preference for a specific group'
+      tags:
+        - OptOut
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateOptOutDTO'
+      responses:
+        '200':
+          description: Successfully updated opt-out status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OptOutGroupWithStatusDTO'
 components:
-  securitySchemes: {}
+  securitySchemes:
+    staff:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+    member:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
   schemas:
-    Catalog:
-      x-has-dao: true
-      required: [assignId]
+    StockChangeDTO:
+      properties:
+        stockChangeType:
+          $ref: './shared.yaml#/components/schemas/StockChangeType'
+        changeAmount:
+          type: integer
+    ItemStockDTO:
+      properties:
+        itemInstanceId:
+          type: integer
+          format: int64
+        itemName:
+          type: string
+        stockAmountRemaining:
+          type: integer
+        stockAmountSold:
+          type: integer
+        stockAmountRefunded:
+          type: integer
+    PaymentTestDTO:
+      properties:
+        clientSecret:
+          type: string
+        sessionClientSecret:
+          type: string
+    StripeConstantsDTO:
+      required: [publicKey, account, apiVersion, locale]
+      properties:
+        publicKey:
+          type: string
+        account:
+          type: string
+        apiVersion:
+          type: string
+        locale:
+          type: string
+
+    CashTransactionDTO:
+      x-has-dto: true
+      required: [cashDrawerId, transactionAmountCents]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/CatalogInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: './shared.yaml#/components/schemas/CashTransactionFull'
         - type: object
           properties:
-            items:
-              x-parent-variable: catalogId
-              #x-column-parent-fk: line
+            cashDrawerChangeId:
+              $ref: '#/components/schemas/CashDrawersChangeDTO'
+    CashDrawersChangeDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CashDrawersChangeFull'
+    CashDrawerDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CashDrawerFull'
+    CancelReaderActivityDTO:
+      x-has-dto: true
+      required: [ readerId ]
+      properties:
+        readerId:
+          type: string
+    CapturePaymentIntentDTO:
+      x-has-dto: true
+      required: [ paymentIntentId ]
+      properties:
+        paymentIntentId:
+          type: string
+    PrintOrderReceiptDTO:
+      x-has-dto: true
+      required: [ printerId, orderId ]
+      properties:
+        printerId:
+          $ref: './shared.yaml#/components/schemas/PrinterRef'
+        orderId:
+          $ref: './shared.yaml#/components/schemas/OrderRef'
+    SendToReaderDTO:
+      x-has-dto: true
+      required: [readerId, paymentIntentId]
+      properties:
+        readerId:
+          type: string
+        paymentIntentId:
+          type: string
+    CardReaderDTO:
+      x-has-dto: true
+      required: [readerId]
+      properties:
+        readerId:
+          type: string
+        label:
+          type: string
+        status:
+          type: string
+    BalanceTransactionDTO:
+      x-has-dto: true
+      required: [ id, balanceId, transactionAmountCents ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceTransactionInternalFull'
+        - type: object
+          properties:
+            balanceId:
+              $ref: '#/components/schemas/BalanceBaseDTO'
+    BalanceTransactionWithPaymentDTO:
+      x-has-dto: true
+      required: [id, balanceId, transactionAmountCents]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceTransactionInternalFull'
+        - type: object
+          properties:
+            paymentId:
+              x-backref-name: balanceTransaction
+              allOf:
+                - $ref: '#/components/schemas/BalanceTransactionOrderPaymentDTO'
+        #    lineItemId:
+        #      type: integer
+        #      format: int64
+        #- type: properties
+        #  properties:
+        #    paymentId:
+        #      type: integer
+        #      format: int64
+        #    lineItemId:
+        #      type: integer
+        #      format: int64
+    PersonBalanceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonBalanceBase'
+        - type: object
+          properties:
+            personId:
+              $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
+    PurchaseBalanceDTO:
+      x-has-dto: true
+      required: [ balanceCents, balanceType ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceFull'
+        - type: object
+          properties:
+            personBalances:
+              x-parent-variable: balanceId
               type: array
               items:
-                $ref: '#/components/schemas/Item'
-            taxes:
-              x-parent-variable: catalogId
+                $ref: '#/components/schemas/PersonBalanceDTO'
+    BalanceBaseDTO:
+      x-has-dto: true
+      required: [ balanceCents, balanceType ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceRef'
+        - $ref: './shared.yaml#/components/schemas/BalanceBase'
+    BalanceDTO:
+      x-has-dto: true
+      required: [ balanceCents, balanceType ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceInternal'
+        - type: object
+          properties:
+            balanceAmountCurrent:
+              type: integer
+              format: int64
+            balanceTransactions:
+              x-parent-variable: balanceId
               type: array
               items:
-                $ref: '#/components/schemas/Tax'
+                $ref: '#/components/schemas/BalanceTransactionWithPaymentDTO'
+            personBalances:
+              x-parent-variable: balanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonBalanceDTO'
+    ClassSignupResponseDTO:
+      type: object
+      properties:
+        classSignup:
+          $ref: '#/components/schemas/ClassSignupFullDTO'
+        errors:
+          type: string
+    ClassSignupRequestDTO:
+      type: object
+      required: [classInstance, program, personId]
+      properties:
+        classInstance:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        program:
+          $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+        personId:
+          $ref: './shared.yaml#/components/schemas/PersonRef'
+        signupType:
+          $ref: './shared.yaml#/components/schemas/SignupTypeEnum'
+    StaffClassSignupRequestDTO:
+      required: [classInstance, program, personId]
+      allOf:
+        - $ref: '#/components/schemas/ClassSignupRequestDTO'
+        - type: object
+          properties:
+            overrides:
+              $ref: '#/components/schemas/ClassSignupOverrides'
+    InstructorEnrollmentRequestDTO:
+      type: object
+      required: [classInstance, program]
+      properties:
+        classInstance:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        program:
+          $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+    StaffInstructorEnrollmentRequestDTO:
+      type: object
+      required: [classInstance, program, personId]
+      properties:
+        classInstance:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        program:
+          $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+        personId:
+          $ref: './shared.yaml#/components/schemas/PersonRef'
+    ClassSignupOverrides:
+      type: object
+      properties:
+        overrideAll:
+          type: boolean
+        overrideCanEnroll:
+          type: boolean
+        overrideClassStarted:
+          type: boolean
+        overrideClassCancelled:
+          type: boolean
+        overrideStaggeredStart:
+          type: boolean
+        typeOverride:
+          type: string
+          maxLength: 1
+          minLength: 1
+    StaffProcessWaitlistOffersRequestDTO:
+      type: object
+      required: [ classInstance, program ]
+      properties:
+        classInstance:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        program:
+          $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+    ValidateLineItemOverrides:
+      type: object
+      properties:
+        overrideValidPeople:
+          type: boolean
+        overrideTypeCheck:
+          type: boolean
+        ClassSignupOverrides:
+          $ref: '#/components/schemas/ClassSignupOverrides'
+    CatalogSharedDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CatalogFull'
+        - type: object
+          properties:
             categories:
               x-parent-variable: catalogId
               type: array
               items:
-                $ref: '#/components/schemas/Category'
-            discounts:
+                $ref: '#/components/schemas/CatalogCategoryDTO'
+            taxes:
               x-parent-variable: catalogId
               type: array
               items:
-                $ref: '#/components/schemas/Discount'
-            products:
-              x-parent-variable: catalogId
-              type: array
-              items:
-                $ref: '#/components/schemas/Product'
+                $ref: '#/components/schemas/CatalogTaxDTO'
             agreements:
               x-parent-variable: catalogId
               type: array
               items:
-                $ref: '#/components/schemas/Agreement'
-    Product:
-      x-has-dao: true
-      required: [assignId, productName, productDescription, active, catalogId]
+                $ref: '#/components/schemas/AgreementDTO'
+    CatalogPublicDTO:
+      x-has-dto: true
+      type: object
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ProductInternal'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: './shared.yaml#/components/schemas/CatalogFull'
+        - $ref: '#/components/schemas/CatalogSharedDTO'
         - type: object
           properties:
-            catalogId:
-              $ref: '#/components/schemas/Catalog'
-
-    Item:
-      x-has-dao: true
-      required: [assignId, type]
+            items:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemPublicDTO'
+            discounts:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountPublicDTO'
+    CatalogUpdateDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CatalogInternalFull'
+        - $ref: '#/components/schemas/CatalogSharedDTO'
+        - type: object
+          properties:
+            items:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemUpdateDTO'
+            discounts:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountUpdateDTO'
+            products:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogProductDTO'
+    CatalogDTO:
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CatalogInternalFull'
+        - $ref: '#/components/schemas/CatalogSharedDTO'
+        - type: object
+          properties:
+            items:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDTO'
+            categories:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogCategoryDTO'
+            discounts:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountDTO'
+            products:
+              x-parent-variable: catalogId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogProductDTO'
+    CatalogTaxDTO:
+      x-has-dto: true
+      required: [ taxName, taxRate ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/TaxFull'
+    CatalogDiscountCategoryDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountCategoryFull'
+    CatalogCategoryDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CategoryFull'
+    CatalogDiscountPublicDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountFull'
+        - type: object
+          properties:
+            instances:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountInstancePublicDTO'
+    CatalogDiscountUpdateDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountFull'
+        - type: object
+          properties:
+            categories:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountCategoryDTO'
+            instances:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
+    CatalogDiscountDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountFull'
+        - type: object
+          properties:
+            categories:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountCategoryDTO'
+            instances:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogDiscountInstanceDTO'
+            itemDiscounts:
+              x-parent-variable: discountId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDiscountDTO'
+    CatalogDiscountInstancePublicDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountInstanceFull'
+    CatalogDiscountInstanceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DiscountInstanceInternalFull'
+    CatalogItemInstancePublicDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceRef'
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceBase'
+    CatalogItemInstanceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceFull'
+    CatalogItemPublicDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemRef'
+        - $ref: './shared.yaml#/components/schemas/ItemFull'
+        - type: object
+          properties:
+            #classTypeId:
+            #  nullable: true
+            #  type: integer
+            #classInstanceId:
+            #  nullable: true
+            #  type: integer
+            #membershipTypeId:
+            #  nullable: true
+            #  type: integer
+            #productId:
+            #  nullable: true
+            #  type: integer
+            #  format: int64
+            itemInstances:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemInstancePublicDTO'
+            itemCategories:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemCategoryPublicDTO'
+    CatalogItemSharedDTO:
+      x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/ItemInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
-            classTypeId:
-              $ref: '#/components/schemas/ApClassType'
-            classInstanceId:
-              $ref: '#/components/schemas/ApClassInstance'
-            membershipTypeId:
-              $ref: '#/components/schemas/MembershipType'
-            damageWaiverTypeId:
-              $ref: '#/components/schemas/DamageWaiverType'
-            productId:
-              $ref: '#/components/schemas/Product'
-            catalogId:
-              $ref: '#/components/schemas/Catalog'
+            #classTypeId:
+            #  nullable: true
+            #  type: integer
+            #classInstanceId:
+            #  nullable: true
+            #  type: integer
+            #membershipTypeId:
+            #  nullable: true
+            #  type: integer
+            #productId:
+            #  nullable: true
+            #  type: integer
+            #  format: int64
             itemInstances:
               x-parent-variable: itemId
               type: array
               items:
-                $ref: '#/components/schemas/ItemInstance'
-            itemCategories:
-              x-parent-variable: item
-              type: array
-              items:
-                $ref: '#/components/schemas/ItemCategory'
-            itemDiscounts:
-              x-parent-variable: itemId
-              type: array
-              items:
-                $ref: '#/components/schemas/ItemDiscount'
+                $ref: '#/components/schemas/CatalogItemInstanceDTO'
             itemTaxes:
               x-parent-variable: itemId
               type: array
               items:
-                $ref: '#/components/schemas/ItemTax'
+                $ref: '#/components/schemas/CatalogItemTaxDTO'
+            itemCategories:
+              x-parent-variable: item
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemCategoryDTO'
             itemAgreements:
               x-parent-variable: itemId
               type: array
               items:
-                $ref: '#/components/schemas/ItemAgreement'
-    DiscountCategory:
-      x-has-dao: true
-      required: [assignId, discountId]
+                $ref: '#/components/schemas/ItemAgreementDTO'
+    CatalogItemDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/DiscountCategoryFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: '#/components/schemas/CatalogItemSharedDTO'
         - type: object
           properties:
-            discountId:
-              $ref: '#/components/schemas/Discount'
-            categoryId:
-              $ref: '#/components/schemas/Category'
-
-
-    ItemCategory:
-      x-has-dao: true
-      required: [assignId, item, categoryId]
+            itemDiscounts:
+              x-parent-variable: itemId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDiscountDTO'
+    CatalogItemUpdateDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemCategoryInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: '#/components/schemas/CatalogItemSharedDTO'
         - type: object
           properties:
-            assignId:
-              x-col-primary: true
-              type: integer
-              format: int64
-            item:
-              $ref: '#/components/schemas/Item'
-            categoryId:
-              $ref: '#/components/schemas/Category'
-
-    Category:
-      x-has-dao: true
-      required: [assignId, categoryName, description, catalogId]
+            itemDiscounts:
+              x-parent-variable: itemId
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemDiscountUpdateDTO'
+    CatalogItemDiscountUpdateDTO:
       allOf:
-        - $ref: './shared.yaml#/components/schemas/CategoryInternal'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: './shared.yaml#/components/schemas/ItemDiscountFull'
+    CatalogItemDiscountDTO:
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemDiscountInternal'
+    CatalogItemTaxDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemTaxFull'
+    CatalogItemCategoryPublicDTO:
+      required: [categoryId]
+      x-has-dto: true
+      allOf:
+        - $ref: "./shared.yaml#/components/schemas/ItemCategoryFull"
+    CatalogItemCategoryDTO:
+      required: [categoryId]
+      x-has-dto: true
+      allOf:
+        - $ref: "./shared.yaml#/components/schemas/ItemCategoryFull"
+    CatalogProductDTO:
+      required: [productName, productDescription, active]
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ProductFull'
+    CatalogSubscriptionDTO:
+      required: [name, billingCycle]
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/SubscriptionFull'
         - type: object
           properties:
-            catalogId:
-              $ref: '#/components/schemas/Catalog'
-
-    ItemInstance:
-      x-has-dao: true
-      required: [assignId, itemId]
+            items:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogSubscriptionItemDTO'
+    CatalogSubscriptionItemDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemInstanceInternal'
+        - $ref: './shared.yaml#/components/schemas/SubscriptionItemFull'
+    OrderWithDiscountsDTO:
+      type: object
+      properties:
+        order:
+          $ref: '#/components/schemas/OrderDTO'
+        availableDiscounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/LineItemAvailableDiscount'
+    LineItemAvailableDiscount:
+      type: object
+      properties:
+        lineItemId:
+          $ref: './shared.yaml#/components/schemas/LineItemRef'
+        discountId:
+          type: integer
+        instanceId:
+          type: integer
+        discountType:
+          $ref: './shared.yaml#/components/schemas/DiscountType'
+        amountCents:
+          type: integer
+          format: int64
+        percent:
+          type: string
+        discountName:
+          type: string
+    OrderSummaryDTO:
+      type: object
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderBase'
+        - $ref: './shared.yaml#/components/schemas/OrderCalculated'
+    OrderDTO:
+      x-has-dto: true
+      x-dao-type: OrderNew
+      allOf:
         - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: './shared.yaml#/components/schemas/OrderFull'
+        - $ref: './shared.yaml#/components/schemas/OrderCalculated'
+        - type: object
+          required: [lineItems, orderNum, version]
+          properties:
+            #itemCount:
+            #  type: integer
+            lineItems:
+              type: array
+              items:
+                $ref: '#/components/schemas/LineItemDTO'
+            orderPayments:
+              type: array
+              readOnly: true
+              items:
+                $ref: '#/components/schemas/OrderPaymentDTO'
+    CheckoutSessionDTO:
+      type: object
+      properties:
+        checkoutSecret:
+          type: string
+    PaymentSourceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PaymentSourceFull'
+      #  - type: object
+      #    properties:
+      #      balanceSource:
+      #        $ref: '#/components/schemas/BalanceRef'
+    BalanceTransactionOrderPaymentDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderPaymentRef'
+        - $ref: './shared.yaml#/components/schemas/OrderPaymentBase'
+    OrderPaymentDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OrderPaymentFull'
         - type: object
           properties:
-            itemId:
-              $ref: '#/components/schemas/Item'
-
-    ItemInstanceStockChange:
-      x-has-dao: true
-      required: [itemInstanceId, changeAmount, stockChangeType]
+            paymentSource:
+              $ref: '#/components/schemas/PaymentSourceDTO'
+            cashTransaction:
+              $ref: '#/components/schemas/CashTransactionDTO'
+            stripeTransaction:
+              $ref: '#/components/schemas/StripeTransactionDTO'
+            balanceTransaction:
+              $ref: '#/components/schemas/BalanceTransactionDTO'
+            transactionOther:
+              $ref: '#/components/schemas/TransactionOtherDTO'
+    CreateBalanceTransactionDTO:
+      type: object
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemInstanceStockChangeFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: '#/components/schemas/BalanceTransactionDTO'
         - type: object
           properties:
-            itemInstanceId:
-              $ref: '#/components/schemas/ItemInstance'
-
-    LineItem:
-      x-has-dao: true
-      required: [assignId, orderId, itemInstanceId]
+            accountNumber:
+              type: string
+    CreateOrderPaymentDTO:
+      type: object
+      required: [ orderId ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/LineItemInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: '#/components/schemas/OrderPaymentDTO'
+        - type: object
+          properties:
+            orderId:
+              $ref: './shared.yaml#/components/schemas/OrderRef'
+            balanceTransaction:
+              $ref: '#/components/schemas/CreateBalanceTransactionDTO'
+            saveCard:
+              type: boolean
+    CreateOrderPaymentResponseDTO:
+      type: object
+      properties:
+        payment:
+          $ref: '#/components/schemas/OrderPaymentDTO'
+        orderUpdated:
+          $ref: '#/components/schemas/OrderDTO'
+        isFree:
+          type: boolean
+    StripeTransactionDTO:
+      required: [stripePaymentIntent, transactionAmountCents]
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/StripeTransactionFull'
+    TransactionOtherDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/TransactionOtherFull'
+    CustomPaymentMethodMappingDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CustomPaymentMethodMappingBase'
+    LineItemTaxDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemTaxFull'
+    LineItemDTORef:
+      x-has-dto: true
+      x-dao-type: LineItem
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemRef'
+    LineItemDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemFull'
+        - $ref: '#/components/schemas/LineItemDTORef'
+        - $ref: './shared.yaml#/components/schemas/LineItemCalculated'
         - type: object
           properties:
             parentItemId:
-              $ref: '#/components/schemas/LineItem'
-            orderId:
-              $ref: '#/components/schemas/OrderNew'
+              $ref: '#/components/schemas/LineItemDTORef'
             itemInstanceId:
-              $ref: '#/components/schemas/ItemInstance'
-            subscriptionId:
-              $ref: '#/components/schemas/PersonSubscription'
+              $ref: './shared.yaml#/components/schemas/ItemInstanceRef'
+            #subscriptionId:
+            #  $ref: '#/components/schemas/SubscriptionDTORef'
             classSignup:
               nullable: true
-              $ref: '#/components/schemas/ApClassSignupDAO'
+              $ref: '#/components/schemas/PurchaseClassSignupDTO'
             membership:
               nullable: true
-              $ref: '#/components/schemas/MembershipDAO'
+              $ref: '#/components/schemas/PurchaseMembershipDTO'
             donation:
               nullable: true
-              $ref: '#/components/schemas/DonationDAO'
+              $ref: '#/components/schemas/PurchaseDonationDTO'
             card:
               nullable: true
-              $ref: '#/components/schemas/CardDAO'
+              $ref: '#/components/schemas/PurchaseCardDTO'
             giftCard:
               nullable: true
-              $ref: '#/components/schemas/BalanceTransaction'
+              $ref: '#/components/schemas/PurchaseGiftCardDTO'
             guestPrivs:
               nullable: true
-              $ref: '#/components/schemas/GuestPrivsDAO'
+              $ref: '#/components/schemas/PurchaseGuestPrivilegesDTO'
             damageWaiver:
               nullable: true
-              $ref: '#/components/schemas/DamageWaiver'
+              $ref: '#/components/schemas/PurchaseDamageWaiverDTO'
             stockChange:
               nullable: true
-              $ref: '#/components/schemas/ItemInstanceStockChange'
+              $ref: '#/components/schemas/PurchaseStockedItemDTO'
             purchaseDelivery:
-              $ref: '#/components/schemas/PurchaseDelivery'
+              $ref: '#/components/schemas/PurchaseDeliveryDTO'
             appliedTaxes:
               x-parent-variable: lineItemId
               type: array
+              readOnly: true
               items:
-                $ref: '#/components/schemas/LineItemTax'
+                $ref: '#/components/schemas/LineItemTaxDTO'
             discounts:
               x-parent-variable: lineItemId
               type: array
               items:
-                $ref: '#/components/schemas/LineItemDiscountInstance'
+                $ref: '#/components/schemas/LineItemDiscountDTO'
             refunds:
               x-parent-variable: lineItemId
               type: array
               items:
-                $ref: '#/components/schemas/LineItemRefund'
-    PurchaseDelivery:
-      x-has-dao: true
+                $ref: '#/components/schemas/LineItemRefundDTO'
+    PurchaseDeliveryDTO:
+      x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/PurchaseDeliveryFull'
-        - type: object
-          properties:
-            targetPerson:
-              $ref: '#/components/schemas/PersonDAO'
-            targetAddress:
-              $ref: '#/components/schemas/AddressDAO'
-            personLookup:
-              $ref: '#/components/schemas/PersonLookup'
-    LineItemRefund:
-      x-has-dao: true
-      required: [assignId, lineItemId]
+    LineItemDiscountDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/LineItemRefundInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: './shared.yaml#/components/schemas/LineItemDiscountInstanceFull'
         - type: object
           properties:
-            lineItemId:
-              $ref: '#/components/schemas/LineItem'
-            stockChangeId:
-              $ref: '#/components/schemas/ItemInstanceStockChange'
-            taxes:
-              x-parent-variable: lineItemRefundId
+            appliedCode:
+              type: string
+              maxLength: 100
+              readOnly: true
+
+    LineItemRefundDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/LineItemRefundFull'
+        - type: object
+          properties:
+            restock:
+              readOnly: true
+              allOf:
+                - $ref: '#/components/schemas/PurchaseStockedItemDTO'
+            includeTaxes:
               type: array
               items:
-                $ref: '#/components/schemas/LineItemRefundTax'
-    LineItemRefundTax:
-      x-has-dao: true
-      required: [taxId]
+                $ref: '#/components/schemas/LineItemRefundTaxDTO'
+            amountToRefundTotalCents:
+              readOnly: true
+              type: integer
+              format: int64
+    LineItemRefundTaxDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/LineItemRefundTaxInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            lineItemRefundId:
-              $ref: '#/components/schemas/LineItemRefund'
-            taxId:
-              $ref: '#/components/schemas/LineItemTax'
-
-    ItemTax:
-      x-has-dao: true
-      required: [assignId, itemId, taxId]
+        - $ref: './shared.yaml#/components/schemas/LineItemRefundTaxFull'
+    #Maybe we split this into different dtos for different types (Purchase, Stock, Refund), idk (its all the same table)
+    PurchaseStockedItemDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemTaxInternal'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            itemId:
-              $ref: '#/components/schemas/Item'
-            taxId:
-              $ref: '#/components/schemas/Tax'
-
-    Tax:
-      x-has-dao: true
-      required: [assignId, taxName, taxRate, catalogId]
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceStockChangeFull'
+    PurchaseDamageWaiverDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/TaxInternal'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            catalogId:
-              $ref: '#/components/schemas/Catalog'
-
-    LineItemTax:
-      x-has-dao: true
-      x-no-interface: true
-      required: [assignId, taxId, lineItemId]
+        - $ref: './shared.yaml#/components/schemas/DamageWaiverFull'
+    DamageWaiverDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/LineItemTaxInternal'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            taxId:
-              $ref: '#/components/schemas/Tax'
-            lineItemId:
-              $ref: '#/components/schemas/LineItem'
-
-    LineItemDiscountInstance:
-      x-has-dao: true
-      required: [assignId, lineItemId, discountInstanceId, discountType]
+        - $ref: './shared.yaml#/components/schemas/DamageWaiverFull'
+    PurchaseGuestPrivilegesDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/LineItemDiscountInstanceInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            lineItemId:
-              $ref: '#/components/schemas/LineItem'
-            discountInstanceId:
-              $ref: '#/components/schemas/DiscountInstance'
-
-    OrderNew:
-      x-has-dao: true
+        - $ref: './shared.yaml#/components/schemas/GuestPrivsFull'
+    JpClassSignupDTO:
+      x-has-dto: true
+      required: [ instanceId, personId ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/OrderFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          required: [assignId, status, version]
-          properties:
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            lineItems:
-              x-parent-variable: orderId
-              items:
-                $ref: '#/components/schemas/LineItem'
-            orderPayments:
-              x-parent-variable: orderId
-              items:
-                $ref: '#/components/schemas/OrderPayment'
-            user:
-              $ref: '#/components/schemas/UserDAO'
-
-    ItemDiscount:
-      x-has-dao: true
-      required: [assignId, itemId, discountId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemDiscountInternal'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            itemId:
-              $ref: '#/components/schemas/Item'
-            discountId:
-              $ref: '#/components/schemas/Discount'
-    PaymentSource:
-      x-has-dao: true
-      required: [ assignId, orderId, paymentSource, paymentAmountCents, paymentStatus ]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/PaymentSourceFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: './shared.yaml#/components/schemas/JpClassSignupFull'
         - type: object
           properties:
             personId:
-              $ref: '#/components/schemas/PersonDAO'
-            balanceSource:
-              $ref: '#/components/schemas/Balance'
-
-    OrderPayment:
-      x-has-interface: true
-      x-no-interface: true
-      x-has-dao: true
-      required: [assignId, orderId, paymentAmountCents, paymentStatus]
+              $ref: '#/components/schemas/PersonNameDTO'
+    CreateApClassSignupDTO:
       allOf:
-        - $ref: './shared.yaml#/components/schemas/OrderPaymentInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: './shared.yaml#/components/schemas/ApClassSignupFull'
+    CreateJpClassSignupDTO:
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassSignupFull'
+    ApClassSignupDTO:
+      x-has-dto: true
+      required: [ instanceId, personId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ApClassSignupInternalFull'
         - type: object
           properties:
-            orderId:
-              $ref: '#/components/schemas/OrderNew'
-            paymentSource:
-              $ref: '#/components/schemas/PaymentSource'
-            stripeTransaction:
-              $ref: '#/components/schemas/StripeTransaction'
-            cashTransaction:
-              $ref: '#/components/schemas/CashTransaction'
-            balanceTransaction:
-              $ref: '#/components/schemas/BalanceTransaction'
-            transactionOther:
-              $ref: '#/components/schemas/TransactionOther'
-
-    CustomPaymentMethodMapping:
-      x-has-dao: true
-      required: [assignId, paymentType, customPaymentMethodId]
+            personId:
+              $ref: '#/components/schemas/PersonNameDTO'
+            lineItemId:
+              $ref: './shared.yaml#/components/schemas/LineItemOrderRef'
+    PurchaseClassSignupDTO:
+      x-has-dto: true
+      required: [instanceId, personId]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/CustomPaymentMethodMappingBase'
-        - $ref: './shared.yaml#/components/schemas/LongIDResource'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-    ReportMetaDAO:
-      x-has-dao: true
+        - $ref: './shared.yaml#/components/schemas/ApClassSignupFull'
+    MembershipDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/MembershipInternal'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonNameDTO'
+            lineItemId:
+              $ref: './shared.yaml#/components/schemas/LineItemOrderRef'
+            guestPrivs:
+              x-parent-variable: membershipId
+              type: array
+              items:
+                $ref: '#/components/schemas/GuestPrivsDTO'
+            typeAndExpirationString:
+              type: string
+              maxLength: 100
+            programName:
+              type: string
+              maxLength: 100
+            typeName:
+              type: string
+              maxLength: 200
+    GuestPrivsDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/GuestPrivsFull'
+    PurchaseMembershipDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/MembershipFull'
+    DonationDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DonationInternalFull'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonNameDTO'
+            lineItemId:
+              $ref: './shared.yaml#/components/schemas/LineItemOrderRef'
+    PurchaseDonationDTO:
+      x-has-dto: true
+      required: [fundId,initiativeId, state]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DonationFull'
+        #- type: object
+        #  properties:
+        #    personId:
+        #      type: integer
+    EIIResponseDTO:
+      x-has-dto: true
+      required: [workingAdults, nonWorkingAdults, children, householdIncome]
+      properties:
+        workingAdults:
+          type: integer
+        nonWorkingAdults:
+          type: integer
+        children:
+          type: integer
+        householdIncome:
+          type: integer
+          format: int64
+    CurrentEIIResponseDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/EIIResponseDTO'
+        - type: object
+          properties:
+            computedPrice:
+              type: integer
+    PrinterStatusDTO:
+      x-has-dto: true
+      type: object
+      required: [statusCode, online, paperOut, coverOpen, drawerOpen]
+      properties:
+        statusCode:
+          type: integer
+        online:
+          type: boolean
+          default: false
+        paperOut:
+          type: boolean
+          default: false
+        coverOpen:
+          type: boolean
+          default: false
+        drawerOpen:
+          type: boolean
+          default: false
+    PrinterComputed:
+      x-has-dto: true
+      type: object
+      properties:
+        printerHasPassword:
+          type: boolean
+        printerStatus:
+          $ref: '#/components/schemas/PrinterStatusDTO'
+        ip:
+          type: string
+          maxLength: 100
+        model:
+          type: string
+          maxLength: 100
+    PrinterInternalDTO:
+      x-has-dto: true
+      type: object
+      required: [printerMAC]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PrinterInternal'
+        - $ref: '#/components/schemas/PrinterComputed'
+    PrinterDTO:
+      x-has-dto: true
+      type: object
+      required: [ printerMAC ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PrinterFull'
+        - $ref: '#/components/schemas/PrinterComputed'
+    EditPrinterDTO:
+      x-has-dto: true
+      type: object
+      required: [printerMAC]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PrinterFull'
+        - $ref: '#/components/schemas/PrinterComputed'
+        - type: object
+          properties:
+            printerPassword:
+              readOnly: true
+              type: string
+              maxLength: 200
+    EditPrintersDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        printersEdited:
+          type: array
+          items:
+            $ref: '#/components/schemas/EditPrinterDTO'
+    EditCashDrawersDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        cashDrawersEdited:
+          type: array
+          items:
+            $ref: '#/components/schemas/CashDrawerDTO'
+    PersonIdOnlyDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRef'
+    PersonNameDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
+        - $ref: '#/components/schemas/PersonIdOnlyDTO'
+    CardDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CardFull'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonNameDTO'
+    PurchaseCardDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CardFull'
+    PurchaseGiftCardDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/BalanceTransactionFull'
+        - type: object
+          properties:
+            expirationDate:
+              writeOnly: true
+              type: string
+              format: date-time
+            cardName:
+              writeOnly: true
+              type: string
+            cardNum:
+              writeOnly: true
+              type: string
+            isRecharge:
+              writeOnly: true
+              type: boolean
+            balanceId:
+              readOnly: true
+              allOf:
+                - $ref: '#/components/schemas/PurchaseBalanceDTO'
+
+    PersonSubscriptionDTO:
+      x-has-dto: true
+      required: [id, personId, subscriptionId, billingCycle]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonSubscriptionFull'
+    APEligibleClass:
+      type: object
+      properties:
+        instanceId:
+          type: integer
+          example: 117
+        typeName:
+          type: string
+          example: Intermediate 2
+        sessionCount:
+          type: integer
+          example: 2
+        sessionDates:
+          type: array
+          example: [01-APR-2010, 02-APR-2010]
+          items:
+            type: string
+            format: date
+        signupsAvailable:
+          type: boolean
+          example: T
+        nextSignupsOpen:
+          type: string
+          format: date-time
+        nextSignupsCount:
+          type: integer
+          example: 10
+        instructor:
+          type: string
+          example: Joe L.
+        location:
+          type: string
+          example: Dockhouse
+        booleanEnumTest:
+          $ref: './shared.yaml#/components/schemas/Boolean'
+          example: 'T'
+    APFutureClass:
+      type: object
+      properties:
+        enumTest:
+          $ref: "./shared.yaml#/components/schemas/EnumTest"
+          example: 'A'
+        instanceId:
+          type: integer
+          example: 117
+        typeName:
+          type: string
+          example: Intermediate 2
+        sessionCount:
+          type: integer
+          example: 2
+        sessionDates:
+          type: array
+          example: [01-APR-2010, 02-APR-2010]
+          items:
+            type: string
+            format: date
+        sessionLengthMinutes:
+          type: integer
+          example: 120
+        signupsAvailable:
+          type: boolean
+          example: Y
+        nextSignupsOpen:
+          type: string
+          format: date-time
+        nextSignupsCount:
+          type: integer
+          example: 10
+        instructor:
+          type: string
+          example: Joe L.
+        location:
+          type: string
+          example: Dockhouse
+    PersonPublicDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRef'
+        - $ref: './shared.yaml#/components/schemas/PersonBase'
+        - $ref: './shared.yaml#/components/schemas/PersonPublic'
+        - type: object
+          properties:
+            isLocked:
+              type: boolean
+            phones:
+              type: array
+              items:
+                $ref: '#/components/schemas/PhoneDTO'
+            addresses:
+              type: array
+              items:
+                $ref: '#/components/schemas/AddressDTO'
+            referrals:
+              x-parent-variable: personId
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonReferralDTO'
+    PersonDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonInternalFull'
+        - $ref: '#/components/schemas/PersonPublicMemberDTO'
+        #- type: object
+        #  properties:
+        #    cards:
+        #      type: array
+        #      x-base-type: false
+        #      items:
+        #        $ref: '#/components/schemas/CardDTO'
+        #    memberships:
+        #      type: array
+        #      x-base-type: MembershipDTO
+        #      items:
+        #        $ref: '#/components/schemas/MembershipDTO'
+    PersonWithRelationsDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonDTO'
+        - $ref: './shared.yaml#/components/schemas/PersonWithRelations'
+        - type: object
+          properties:
+            relationsA:
+              x-parent-variable: A
+              x-column-parent-fk: A
+              x-base-type: false
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRelationADTO'
+            relationsB:
+              x-parent-variable: B
+              x-column-parent-fk: B
+              x-base-type: false
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonRelationBDTO'
+    PersonPublicMemberDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicDTO'
+        - type: object
+          properties:
+            currentDamageWaivers:
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/DamageWaiverDTO'
+            currentMemberships:
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/MembershipDTO'
+            currentCards:
+              readOnly: true
+              type: array
+              items:
+                $ref: '#/components/schemas/CardDTO'
+    PersonDashboardDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicMemberDTO'
+    PersonPublicChildAndParentDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicMemberDTO'
+        - type: object
+          properties:
+            emergencyContacts:
+              maxLength: 3
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonPublicRelatedDTO'
+            #purchaseRecipients:
+            #  maxLength: 25
+            #  type: array
+            #  items:
+            #    $ref: '#/components/schemas/PersonPublicRelatedDTO'
+    PersonPublicChildDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicChildAndParentDTO'
+        - $ref: '#/components/schemas/PersonPublicRelatedDTO'
+    PersonPublicParentDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicChildAndParentDTO'
+        - type: object
+          properties:
+            children:
+              maxLength: 10
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonPublicChildDTO'
+    PersonRelationBaseDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRelationBase'
+        - type: object
+          properties:
+            aTitle:
+              type: string
+            bTitle:
+              type: string
+    PersonPublicRelatedDTO:
+      x-has-dto: true
+      x-sub-variable: B
+      x-sub-type: PersonRelationAInterfaceI
+      allOf:
+        - $ref: '#/components/schemas/PersonPublicDTO'
+        - $ref: '#/components/schemas/PersonRelationBaseDTO'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+    PersonRelationBDTO:
+      x-has-dto: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRelationB'
+        - $ref: '#/components/schemas/PersonRelationBaseDTO'
+        #- $ref: '#/components/schemas/PersonDTO'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+        - type: object
+          properties:
+            A:
+              $ref: '#/components/schemas/PersonDTO'
+            #B:
+            #  $ref: '#/components/schemas/PersonDTO'
+    PersonRelationADTO:
+      x-has-dto: true
+      required: [ assignId ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonRelationA'
+        - $ref: '#/components/schemas/PersonRelationBaseDTO'
+        #- $ref: '#/components/schemas/PersonDTO'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+        - type: object
+          properties:
+            #A:
+            #  $ref: '#/components/schemas/PersonDTO'
+            B:
+              $ref: '#/components/schemas/PersonDTO'
+    PersonPurchaseRecipientDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+        - $ref: './shared.yaml#/components/schemas/PersonLookupRef'
+        - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
+        - $ref: './shared.yaml#/components/schemas/WithEmail'
+        - type: object
+          properties:
+            address:
+              $ref: '#/components/schemas/AddressDTO'
+    PhoneBaseDTO:
+      x-has-dto: true
+      x-has-dao: false
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Phone'
+    PhoneDTO:
+      x-has-dto: true
+      x-has-dao: false
+      x-sub-variable: phoneId
+      x-sub-type: PersonPhoneDAO
+      allOf:
+        - $ref: '#/components/schemas/PhoneBaseDTO'
+        - $ref: './shared.yaml#/components/schemas/PersonPhoneBase'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+    PersonReferralDTO:
+      x-has-dto: true
+      required: [assignId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonReferral'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+    AddressBaseDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/Address'
+    AddressDTO:
+      x-has-dto: true
+      x-sub-variable: addressId
+      x-sub-type: PersonAddressDAO
+      allOf:
+        - $ref: '#/components/schemas/AddressBaseDTO'
+        - $ref: './shared.yaml#/components/schemas/PersonAddressBase'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+    ValidationTestDTO:
+      type: object
+      properties:
+        testA:
+          type: string
+          maxLength: 100
+          minLength: 10
+        testB:
+          type: integer
+          minimum: 1
+          maximum: 25
+        testC:
+          type: string
+          pattern: ^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$
+    DonationFundDTO:
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DonationFundFull'
+    DonationInitiativeDTO:
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DonationInitiativeFull'
+        - type: object
+          properties:
+            contributionsCurrent:
+              type: integer
+              format: int64
+    DonationOptionsDTO:
+      type: object
+      properties:
+        donationFunds:
+          type: array
+          items:
+            $ref: '#/components/schemas/DonationFundDTO'
+        donationInitiatives:
+          type: array
+          items:
+            $ref: '#/components/schemas/DonationInitiativeDTO'
+    MembershipTypeDTO:
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/MembershipTypeFull'
+    ProgramTypeDTO:
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ProgramTypeFull'
+    DamageWaiverTypeDTO:
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/DamageWaiverTypeFull'
+    ApClassTypeDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ApClassTypeFull'
+        - type: object
+          properties:
+            ratingPrereq:
+              $ref: './shared.yaml#/components/schemas/RatingRefAndName'
+            ratingOverkill:
+              $ref: './shared.yaml#/components/schemas/RatingRefAndName'
+    CatalogOptionsDTO:
+      type: object
+      properties:
+        membershipTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/MembershipTypeDTO'
+        damageWaiverTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/DamageWaiverTypeDTO'
+        apClassTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ApClassTypeDTO'
+        programTypes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ProgramTypeDTO'
+    ReportMetaDTO:
+      x-has-dto: true
       type: object
       required: [ key, title ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/ReportMetaFull'
-        - type: object
-          properties:
-            report:
-              $ref: '#/components/schemas/ReportDAO'
-    ReportDAO:
-      x-has-dao: true
+    ReportTypeCountDTO:
+      x-has-dto: true
+      type: object
+      required: [ type, count ]
+      properties:
+        type:
+          $ref: './shared.yaml#/components/schemas/ReportType'
+        count:
+          type: integer
+    ReportDTO:
+      x-has-dto: true
       type: object
       required: [ reportKey, reportId ]
       allOf:
@@ -414,1479 +3326,768 @@ components:
               type: array
               x-parent-variable: parentReport
               items:
-                $ref: '#/components/schemas/ReportDAO'
+                $ref: '#/components/schemas/ReportDTO'
             meta:
               type: array
               x-parent-variable: report
               items:
-                $ref: '#/components/schemas/ReportMetaDAO'
-            parentReport:
-              $ref: '#/components/schemas/ReportDAO'
-    BalanceTransaction:
-      x-has-dao: true
-      required: [assignId, balanceId, transactionAmountCents]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/BalanceTransactionInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            balanceId:
-              $ref: '#/components/schemas/Balance'
-            paymentId:
-              x-backref-name: balanceTransaction
-              allOf:
-                - $ref: '#/components/schemas/OrderPayment'
-            lineItemId:
-              x-backref-name: giftCard
-              allOf:
-                - $ref: '#/components/schemas/LineItem'
-    TransactionOther:
-      x-has-dao: true
-      required: [ assignId, checkNumber, checkAmount ]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/TransactionOtherFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-    PersonBalance:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonBalanceFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            balanceId:
-              $ref: '#/components/schemas/Balance'
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-    Balance:
-      x-has-dao: true
-      required: [assignId, personId, balanceType]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/BalanceInternal'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            personBalances:
-              x-parent-variable: balanceId
+                $ref: '#/components/schemas/ReportMetaDTO'
+            typeCounts:
               type: array
               items:
-                $ref: '#/components/schemas/PersonBalance'
-            balanceTransactions:
-              x-parent-variable: balanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/BalanceTransaction'
-    BalanceLookupCooldown:
-      x-has-dao: true
-      required: [assignId, personId, searchAttempt]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/LongIDResource'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            searchAttempt:
-              type: string
-              maxLength: 500
-            balanceMatch:
-              $ref: '#/components/schemas/Balance'
-    StripeTransaction:
-      x-has-dao: true
-      required: [assignId, stripePaymentIntent, transactionAmountCents]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/StripeTransactionInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            payment:
-              x-backref-name: stripeTransaction
-              allOf:
-                - $ref: '#/components/schemas/OrderPayment'
-
-    CashTransaction:
-      x-has-dao: true
-      required: [assignId, cashDrawerId, transactionAmountCents]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/CashTransactionInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            paymentId:
-              $ref: '#/components/schemas/OrderPayment'
-            cashDrawerChangeId:
-              $ref: '#/components/schemas/CashDrawersChange'
-
-    CashDrawersChange:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/CashDrawersChangeFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            cashDrawerId:
-              $ref: '#/components/schemas/CashDrawer'
-    ApClassType:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ApClassTypeFull'
-        - type: object
-          properties:
-            teachRating:
-              $ref: '#/components/schemas/RatingDAO'
-            ratingPrereq:
-              $ref: '#/components/schemas/RatingDAO'
-            ratingOverkill:
-              $ref: '#/components/schemas/RatingDAO'
-            classPrereq:
-              $ref: '#/components/schemas/ApClassType'
-            classOverkill:
-              $ref: '#/components/schemas/ApClassType'
-    ClassLocationDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ClassLocationFull'
-    ApClassInstance:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ApClassInstanceInternal'
-        - type: object
-          properties:
-            sessions:
-              x-parent-variable: instanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/ApClassSessionDAO'
-            signups:
-              x-parent-variable: instanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/ApClassSignupDAO'
-            locationId:
-              $ref: '#/components/schemas/ClassLocationDAO'
-            formatId:
-              $ref: '#/components/schemas/ApClassFormatDAO'
-            typeId:
-              $ref: '#/components/schemas/ApClassType'
-            instructorId:
-              $ref: '#/components/schemas/PersonDAO'
-    ApClassFormatDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ApClassFormatFull'
-        - type: object
-          properties:
-            typeId:
-              $ref: '#/components/schemas/ApClassType'
-    ApClassSessionDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ApClassSessionInternal'
-        - type: object
-          properties:
-            instanceId:
-              $ref: '#/components/schemas/ApClassInstance'
-            attendance:
-              x-parent-variable: sessionId
-              type: array
-              items:
-                $ref: '#/components/schemas/ApClassAttendanceDAO'
-    ClassInstructorDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ClassInstructorFull'
-    JpClassSectionDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/JpClassSectionFull'
-        - type: object
-          properties:
-            instanceId:
-              $ref: '#/components/schemas/JpClassInstanceDAO'
-            instructorId:
-              $ref: '#/components/schemas/PersonDAO'
-            locationId:
-              $ref: '#/components/schemas/ClassLocationDAO'
-            lookupId:
-              $ref: '#/components/schemas/JpClassSectionLookupDAO'
-    JpClassSectionLookupDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/JpClassSectionLookupFull'
-    JpClassStaggerDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/JpClassStaggerFull'
-        - type: object
-          properties:
-            instanceId:
-              $ref: '#/components/schemas/JpClassInstanceDAO'
-            signups:
-              x-parent-variable: staggerId
-              type: array
-              items:
-                $ref: '#/components/schemas/JpClassSignupDAO'
-    JpClassTypeOverrideDAO:
-      x-has-dao: true
-      required: [assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/UnifiedClassTypeOverrideBase'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            assignId:
-              x-col-primary: true
-              x-dto-column: ROW_ID
-              x-table-name: JP_CLASS_TYPE_OVERRIDES
-              x-auto-increment: JP_CLASS_TYPE_OVERRIDES_PK
-              type: integer
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            typeId:
-              $ref: '#/components/schemas/JpClassTypeDAO'
-            season:
-              type: integer
-            isForOverkill:
-              type: boolean
-              x-boolean-char: Y
-    ApClassTypeOverrideDAO:
-      x-has-dao: true
-      required: [assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/UnifiedClassTypeOverrideBase'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            assignId:
-              x-col-primary: true
-              x-dto-column: ROW_ID
-              x-table-name: AP_CLASS_TYPE_OVERRIDES
-              x-auto-increment: AP_CLASS_TYPE_OVERRIDES_PK
-              type: integer
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            typeId:
-              $ref: '#/components/schemas/ApClassType'
-            season:
-              type: integer
-            isForOverkill:
-              type: boolean
-              x-boolean-char: Y
-
-
-    JpClassTypeDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/JpClassTypeFull'
-        - type: object
-          properties:
-            teachRating:
-              $ref: '#/components/schemas/RatingDAO'
-            ratingPrereq:
-              $ref: '#/components/schemas/RatingDAO'
-            ratingOverkill:
-              $ref: '#/components/schemas/RatingDAO'
-            classPrereq:
-              $ref: '#/components/schemas/JpClassTypeDAO'
-            classOverkill:
-              $ref: '#/components/schemas/JpClassTypeDAO'
-    JpClassInstanceDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/JpClassInstanceInternal'
-        - type: object
-          properties:
-            sessions:
-              x-parent-variable: instanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/JpClassSessionDAO'
-            sections:
-              x-parent-variable: instanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/JpClassSectionDAO'
-            staggers:
-              x-parent-variable: instanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/JpClassStaggerDAO'
-            signups:
-              x-parent-variable: instanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/JpClassSignupDAO'
-            locationId:
-              $ref: '#/components/schemas/ClassLocationDAO'
-            instructorId:
-              $ref: '#/components/schemas/PersonDAO'
-            typeId:
-              $ref: '#/components/schemas/JpClassTypeDAO'
-    JpClassSessionDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/JpClassSessionInternal'
-        - type: object
-          properties:
-            instanceId:
-              $ref: '#/components/schemas/JpClassInstanceDAO'
-            attendance:
-              x-parent-variable: sessionId
-              type: array
-              items:
-                $ref: '#/components/schemas/JpClassAttendanceDAO'
-    JpClassAttendanceDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/JpClassAttendanceFull'
-        - type: object
-          properties:
-            sessionId:
-              $ref: '#/components/schemas/JpClassSessionDAO'
-            signupId:
-              $ref: '#/components/schemas/JpClassSignupDAO'
-    JpClassSignupDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/JpClassSignupFull'
-        - type: object
-          properties:
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            instanceId:
-              $ref: '#/components/schemas/JpClassInstanceDAO'
-            sectionId:
-              $ref: '#/components/schemas/JpClassSectionDAO'
-            staggerId:
-              $ref: '#/components/schemas/JpClassStaggerDAO'
-            wlResult:
-              x-backref-name: assignId
-              allOf:
-                - $ref: '#/components/schemas/JpClassWlResultDAO'
-            attendance:
-              x-parent-variable: signupId
-              type: array
-              items:
-                $ref: '#/components/schemas/JpClassAttendanceDAO'
-            membershipUsed:
-              $ref: '#/components/schemas/MembershipDAO'
-    JpClassWlResultDAO:
-      x-has-dao: true
-      required: [ assignId ]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/JpClassWlResultFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            assignId:
-              x-col-primary: true
-              x-pk-type: Int
-              x-dto-column: SIGNUP_ID
-              x-table-name: JP_CLASS_WL_RESULTS
-              allOf:
-                - $ref: '#/components/schemas/JpClassSignupDAO'
-    ApClassAttendanceDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ApClassAttendanceFull'
-        - type: object
-          properties:
-            sessionId:
-              $ref: '#/components/schemas/ApClassSessionDAO'
-            signupId:
-              $ref: '#/components/schemas/ApClassSignupDAO'
-    ApClassSignupDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ApClassSignupInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            lineItemId:
-              x-backref-name: classSignup
-              allOf:
-                - $ref: '#/components/schemas/LineItem'
-            instanceId:
-              $ref: '#/components/schemas/ApClassInstance'
-            wlResult:
-              x-backref-name: assignId
-              allOf:
-                - $ref: '#/components/schemas/ApClassWlResultDAO'
-            attendance:
-              x-parent-variable: signupId
-              type: array
-              items:
-                $ref: '#/components/schemas/ApClassAttendanceDAO'
-            membershipUsed:
-              $ref: '#/components/schemas/MembershipDAO'
-    ApClassWlResultDAO:
-      x-has-dao: true
-      required: [assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ApClassWlResultFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            assignId:
-              x-col-primary: true
-              x-pk-type: Int
-              x-dto-column: SIGNUP_ID
-              x-table-name: AP_CLASS_WL_RESULTS
-              allOf:
-                - $ref: '#/components/schemas/ApClassSignupDAO'
-    SunsetTime:
-      x-has-dao: true
-      required: [assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/IntegerIDResource'
-        - type: object
-          properties:
-            assignId:
-              x-col-primary: true
-              x-dto-column: ROW_ID
-              x-table-name: SUNSET_TIMES
-              type: integer
-            forDate:
-              type: string
-              format: date-time
-            sunset:
-              type: string
-              format: date-time
-            sunrise:
-              type: string
-              format: date-time
-            twilightStart:
-              type: string
-              format: date-time
-            twilightEnd:
-              type: string
-              format: date-time
-            dayLengthSeconds:
-              type: integer
-              format: int64
-            solarNoon:
-              x-dto-column: SONAR_NOON #Probably a typo
-              type: string
-              format: date-time
-            nauticalTwilightStart:
-              type: string
-              format: date-time
-            nauticalTwilightEnd:
-              type: string
-              format: date-time
-            astronomicalTwilightStart:
-              type: string
-              format: date-time
-            astronomicalTwilightEnd:
-              type: string
-              format: date-time
-    DatetimeRange:
-      x-has-dao: true
-      required: [assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/IntegerIDResource'
-        - type: object
-          properties:
-            assignId:
-              x-col-primary: true
-              x-dto-column: RANGE_ID
-              x-table-name: DATETIME_RANGES
-              type: integer
-            rangeType:
-              x-dto-column: RANGE_TYPE
-              type: string
-              maxLength: 100
-            startDatetime:
-              x-dto-column: START_DATETIME
-              type: string
-              format: date-time
-            endDatetime:
-              x-dto-column: END_DATETIME
-              type: string
-              format: date-time
-    YearlyDate:
-      x-has-dao: true
-      required: [assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            assignId:
-              x-col-primary: true
-              x-table-name: YEARLY_DATE
-              type: integer
-            dateName:
-              x-dto-column: DATE_NAME
-              type: string
-              maxLength: 100
-            yearlyDate:
-              x-dto-column: YEARLY_DATE
-              type: string
-              description: MM-DD format
-              maxLength: 5
-    GuestPrivsDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/GuestPrivsInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            assignId:
-              x-table-name: guest_privs
-              x-col-primary: true
-              type: integer
-            membershipId:
-              $ref: '#/components/schemas/MembershipDAO'
-            #guestPrivsTypeId:
-            #  $ref: '#/components/schemas/GuestPrivsType'
-            lineItemId:
-              x-backref-name: guestPrivs
-              allOf:
-                - $ref: '#/components/schemas/LineItem'
-    DamageWaiver:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/DamageWaiverInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            damageWaiverTypeId:
-              $ref: '#/components/schemas/DamageWaiverType'
-            lineItemId:
-              x-backref-name: damageWaiver
-              allOf:
-                - $ref: '#/components/schemas/LineItem'
-    PersonSubscription:
-      x-has-dao: true
-      required: [assignId, personId, subscriptionId, billingCycle]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonSubscriptionFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            subscriptionId:
-              $ref: '#/components/schemas/Subscription'
-
-    Subscription:
-      x-has-dao: true
-      required: [assignId, name, billingCycle]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/SubscriptionFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-
-    SubscriptionItem:
-      x-has-dao: true
-      required: [assignId, subscriptionId, itemId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/SubscriptionItemFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            subscriptionId:
-              $ref: '#/components/schemas/Subscription'
-            itemId:
-              $ref: '#/components/schemas/Item'
-
-    PersonPhoneDAO:
-      x-has-dao: true
-      x-sub-type: Phone
-      x-sub-variable: phoneId
-      required: [personPhoneAssignId, personId, phoneId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/WithAccessControl'
-        - $ref: './shared.yaml#/components/schemas/PersonPhoneFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            personPhoneAssignId:
-              x-dto-column: assign_id
-              x-table-name: person_phone
-              x-col-primary: true
-              type: integer
-              format: int64
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            phoneId:
-              $ref: '#/components/schemas/PhoneDAO'
-    PhoneDAO:
-      x-has-dao: true
-      required: [assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/Phone'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            assignId:
-              x-table-name: phone
-              x-col-primary: true
-              type: integer
-              format: int64
-            persons:
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonPhoneDAO'
-    PersonAddressDAO:
-      x-has-interface: true
-      x-has-dao: true
-      x-has-dto: false
-      x-sub-type: Address
-      x-sub-variable: addressId
-      required: [personAddressAssignId, line1, country, personId, addressId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/WithAccessControl'
-        - $ref: './shared.yaml#/components/schemas/PersonAddressFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            personAddressAssignId:
-              x-dto-column: assign_id
-              x-table-name: person_address
-              x-col-primary: true
-              type: integer
-              format: int64
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            addressId:
-              allOf:
-                - $ref: '#/components/schemas/AddressDAO'
-    AddressDAO:
-      type: object
-      x-has-dao: true
-      required: [assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/Address'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            assignId:
-              x-table-name: address
-              x-col-primary: true
-              type: integer
-              format: int64
-            persons:
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonAddressDAO'
-
-    PersonReferralDAO:
-      x-has-dao: true
-      required: [personId, assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonReferral'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            assignId:
-              x-table-name: person_referral
-              x-col-primary: true
-              type: integer
-              format: int64
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-
-    MembershipType:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/MembershipTypeFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            programId:
-              $ref: '#/components/schemas/ProgramType'
-
-    DamageWaiverType:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/DamageWaiverTypeFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-
-    ProgramType:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/ProgramTypeBase'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-    #Person:
-    #  x-already-exists: true
-    #  required: [assignId]
-    #  properties:
-    #    id:
-    #      type: integer
-    DonationDAO:
-      x-has-dao: true
-      required: [donationId, fundId, initiativeId, state]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/DonationInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            fundId:
-              $ref: '#/components/schemas/DonationFundDAO'
-            initiativeId:
-              $ref: '#/components/schemas/DonationInitiativeDAO'
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            lineItemId:
-              x-backref-name: donation
-              allOf:
-                - $ref: '#/components/schemas/LineItem'
-    DonationFundDAO:
-      x-has-dao: true
+                $ref: '#/components/schemas/ReportTypeCountDTO'
+    OrderPaymentReportDTO:
+      x-has-dto: true
       type: object
       allOf:
-        - $ref: './shared.yaml#/components/schemas/DonationFundFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-    DonationInitiativeDAO:
-      x-has-dao: true
+        - $ref: "#/components/schemas/ReportDTO"
+        - $ref: "./shared.yaml#/components/schemas/OrderPaymentBase"
+        - $ref: "./shared.yaml#/components/schemas/OrderPaymentRef"
+    ItemDiscountReportDTO:
+      x-has-dto: true
       type: object
       allOf:
-        - $ref: './shared.yaml#/components/schemas/DonationInitiativeFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: "#/components/schemas/ReportDTO"
+        - $ref: "./shared.yaml#/components/schemas/ItemDiscountBase"
+    OrderItemReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ReportDTO"
+        - $ref: "./shared.yaml#/components/schemas/LineItemBase"
+        - $ref: "./shared.yaml#/components/schemas/LineItemRef"
         - type: object
           properties:
-            targetFund:
-              $ref: '#/components/schemas/DonationFundDAO'
-    PrinterDAO:
-      x-has-dao: true
-      type: object
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/PrinterInternal'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-        - properties:
-            cashDrawer:
-              x-backref-name: printer
-              allOf:
-                - $ref: '#/components/schemas/CashDrawer'
-    PersonLegacyFull:
-      x-has-dao: false
-      x-dao-interface: true
+            discountReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/ItemDiscountReportDTO'
+    OrderReportBase:
+      x-has-dto: true
       type: object
       properties:
-        migrationStatus:
-          type: string
-          maxLength: 10
-          nullable: true
-
-        nameFirst:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        nameMiddle:
-          type: string
-          maxLength: 5
-          nullable: true
-
-        nameLast:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        namePrefix:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        nameSuffix:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        namePreferred:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        parentEmail:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        addr1:
-          type: string
-          maxLength: 200
-          nullable: true
-          x-dto-column: ADDR_1
-
-        addr2:
-          type: string
-          maxLength: 200
-          nullable: true
-          x-dto-column: ADDR_2
-
-        addr3:
-          type: string
-          maxLength: 200
-          nullable: true
-          x-dto-column: ADDR_3
-
-        city:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        state:
-          type: string
-          maxLength: 50
-          nullable: true
-          x-dto-column: STATE
-
-        zip:
-          type: string
-          maxLength: 15
-          nullable: true
-
-        country:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        phonePrimary:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        phonePrimaryType:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        phoneAlternate:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        phoneAlternateType:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        emerg1Name:
-          type: string
-          maxLength: 200
-          nullable: true
-
-        emerg1Relation:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        emerg1PhonePrimary:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        emerg1PhonePrimaryType:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        emerg1PhoneAlternate:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        emerg1PhoneAlternateType:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        emerg2Name:
-          type: string
-          maxLength: 200
-          nullable: true
-
-        emerg2Relation:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        emerg2PhonePrimary:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        emerg2PhonePrimaryType:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        emerg2PhoneAlternate:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        emerg2PhoneAlternateType:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        ethnicityOther:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        pwHashScheme:
-          type: string
-          maxLength: 20
-          nullable: true
-
-        languageOther:
-          type: string
-          maxLength: 200
-          nullable: true
-
-        incomeLevel:
+        totalAmountPaidLineItems:
           type: integer
-          format: int32
-          nullable: true
-
-        incomeAmt:
+          format: int64
+        totalAmountBaseLineItems:
           type: integer
-          format: int32
-          nullable: true
-
-        incomeAmtRaw:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        badMail:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        deceased:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        doNotCall:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        doNotEmail:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        doNotMail:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        employer:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        referralSource:
-          type: string
-          maxLength: 200
-          nullable: true
-
-        badPhone:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        badEmail:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        referralOther:
-          type: string
-          maxLength: 100
-          nullable: true
-
-        jpAgeOverride:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        sendAlert:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        ignoreJpMinAge:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        uapInterestedLessons:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        uapInterestedRides:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        entityType:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        jpTeamId:
+          format: int64
+        totalAmountTotalLineItems:
           type: integer
-          format: int32
-          nullable: true
-
-        guestPortalReg:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        signoutBlockReason:
-          type: string
-          nullable: true
-
-        campFair:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        dataUnconfirmed:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        protopersonCookie:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        protoState:
-          type: string
-          maxLength: 1
-          nullable: true
-
-        memberComment:
-          type: string
-          nullable: true
-
-        slackUserId:
-          type: string
-          maxLength: 20
-          nullable: true
-
-        squareCustomerId:
-          type: string
-          maxLength: 50
-          nullable: true
-
-        defaultCardId:
-          type: string
-          maxLength: 50
-          nullable: true
-    PersonLookup:
-      x-has-dao: true
-      required: [searchingPerson]
+          format: int64
+        totalAmountDiscountLineItems:
+          type: integer
+          format: int64
+        totalAmountPaymentsPaid:
+          type: integer
+          format: int64
+        totalAmountStripePaymentsPaid:
+          type: integer
+          format: int64
+    CatalogBaseReportDTO:
+      x-has-dto: true
+      type: object
       allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonLookupRef'
-        - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
-        - $ref: './shared.yaml#/components/schemas/WithEmail'
-        #- $ref: './shared.yaml#/components/schemas/AddressNoStatus'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: "#/components/schemas/ReportDTO"
         - type: object
           properties:
-            isNew:
-              type: boolean
-            addressSimilarityScore:
-              type: number
-              format: double
-            searchingPerson:
-              $ref: '#/components/schemas/PersonDAO'
-            matchingPerson:
-              $ref: '#/components/schemas/PersonDAO'
-            matchingAddress:
-              $ref: '#/components/schemas/AddressDAO'
-    PersonDAO:
-      x-has-dao: true
-      required: [personId, relationsA, relationsB]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - $ref: '#/components/schemas/PersonLegacyFull'
-        - type: object
-          properties:
-            assignId:
-              x-table-name: persons
-              x-col-primary: true
-              x-dto-column: PERSON_ID
-              x-auto-increment: PERSONS_SEQ
+            totalSold:
               type: integer
-            relationsA:
-              x-parent-variable: A
-              x-column-parent-fk: A
+            totalBase:
+              type: integer
+              format: int64
+            totalPaid:
+              type: integer
+              format: int64
+            totalDiscounts:
+              type: integer
+              format: int64
+            totalTaxes:
+              type: integer
+              format: int64
+    CatalogItemInstanceReportItemInstanceDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceRef'
+        - $ref: './shared.yaml#/components/schemas/ItemInstanceBase'
+    CatalogItemInstanceReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CatalogBaseReportDTO"
+        - type: object
+          properties:
+            itemInstance:
+              $ref: '#/components/schemas/CatalogItemInstanceReportItemInstanceDTO'
+            instanceBasePrice:
+              type: integer
+              format: int64
+    CatalogItemInstanceDiscountReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ReportDTO"
+        - $ref: "./shared.yaml#/components/schemas/DiscountAmount"
+        - $ref: "./shared.yaml#/components/schemas/DiscountBase"
+        - type: object
+          properties:
+            discountInstance:
+              $ref: './shared.yaml#/components/schemas/DiscountInstanceRef'
+    CatalogItemInstancePriceReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CatalogBaseReportDTO"
+        - type: object
+          properties:
+            itemInstance:
+              $ref: '#/components/schemas/CatalogItemInstanceReportItemInstanceDTO'
+            pricePaid:
+              type: integer
+              format: int64
+            discountsApplied:
               type: array
               items:
-                $ref: '#/components/schemas/PersonRelationDAO'
-            pwHash:
+                $ref: '#/components/schemas/CatalogItemInstanceDiscountReportDTO'
+    CatalogItemReportItemDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemRef'
+        - $ref: './shared.yaml#/components/schemas/ItemBase'
+    CatalogItemReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/CatalogBaseReportDTO"
+        - type: object
+          properties:
+            item:
+              $ref: '#/components/schemas/CatalogItemReportItemDTO'
+            itemInstancePriceReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemInstancePriceReportDTO'
+    CatalogItemReportsDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: '#/components/schemas/CatalogBaseReportDTO'
+        - type: object
+          properties:
+            itemReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/CatalogItemReportDTO'
+    OrderReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ReportDTO"
+        - $ref: '#/components/schemas/OrderReportBase'
+        - $ref: "./shared.yaml#/components/schemas/DBHistory"
+        - $ref: "./shared.yaml#/components/schemas/OrderBase"
+        - $ref: "./shared.yaml#/components/schemas/OrderRef"
+        - type: object
+          properties:
+            itemReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderItemReportDTO'
+            paymentReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/OrderPaymentReportDTO'
+            firstPaymentDate:
               type: string
-              maxLength: 100
-            relationsB:
-              x-parent-variable: B
-              x-column-parent-fk: B
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonRelationDAO'
-            damageWaivers:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/DamageWaiver'
-            memberships:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/MembershipDAO'
-            cards:
-              x-optional-ref: true
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/CardDAO'
-            referrals:
-              type: array
-              x-parent-variable: personId
-              items:
-                $ref: '#/components/schemas/PersonReferralDAO'
-            addresses:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonAddressDAO'
-            phones:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonPhoneDAO'
-            apSignups:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/ApClassSignupDAO'
-            jpSignups:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/JpClassSignupDAO'
-            ratings:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/PersonRatingDAO'
-            apClassTypeOverrides:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/ApClassTypeOverrideDAO'
-            jpClassTypeOverrides:
-              x-parent-variable: personId
-              type: array
-              items:
-                $ref: '#/components/schemas/JpClassTypeOverrideDAO'
-
-    MembershipDAO:
-      x-has-dao: true
-      required: [assignId]
+              format: date-time
+            lastPaymentDate:
+              type: string
+              format: date-time
+    OrderReportsDTO:
+      x-has-dto: true
+      type: object
+      required: [orderReports]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/MembershipInternal'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: "#/components/schemas/ReportDTO"
+        - $ref: '#/components/schemas/OrderReportBase'
         - type: object
           properties:
-            assignId:
-              x-table-name: persons_memberships
-              x-auto-increment: PERSONS_MEMBERSHIPS_SEQ
-              x-col-primary: true
-              type: integer
-            membershipTypeId:
-              $ref: "#/components/schemas/MembershipType"
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            lineItemId:
-              x-backref-name: membership
-              allOf:
-                - $ref: '#/components/schemas/LineItem'
-            guestPrivs:
-              x-parent-variable: membershipId
+            orderReports:
               type: array
               items:
-                $ref: '#/components/schemas/GuestPrivsDAO'
-    CardDAO:
-      x-has-dao: true
+                $ref: '#/components/schemas/OrderReportDTO'
+            totalTotalAmountFromOrders:
+              type: integer
+              format: int64
+            totalBaseAmountFromOrders:
+              type: integer
+              format: int64
+            totalPaidAmountFromOrders:
+              type: integer
+              format: int64
+    StripePaymentReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ReportDTO"
+        - $ref: "./shared.yaml#/components/schemas/StripeTransactionBase"
+        - type: object
+          properties:
+            amountReceived:
+              type: integer
+              format: int64
+            amountCapturable:
+              type: integer
+              format: int64
+            amountBase:
+              type: integer
+              format: int64
+            createdOn:
+              type: string
+              format: date-time
+            capturableDate:
+              type: string
+              format: date-time
+            paidDate:
+              type: string
+              format: date-time
+            paymentStatus:
+              $ref: './shared.yaml#/components/schemas/PaymentStatus'
+            orderId:
+              type: integer
+              format: int64
+    StripePaymentReportsDTO:
+      x-has-dto: true
+      type: object
+      required: [ paymentReports ]
+      allOf:
+        - $ref: "#/components/schemas/ReportDTO"
+        - type: object
+          properties:
+            paymentReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/StripePaymentReportDTO'
+    DummyDTO:
+      x-has-dto: true
+      type: object
+      oneOf:
+        - $ref: '#/components/schemas/PrinterInternalDTO'
+    PersonSearchCriteria:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonNameInfo'
+        - type: object
+          properties:
+            page:
+              type: integer
+              format: int32
+            perPage:
+              type: integer
+              format: int32
+            cardNumber:
+              type: string
+            phone:
+              type: string
+            email:
+              type: string
+    AgreementCategoryDTO:
+      x-has-dto: true
       required: [ assignId ]
       allOf:
-        - $ref: './shared.yaml#/components/schemas/CardInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            assignId:
-              x-table-name: persons_cards
-              x-auto-increment: PERSONS_CARDS_SEQ
-              x-col-primary: true
-              type: integer
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-            lineItemId:
-              x-backref-name: card
-              allOf:
-                - $ref: '#/components/schemas/LineItem'
-    PersonRelationDAO:
-      x-has-dao: true
+        - $ref: './shared.yaml#/components/schemas/AgreementCategoryFull'
+    AgreementDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/WithAccessControl'
-        - $ref: './shared.yaml#/components/schemas/PersonRelationFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          required: [A, B, relationId]
-          properties:
-            relationId:
-              type: integer
-              x-auto-increment: PERSON_RELATIONSHIPS_SEQ
-              x-col-primary: true
-              x-table-name: person_relationships
-            A:
-              x-dto-column: A
-              allOf:
-                - $ref: '#/components/schemas/PersonDAO'
-            B:
-              x-dto-column: B
-              allOf:
-                - $ref: '#/components/schemas/PersonDAO'
-
-
-
-    DiscountInstance:
-      x-has-dao: true
-      required: [instanceId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/DiscountInstanceInternalFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            discountId:
-              $ref: '#/components/schemas/Discount'
-
-    Discount:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/DiscountFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            catalogId:
-              $ref: '#/components/schemas/Catalog'
-            categories:
-              x-parent-variable: discountId
-              type: array
-              items:
-                $ref: '#/components/schemas/DiscountCategory'
-            instances:
-              x-parent-variable: discountId
-              type: array
-              items:
-                $ref: '#/components/schemas/DiscountInstance'
-            itemDiscounts:
-              x-parent-variable: discountId
-              type: array
-              items:
-                $ref: '#/components/schemas/ItemDiscount'
-
-    CashDrawer:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/CashDrawerFull'
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
-        - type: object
-          properties:
-            printer:
-              $ref: '#/components/schemas/PrinterDAO'
-    UserDAO:
-      x-has-dao: true
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/UserFull'
-    AgreementCategory:
-      x-has-dao: true
-      required: [ assignId ]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/AgreementCategoryInternal'
-        - type: object
-          properties:
-            agreementId:
-              $ref: '#/components/schemas/Agreement'
-            categoryId:
-              $ref: '#/components/schemas/Category'
-    Agreement:
-      x-has-dao: true
-      required: [assignId]
-      allOf:
-        - $ref: './shared.yaml#/components/schemas/AgreementInternal'
+        - $ref: './shared.yaml#/components/schemas/AgreementFull'
         - type: object
           properties:
             agreementInstances:
               x-parent-variable: agreementId
               type: array
               items:
-                $ref: '#/components/schemas/AgreementInstance'
+                $ref: '#/components/schemas/AgreementInstanceDTO'
             agreementCategories:
               x-parent-variable: agreementId
               type: array
               items:
-                $ref: '#/components/schemas/AgreementCategory'
-            catalogId:
-              $ref: '#/components/schemas/Catalog'
-    AgreementInstance:
-      x-has-dao: true
-      required: [ assignId, agreementId ]
+                $ref: '#/components/schemas/AgreementCategoryDTO'
+    AgreementInstanceDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/AgreementInstanceInternal'
-        - type: object
-          properties:
-            agreementId:
-              $ref: '#/components/schemas/Agreement'
-    PersonAgreementInstance:
-      x-has-dao: true
-      required: [ assignId, personId, agreementInstanceId ]
+        - $ref: './shared.yaml#/components/schemas/AgreementInstanceFull'
+    AgreementBaseDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementRef'
+        - $ref: './shared.yaml#/components/schemas/AgreementBase'
+    PersonAgreementInstanceDTO:
+      x-has-dto: true
+      required: [personId, agreementInstanceId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/PersonAgreementInstanceInternal'
+    ItemAgreementDTO:
+      x-has-dto: true
+      required: [agreementId, itemId]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ItemAgreementFull'
+    PersonAgreeDTO:
+      x-has-dto: true
+      properties:
+        agreementActions:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonAgreeActionDTO'
+    PersonAgreeActionDTO:
+      x-has-dto: true
+      properties:
+        agreementId:
+          $ref: './shared.yaml#/components/schemas/AgreementRef'
+        agreementAction:
+          $ref: './shared.yaml#/components/schemas/AgreementAction'
+    PersonAgreementDTO:
+      x-has-dto: true
+      properties:
+        agreementId:
+          $ref: './shared.yaml#/components/schemas/AgreementRef'
+        latestAgreementAction:
+          $ref: '#/components/schemas/PersonAgreementInstanceDTO'
+        isAgreed:
+          type: boolean
+    AgreementWithLatestInstanceDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/AgreementInstanceBase'
+        - $ref: './shared.yaml#/components/schemas/AgreementRef'
+        - $ref: './shared.yaml#/components/schemas/AgreementBase'
+    PersonAgreementFullDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: '#/components/schemas/PersonAgreementDTO'
         - type: object
           properties:
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
             agreementId:
-              $ref: '#/components/schemas/Agreement'
-            agreementInstanceId:
-              $ref: '#/components/schemas/AgreementInstance'
-    ItemAgreement:
-      x-has-dao: true
-      required: [ assignId, agreementId, itemId ]
+              $ref: '#/components/schemas/AgreementWithLatestInstanceDTO'
+    PersonAgreementInternalDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/ItemAgreementInternal'
+        - $ref: '#/components/schemas/PersonAgreementFullDTO'
         - type: object
           properties:
-            agreementId:
-              $ref: '#/components/schemas/Agreement'
-            itemId:
-              $ref: '#/components/schemas/Item'
-    AppIdIndex:
-      x-has-dao: true
-      required: [indexId]
+            allAgreementActions:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonAgreementInstanceDTO'
+    PersonAgreementsDTO:
+      x-has-dto: true
+      properties:
+        personAgreements:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonAgreementFullDTO'
+    PersonAgreementsInternalDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - $ref: '#/components/schemas/PersonAgreementsDTO'
         - type: object
           properties:
-            indexId:
-              x-col-primary: true
-              type: integer
-            appId:
-              type: integer
-            appAlias:
-              type: string
-              maxLength: 200
-            appName:
-              type: string
-              maxLength: 100
-    PersonRatingDAO:
-      x-has-dao: true
-      required: [ assignId ]
+            personAgreements:
+              type: array
+              items:
+                $ref: '#/components/schemas/PersonAgreementInternalDTO'
+    RequiredAgreementsDTO:
+      x-has-dto: true
+      properties:
+        requiredAgreements:
+          type: array
+          items:
+            $ref: './shared.yaml#/components/schemas/AgreementRef'
+
+    OptOutGroupDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/PersonRatingFull'
-        - type: object
-          properties:
-            ratingId:
-              $ref: '#/components/schemas/RatingDAO'
-            programId:
-              $ref: '#/components/schemas/ProgramType'
-            personId:
-              $ref: '#/components/schemas/PersonDAO'
-    RatingDAO:
-      x-has-dao: true
-      required: [ assignId ]
+        - $ref: './shared.yaml#/components/schemas/OptOutGroupFull'
+
+    OptOutRequestDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OptOutRequestInternal'
+
+    UpdateOptOutDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/OptOutRequestBase'
+
+    OptOutGroupWithStatusDTO:
+      x-has-dto: true
+      required: [ group, optedOut ]
+      properties:
+        group:
+          $ref: '#/components/schemas/OptOutGroupDTO'
+        optedOut:
+          type: boolean
+          description: 'true if user has opted out of this group'
+        optOutRequest:
+          $ref: '#/components/schemas/OptOutRequestDTO'
+          nullable: true
+          description: 'The opt-out request record if it exists'
+
+    OptOutStatusResponseDTO:
+      x-has-dto: true
+      required: [ groups ]
+      properties:
+        groups:
+          type: array
+          items:
+            $ref: '#/components/schemas/OptOutGroupWithStatusDTO'
+
+    EmailTrackingDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/EmailTrackingFull'
+
+    EmailContentGroupDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/EmailContentGroupFull'
+
+    EmailContentDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/EmailContentInternal'
+    RatingDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/RatingFull'
+    RatingInternalDTO:
+      x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/RatingFull'
         - type: object
           properties:
             overriddenBy:
-              $ref: '#/components/schemas/RatingDAO'
+              $ref: '#/components/schemas/RatingInternalDTO'
             #overrides:
             #  x-backref-name: overriddenBy
             #  type: array
             #  items:
-            #    $ref: '#/components/schemas/RatingDAO'
-    MembershipTypeExpDAO:
-      x-has-dao: true
-      required: [ assignId ]
+            #    $ref: '#/components/schemas/RatingInternalDTO'
+    MembershipTypeExpDTO:
+      x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/MembershipTypeExpFull'
+    ClassLocationDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/ClassLocationFull'
+    ClassTypeInfo:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/WithSessionCt'
+        - $ref: './shared.yaml#/components/schemas/WithSessionLength'
+        - $ref: './shared.yaml#/components/schemas/WithSignupMax'
+        - $ref: './shared.yaml#/components/schemas/WithSignupMin'
+        - $ref: './shared.yaml#/components/schemas/WithTypeName'
+        - $ref: './shared.yaml#/components/schemas/WithAdminHold'
+        - $ref: './shared.yaml#/components/schemas/WithNoLimit'
+        - $ref: './shared.yaml#/components/schemas/WithNoSignup'
+        - $ref: './shared.yaml#/components/schemas/WithCancelledDatetime'
+        - $ref: './shared.yaml#/components/schemas/WithAllowMultiple'
+        - $ref: './shared.yaml#/components/schemas/WithConfirmTemplate'
+    ClassTypeDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassTypeFull'
+        - $ref: '#/components/schemas/ClassTypeInfo'
         - type: object
           properties:
-            membershipTypeId:
-              $ref: '#/components/schemas/MembershipType'
-    
-    OptOutGroup:
-      x-has-dao: true
-      required: [ optOutGrpId ]
+            teachRating:
+              $ref: './shared.yaml#/components/schemas/RatingRefAndName'
+            ratingPrereq:
+              $ref: './shared.yaml#/components/schemas/RatingRefAndName'
+            ratingOverkill:
+              $ref: './shared.yaml#/components/schemas/RatingRefAndName'
+            classPrereq:
+              $ref: './shared.yaml#/components/schemas/ClassTypeRefWithName'
+            classOverkill:
+              $ref: './shared.yaml#/components/schemas/ClassTypeRefWithName'
+    ClassTypeOverrideDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/OptOutGroupFull'
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassTypeOverrideBase'
         - type: object
           properties:
-            requireOptIn:
-              type: boolean
-              x-boolean-char: Y
-    
-    OptOutRequest:
-      x-has-dao: true
-      required: [ reqId, email ]
+            programId:
+              $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+    PricingInformationDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        catalogItemInstance:
+          $ref: './shared.yaml#/components/schemas/ItemInstanceRef'
+        catalogPriceCents:
+          type: integer
+          format: int64
+    ClassAvailabilityDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        totalSlots:
+          type: integer
+        enrolled:
+          type: integer
+        waitlisted:
+          type: integer
+        waitlistResultsExpired:
+          type: integer
+        waitlistResultsFailed:
+          type: integer
+        availableSlots:
+          type: integer
+        availableOn:
+          type: string
+          format: date-time
+        availabilityStatus:
+          $ref: './shared.yaml#/components/schemas/ClassSignupAvailabilityStatus'
+        allowWaitlist:
+          type: boolean
+        pricingInformation:
+          $ref: '#/components/schemas/PricingInformationDTO'
+        currentStaggerId:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassStaggerRef'
+        isLastStagger:
+          type: boolean
+        waitlistedEnrollAction:
+          $ref: './shared.yaml#/components/schemas/SignupTypeEnum'
+        currentSignupSequence:
+          type: integer
+    ClassInstanceDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/OptOutRequestInternal'
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceWithType'
+        - $ref: '#/components/schemas/ClassTypeInfo'
         - type: object
           properties:
-            optOutGrpId:
-              $ref: '#/components/schemas/OptOutGroup'
-            doNotSend:
-              type: boolean
-              x-boolean-char: Y
-    
-    EmailTracking:
-      x-has-dao: true
-      required: [ emailId ]
+            typeId:
+              $ref: '#/components/schemas/ClassTypeDTO'
+            programId:
+              $ref: './shared.yaml#/components/schemas/ProgramTypeRefAndName'
+            locationId:
+              $ref: '#/components/schemas/ClassLocationDTO'
+            sessions:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassSessionDTO'
+            weekNumber:
+              type: integer
+            firstSessionDatetime:
+              type: string
+              format: date-time
+            lastSessionDatetime:
+              type: string
+              format: date-time
+            availability:
+              $ref: '#/components/schemas/ClassAvailabilityDTO'
+            instructorId:
+              $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
+    ClassAttendanceDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/EmailTrackingFull'
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassAttendanceFull'
         - type: object
           properties:
-            optOutGrpId:
-              $ref: '#/components/schemas/OptOutGroup'
-    
-    EmailContentGroup:
-      x-has-dao: true
-      required: [ groupId ]
+            signupId:
+              $ref: '#/components/schemas/ClassSignupFullDTO'
+    ClassSessionDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/EmailContentGroupFull'
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassSessionFull'
+        - $ref: './shared.yaml#/components/schemas/WithSessionLength'
+        - $ref: './shared.yaml#/components/schemas/WithCancelledDatetime'
+        - type: object
+          properties:
+            endDatetime:
+              type: string
+              format: date-time
+    ClassSessionInternalDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassSessionInternal'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/ClassSessionDTO'
+        - type: object
+          properties:
+            attendance:
+              x-parent-variable: sessionId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassAttendanceDTO'
+    WlResultDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassWlResultFull'
         - type: object
           properties: {}
-    
-    EmailContent:
-      x-has-dao: true
-      required: [ contentId, title ]
+    ClassSignupDTO:
+      x-has-dto: true
       allOf:
-        - $ref: './shared.yaml#/components/schemas/EmailContentInternal'
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassSignupFull'
+        - $ref: './shared.yaml#/components/schemas/WithStaggerRef'
+        - $ref: './shared.yaml#/components/schemas/WithLineItemRef'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
         - type: object
           properties:
-            emailGroupId:
-              $ref: '#/components/schemas/EmailContentGroup'
-            optOutGrpId:
-              $ref: '#/components/schemas/OptOutGroup'
-            hidden:
-              type: boolean
-              x-boolean-char: Y
+            wlResult:
+              x-backref-name: assignId
+              allOf:
+                - $ref: '#/components/schemas/WlResultDTO'
+            lineItemId:
+              x-backref-name: lineItemId
+              allOf:
+                - $ref: './shared.yaml#/components/schemas/LineItemWithExpiresOnRef'
+    ClassSignupFullDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassSignupInternal'
+        - $ref: '#/components/schemas/ClassSignupDTO'
+        - type: object
+          properties:
+            attendance:
+              x-backref-name: sessionId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassAttendanceDTO'
+            personId:
+              $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
+    ClassInstanceFullDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceWithType'
+        - $ref: './shared.yaml#/components/schemas/Deletable'
+        - $ref: '#/components/schemas/ClassInstanceDTO'
+        - type: object
+          properties:
+            signups:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassSignupFullDTO'
+            sessions:
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassSessionInternalDTO'
+    ClassFilterOptions:
+      x-has-dto: true
+      type: object
+      properties:
+        includeAvailability:
+          type: boolean
+          default: true
+        includeCancelled:
+          type: boolean
+        startDate:
+          type: string
+          format: date-time
+        endDate:
+          type: string
+          format: date-time
+        typeId:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassTypeRef'
+        programId:
+          $ref: './shared.yaml#/components/schemas/ProgramTypeRef'
+        instanceId:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceRef'
+        signupId:
+          $ref: './shared.yaml#/components/schemas/UnifiedClassSignupRef'
+        #personId:
+        #  $ref: './shared.yaml#/components/schemas/PersonRef'
+    PersonClassEligibility:
+      x-has-dto: true
+      type: object
+      required: [personId, eligibilityStatus]
+      properties:
+        personId:
+          $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
+        eligibilityStatus:
+          $ref: './shared.yaml#/components/schemas/ClassSignupEligibilityStatus'
+        #eligibleActions:
+        #  type: array
+        #  items:
+        #    $ref: '#/components/schemas/PersonEligibleActionDTO'
+        message:
+          type: string
+        instructorEligibility:
+          $ref: '#/components/schemas/ClassSignupInstructorEligibilityDTO'
+        #instructorEligibilityMessage:
+        #  type: string
+        existingSignup:
+          $ref: '#/components/schemas/ClassSignupDTO'
+    ClassSignupInstructorEligibilityDTO:
+      x-has-dto: true
+      type: object
+      required: [ status ]
+      properties:
+        status:
+          $ref: './shared.yaml#/components/schemas/ClassSignupInstructorEligibilityStatus'
+        message:
+          type: string
+    PersonEligibleActionDTO:
+      x-has-dto: true
+      type: object
+      required: [ action, isAvailable ]
+      properties:
+        action:
+          $ref: './shared.yaml#/components/schemas/SignupTypeEnum'
+        isAvailable:
+          type: boolean
+        actionError:
+          type: string
+    ClassWithEligibilityDTO:
+      x-has-dto: true
+      type: object
+      required: [classInstance, personEligibility]
+      properties:
+        classInstance:
+          $ref: '#/components/schemas/ClassInstanceDTO'
+        personEligibility:
+          type: array
+          items:
+            $ref: '#/components/schemas/PersonClassEligibility'
+    ClassWithEligibilitySingularDTO:
+      x-has-dto: true
+      type: object
+      required: [ classInstance, personEligibility ]
+      properties:
+        classInstance:
+          $ref: '#/components/schemas/ClassInstanceDTO'
+        personEligibility:
+          $ref: '#/components/schemas/PersonClassEligibility'
+    ClassWithEligibilitySingularInternalDTO:
+      x-has-dto: true
+      type: object
+      required: [ classInstance, personEligibility ]
+      properties:
+        classInstance:
+          $ref: '#/components/schemas/ClassInstanceFullDTO'
+        personEligibility:
+          $ref: '#/components/schemas/PersonClassEligibility'
+
+    StaffClassesResponseDTO:
+      x-has-dto: true
+      type: object
+      required: [ classes ]
+      properties:
+        classes:
+          type: array
+          items:
+            $ref: '#/components/schemas/ClassInstanceDTO'
+    CreateGuestCardDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        cardNum:
+          type: string
