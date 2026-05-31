@@ -4073,15 +4073,10 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/LongIDResource'
-    OrderPaymentBase:
+    OrderPaymentForReport:
       type: object
-      required: [ paymentType, paymentStatus, paymentAmountCents ]
+      required: [ paymentAmountCents ]
       properties:
-        paymentType:
-          $ref: '#/components/schemas/PaymentType'
-        paymentRecordId:
-          type: string
-          maxLength: 200
         paymentServiceChangeCents:
           type: integer
           format: int64
@@ -4103,21 +4098,33 @@ components:
         paymentToRefundCents:
           type: integer
           format: int64
-        paymentStatus:
-          $ref: '#/components/schemas/PaymentStatus'
-        paymentDueDate:
-          type: string
-          format: date-time
-        paymentPaidDate:
-          type: string
-          format: date-time
-        squarePaymentId:
-          type: string
-          maxLength: 200
-        expiresOn:
-          description: Timestamp when this payment expires and should be automatically cancelled
-          type: string
-          format: date-time
+    OrderPaymentBase:
+      type: object
+      required: [ paymentType, paymentStatus, paymentAmountCents ]
+      allOf:
+        - $ref: '#/components/schemas/OrderPaymentForReport'
+        - type: object
+          properties:
+            paymentType:
+              $ref: '#/components/schemas/PaymentType'
+            paymentRecordId:
+              type: string
+              maxLength: 200
+            paymentStatus:
+              $ref: '#/components/schemas/PaymentStatus'
+            paymentDueDate:
+              type: string
+              format: date-time
+            paymentPaidDate:
+              type: string
+              format: date-time
+            squarePaymentId:
+              type: string
+              maxLength: 200
+            expiresOn:
+              description: Timestamp when this payment expires and should be automatically cancelled
+              type: string
+              format: date-time
     OrderPaymentFull:
       required: [ orderId ]
       allOf:
