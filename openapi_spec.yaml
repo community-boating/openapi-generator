@@ -3558,6 +3558,8 @@ components:
             orderId:
               type: integer
               format: int64
+            paymentDescription:
+              type: string
     StripePaymentReportsDTO:
       x-has-dto: true
       type: object
