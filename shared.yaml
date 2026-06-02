@@ -4178,16 +4178,19 @@ components:
         - $ref: '#/components/schemas/Deletable'
         - $ref: '#/components/schemas/TransactionOtherRef'
         - $ref: '#/components/schemas/TransactionOtherBase'
-
+    OrderPaymentWithOrderRef:
+      x-dao-interface: true
+      required: [ orderId ]
+      type: object
+      properties:
+        orderId:
+          $ref: '#/components/schemas/OrderBase'
     OrderPaymentInternalFull:
       x-dao-interface: true
       required: [ orderId ]
       allOf:
         - $ref: '#/components/schemas/OrderPaymentFull'
-        - type: object
-          properties:
-            orderId:
-              $ref: '#/components/schemas/OrderBase'
+        - $ref: '#/components/schemas/OrderPaymentWithOrderRef'
     PaymentSourceRef:
       x-has-interface: true
       x-has-dto: false

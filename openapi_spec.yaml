@@ -1013,6 +1013,39 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripePaymentReportsDTO'
+  /staff/reports/payments:
+    get:
+      description: 'Gets payment reports'
+      parameters:
+        - in: query
+          name: startDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: endDate
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: paymentStatus
+          schema:
+            $ref: './shared.yaml#/components/schemas/PaymentStatus'
+        - in: query
+          name: paymentType
+          schema:
+            $ref: './shared.yaml#/components/schemas/PaymentType'
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the stripe payment reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentReportsDTO'
   /stripe/constants:
     get:
       description: 'Returns stripe constants'
@@ -3572,6 +3605,32 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/StripePaymentReportDTO'
+    PaymentReportDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - $ref: "#/components/schemas/ReportDTO"
+        - $ref: "./shared.yaml#/components/schemas/DBHistory"
+        - $ref: "./shared.yaml#/components/schemas/OrderPaymentRef"
+        - $ref: "./shared.yaml#/components/schemas/OrderPaymentBase"
+        - $ref: "./shared.yaml#/components/schemas/OrderPaymentWithOrderRef"
+        - type: object
+          properties:
+            paymentDescription:
+              type: string
+    PaymentReportsDTO:
+      x-has-dto: true
+      type: object
+      required: [ paymentReports ]
+      allOf:
+        - $ref: "#/components/schemas/ReportDTO"
+        - $ref: "./shared.yaml#/components/schemas/OrderPaymentForReport"
+        - type: object
+          properties:
+            paymentReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/PaymentReportDTO'
     DummyDTO:
       x-has-dto: true
       type: object
