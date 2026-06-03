@@ -1003,7 +1003,9 @@ paths:
         - in: query
           name: paymentStatus
           schema:
-            $ref: './shared.yaml#/components/schemas/PaymentStatus'
+            type: array
+            items:
+              $ref: './shared.yaml#/components/schemas/PaymentStatus'
       tags:
         - Report
       security:
@@ -1052,11 +1054,15 @@ paths:
         - in: query
           name: paymentStatus
           schema:
-            $ref: './shared.yaml#/components/schemas/PaymentStatus'
+            type: array
+            items:
+              $ref: './shared.yaml#/components/schemas/PaymentStatus'
         - in: query
           name: paymentType
           schema:
-            $ref: './shared.yaml#/components/schemas/PaymentType'
+            type: array
+            items:
+              $ref: './shared.yaml#/components/schemas/PaymentType'
       tags:
         - Report
       security:
