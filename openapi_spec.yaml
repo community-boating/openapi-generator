@@ -939,7 +939,9 @@ paths:
         - in: query
           name: itemType
           schema:
-            $ref: "./shared.yaml#/components/schemas/ItemType"
+            type: array
+            items:
+              $ref: "./shared.yaml#/components/schemas/ItemType"
         - in: query
           name: includeEmpty
           schema:
