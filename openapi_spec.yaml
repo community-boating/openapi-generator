@@ -992,6 +992,26 @@ paths:
             type: string
             format: date-time
         - in: query
+          name: capturableOnStart
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: capturableOnEnd
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: paidOnStart
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: paidOnEnd
+          schema:
+            type: string
+            format: date-time
+        - in: query
           name: orderStatus
           schema:
             type: array
