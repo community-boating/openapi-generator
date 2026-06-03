@@ -3425,6 +3425,9 @@ components:
         totalAmountBaseLineItems:
           type: integer
           format: int64
+        totalAmountSubtotalLineItems:
+          type: integer
+          format: int64
         totalAmountTotalLineItems:
           type: integer
           format: int64
