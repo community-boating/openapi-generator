@@ -972,7 +972,9 @@ paths:
         - in: query
           name: orderStatus
           schema:
-            $ref: "./shared.yaml#/components/schemas/OrderStateNew"
+            type: array
+            items:
+              $ref: "./shared.yaml#/components/schemas/OrderStateNew"
       tags:
         - Report
       security:
