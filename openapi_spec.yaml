@@ -3428,6 +3428,9 @@ components:
         totalAmountSubtotalLineItems:
           type: integer
           format: int64
+        totalAmountTaxesLineItems:
+          type: integer
+          format: int64
         totalAmountTotalLineItems:
           type: integer
           format: int64
