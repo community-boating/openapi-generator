@@ -927,12 +927,32 @@ paths:
       description: 'Gets catalog item reports'
       parameters:
         - in: query
-          name: startDate
+          name: createdOnStart
           schema:
             type: string
             format: date-time
         - in: query
-          name: endDate
+          name: createdOnEnd
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: capturableOnStart
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: capturableOnEnd
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: paidOnStart
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: paidOnEnd
           schema:
             type: string
             format: date-time
@@ -962,12 +982,12 @@ paths:
       description: 'Gets order reports'
       parameters:
         - in: query
-          name: startDate
+          name: createdOnStart
           schema:
             type: string
             format: date-time
         - in: query
-          name: endDate
+          name: createdOnEnd
           schema:
             type: string
             format: date-time
@@ -993,12 +1013,12 @@ paths:
       description: 'Gets stripe payment reports'
       parameters:
         - in: query
-          name: startDate
+          name: createdOnStart
           schema:
             type: string
             format: date-time
         - in: query
-          name: endDate
+          name: createdOnEnd
           schema:
             type: string
             format: date-time
