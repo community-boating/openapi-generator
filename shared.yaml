@@ -4184,7 +4184,7 @@ components:
       type: object
       properties:
         orderId:
-          $ref: '#/components/schemas/OrderBase'
+          $ref: '#/components/schemas/OrderRef'
     OrderPaymentInternalFull:
       x-dao-interface: true
       required: [ orderId ]
