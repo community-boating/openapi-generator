@@ -3028,6 +3028,11 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EditPrinterDTO'
+    CardNumDTO:
+        x-has-dto: true
+        allOf:
+          - $ref: './shared.yaml#/components/schemas/CardRef'
+          - $ref: './shared.yaml#/components/schemas/CardNum'
     PersonCheckInDTO:
       x-has-dto: true
       required: [ personId, checkInTime, checkInType ]

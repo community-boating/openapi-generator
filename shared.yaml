@@ -2865,6 +2865,18 @@ components:
       x-has-dao: false
       allOf:
         - $ref: '#/components/schemas/IntegerIDResource'
+    CardNum:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ cardNum ]
+      allOf:
+        - type: object
+          properties:
+            cardNum:
+              type: string
+              maxLength: 50
+              x-auto-increment: GUEST_CARD_SEQ
     CardBase:
       x-has-interface: true
       x-has-dto: false
@@ -2872,6 +2884,7 @@ components:
       required: [ cardNum, personId ]
       allOf:
         - $ref: '#/components/schemas/Purchasable'
+        - $ref: '#/components/schemas/CardNum'
         - type: object
           properties:
             issueDate:
