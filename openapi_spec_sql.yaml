@@ -1844,7 +1844,7 @@ components:
           properties:
             membershipTypeId:
               $ref: '#/components/schemas/MembershipType'
-    
+
     OptOutGroup:
       x-has-dao: true
       required: [ optOutGrpId ]
@@ -1855,7 +1855,7 @@ components:
             requireOptIn:
               type: boolean
               x-boolean-char: Y
-    
+
     OptOutRequest:
       x-has-dao: true
       required: [ reqId, email ]
@@ -1868,7 +1868,7 @@ components:
             doNotSend:
               type: boolean
               x-boolean-char: Y
-    
+
     EmailTracking:
       x-has-dao: true
       required: [ emailId ]
@@ -1878,7 +1878,7 @@ components:
           properties:
             optOutGrpId:
               $ref: '#/components/schemas/OptOutGroup'
-    
+
     EmailContentGroup:
       x-has-dao: true
       required: [ groupId ]
@@ -1886,7 +1886,7 @@ components:
         - $ref: './shared.yaml#/components/schemas/EmailContentGroupFull'
         - type: object
           properties: {}
-    
+
     EmailContent:
       x-has-dao: true
       required: [ contentId, title ]

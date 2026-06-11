@@ -3032,7 +3032,7 @@ components:
         x-has-dto: true
         allOf:
           - $ref: './shared.yaml#/components/schemas/CardRef'
-          - $ref: './shared.yaml#/components/schemas/CardNum'
+          - $ref: './shared.yaml#/components/schemas/CardNumber'
     PersonCheckInDTO:
       x-has-dto: true
       required: [ personId, checkInTime, checkInType ]
