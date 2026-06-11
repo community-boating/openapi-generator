@@ -3047,6 +3047,8 @@ components:
               type: string
             personId:
               $ref: './shared.yaml#/components/schemas/PersonRef'
+            checkInType:
+              $ref: './shared.yaml#/components/schemas/CheckInType'
     EditCashDrawersDTO:
       x-has-dto: true
       type: object
