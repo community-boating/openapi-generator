@@ -3042,6 +3042,8 @@ components:
           properties:
             personId:
               $ref: '#/components/schemas/PersonNameDTO'
+            cardId:
+              $ref: '#/components/schemas/CardNumDTO'
     CreatePersonCheckInDTO:
       x-has-dto: true
       required: [ checkInType ]
