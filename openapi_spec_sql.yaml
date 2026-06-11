@@ -280,7 +280,7 @@ components:
 
     Tax:
       x-has-dao: true
-      required: [assignId, taxName, taxRate, catalogId]
+      required: [assignId, taxName, catalogId]
       allOf:
         - $ref: './shared.yaml#/components/schemas/TaxInternal'
         - $ref: './shared.yaml#/components/schemas/DBHistory'
@@ -1702,7 +1702,18 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ItemDiscount'
-
+    PersonCheckIn:
+      x-has-dao: true
+      required: [ assignId, personId, checkInTime, checkInType ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonCheckInFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonDAO'
+            cardId:
+              $ref: '#/components/schemas/CardDAO'
     CashDrawer:
       x-has-dao: true
       allOf:

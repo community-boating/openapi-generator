@@ -113,6 +113,11 @@ components:
       enum:
         - 'JP'
         - 'AP'
+    CheckInType:
+      type: string
+      enum:
+        - 'CHECK_IN'
+        - 'CHECK_OUT'
     CashDrawerChangeType:
       type: string
       enum:
@@ -3599,7 +3604,7 @@ components:
         - $ref: '#/components/schemas/LongIDResource'
         - $ref: '#/components/schemas/TempID'
     TaxBase:
-      required: [ taxName, taxRate ]
+      required: [ taxName ]
       properties:
         taxName:
           type: string
@@ -3610,6 +3615,9 @@ components:
         taxRate:
           type: string
           maxLength: 200
+        taxAmountFixedCents:
+          type: integer
+          format: int64
         taxMinValueCents:
           type: integer
           format: int64
@@ -4358,6 +4366,41 @@ components:
             printerPasswordHash:
               type: string
               maxLength: 200
+    PersonCheckInRef:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      required: [ assignId ]
+      allOf:
+        - $ref: '#/components/schemas/LongIDResource'
+    PersonCheckInBase:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dao: false
+      x-has-dto: true
+      required: [ checkInTime, checkInType ]
+      properties:
+        checkInType:
+          $ref: '#/components/schemas/CheckInType'
+        checkInTime:
+          type: string
+          format: date-time
+    PersonCheckInFull:
+      x-has-interface: true
+      x-dao-interface: false
+      x-has-dao: false
+      x-has-dto: true
+      required: [ personId, checkInTime, checkInType ]
+      allOf:
+        - $ref: '#/components/schemas/PersonCheckInRef'
+        - $ref: '#/components/schemas/PersonCheckInBase'
+        - $ref: '#/components/schemas/Deletable'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonRef'
+            cardId:
+              $ref: '#/components/schemas/CardRef'
     CashDrawerBase:
       x-has-interface: true
       x-dao-interface: false

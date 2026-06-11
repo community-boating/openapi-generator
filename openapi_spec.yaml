@@ -1349,6 +1349,52 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/CardReaderDTO'
+  /staff/check-in:
+    get:
+      security:
+        - staff: [ ]
+      description: 'Returns person check in information'
+      parameters:
+        - in: query
+          name: createdOnStart
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: createdOnEnd
+          schema:
+            type: string
+            format: date-time
+      tags:
+        - CheckIn
+      responses:
+        '200':
+          description: Returns cash drawers
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/PersonCheckInDTO'
+    post:
+      security:
+        - staff: [ ]
+      description: 'Creates a person check in record'
+      tags:
+        - CheckIn
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreatePersonCheckInDTO'
+      responses:
+        '200':
+          description: Returns cash drawers
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PersonCheckInDTO'
   /staff/cash-drawers:
     get:
       security:
@@ -2356,7 +2402,7 @@ components:
                 $ref: '#/components/schemas/CatalogProductDTO'
     CatalogTaxDTO:
       x-has-dto: true
-      required: [ taxName, taxRate ]
+      required: [ taxName ]
       allOf:
         - $ref: './shared.yaml#/components/schemas/TaxFull'
     CatalogDiscountCategoryDTO:
@@ -2982,6 +3028,25 @@ components:
           type: array
           items:
             $ref: '#/components/schemas/EditPrinterDTO'
+    PersonCheckInDTO:
+      x-has-dto: true
+      required: [ personId, checkInTime, checkInType ]
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/PersonCheckInFull'
+        - type: object
+          properties:
+            personId:
+              $ref: '#/components/schemas/PersonNameDTO'
+    CreatePersonCheckInDTO:
+      x-has-dto: true
+      required: [ checkInType ]
+      allOf:
+        - type: object
+          properties:
+            cardNum:
+              type: string
+            personId:
+              $ref: './shared.yaml#/components/schemas/PersonRef'
     EditCashDrawersDTO:
       x-has-dto: true
       type: object
