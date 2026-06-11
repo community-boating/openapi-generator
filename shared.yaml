@@ -2890,10 +2890,6 @@ components:
             issueDate:
               type: string
               format: date-time
-            cardNum:
-              type: string
-              maxLength: 50
-              x-auto-increment: GUEST_CARD_SEQ
             temp:
               readOnly: true
               type: string
