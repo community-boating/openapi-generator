@@ -1759,6 +1759,34 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StaffClassesResponseDTO'
+  /jp-class-sections:
+    get:
+      description: 'Gets jp class sections'
+      tags:
+        - UnifiedClass
+      responses:
+        '200':
+          description: Returns jp class sections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/JpClassSectionDTO'
+  /ap-class-instances:
+    get:
+      description: 'Gets ao class instances'
+      tags:
+        - UnifiedClass
+      responses:
+        '200':
+          description: Returns ap class sections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/ApClassInstanceDTO'
   /public/classes:
     post: #TODO this should be get
       description: 'Gets all classes'
@@ -2857,6 +2885,46 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/GuestPrivsFull'
+    JpClassSectionDTO:
+      x-has-dto: true
+      required: [sectionId, instanceId, typeName, startDate, startTime, enrollees ]
+      properties:
+        sectionId:
+          type: integer
+        sectionName:
+          type: string
+        instanceId:
+          type: integer
+        typeName:
+          type: string
+        startDate:
+          type: string
+        startTime:
+          type: string
+        instructorNameFirst:
+          type: string
+        instructorNameLast:
+          type: string
+        locationName:
+          type: string
+        enrollees:
+          type: integer
+    ApClassInstanceDTO:
+      x-has-dto: true
+      required: [instanceId, startDate, startTime, enrollees]
+      properties:
+        instanceId:
+          type: integer
+        typeName:
+          type: string
+        startDate:
+          type: string
+        startTime:
+          type: string
+        locationString:
+          type: string
+        enrollees:
+          type: integer
     JpClassSignupDTO:
       x-has-dto: true
       required: [ instanceId, personId ]
