@@ -977,6 +977,51 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CatalogItemReportsDTO'
+  /staff/reports/catalog/summary:
+    get:
+      description: 'Gets catalog item reports'
+      parameters:
+        - in: query
+          name: createdOnStart
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: createdOnEnd
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: capturableOnStart
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: capturableOnEnd
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: paidOnStart
+          schema:
+            type: string
+            format: date-time
+        - in: query
+          name: paidOnEnd
+          schema:
+            type: string
+            format: date-time
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the catalog summary reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DailySummaryReportDTO'
   /staff/reports/orders:
     get:
       description: 'Gets order reports'
@@ -1762,6 +1807,12 @@ paths:
   /jp-class-sections:
     get:
       description: 'Gets jp class sections'
+      parameters:
+        - in: query
+          name: startDate
+          required: true
+          schema:
+            type: string
       tags:
         - UnifiedClass
       responses:
@@ -2885,6 +2936,14 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/GuestPrivsFull'
+    ClassSectionDTO:
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/JpClassSectionFull'
+        - type: object
+          properties:
+            instructorId:
+              $ref: './shared.yaml#/components/schemas/PersonNameInfoAndRef'
     JpClassSectionDTO:
       x-has-dto: true
       required: [sectionId, instanceId, typeName, startDate, startTime, enrollees ]
@@ -3849,6 +3908,76 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/PaymentReportDTO'
+    CategoryAmountDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - type: object
+          properties:
+            categoryId:
+              type: integer
+              format: int64
+            categoryName:
+              type: string
+            amount:
+              type: integer
+              format: int64
+    PaymentTypeAmountDTO:
+      x-has-dto: true
+      type: object
+      allOf:
+        - type: object
+          properties:
+            paymentType:
+              $ref: './shared.yaml#/components/schemas/PaymentType'
+            amount:
+              type: integer
+              format: int64
+    DailySummaryReportBase:
+      x-has-dto: true
+      type: object
+      allOf:
+        - type: object
+          properties:
+            totalAmountItems:
+              type: integer
+              format: int64
+            totalAmountPayments:
+              type: integer
+              format: int64
+            categoryAmounts:
+              type: array
+              items:
+                $ref: '#/components/schemas/CategoryAmountDTO'
+            paymentTypeAmounts:
+              type: array
+              items:
+                $ref: '#/components/schemas/PaymentTypeAmountDTO'
+    DailySummaryReportDTO:
+      x-has-dto: true
+      type: object
+      required: [ ]
+      allOf:
+        - $ref: "#/components/schemas/DailySummaryReportBase"
+        - $ref: "#/components/schemas/ReportDTO"
+        - type: object
+          properties:
+            forDate:
+              type: string
+              format: date
+    DailySummaryReportsDTO:
+      x-has-dto: true
+      type: object
+      required: [ dailySummaryReports ]
+      allOf:
+        - $ref: "#/components/schemas/DailySummaryReportBase"
+        - $ref: "#/components/schemas/ReportDTO"
+        - type: object
+          properties:
+            dailySummaryReports:
+              type: array
+              items:
+                $ref: '#/components/schemas/DailySummaryReportDTO'
     DummyDTO:
       x-has-dto: true
       type: object
@@ -4147,6 +4276,7 @@ components:
       allOf:
         - $ref: './shared.yaml#/components/schemas/UnifiedClassInstanceWithType'
         - $ref: '#/components/schemas/ClassTypeInfo'
+        - $ref: './shared.yaml#/components/schemas/WithSections'
         - type: object
           properties:
             typeId:
@@ -4160,6 +4290,11 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/ClassSessionDTO'
+            sections:
+                x-parent-variable: instanceId
+                type: array
+                items:
+                    $ref: '#/components/schemas/ClassSectionDTO'
             weekNumber:
               type: integer
             firstSessionDatetime:

@@ -1615,9 +1615,11 @@ components:
       x-enum-varnames:
         - HERE
         - ABSENT
+        - EXCUSED
       enum:
         - 'H'
         - 'A'
+        - 'E'
     WlResultTypeEnum:
       type: string
       x-enum-varnames:
@@ -4621,6 +4623,8 @@ components:
               maxLength: 500
             hidden:
               type: boolean
+            forReporting:
+              type: boolean
             categoryType:
               $ref: '#/components/schemas/CategoryType'
     CategoryFull:
@@ -6267,7 +6271,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: false
+      #x-dao-interface: false
       required: [ assignId ]
       allOf:
         - type: object
@@ -6282,14 +6286,14 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: true
+      #x-dao-interface: true
       type: object
       properties: {}
     JpClassSectionFull:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: true
+      #x-dao-interface: true
       allOf:
         - $ref: '#/components/schemas/JpClassSectionRef'
         - $ref: '#/components/schemas/JpClassSectionBase'
@@ -6309,7 +6313,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: true
+      #x-dao-interface: true
       required: [ assignId ]
       allOf:
         - type: object
@@ -6324,7 +6328,7 @@ components:
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: true
+      #x-dao-interface: true
       allOf:
         - type: object
           properties:
@@ -6339,12 +6343,10 @@ components:
               type: string
               maxLength: 100
     JpClassSectionLookupFull:
-
-
       x-has-interface: true
       x-has-dto: false
       x-has-dao: false
-      x-dao-interface: true
+      #x-dao-interface: true
       allOf:
         - $ref: '#/components/schemas/JpClassSectionLookupRef'
         - $ref: '#/components/schemas/JpClassSectionLookupBase'
@@ -6488,6 +6490,16 @@ components:
           properties:
             typeId:
               $ref: '#/components/schemas/JpClassTypeFull'
+    WithSections:
+      x-has-interface: true
+      x-has-dto: false
+      x-has-dao: false
+      properties:
+        sections:
+          x-parent-variable: instanceId
+          type: array
+          items:
+            $ref: '#/components/schemas/JpClassSectionRef'
     JpClassInstanceInternal:
       x-has-interface: true
       x-has-dto: false
@@ -6496,6 +6508,7 @@ components:
       allOf:
         - $ref: '#/components/schemas/UnifiedClassInstanceInternal'
         - $ref: '#/components/schemas/JpClassInstanceFull'
+        - $ref: '#/components/schemas/WithSections'
         - type: object
           properties:
             sessions:
@@ -6503,11 +6516,6 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/JpClassSessionFull'
-            sections:
-              x-parent-variable: instanceId
-              type: array
-              items:
-                $ref: '#/components/schemas/JpClassSectionRef'
             staggers:
               x-parent-variable: instanceId
               type: array
