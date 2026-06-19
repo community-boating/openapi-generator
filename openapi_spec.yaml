@@ -3956,7 +3956,7 @@ components:
     DailySummaryReportDTO:
       x-has-dto: true
       type: object
-      required: [ ]
+      required: [ forDate ]
       allOf:
         - $ref: "#/components/schemas/DailySummaryReportBase"
         - $ref: "#/components/schemas/ReportDTO"
