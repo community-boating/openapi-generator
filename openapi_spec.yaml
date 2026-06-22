@@ -3156,10 +3156,10 @@ components:
           items:
             $ref: '#/components/schemas/EditPrinterDTO'
     CardNumDTO:
-        x-has-dto: true
-        allOf:
-          - $ref: './shared.yaml#/components/schemas/CardRef'
-          - $ref: './shared.yaml#/components/schemas/CardNumber'
+      x-has-dto: true
+      allOf:
+        - $ref: './shared.yaml#/components/schemas/CardRef'
+        - $ref: './shared.yaml#/components/schemas/CardNumber'
     PersonCheckInDTO:
       x-has-dto: true
       required: [ personId, checkInTime, checkInType ]
@@ -3911,6 +3911,7 @@ components:
     CategoryAmountDTO:
       x-has-dto: true
       type: object
+      required: [categoryId, amount]
       allOf:
         - type: object
           properties:
@@ -3925,6 +3926,7 @@ components:
     PaymentTypeAmountDTO:
       x-has-dto: true
       type: object
+      required: [paymentType, amount]
       allOf:
         - type: object
           properties:
@@ -4291,10 +4293,10 @@ components:
               items:
                 $ref: '#/components/schemas/ClassSessionDTO'
             sections:
-                x-parent-variable: instanceId
-                type: array
-                items:
-                    $ref: '#/components/schemas/ClassSectionDTO'
+              x-parent-variable: instanceId
+              type: array
+              items:
+                $ref: '#/components/schemas/ClassSectionDTO'
             weekNumber:
               type: integer
             firstSessionDatetime:
