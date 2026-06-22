@@ -1021,7 +1021,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/DailySummaryReportDTO'
+                $ref: '#/components/schemas/DailySummaryReportsDTO'
   /staff/reports/orders:
     get:
       description: 'Gets order reports'
@@ -2762,6 +2762,7 @@ components:
       x-has-dto: true
       allOf:
         - $ref: './shared.yaml#/components/schemas/OrderPaymentFull'
+        - $ref: './shared.yaml#/components/schemas/DBHistory'
         - type: object
           properties:
             paymentSource:
