@@ -1022,7 +1022,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/DailySummaryReportsDTO'
-  /staff/reports/orders:
+  /staff/reports/orders/queue:
     get:
       description: 'Gets order reports'
       parameters:
@@ -1072,7 +1072,26 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/OrderReportsDTO'
+                $ref: '#/components/schemas/OrderReportsQueueDTO'
+  /staff/reports/orders:
+    get:
+      description: 'Gets order reports'
+      parameters:
+        - in: query
+          name: queueId
+          schema:
+            type: string
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the order reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/OrderReportsResultDTO'
   /staff/reports/stripe-payments:
     get:
       description: 'Gets stripe payment reports'
@@ -3816,6 +3835,20 @@ components:
             lastPaymentDate:
               type: string
               format: date-time
+    OrderReportsQueueDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        queueId:
+          type: string
+    OrderReportsResultDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        queueId:
+          type: string
+        orderReports:
+          $ref: '#/components/schemas/OrderReportsDTO'
     OrderReportsDTO:
       x-has-dto: true
       type: object
