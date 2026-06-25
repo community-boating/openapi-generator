@@ -768,6 +768,26 @@ paths:
       responses:
         '200':
           description: Successfully cancelled the order
+  /staff/orders/fixLineItem:
+    post:
+      parameters: [ ]
+      security:
+        - staff: [ ]
+      tags:
+        - CompassOrder
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/FixLineItemRequestDTO'
+      responses:
+        '200':
+          description: Fix line item response
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FixLineItemResponseDTO'
   /staff/payment/cancel/{id}:
     post:
       description: 'Cancels a payment'
@@ -4014,6 +4034,38 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/DailySummaryReportDTO'
+            badOrderIds:
+              type: array
+              items:
+                type: integer
+                format: int64
+            totalOrders:
+              type: integer
+            totalItems:
+              type: integer
+            totalPayments:
+              type: integer
+    FixLineItemRequestDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        lineItemId:
+          type: integer
+          format: int64
+        personId:
+          type: integer
+        fixPurchasable:
+          type: boolean
+        fixPurchasableState:
+          type: boolean
+        purchasableState:
+          $ref: './shared.yaml#/components/schemas/PurchasableState'
+    FixLineItemResponseDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        status:
+          type: string
     DummyDTO:
       x-has-dto: true
       type: object
