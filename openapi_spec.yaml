@@ -1112,7 +1112,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/OrderReportsResultDTO'
-  /staff/reports/stripe-payments:
+  /staff/reports/stripe-payments/queue:
     get:
       description: 'Gets stripe payment reports'
       parameters:
@@ -1142,7 +1142,26 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/StripePaymentReportsDTO'
+                $ref: '#/components/schemas/StripePaymentReportsQueueDTO'
+  /staff/reports/stripe-payments:
+    get:
+      description: 'Gets stripe payment reports'
+      parameters:
+        - in: query
+          name: queueId
+          schema:
+            type: string
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the stripe payment reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StripePaymentReportsResultDTO'
   /staff/reports/payments:
     get:
       description: 'Gets payment reports'
@@ -3936,6 +3955,20 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/StripePaymentReportDTO'
+    StripePaymentReportsQueueDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        queueId:
+          type: string
+    StripePaymentReportsResultDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        queueId:
+          type: string
+        stripePaymentReports:
+          $ref: '#/components/schemas/StripePaymentReportsDTO'
     PaymentReportDTO:
       x-has-dto: true
       type: object
