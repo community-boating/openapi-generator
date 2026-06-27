@@ -942,7 +942,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/CatalogDTO'
-  /staff/reports/catalog/items:
+  /staff/reports/catalog/items/queue:
     get:
       description: 'Gets catalog item reports'
       parameters:
@@ -996,7 +996,26 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/CatalogItemReportsDTO'
+                $ref: '#/components/schemas/CatalogItemReportsQueueDTO'
+  /staff/reports/catalog/items:
+    get:
+      description: 'Gets catalog item reports'
+      parameters:
+        - in: query
+          name: queueId
+          schema:
+            type: string
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the catalog item reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CatalogItemReportsResultDTO'
   /staff/reports/catalog/summary:
     get:
       description: 'Gets catalog item reports'
@@ -1162,7 +1181,7 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/StripePaymentReportsResultDTO'
-  /staff/reports/payments:
+  /staff/reports/payments/queue:
     get:
       description: 'Gets payment reports'
       parameters:
@@ -1214,11 +1233,30 @@ paths:
         - staff: [ ]
       responses:
         '200':
-          description: Successfully gets the stripe payment reports
+          description: Successfully gets the payment reports
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/PaymentReportsDTO'
+                $ref: '#/components/schemas/PaymentReportsQueueDTO'
+  /staff/reports/payments:
+    get:
+      description: 'Gets payment reports'
+      parameters:
+        - in: query
+          name: queueId
+          schema:
+            type: string
+      tags:
+        - Report
+      security:
+        - staff: [ ]
+      responses:
+        '200':
+          description: Successfully gets the payment reports
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentReportsResultDTO'
   /stripe/constants:
     get:
       description: 'Returns stripe constants'
@@ -3838,6 +3876,20 @@ components:
               type: array
               items:
                 $ref: '#/components/schemas/CatalogItemInstancePriceReportDTO'
+    CatalogItemReportsQueueDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        queueId:
+          type: string
+    CatalogItemReportsResultDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        queueId:
+          type: string
+        catalogItemReports:
+          $ref: '#/components/schemas/CatalogItemReportsDTO'
     CatalogItemReportsDTO:
       x-has-dto: true
       type: object
@@ -3982,6 +4034,20 @@ components:
           properties:
             paymentDescription:
               type: string
+    PaymentReportsQueueDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        queueId:
+          type: string
+    PaymentReportsResultDTO:
+      x-has-dto: true
+      type: object
+      properties:
+        queueId:
+          type: string
+        paymentReports:
+          $ref: '#/components/schemas/PaymentReportsDTO'
     PaymentReportsDTO:
       x-has-dto: true
       type: object
